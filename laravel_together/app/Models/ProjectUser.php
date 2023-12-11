@@ -9,4 +9,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ProjectUser extends Model // 프로젝트 참여자
 {
     use HasFactory,SoftDeletes;
+
+       /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'project_id',
+        'authority_id',
+        'member_id',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }
