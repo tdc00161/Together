@@ -22,7 +22,7 @@ class Project extends Model // 프로젝트
         'project_content',
         'flg',
         'start_date',
-        'end date',
+        'end_date',
     ];
 
     /**
