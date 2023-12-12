@@ -16,8 +16,13 @@ class CommentFactory extends Factory
      */
     public function definition()
     {
+        $date = $this->faker->dateTimeBetween('-1 years');
         return [
-            //
+           'task_id'=>$this->faker->numberBetween(0,50), // 업무 pk
+           'user_id'=>$this->faker->randomNumber(1), // 작성자 pk
+           'content'=>$this->faker->realText(500), // 내용
+           'created_at' => $date, //생성일
+           'updated_at' => $date, //수정일
         ];
     }
 }

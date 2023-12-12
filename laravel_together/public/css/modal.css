@@ -1,0 +1,24 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.detail_div > div {
+	background-color: rgb(135, 135, 135);
+}
+.detail_div > div {
+	background-color: rgb(135, 135, 135);
+}
+
+.insert_div {
+	position: relative;
+}
+
+.insert_modal {
+	width: 559px;
+	height: 703px;
+	position: absolute;
+	left: -1px;
+	top: 50px;
+}

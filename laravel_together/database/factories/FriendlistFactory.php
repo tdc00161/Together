@@ -16,8 +16,11 @@ class FriendlistFactory extends Factory
      */
     public function definition()
     {
+        $date = $this->faker->dateTimeBetween('-1 years');
         return [
-            //
+            'user_id'=>(string)$this->faker->randomNumber(2), 
+            'friend_id'=>(string)$this->faker->randomNumber(2), 
+            'created_at' => $date, //생성일
         ];
     }
 }
