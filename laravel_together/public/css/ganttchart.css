@@ -1,0 +1,18 @@
+.gantt-content-wrap {
+	background-color: #fff;
+	color: #000;
+}
+.gantt-btn-wrap {
+	display: flex;
+
+}
+.gantt-search {
+	border: 1px solid #000;
+}
+.gantt-btn-drop {
+	list-style:none;
+}
+.gantt-li {
+	display: inline-block;
+	float: left;
+}
