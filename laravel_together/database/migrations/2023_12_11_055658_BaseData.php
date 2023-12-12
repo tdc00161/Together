@@ -87,7 +87,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('task_responsible_id')->nullable(); // 담당자 pk
             $table->unsignedBigInteger('task_writer_id'); // 작성자 pk
             $table->unsignedBigInteger('attachment_id')->nullable(); // 첨부파일 pk
-            $table->unsignedBigInteger('task_status_id')->default(0); // 업무상태 pk
+            $table->unsignedBigInteger('task_status_id')->default(1); // 업무상태 pk(데이터테이블 id)
             $table->unsignedBigInteger('priority_id')->nullable(); // 우선순위 pk
             $table->unsignedBigInteger('category_id'); // 카테고리 pk
             $table->unsignedBigInteger('task_number'); // 업무번호
