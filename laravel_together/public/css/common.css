@@ -361,6 +361,8 @@ body.light-mode .video-bg:before {
 }
 
 .main-container {
+    width: 70%;
+    height: 100%;
     position: relative;
  display: flex;
  flex-direction: column;
@@ -378,6 +380,7 @@ body.light-mode .video-bg:before {
 
 .content-wrapper {
 
+box-sizing: border-box;
  display: flex;
  flex-direction: column;
  color: var(--theme-color);
