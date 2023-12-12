@@ -126,8 +126,8 @@ return new class extends Migration {
     public function down()
     {
         Schema::dropIfExists('comments');
-        Schema::dropIfExists('tasks');
         Schema::dropIfExists('attachments');
+        Schema::dropIfExists('tasks');
         Schema::dropIfExists('project_users');
         Schema::dropIfExists('friends');
         Schema::dropIfExists('friend_requests');
