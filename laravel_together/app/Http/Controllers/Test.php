@@ -19,13 +19,13 @@ class Test extends Controller
     public function index()
     {
         // $result = User::limit(5);
-        $result = BaseData::find(5);
+        // $result = BaseData::find(5);
         // $result = Project::limit(5);
         // $result = FriendRequest::limit(5);
         // $result = Friendlist::limit(5);
         // $result = ProjectUser::limit(5);
         // $result = Attachment::limit(5);
-        // $result = Task::limit(5);
+        $result = Task::find(1);
         // $result = Comment::limit(5);
         
         // return response()->json($result);

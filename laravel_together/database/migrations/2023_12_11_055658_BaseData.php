@@ -74,19 +74,12 @@ return new class extends Migration {
             $table->timestamps(); // 참여일자
             $table->softDeletes(); // 탈퇴일자
         });
-        // 첨부파일 테이블
-        Schema::create('attachments', function (Blueprint $table) {
-            $table->id(); // pk
-            $table->char('type_flg',1); // 플래그 (파일/이미지/지도)
-            $table->string('address', 500); // 주소
-        });
         // 업무/공지 테이블
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('project_id'); // 프로젝트 pk
             $table->unsignedBigInteger('task_responsible_id')->nullable(); // 담당자 pk
             $table->unsignedBigInteger('task_writer_id'); // 작성자 pk
-            $table->unsignedBigInteger('attachment_id')->nullable(); // 첨부파일 pk
             $table->unsignedBigInteger('task_status_id')->default(1); // 업무상태 pk(데이터테이블 id)
             $table->unsignedBigInteger('priority_id')->nullable(); // 우선순위 pk
             $table->unsignedBigInteger('category_id'); // 카테고리 pk
@@ -98,12 +91,19 @@ return new class extends Migration {
             $table->foreign('project_id')->references('id')->on('projects'); // projects 테이블과 연결
             $table->foreign('responsible_id')->references('id')->on('users'); // users 테이블과 연결
             $table->foreign('writer_id')->references('id')->on('users'); // users 테이블과 연결
-            $table->foreign('attachment_id')->references('id')->on('attachments'); // attachments 테이블과 연결
             $table->foreign('status_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             $table->foreign('priority_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             $table->foreign('category_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             $table->timestamps(); // 작성, 수정일자
             $table->softDeletes(); // 탈퇴일자
+        });
+        // 첨부파일 테이블
+        Schema::create('attachments', function (Blueprint $table) {
+            $table->id(); // pk
+            $table->unsignedBigInteger('task_id'); // 업무/공지 pk
+            $table->char('type_flg',1); // 플래그 (파일/이미지/지도)
+            $table->string('address', 500); // 주소
+            $table->foreign('task_id')->references('id')->on('tasks'); // tasks 테이블과 연결
         });
         // 댓글 테이블
         Schema::create('comments', function (Blueprint $table) {
