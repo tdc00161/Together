@@ -145,12 +145,13 @@
       <div class="content-wrapper">
         @yield('main')
         @extends('modal.messenger')
-    <div class="overlay-app">
+    {{-- <div class="overlay-app">
       
-    </div>
+    </div> --}}
    </div>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
    <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
+   <script src="/js/messenger.js"></script>
    <script src="/js/common.js"></script>
 </body>
 </html>
