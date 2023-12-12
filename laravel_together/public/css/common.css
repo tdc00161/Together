@@ -7,7 +7,7 @@
 
 a {
     text-decoration: none;
-    color: white;
+    color: var(--inactive-color);
     font-weight: lighter;
 }
 
@@ -59,7 +59,7 @@ html {
 
 body {
  font-family: var(--body-font);
- background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
+ background-image: url(/img/oneplus-8-pro-stock-1920x1080-436.jpg);
  background-size: cover;
  background-position: center;
  display: flex;
@@ -832,7 +832,6 @@ body.light-mode .video-bg:before {
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
-    cursor: pointer;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
@@ -850,7 +849,6 @@ body.light-mode .video-bg:before {
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
-    cursor: pointer;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
@@ -869,7 +867,6 @@ body.light-mode .video-bg:before {
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
-    cursor: pointer;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
@@ -887,7 +884,6 @@ body.light-mode .video-bg:before {
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
-    cursor: pointer;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
@@ -907,7 +903,6 @@ body.light-mode .video-bg:before {
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
-    cursor: pointer;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
@@ -924,7 +919,6 @@ body.light-mode .video-bg:before {
  border-radius: 14px;
  border: 1px solid var(--theme-bg-color);
  padding: 20px;
- cursor: pointer;
  transition: 0.3s ease;
  &:hover {
   transform: scale(1.02);
