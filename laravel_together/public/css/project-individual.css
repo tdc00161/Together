@@ -1,0 +1,245 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+.first_menu {
+    display: grid;
+    grid-template-columns: 1.7fr 2.3fr;
+}
+
+.menu_title {
+    display: grid;
+    grid-template-columns: 0.5fr 3.5fr;
+}
+
+.project_color {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background-color: beige;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+input {
+    display: inline-block;
+    width: 260px;
+    height: 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+textarea {
+    display: inline-block;
+    width: 260px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+.tab_menu {
+    display: inline-block;
+    font-weight: 800;
+    width: 150px;
+    height: 20px;
+    border: none;
+    text-align: center;
+}
+
+.hr {
+    width: 100%;
+    height: 2px;
+    border: 1px solid white;
+    margin: 5px 0;
+}
+
+.grid_div {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.date_set {
+    display: flex;
+    align-items: flex-end;
+}
+
+.date {
+    width: 70%;
+    height: 30px;
+    padding-left: 10px;
+    border: none;
+    background-color: transparent;
+}
+
+label {
+    margin-right: 5px;
+    width: 200px;
+    height: 30px;
+    background-color: white;
+    border-radius: 3px;
+    color: black;
+    font-weight: 600;
+    padding-left: 10px;
+    line-height: 30px;
+    font-size: 1em;
+}
+
+.status_box {
+    width: 98%;
+    height: 400px;
+    border: 1px solid var(--theme-bg-color);
+    background-color: var(--button-inactive);
+    border-radius: 8px;
+    font-weight: 800;
+    padding: 10px;
+    text-align: center;
+}
+
+.status_title {
+    font-size: 1.5rem;
+}
+
+.status_chart {
+    margin: 15px 0;
+    width: 250px;
+    height: 250px;
+    border: none;
+    border-radius: 200px;
+    background-color: white;
+}
+
+.color_div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.color_box {
+    width: 10px;
+    height: 10px;
+    background-color: aqua;
+    border: none;
+    border-radius: 1px;
+    display: inline-block;
+}
+
+.color_name {
+    font-weight: 500;
+    display: inline-block;
+}
+
+.invite_box {
+    width: 98%;
+    height: 70px;
+    border: 1px solid var(--theme-bg-color);
+    background-color: var(--button-inactive);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.mini_box {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    line-height: 50px;
+    margin-right: 5px;
+}
+
+.gird_row1 {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+}
+
+.gird_row2 {
+    width: 98%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.right_box1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.point_box {
+    padding: 10px;
+    width: 99%;
+    height: 98%;
+    border: 1px solid var(--theme-bg-color);
+    background-color: var(--button-inactive);
+    border-radius: 5px;
+    display: inline-block;
+    justify-content: space-around;
+}
+
+.point_box_title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.point_text {
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.point_button {
+    border: none;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.box_ul {
+    border-bottom:1px solid black;
+}
+
+.right_box2 {
+    padding: 10px;
+    width: 100%;
+    height: 98%;
+    border: 1px solid var(--theme-bg-color);
+    border-radius: 5px;
+    background-color: var(--button-inactive);
+}
+
+table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.col1 {
+    width: 10%;
+}
+
+.col2 {
+    width: 50%;
+}
+
+.col3 {
+    width: 20%;
+}
+
+.col4 {
+    width: 20%;
+}
