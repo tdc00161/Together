@@ -18,7 +18,7 @@ class Test extends Controller
 {
     public function index()
     {
-        $result = Task::;
+        // $result = Task::;
         // return $result;
     }
 
