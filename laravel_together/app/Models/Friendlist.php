@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Friendlist extends Model
+class Friendlist extends Model // 친구 목록
 {
     use HasFactory,SoftDeletes;
 

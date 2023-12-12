@@ -60,6 +60,7 @@ return new class extends Migration {
             $table->string('user_id');
             $table->string('friend_id');
             $table->timestamps();
+            $table->softDeletes();
         });
         // 프로젝트 참여자 테이블
         Schema::create('project_users', function (Blueprint $table) {
@@ -83,15 +84,15 @@ return new class extends Migration {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('project_id'); // 프로젝트 pk
-            $table->unsignedBigInteger('responsible_id'); // 담당자 pk
-            $table->unsignedBigInteger('writer_id'); // 작성자 pk
-            $table->unsignedBigInteger('attachment_id'); // 첨부파일 pk
-            $table->unsignedBigInteger('status_id'); // 업무상태 pk
-            $table->unsignedBigInteger('priority_id'); // 우선순위 pk
+            $table->unsignedBigInteger('task_responsible_id')->nullable(); // 담당자 pk
+            $table->unsignedBigInteger('task_writer_id'); // 작성자 pk
+            $table->unsignedBigInteger('attachment_id')->nullable(); // 첨부파일 pk
+            $table->unsignedBigInteger('task_status_id')->default(0); // 업무상태 pk
+            $table->unsignedBigInteger('priority_id')->nullable(); // 우선순위 pk
             $table->unsignedBigInteger('category_id'); // 카테고리 pk
             $table->unsignedBigInteger('task_number'); // 업무번호
             $table->unsignedBigInteger('task_parent')->nullable(); // 상위업무
-            $table->char('task_depth',1); // 업무깊이
+            $table->char('task_depth',1)->default(0); // 업무깊이
             $table->string('title',50); // 제목
             $table->string('content',500)->nullable(); // 내용
             $table->foreign('project_id')->references('id')->on('projects'); // projects 테이블과 연결
