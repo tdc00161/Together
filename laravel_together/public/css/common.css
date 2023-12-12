@@ -5,14 +5,24 @@
  box-sizing: border-box;
 }
 
-.w100 {
-    width: 100%;
+a {
+    text-decoration: none;
+    color: var(--inactive-color);
+    font-weight: lighter;
 }
+
+.app-card-title {
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 :root {
  --theme-bg-color: rgba(16 18 27 / 40%);
  --border-color: rgba(113 119 144 / 25%);
  --theme-color: #f9fafb;
- --inactive-color: rgb(113 119 144 / 78%);
+ --inactive-color: white;
  --body-font: "Poppins", sans-serif;
  --hover-menu-bg: rgba(12 15 25 / 30%);
  --content-title-color: #999ba5;
@@ -49,7 +59,7 @@ html {
 
 body {
  font-family: var(--body-font);
- background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
+ background-image: url(/img/oneplus-8-pro-stock-1920x1080-436.jpg);
  background-size: cover;
  background-position: center;
  display: flex;
@@ -134,7 +144,7 @@ body.light-mode .video-bg:before {
 
 .app {
  background-color: var(--theme-bg-color);
- max-width: 1250px;
+ max-width: 1460px;
  max-height: 860px;
  height: 90vh;
  display: flex;
@@ -335,6 +345,8 @@ body.light-mode .video-bg:before {
 .side-title {
  color: var(--inactive-color);
  margin-bottom: 14px;
+
+ font-weight: bold;
 }
 
 .side-menu {
@@ -407,7 +419,7 @@ body.light-mode .video-bg:before {
  display: flex;
  flex-direction: column;
  color: var(--theme-color);
- padding: 20px 40px;
+ padding: 40px 40px;
  height: 100%;
  overflow: auto;
  background-color: var(--theme-bg-color);
@@ -517,12 +529,32 @@ body.light-mode .video-bg:before {
 }
 
 .content-section {
+    width: 100%;
+    flex-wrap: wrap;
+    height: 100%;
  margin-top: 30px;
  display: flex;
- flex-direction: row;
+ flex-direction: column;
  &-title {
   color: var(--content-title-color);
   margin-bottom: 14px;
+ }
+}
+
+ .content-section-2 {
+   margin-left: 7px;
+   margin-top: 7px;
+    width: 100%;
+    height: 78.5%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+ }
+ .content-section-3 {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
  }
  ul {
   display: flex;
@@ -566,7 +598,7 @@ body.light-mode .video-bg:before {
    flex-shrink: 0;
   }
  }
-}
+
 
 .products {
  display: flex;
@@ -792,16 +824,14 @@ body.light-mode .video-bg:before {
 }
 /* 1 업무상태 */
 .app-card1 {
-    display: flex;
-    flex-direction: row;
-    width: calc(33.3% - 15px);
-    height: 500px;
+   
+    width: calc(33.3% - 90px);
+    height: 100%;
     font-size: 16px;
     background-color: var(--content-bg);
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
-    padding: 20px;
-    cursor: pointer;
+    padding: 10px;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
@@ -810,22 +840,76 @@ body.light-mode .video-bg:before {
 }
 /* 2 공지 */
 .app-card2 {
-    display: flex;
-    flex-direction: row;
-    width: calc(33.3% - 15px);
-    height: 150px;
+    margin-left: 7px;
+    display: block;
+    width: 75.3%;
+    height: 20%;
     font-size: 16px;
     background-color: var(--content-bg);
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
-    padding: 20px;
-    cursor: pointer;
+    padding: 10px;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);
     }
 }
+/* 3  */
+.app-card3 {
+    margin-bottom: 7px;
+    display: block;
+    flex-direction: column;
+    width: 100%;
+    height: 48%;
+    font-size: 16px;
+    background-color: var(--content-bg);
+    border-radius: 14px;
+    border: 1px solid var(--theme-bg-color);
+    padding: 10px;
+    transition: 0.3s ease;
+    &:hover {
+     transform: scale(1.02);
+     background-color: var(--theme-bg-color);
+    }
+}
+/* 3-1  */
+.app-card3-2 {
+    display: block;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+    font-size: 16px;
+    background-color: var(--content-bg);
+    border-radius: 14px;
+    border: 1px solid var(--theme-bg-color);
+    padding: 10px;
+    transition: 0.3s ease;
+    &:hover {
+     transform: scale(1.02);
+     background-color: var(--theme-bg-color);
+    }
+}
+
+/* 4  */
+.app-card4 {
+    margin-left: 7px;
+    display: block;
+    flex-direction: column;
+    width: 24.5%;
+    height: 100%;
+    font-size: 16px;
+    background-color: var(--content-bg);
+    border-radius: 14px;
+    border: 1px solid var(--theme-bg-color);
+    padding: 10px;
+    transition: 0.3s ease;
+    &:hover {
+     transform: scale(1.02);
+     background-color: var(--theme-bg-color);
+    }
+}
+
 .app-card {
  display: flex;
  flex-direction: row;
@@ -835,7 +919,6 @@ body.light-mode .video-bg:before {
  border-radius: 14px;
  border: 1px solid var(--theme-bg-color);
  padding: 20px;
- cursor: pointer;
  transition: 0.3s ease;
  &:hover {
   transform: scale(1.02);
