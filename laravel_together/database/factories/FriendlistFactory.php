@@ -17,7 +17,9 @@ class FriendlistFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id'=>(string)$this->faker->randomNumber(2), 
+            'friend_id'=>(string)$this->faker->randomNumber(2), 
+            'created_at' => $date, //생성일
         ];
     }
 }

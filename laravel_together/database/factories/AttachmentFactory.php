@@ -17,7 +17,8 @@ class AttachmentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'type_flg'=>$this->faker->numberBetween(0,2), // 플래그 (파일/이미지/지도),
+            'address'=>(string)$this->faker->sentence(500), // 주소
         ];
     }
 }

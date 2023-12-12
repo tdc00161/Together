@@ -17,7 +17,15 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id'=>$this->faker->randomNumber(2), // pk          
+            'color_code'=> $this->faker->numberBetween(0,4), // 색상코드 pk
+            'project_title'=> $this->faker->sentence(16), // 프로젝트명
+            'project_content'=> $this->faker->sentence(44), // 설명
+            'flg'=> $this->faker->numberBetween(0,1), // 조직구분
+            'start_date'=> $date, // 시작일자
+            'end_date'=> $date, // 마감일자
+            'created_at'=> $date, // 작성일자
+            'update_at'=> $date, // 수정일자
         ];
     }
 }
