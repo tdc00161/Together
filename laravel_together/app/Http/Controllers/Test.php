@@ -18,6 +18,13 @@ class Test extends Controller
 {
     public function index()
     {
+        $result = Task::;
+        // return $result;
+    }
+
+    public function view()
+    {
+        
         // $result = User::limit(5);
         // $result = BaseData::find(5);
         // $result = Project::limit(5);

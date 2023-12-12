@@ -19,7 +19,6 @@ class Task extends Model // 업무/공지
         'project_id',
         'responsible_id',
         'writer_id',
-        'attachment_id',
         'status_id',
         'priority_id',
         'category_id',
