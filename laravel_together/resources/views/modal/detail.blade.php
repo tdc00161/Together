@@ -6,7 +6,7 @@
 @section('title', '상세모달')
 
 @section('main')
-<div class="detail">
-	<div>테스트</div>
+<div class="detail_page">
+	<div class="modal">테스트</div>
 </div>
 @endsection
