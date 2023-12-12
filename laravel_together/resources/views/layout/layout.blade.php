@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/css/common.css">
+  @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
   <title>@yield('title', 'Laravel Board')</title>
 </head>
 <body>
