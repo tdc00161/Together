@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  @yield('gantt_link', '')
+  @yield('gantt_link', '') {{-- 12/12 민주 gantt css 개별 링크용--}}
   <link rel="stylesheet" href="/css/messenger.css">
   <link rel="stylesheet" href="/css/common.css">
  
@@ -152,5 +152,6 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
    <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
    <script src="/js/common.js"></script>
+   <script src="/js/ganttchart.js"></script>
 </body>
 </html>

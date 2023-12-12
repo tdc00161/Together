@@ -1,7 +1,6 @@
 @extends('layout.layout')
 @section('gantt_link')
-<script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
-<link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/ganttchart.css">
 @endsection
 @section('title', '대시보드')
 @section('main')
