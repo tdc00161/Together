@@ -383,6 +383,7 @@ body.light-mode .video-bg:before {
  color: var(--theme-color);
  padding: 40px 40px;
  height: 100%;
+ width: 100%;
  overflow: auto;
  background-color: var(--theme-bg-color);
  @media screen and (max-width: 510px) {
@@ -506,14 +507,14 @@ body.light-mode .video-bg:before {
  .content-section-2 {
    margin-left: 7px;
    margin-top: 7px;
-    width: 100%;
+    width: 75%;
     height: 78.5%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
  }
  .content-section-3 {
-    width: 50%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -804,7 +805,7 @@ body.light-mode .video-bg:before {
 .app-card2 {
     margin-left: 7px;
     display: block;
-    width: 75.3%;
+    width: 74.5%;
     height: 20%;
     font-size: 16px;
     background-color: var(--content-bg);
@@ -858,7 +859,7 @@ body.light-mode .video-bg:before {
     margin-left: 7px;
     display: block;
     flex-direction: column;
-    width: 24.5%;
+    width: 28.5%;
     height: 100%;
     font-size: 16px;
     background-color: var(--content-bg);
