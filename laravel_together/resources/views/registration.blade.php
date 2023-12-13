@@ -2,42 +2,52 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 
-
-@section('title', 'login')
+@section('title', 'registraion')
 
 <body>
-   
-    <div class="grid">
+
+    <div class="grid2">
         <div class="login-title-div">
-            <p class="login-title">Together</p>
+            <p class="login-title">회원가입</p>
         </div>
-      <form action="{{route('user.login.post')}}" method="POST" class="form login">
-        @csrf
+      <form action="{{route('user.registration.post')}}" method="POST" class="form login">
         @include('layout.errorlayout')
         <br>
+        @csrf
         <div class="form__field">
-          <label for="login__username"><svg class="icon">
+          <label for="email"><svg class="icon">
               <use xlink:href="#icon-user"></use>
-            </svg><span class="hidden">Username</span></label>
-          <input autocomplete="off" id="login__username" type="text" name="email" class="form__input" placeholder="email" required>
+            </svg><span class="hidden">email</span></label>
+          <input autocomplete="off" id="email" type="text" name="email" class="form__input" placeholder="email" required>
         </div>
   
         <div class="form__field">
-          <label for="login__password"><svg class="icon">
+          <label for="password"><svg class="icon">
               <use xlink:href="#icon-lock"></use>
             </svg><span class="hidden">Password</span></label>
-          <input id="login__password" type="password" name="password" class="form__input" placeholder="Password" required>
+          <input id="password" type="password" name="password" class="form__input" placeholder="Password" required>
         </div>
+
+        <div class="form__field">
+            <label for="passwordchk"><svg class="icon">
+                <use xlink:href="#icon-lock"></use>
+              </svg><span class="hidden">Password chk</span></label>
+            <input id="passwordchk" type="password" name="passwordchk" class="form__input" placeholder="Password chk" required>
+          </div>
+
+          <div class="form__field">
+            <label for="name"><svg class="icon">
+                <use xlink:href="#icon-user"></use>
+              </svg><span class="hidden">email</span></label>
+            <input autocomplete="name" id="name" type="text" name="name" class="form__input" placeholder="username" required>
+          </div>
   
         <div class="form__field">
-          <input type="submit" class="button_line_none" value="로그인">
+          <input type="submit" class="button_line_none" value="Sign Up">
         </div>
   
       </form>
   
-      <p class="text--center"><a class="signupstr" href="{{route('user.registration.get')}}">회원가입</a> <svg class="icon">
-          <use xlink:href="#icon-arrow-right"></use>
-        </svg></p>
   
     </div>
   
