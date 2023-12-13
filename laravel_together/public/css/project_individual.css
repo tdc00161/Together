@@ -107,13 +107,10 @@ label {
     font-size: 1.5rem;
 }
 
-.status_chart {
-    margin: 15px 0;
-    width: 250px;
-    height: 250px;
-    border: none;
-    border-radius: 200px;
-    background-color: white;
+#chartcanvas {
+    box-sizing: border-box;
+    width: 280px;
+    height: 280px;
 }
 
 .color_div {
@@ -190,6 +187,13 @@ label {
     border-radius: 5px;
     display: inline-block;
     justify-content: space-around;
+    overflow: auto;
+}
+
+.point_box::-webkit-scrollbar {
+    background-color: lightgray;
+    width: 1px;
+    height: 30px;
 }
 
 .point_box_title {
@@ -201,16 +205,21 @@ label {
     display: inline-block;
     font-size: 1.5em;
     font-weight: 600;
+    margin-bottom: 10px;
+    align-items: end;
 }
 
 .point_button {
     border: none;
-    background-color: transparent;
-    text-decoration: underline;
+    width: 20px;
+    height: 20px;
+    font-weight: 800;
+    margin-top: 5px;
 }
 
 .box_ul {
-    border-bottom:1px solid black;
+    margin: 10px 0;
+    border-bottom:1px solid white;
 }
 
 .right_box2 {
@@ -220,10 +229,12 @@ label {
     border: 1px solid var(--theme-bg-color);
     border-radius: 5px;
     background-color: var(--button-inactive);
+    overflow: auto;
 }
 
 table {
     width: 100%;
+    font-size: 0.8em;
     text-align: center;
     border-collapse: collapse;
 }

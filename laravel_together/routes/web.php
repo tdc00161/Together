@@ -23,13 +23,13 @@ Route::get('/ganttchart', function () {
     return view('ganttchart');
 });
 Route::get('/project-create', function () {
-    return view('/project-create');
+    return view('/project_create');
 });
-Route::get('/project-individual', function () {
-    return view('/project-individual');
+Route::get('/project_individual', function () {
+    return view('/project_individual');
 });
-Route::get('/project-team', function () {
-    return view('/project-team');
+Route::get('/project_team', function () {
+    return view('/project_team');
 });
 
 

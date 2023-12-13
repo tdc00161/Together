@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/project-create.css">
+  <link rel="stylesheet" href="/css/project_create.css">
   <title>project-create</title>
 </head>
 <body>

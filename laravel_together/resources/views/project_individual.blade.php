@@ -1,7 +1,8 @@
 @extends('layout.layout')
 
 @section('link')
-<link rel="stylesheet" href="/css/project-individual.css">
+<link rel="stylesheet" href="/css/project_individual.css">
+<script src="/js/project.js"></script>
 @endsection
 
 @section('title', '개인프로젝트')
@@ -40,7 +41,7 @@
         {{-- 업무상태 현황 --}}
         <div class="status_box"> 
             <div class="status_title">업무상태 현황</div>
-            <div class="status_chart"></div>
+            <canvas id="chartcanvas" width="800" height="800"></canvas>
             <div class="color_div">
                 <div class="color_set">
                     <div class="color_box"></div>
@@ -76,7 +77,7 @@
             <div class="point_box">
                 <div class="point_box_title">
                     <div class="point_text">공지</div>
-                    <button class="point_button">작성</button>
+                    <button class="point_button">+</button>
                 </div>
                 <table>
                     <colgroup>
@@ -89,11 +90,13 @@
                         <th>내용</th>
                         <th>담당자</th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
+                    @foreach ($data as $item)
+                        <tr class="box_ul">
+                            <td>{{$data['project_title']}}</td>
+                            <td>{{$data['project_content']}}</td>
+                            <td>{{$data['user_id']}}</td>
+                        </tr>
+                    @endforeach
                 </table>
             </div>
             <div class="point_box">
@@ -104,12 +107,12 @@
                         <col class="col2">
                         <col class="col3">
                     </colgroup>
-                    <tr>
-                        <th class="box_ul">제목</th>
-                        <th class="box_ul">내용</th>
-                        <th class="box_ul">담당자</th>
+                    <tr class="box_ul">
+                        <th>제목</th>
+                        <th>내용</th>
+                        <th>담당자</th>
                     </tr>
-                    <tr>
+                    <tr class="box_ul">
                         <td>1</td>
                         <td>2</td>
                         <td>3</td>
@@ -132,7 +135,7 @@
                     <th>담당자</th>
                     <th>진행상태</th>
                 </tr>
-                <tr>
+                <tr class="box_ul">
                     <td>1</td>
                     <td>2</td>
                     <td>3</td>
@@ -142,4 +145,5 @@
         </div>
     </div>
 </div>
+
 @endsection
