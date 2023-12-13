@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::create('basedata', function (Blueprint $table) {
+            $table->id(); // pk
+            $table->char('data_title_code',1); // 대분류
+            $table->string('data_title_name', 20); // 대분류 이름
+            $table->char('data_content_code',1); // 소분류
+            $table->string('data_content_name', 20); // 소분류 이름
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('basedata');
     }
 };

@@ -12,38 +12,7 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-        // 데이터 테이블
-        Schema::create('basedata', function (Blueprint $table) {
-            $table->id(); // pk
-            $table->char('data_title_code',1); // 대분류
-            $table->string('data_title_name', 20); // 대분류 이름
-            $table->char('data_content_code',1); // 소분류
-            $table->string('data_content_name', 20); // 소분류 이름
-        });
-        // 프로젝트 테이블
-        Schema::create('projects', function (Blueprint $table) {
-            $table->id(); // pk
-            $table->unsignedBigInteger('user_pk'); // 생성자 pk            
-            $table->unsignedBigInteger('color_code_pk'); // 색상코드 pk
-            $table->string('project_title',16); // 프로젝트명
-            $table->string('project_content',44)->nullable(); // 설명
-            $table->char('flg',1); // 조직구분
-            $table->date('start_date'); // 시작일자
-            $table->date('end_date'); // 마감일자
-            // $table->foreign('user_id')->references('id')->on('users'); // users 테이블과 연결
-            // $table->foreign('color_code')->references('id')->on('base_data'); // user테이블과 연결
-            $table->timestamps(); // 가입일
-            $table->softDeletes(); // 탈퇴일
-        });
+   
         // 친구요청 테이블
         Schema::create('friend_requests', function (Blueprint $table) {
             $table->id(); //pk
@@ -109,7 +78,8 @@ return new class extends Migration {
         Schema::create('comments', function (Blueprint $table) {
             $table->id(); // pk
             $table->unsignedBigInteger('task_pk'); // 업무 pk
-            $table->unsignedBigInteger('user_pk'); // 작성자 pk
+            $table->unsignedB
+            igInteger('user_pk'); // 작성자 pk
             $table->string('content',500); // 내용
             // $table->foreign('task_id')->references('id')->on('tasks'); // tasks 테이블과 연결
             // $table->foreign('user_id')->references('id')->on('users'); // users 테이블과 연결
