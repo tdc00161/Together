@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.container {
+    padding: 30px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.flg_div {
+    width: 220px;
+    height: 220px;
+    border: 1px solid var(--theme-bg-color);
+    background-color: var(--button-inactive);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 50px;
+
+}
+
+.flg_div:hover {
+    background-color: rgb(45, 201, 149);
+}
+
+.hr {
+    width: 100px;
+    height: 2px;
+    border: 1px solid white;
+    margin: 5px 0;
+}
+
+input {
+    width: 604px;
+    height: 50px;
+    padding: 10px;
+}
+
+.div_font {
+    font-weight: 700;
+}
+
+.input_date {
+    width: 300px;
+    height: 50px;
+    text-align: center;
+    color: black;
+}
+
+textarea {
+    width: 604px;
+    height: 150px;
+    padding: 10px;
+}
+
+.div_date {
+    display: inline-block;
+}
+
+.project_button {
+    width: 250px;
+    height: 50px;
+    border: 1px solid var(--theme-bg-color);
+    background-color: var(--button-inactive);
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.project_button:hover {
+    background-color: rgb(45, 201, 149);
+    color: black;
+}
