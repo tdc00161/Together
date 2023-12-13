@@ -4,6 +4,34 @@
 @endsection
 @section('title', '간트차트')
 @section('main')
+
+	<div class="first_menu">
+		<div class="menu_title">
+			<div class="project_color"></div>
+			<div>
+				<input type="text" name="title" placeholder="프로젝트명">
+				{{-- <br> --}}
+				<textarea name="content" id="content" placeholder="설명"></textarea>
+			</div>    
+		</div>    
+		<div class="date_set">
+			<label for="d_day"> D-day
+				<span class="date"></span>
+			</label>
+			<label for="start_date"> 시작일
+				<input class="date" type="date" name="start_date">
+			</label>
+			<label for="end_date"> 마감일
+				<input class="date" type="date" name="end_date">
+			</label>
+		</div>
+	</div>
+	<div>
+		<div class="tab_menu">피드</div>
+		<div  class="tab_menu">간트차트</div>
+	</div>
+	<div class="hr"></div>
+	{{-- 피드공통 헤더끝 --}}
 	<div class="gantt-content-wrap">
 		<div class="gantt-btn-wrap">
 			<input class="gantt-search" type="search" placeholder="   업무명, 업무번호 검색">
@@ -68,11 +96,25 @@
 					<div>마감일</div>
 				</div>
 				<div class="gantt-task">
-					<div>업무명</div>
+					<div id="gantt-editable-div" class="editable">업무명</div>
 					<div>김민주</div>
 					<div>시작전</div>
-					<div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
-					<div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
+					<div><input type="date" name="sat" id="start-row1" onchange="test('1');"></div>
+					<div><input type="date" name="eat" id="end-row1" onchange="test('1');"></div>
+				</div>
+				<div class="gantt-task">
+					<div id="gantt-editable-div" class="editable">업무명</div>
+					<div>김민주</div>
+					<div>시작전</div>
+					<div><input type="date" name="sat" id="start-row1" onchange="test('1');"></div>
+					<div><input type="date" name="eat" id="end-row1" onchange="test('1');"></div>
+				</div>
+				<div class="gantt-task">
+					<div id="gantt-editable-div" class="editable">업무명</div>
+					<div>김민주</div>
+					<div>시작전</div>
+					<div><input type="date" name="sat" id="start-row1" onchange="test('1');"></div>
+					<div><input type="date" name="eat" id="end-row1" onchange="test('1');"></div>
 				</div>
 			</div>
 			<div class="gantt-chart-wrap">
@@ -83,6 +125,9 @@
 						</div>
 					</div>
 					<div class="gantt-chart-body">
+						{{-- <div id="gantt-chart">
+
+						</div> --}}
 						{{-- 간트 차트 본문 부분 --}}
 						<div id="row1-20231201"></div>
 						<div id="row1-20231202"></div>

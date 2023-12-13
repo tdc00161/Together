@@ -12,6 +12,20 @@ for(let i = 0; i < checkLists.length; i++) {
     }
   }
 
+// ***** 업무명 클릭하여 바로 수정
+// 요소를 클릭하여 편집 가능하게 만드는 함수
+function makeEditable(element) {
+  element.contentEditable = true;
+  element.focus();
+}
+// 요소를 클릭하여 편집 상태로 전환
+document.getElementById('gantt-editable-div').addEventListener('click', function(event) {
+  const targetElement = event.target;
+  makeEditable(targetElement);
+});
+
+
+
 
   // 간트 차트에 작업 추가하는 함수 
 // 예시 데이터 - 날짜와 작업 정보
@@ -64,6 +78,11 @@ function addDatesToHeader() {
 
 addDatesToHeader();
 
+// 챗 차트생성
+
+
+
+
 // **** 차트생성...
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
 function test(rowNum) {
@@ -98,3 +117,5 @@ function test(rowNum) {
     }
         }
     }
+
+
