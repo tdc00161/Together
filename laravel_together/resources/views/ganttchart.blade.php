@@ -67,13 +67,34 @@
 					<div>시작일</div>
 					<div>마감일</div>
 				</div>
-				<div>
-
+				<div class="gantt-task">
+					<div>업무명</div>
+					<div>김민주</div>
+					<div>시작전</div>
+					<div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
+					<div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
 				</div>
 			</div>
 			<div class="gantt-chart-wrap">
-				<div>
-
+				<div class="gantt-chart-container">
+					<div class="gantt-chart-header">
+						<div class="gantt-header-scroll">
+							{{-- 날짜를 가로로 나열할 부분 --}}
+						</div>
+					</div>
+					<div class="gantt-chart-body">
+						{{-- 간트 차트 본문 부분 --}}
+						<div id="row1-20231201"></div>
+						<div id="row1-20231202"></div>
+						<div id="row1-20231203"></div>
+						<div id="row1-20231204"></div>
+						<div id="row1-20231205"></div>
+						<div id="row1-20231206"></div>
+						<div id="row1-20231207"></div>
+						<div id="row1-20231208"></div>
+						<div id="row1-20231209"></div>
+						<div id="row1-20231210"></div>
+					</div>
 				</div>
 			</div>
 			
