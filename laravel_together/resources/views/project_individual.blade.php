@@ -92,9 +92,9 @@
                     </tr>
                     @foreach ($data as $item)
                         <tr class="box_ul">
-                            <td>{{$data['project_title']}}</td>
-                            <td>{{$data['project_content']}}</td>
-                            <td>{{$data['user_id']}}</td>
+                            <td>{{$item->project_title}}</td>
+                            <td>{{$item->project_content}}</td>
+                            <td>{{$item->user_id}}</td>
                         </tr>
                     @endforeach
                 </table>
@@ -112,11 +112,13 @@
                         <th>내용</th>
                         <th>담당자</th>
                     </tr>
-                    <tr class="box_ul">
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
+                    @foreach ($data as $item)
+                        <tr class="box_ul">
+                            <td>{{$item->project_title}}</td>
+                            <td>{{$item->project_content}}</td>
+                            <td>{{$item->user_id}}</td>
+                        </tr>
+                    @endforeach
                 </table>
             </div>
         </div>
@@ -135,12 +137,14 @@
                     <th>담당자</th>
                     <th>진행상태</th>
                 </tr>
-                <tr class="box_ul">
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                </tr>
+                @foreach ($data as $item)
+                    <tr class="box_ul">
+                        <td>{{$item->id}}</td>
+                        <td>{{$item->project_content}}</td>
+                        <td>{{$item->user_id}}</td>
+                        <td>{{$item->user_id}}</td>
+                    </tr>
+                @endforeach
             </table>
         </div>
     </div>

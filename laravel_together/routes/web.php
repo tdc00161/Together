@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProjectIndividualController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,12 +31,14 @@ Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboa
 Route::get('/ganttchart', function () {
     return view('ganttchart');
 });
-Route::get('/project-create', function () {
+
+// 프로젝트 생성
+Route::get('/pjcreate', function () {
     return view('/project_create');
 });
-Route::get('/project_individual', function () {
-    return view('/project_individual');
-});
+
+// 프로젝트 개인/팀 화면
+Route::get('/pjindividual', [ProjectIndividualController::class,'index'])->name('project_individual');
 Route::get('/project_team', function () {
     return view('/project_team');
 });

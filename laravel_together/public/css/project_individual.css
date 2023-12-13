@@ -175,6 +175,7 @@ label {
 
 .right_box1 {
     display: grid;
+    height: 98%;
     grid-template-columns: 1fr 1fr;
 }
 

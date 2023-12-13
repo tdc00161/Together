@@ -18,17 +18,23 @@ class ProjectIndividualController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $data = Projects::all->get();
+    public function index() {
+        $data = DB::table('Projects')->get();
+        // var_dump($data);
 
-        $data = [
-            'project_title' => $project_title,
-            'project_content' => $project_content,
-            'user_id' => $user_id,
-        ];
+        // $result = [
+        //     'project_title'=>$project_title,
+        //     'project_content'=>$project_content,
+        //     'user_id'=>$user_id,
+        // ];
         
-        return view('project_individual')->with(data,$data);
+            // $data = [
+            //     'project_title' => '안녕',
+            //     'project_content' => '안녕',
+            //     'user_id' => 2,
+            // ];
+
+        return view('project_individual')->with('data',$data);
     }
 
     /**
@@ -49,7 +55,7 @@ class ProjectIndividualController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -60,13 +66,14 @@ class ProjectIndividualController extends Controller
      */
     public function show($id)
     {
-        $result = project::find($id);
+        // $result = project::find($id);
+        // var_dump($result);
 
-        DB::table('project')
-            ->SELECT('user_id','color_code','project_title','project_content','start_date','end_date')
-            ->where('user_id','$id')
-            ->get();
-        return view('project_individual')->with(data,$result);
+        // DB::table('project')
+        //     ->SELECT('user_id','color_code','project_title','project_content','start_date','end_date')
+        //     ->where('user_id','$id')
+        //     ->get();
+        // return view('project_individual')->with(data,$result);
     }
 
     /**
