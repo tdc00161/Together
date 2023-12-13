@@ -72,10 +72,18 @@ $(function () {
      document.body.classList.toggle('light-mode');
    });
 
-   // 모달 열기 함수
+   // 상세 열기 함수
    function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
+//    // 상세 모달 열기 함수
+//    function openDetailModal() {
+//     document.getElementById('myDetailModal').style.display = 'block';
+// }
+// // 작성 모달 열기 함수
+//    function openInsertModal() {
+//     document.getElementById('myInsertModal').style.display = 'block';
+// }
 
 // 모달 닫기 함수
 function closeModal() {

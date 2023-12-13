@@ -34,6 +34,9 @@ Route::get('/project-team', function () {
 
 
 // 모달
+Route::get('/modaltest', function () {
+    return view('modal/modaltest');
+});
 Route::get('/detail', function () {
     return view('modal/detail');
 });
