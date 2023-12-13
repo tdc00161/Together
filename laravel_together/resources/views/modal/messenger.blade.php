@@ -1,4 +1,8 @@
-<div id="myModal" class="modal">
+<head>
+    <link rel="stylesheet" href="/css/messenger.css">
+</head>
+<body>
+    <div id="m-myModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal()">&times;</span>
        <!-- 탭 목록 -->
@@ -31,3 +35,5 @@
 </div>
     </div>
 </div>
+<script src="/js/messenger.js"></script>
+</body>
