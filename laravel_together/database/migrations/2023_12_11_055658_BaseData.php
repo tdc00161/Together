@@ -12,38 +12,7 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-        // 데이터 테이블
-        Schema::create('base_data', function (Blueprint $table) {
-            $table->id(); // pk
-            $table->char('class1',1); // 대분류
-            $table->string('class1_name', 20); // 대분류 이름
-            $table->char('class2',1); // 소분류
-            $table->string('class2_name', 20); // 소분류 이름
-        });
-        // 프로젝트 테이블
-        Schema::create('projects', function (Blueprint $table) {
-            $table->id(); // pk
-            $table->unsignedBigInteger('user_id'); // 생성자 pk            
-            $table->unsignedBigInteger('color_code'); // 색상코드 pk
-            $table->string('project_title',16); // 프로젝트명
-            $table->string('project_content',44)->nullable(); // 설명
-            $table->char('flg',1); // 조직구분
-            $table->date('start_date'); // 시작일자
-            $table->date('end_date'); // 마감일자
-            // $table->foreign('user_id')->references('id')->on('users'); // users 테이블과 연결
-            // $table->foreign('color_code')->references('id')->on('base_data'); // user테이블과 연결
-            $table->timestamps(); // 가입일
-            $table->softDeletes(); // 탈퇴일
-        });
+   
         // 친구요청 테이블
         Schema::create('friend_requests', function (Blueprint $table) {
             $table->id(); //pk
@@ -65,9 +34,9 @@ return new class extends Migration {
         // 프로젝트 참여자 테이블
         Schema::create('project_users', function (Blueprint $table) {
             $table->id(); // pk
-            $table->unsignedBigInteger('project_id'); // 프로젝트 pk
-            $table->unsignedBigInteger('authority_id'); // 권한 pk
-            $table->unsignedBigInteger('member_id'); // 참여자 pk
+            $table->unsignedBigInteger('project_pk'); // 프로젝트 pk
+            $table->unsignedBigInteger('authority_pk'); // 권한 pk
+            $table->unsignedBigInteger('member_pk'); // 참여자 pk
             // $table->foreign('project_id')->references('id')->on('projects'); // projects 테이블과 연결
             // $table->foreign('authority_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             // $table->foreign('member_id')->references('id')->on('users'); // users 테이블과 연결
@@ -77,12 +46,12 @@ return new class extends Migration {
         // 업무/공지 테이블
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('project_id'); // 프로젝트 pk
-            $table->unsignedBigInteger('task_responsible_id')->nullable(); // 담당자 pk
-            $table->unsignedBigInteger('task_writer_id'); // 작성자 pk
-            $table->unsignedBigInteger('task_status_id')->default(1); // 업무상태 pk(데이터테이블 id)
-            $table->unsignedBigInteger('priority_id')->nullable(); // 우선순위 pk
-            $table->unsignedBigInteger('category_id'); // 카테고리 pk
+            $table->unsignedBigInteger('project_pk'); // 프로젝트 pk
+            $table->unsignedBigInteger('task_responsible_user_pk')->nullable(); // 담당자 pk
+            $table->unsignedBigInteger('task_writer_user_pk'); // 작성자 pk
+            $table->unsignedBigInteger('task_status_pk')->default(1); // 업무상태 pk(데이터테이블 id)
+            $table->unsignedBigInteger('priority_pk')->nullable(); // 우선순위 pk
+            $table->unsignedBigInteger('category_pk'); // 카테고리 pk
             $table->unsignedBigInteger('task_number'); // 업무번호
             $table->unsignedBigInteger('task_parent')->nullable(); // 상위업무
             $table->char('task_depth',1)->default(0); // 업무깊이
@@ -100,7 +69,7 @@ return new class extends Migration {
         // 첨부파일 테이블
         Schema::create('attachments', function (Blueprint $table) {
             $table->id(); // pk
-            $table->unsignedBigInteger('task_id'); // 업무/공지 pk
+            $table->unsignedBigInteger('task_pk'); // 업무/공지 pk
             $table->char('type_flg',1); // 플래그 (파일/이미지/지도)
             $table->string('address', 500); // 주소
             // $table->foreign('task_id')->references('id')->on('tasks'); // tasks 테이블과 연결
@@ -108,8 +77,9 @@ return new class extends Migration {
         // 댓글 테이블
         Schema::create('comments', function (Blueprint $table) {
             $table->id(); // pk
-            $table->unsignedBigInteger('task_id'); // 업무 pk
-            $table->unsignedBigInteger('user_id'); // 작성자 pk
+            $table->unsignedBigInteger('task_pk'); // 업무 pk
+            $table->unsignedB
+            igInteger('user_pk'); // 작성자 pk
             $table->string('content',500); // 내용
             // $table->foreign('task_id')->references('id')->on('tasks'); // tasks 테이블과 연결
             // $table->foreign('user_id')->references('id')->on('users'); // users 테이블과 연결
