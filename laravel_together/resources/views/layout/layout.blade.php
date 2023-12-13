@@ -19,15 +19,13 @@
    <div class="app">
 
     <div class="header">
-     <div class="menu-circle"></div>
+      <a class="header-title">Together</a>
+    
      <div class="header-menu">
      </div>
      <div class="header-profile">
-      <button onclick="openModal()">모달 열기</button>
-
-    
-       {{-- <span class="notification-number">3</span> --}}
-       <button><img class="" src="/img/icon-bell.png" alt=""></button>
+      <button class="icon-Sub" onclick="openModal()"><img src="/img/icon-Subtract.png" alt=""></button>
+      <button class="icon-Sub"><img src="/img/icon-bell.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
 
       <img class="profile-img" src="/img/profile-img.png" alt="">
      </div>
