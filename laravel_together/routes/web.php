@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController; // 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,14 +25,8 @@ Route::get('/user/registration', [UserController::class, 'registrationget'])->na
 Route::middleware('my.user.validation')->post('/user/registration', [UserController::class, 'registrationpost'])->name('user.registration.post'); // 회원가입 처리
 Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.logout.get'); // 로그아웃 처리
 
-Route::get('/layout', function () {
-    return view('layout.layout');
-});
-// Route::get('/board', [BoardController::class, 'index'])->name('board.index');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+// 대시보드
+Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 Route::get('/ganttchart', function () {
     return view('ganttchart');
 });

@@ -15,7 +15,7 @@ class UserController extends Controller
         // Auth::login($user, $remember = true);
         // 로그인 한 유저는 보드 리스트로 이동
         if(Auth::check()) {
-            return redirect()->route('dashboard');
+            return redirect('/dashboard');
         }
 
         return view('login');
@@ -46,6 +46,10 @@ class UserController extends Controller
    
 
     public function registrationget() {
+
+        if(Auth::check()) {
+            return redirect('/dashboard');
+        }
 
         return view('registration');
     }
