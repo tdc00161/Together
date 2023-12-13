@@ -4,9 +4,9 @@
   {{-- 컨텐츠 헤더 --}}
   <div class="content-wrapper-header">
     {{-- 유저 이름 --}}
-    <span>{{$user->name}}님</span>
+    <span><span class="font-b">{{$user->name}}</span>님</span>
     {{-- 오늘 날짜 --}}
-    <span>🌈 2023년 12월 11일 월요일</span>
+    <p class="today-date">🌈 {{$formatDate1}} {{$koreanDayOfWeek}}</p>
   </div>
  
   {{-- 컨텐츠 섹션 --}}

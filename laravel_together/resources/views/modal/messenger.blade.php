@@ -7,10 +7,10 @@
         <span class="modal-close" onclick="closeModal()">&times;</span>
        <!-- 탭 목록 -->
 <ul class="tabs">
-    <li class="tab" onclick="openTab('tab1')">탭 1</li>
+    <li class="tab" onclick="openTab('tab1')"><img class="tab-icon" src="/img/icon-Subtract.png" alt=""></li>
     <li class="tab" onclick="openTab('tab2')">탭 2</li>
-    <li class="tab" onclick="openTab('tab3')">탭 3</li>
-    <li class="tab" onclick="openTab('tab4')">탭 4</li>
+    {{-- <li class="tab" onclick="openTab('tab3')">탭 3</li>
+    <li class="tab" onclick="openTab('tab4')">탭 4</li> --}}
 </ul>
 
 <!-- 탭 내용 -->
