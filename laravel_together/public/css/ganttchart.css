@@ -212,25 +212,65 @@
 .gantt-task-header {
 	display: flex;
 	justify-content: space-around;
-	/* border-bottom: 1px solid #000; */
+	border-bottom: 1px solid #000;
 	text-align: center;
+	height: 30px;
 }
 
-.gantt-task-header div, .gantt-task div {
+.gantt-task-header div {
 	width: 20%;
-	border: 1px solid #000;
+	border-right: 1px solid #000;
+	padding: 3px 0px;
+	height: 30px;
 }
-
+.gantt-task div {
+	width: 20%;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
 .gantt-task div {
 	padding: 10px 0px;
 }
 
 /* 업무명 수정 가능 */
 .editable {
-	border: 1px solid #ccc;
+	/* border: 1px solid #ccc; */
 	padding: 5px;
 	cursor: pointer;
 }
+.editable > img {
+	width: 15px;
+	margin: 0px 5px;
+}
+/* 드롭박스 선택 수정 */
+.gantt-dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.gantt-dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 100px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	padding: 12px 16px;
+	z-index: 1;
+	height: auto;
+}
+.gantt-dropdown-content > li {
+	list-style: none;
+	padding: 0;
+	border: none;
+	
+}
+.gantt-dropdown-content li a {
+	color: #000;
+
+}
+/* .gantt-dropdown:hover .gantt-dropdown-content {
+	display: block;
+} */
 
 /* 간트차트 section 차트 영역 */
 .gantt-chart-wrap {
@@ -238,12 +278,13 @@
     height: 100%;
 	/* border: 1px solid #000; */
 	display: flex;
-	flex-direction: column;
+	overflow: auto;
+	/* flex-direction: column; */
 }
 
 .gantt-chart-container {
-	flex: 1;
-	overflow: auto; /* 스크롤이 필요한 경우에만 스크롤을 생성 */
+	/* flex: 1;
+	overflow: auto; */
 }
 
 .gantt-chart-header {
@@ -256,19 +297,32 @@
 	justify-content: flex-start;
 }
 .gantt-chart-body {
-	display: flex;
+	/* display: flex;
     justify-content: center;
     flex-direction: row;
+	height: 570px; */
+	background-color: aqua
+}
+.gantt-chart {
+	display: flex;
+    /* justify-content: center; */
+    flex-direction: row;
+	height: 43.5px;
+	border-bottom: 1px solid #000;
+	padding: 6px 0px;
 }
 .gantt-chart-body div .bk-row {
 	width: 85px;
 	height: 30px;
 }
-
+.gantt-chart > div {
+	flex-basis: 85px;
+	width: 85px;
+}
 .bk-row {
 	background-color: #9656FF;
 	width: 100%;
-	height: 50%;
+	height: 100%;
 }
 
 .gantt-header-scroll .date {

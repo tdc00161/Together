@@ -30,6 +30,9 @@ Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboa
 Route::get('/ganttchart', function () {
     return view('ganttchart');
 });
+Route::get('/ganttcharttest', function () {
+    return view('ganttcharttest');
+});
 Route::get('/project-create', function () {
     return view('/project-create');
 });

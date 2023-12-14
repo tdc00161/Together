@@ -83,7 +83,7 @@
 						<li><input name="end" type="radio" >이번달</li>
 					</ul>
 				</div>
-				<button class="gantt-add-btn">업무추가</button>
+				<button class="gantt-add-btn" onclick="">업무추가</button>
 			</div>
 		</div>
 		<section class="gantt-all-task">
@@ -96,25 +96,33 @@
 					<div>마감일</div>
 				</div>
 				<div class="gantt-task">
-					<div id="gantt-editable-div" class="editable">업무명</div>
-					<div>김민주</div>
+					<div id="gantt-editable-div" class="editable">업무명<img src="/img/gantt-plus.png" alt=""></div>
+					<div class="gantt-dropdown" id="gantt-teamDropdown">
+						<span id="gantt-currentTeam" onclick="toggleDropdown()">김민주</span>
+						<ul class="gantt-dropdown-content" id="gantt-teamOptions">
+							<li><a href="#" onclick="changeName('김관호')">김관호</a></li>
+							<li><a href="#" onclick="changeName('김민주')">김민주</a></li>
+							<li><a href="#" onclick="changeName('양수진')">양수진</a></li>
+							<li><a href="#" onclick="changeName('양주은')">양주은</a></li>
+						</ul>
+					</div>
 					<div>시작전</div>
-					<div><input type="date" name="sat" id="start-row1" onchange="test('1');"></div>
-					<div><input type="date" name="eat" id="end-row1" onchange="test('1');"></div>
+					<div><input type="date" name="sat" id="sat-row1" onchange="test('1');"></div>
+					<div><input type="date" name="eat" id="eat-row1" onchange="test('1');"></div>
 				</div>
 				<div class="gantt-task">
 					<div id="gantt-editable-div" class="editable">업무명</div>
 					<div>김민주</div>
 					<div>시작전</div>
-					<div><input type="date" name="sat" id="start-row1" onchange="test('1');"></div>
-					<div><input type="date" name="eat" id="end-row1" onchange="test('1');"></div>
+					<div><input type="date" name="sat" id="sat-row2" onchange="test('2');"></div>
+					<div><input type="date" name="eat" id="eat-row2" onchange="test('2');"></div>
 				</div>
 				<div class="gantt-task">
 					<div id="gantt-editable-div" class="editable">업무명</div>
 					<div>김민주</div>
 					<div>시작전</div>
-					<div><input type="date" name="sat" id="start-row1" onchange="test('1');"></div>
-					<div><input type="date" name="eat" id="end-row1" onchange="test('1');"></div>
+					<div><input type="date" name="sat" id="sat-row3" onchange="test('3');"></div>
+					<div><input type="date" name="eat" id="eat-row3" onchange="test('3');"></div>
 				</div>
 			</div>
 			<div class="gantt-chart-wrap">
@@ -125,20 +133,67 @@
 						</div>
 					</div>
 					<div class="gantt-chart-body">
-						{{-- <div id="gantt-chart">
+						<div class="gantt-chart">
+							@php
+								$startDate = new DateTime('2023-12-01');
+								$endDate = new DateTime('2023-12-31');
+							@endphp
 
-						</div> --}}
+							@while ($startDate <= $endDate)
+								<div id="row1-{{ $startDate->format('Ymd') }}"></div>
+								@php
+									$startDate->modify('+1 day');
+								@endphp
+							@endwhile
+						</div>
+						<div class="gantt-chart">
+							@php
+								$startDate = new DateTime('2023-12-01');
+								$endDate = new DateTime('2023-12-31');
+							@endphp
+
+							@while ($startDate <= $endDate)
+								<div id="row2-{{ $startDate->format('Ymd') }}"></div>
+								@php
+									$startDate->modify('+1 day');
+								@endphp
+							@endwhile
+							{{-- <div id="row2-20231201"></div>
+							<div id="row2-20231202"></div>
+							<div id="row2-20231203"></div>
+							<div id="row2-20231204"></div>
+							<div id="row2-20231205"></div>
+							<div id="row2-20231206"></div>
+							<div id="row2-20231207"></div>
+							<div id="row2-20231208"></div>
+							<div id="row2-20231209"></div>
+							<div id="row2-20231210"></div> --}}
+						</div>
+						<div class="gantt-chart">
+							@php
+								$startDate = new DateTime('2023-12-01');
+								$endDate = new DateTime('2023-12-31');
+							@endphp
+
+							@while ($startDate <= $endDate)
+								<div id="row3-{{ $startDate->format('Ymd') }}"></div>
+								@php
+									$startDate->modify('+1 day');
+								@endphp
+							@endwhile
+							{{-- <div id="row3-20231201"></div>
+							<div id="row3-20231202"></div>
+							<div id="row3-20231203"></div>
+							<div id="row3-20231204"></div>
+							<div id="row3-20231205"></div>
+							<div id="row3-20231206"></div>
+							<div id="row3-20231207"></div>
+							<div id="row3-20231208"></div>
+							<div id="row3-20231209"></div>
+							<div id="row3-20231210"></div> --}}
+						</div>
 						{{-- 간트 차트 본문 부분 --}}
-						<div id="row1-20231201"></div>
-						<div id="row1-20231202"></div>
-						<div id="row1-20231203"></div>
-						<div id="row1-20231204"></div>
-						<div id="row1-20231205"></div>
-						<div id="row1-20231206"></div>
-						<div id="row1-20231207"></div>
-						<div id="row1-20231208"></div>
-						<div id="row1-20231209"></div>
-						<div id="row1-20231210"></div>
+						
 					</div>
 				</div>
 			</div>
