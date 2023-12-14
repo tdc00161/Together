@@ -11,10 +11,41 @@
 	border-radius: 7px;
 }
 
+/* 모달 위치 테스트 ~ */
+.insert_modal{
+	/* 배치 */
+	position: absolute;
+	top: 15%;
+	right: 30%;
+	/* 내부 */
+	/* 크기 */
+}
+.detail_modal{
+	/* 배치 */
+	position: absolute;
+	top: 15%;
+	right: 0;
+	/* 내부 */
+	/* 크기 */
+}
+
+.behind_insert_modal {
+	/* 배치 */
+	position: absolute;
+	z-index: 1;
+	/* 내부 */
+	background-color: rgba(0, 0, 0, 0.5);
+	/* 크기 */
+	width: 100%;
+	height: 100%;
+}
+
+/* ~ */
+
 body>.task_modal {
 	/* 배치 */
-	margin: auto;
-	margin-top: 10vh;
+	position: absolute;
+	z-index: 2;
 	/* 내부 */
 	background-color: #8F8F8F;
 	display: flex;
@@ -97,7 +128,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	/* 내부 */
 	display: flex;
-	padding: 0 25px;
+	padding: 10px 25px;
 	font-size: small;
 	color: rgb(255, 255, 255, 0.7);
 	/* 크기 */
@@ -511,7 +542,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 크기 */
 }
 
-.task_modal #add_box_mgin {
+.task_modal .add_box_mgin {
 	/* 배치 */
 	/* 내부 */
 	font-size: small;
@@ -579,7 +610,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 .task_modal .content>.content {
 	/* 배치 */
 	/* 내부 */
-	padding: 15px 21px;
+	padding: 15px 28px;
 	font-size: 14.8px;
 	font-weight: lighter;
 	color: rgb(255, 255, 255, 0.9);
@@ -600,6 +631,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	margin: 15px 0 0 20px;
 	/* 내부 */
+	background-color: transparent;
 	resize: none;
 	/* 크기 */
 	width: 90%;
@@ -815,7 +847,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 .task_modal textarea {
 	outline: none;
 	border: none;
-	background-color: transparent;
+	/* background-color: transparent; */
 }
 
 /* 누를 수 있는거 */
@@ -826,9 +858,10 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 .task_modal .more,
 .task_modal .content>.property>.status>div:not(:nth-child(1)),
 .task_modal .cross_icon_b,
-.task_modal #add_box_mgin,
+.task_modal .add_box_mgin,
 .task_modal .delete_comment,
-.task_modal .more_modal>div>div .task_modal .submit {
+.task_modal .more_modal>div>div,
+.task_modal .submit {
 	cursor: pointer;
 }
 

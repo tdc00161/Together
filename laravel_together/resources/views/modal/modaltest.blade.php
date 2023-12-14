@@ -9,8 +9,8 @@
 
 <body>
     {{-- @section('main') --}}
-        <button onclick="openDetailModal()">상세모달 오픈</button>
-        <button onclick="openInsertModal()">작성모달 오픈</button>
-        <button onclick="changTaskNotice()">상세모달 업무/글</button>
+        <button onclick="openTaskModal(0)">작성모달 오픈</button>
+        <button onclick="openTaskModal(1)">상세모달 오픈</button>
+        <button onclick="changTaskType()">상세모달 업무/글</button>
     {{-- @endsection --}}
 </body>

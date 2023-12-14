@@ -1,10 +1,10 @@
-<div class="task_modal detail_task_modal">
+<div class="task_modal detail_modal">
 	<div class="header">
 		<div>
 			<div class="project_color"></div>
 			<div class="project_name">Project1</div>
 		</div>
-		<div class="cross_icon_w" onclick="closeDetailModal()"></div>
+		<div class="cross_icon_w" onclick="closeTaskModal(1)"></div>
 	</div>
 	<div>
 		<div class="content">
@@ -36,19 +36,19 @@
 			<div class="property type_task">
 				<div class="status">
 					<div></div>
-					<div id="checked" class="det_status_val" onclick="changeDetailStatus(0)">시작전</div>
-					<div class="det_status_val" onclick="changeDetailStatus(1)">진행중</div>
-					<div class="det_status_val" onclick="changeDetailStatus(2)">피드백</div>
-					<div class="det_status_val" onclick="changeDetailStatus(3)">완료</div>
+					<div id="checked" class="det_status_val">시작전</div>
+					<div class="det_status_val">진행중</div>
+					<div class="det_status_val">피드백</div>
+					<div class="det_status_val">완료</div>
 				</div>
 				<div class="responsible add_box">
-					<div></div>
-					<div>
+					<div class="responsible_icon"></div>
+					<div class="responsible_one">
 						<div class="user_profile"></div>
 						<div>User</div>
 						<div id="remove_responsible" class="cross_icon_b"></div>
 					</div>
-					<div id="add_box_mgin">담당자변경</div>
+					<div class="add_box_mgin add_responsible">담당자변경</div>
 				</div>
 				<div class="dead_line">
 					<div></div>
@@ -76,7 +76,7 @@
 						<div>보통</div>
 						<div id="remove_priority" class="cross_icon_b"></div>
 					</div>
-					<div id="add_box_mgin">우선순위변경</div>
+					<div class="add_box_mgin">우선순위변경</div>
 				</div>
 			</div>
 			<div class="content">
