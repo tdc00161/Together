@@ -11,6 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
+    // 기본 데이터 테이블
     public function up()
     {
         Schema::create('basedata', function (Blueprint $table) {

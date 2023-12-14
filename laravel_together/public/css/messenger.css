@@ -42,30 +42,35 @@
 
         /* 탭 스타일 */
         .tab-icon {
-
+            
+            width: 30px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            margin-top: 5px;
+            
     
         }
         .tabs {
+            height: 50px;
             display: flex;
             list-style: none;
             padding: 0;
             flex-wrap: nowrap;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
         }
 
         .tab {
-            width: 100%;
+            opacity: 50%;
+            width: 50px;
             height: 100%;
             cursor: pointer;
-            padding: 10px;
-            margin: 0;
-            flex: 1 1 48%; /* 가로방향으로 2개씩 나열되도록 설정 */
-            margin: 5px;
+            
         }
 
         .tab:hover {
-            background-color: #ddd;
+            /* background-color: #ddd; */
         }
 
         .tab-content {
@@ -79,6 +84,7 @@
         }
 
         /* 보이는 탭 색상 */
-        .active {
-            background-color: #ddd;
+        .tab-active {
+            opacity: 100%;
+            border-bottom: 2px solid white;
         }

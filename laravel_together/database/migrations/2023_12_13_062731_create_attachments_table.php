@@ -11,6 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         // 첨부파일 테이블
