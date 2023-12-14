@@ -23,31 +23,30 @@
       <a class="header-title">Together</a>
     
      <div class="header-menu">
-      @auth
-      <a class="btn_signin" href="{{route('user.logout.get')}}">로그아웃</a>
-      @endauth
+     
      </div>
      <div class="header-profile">
       
       <button class="icon-Sub"><img src="/img/icon-bell.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
       <button class="icon-Sub" onclick="toggleModal()"><img src="/img/icon-Subtract.png" alt=""></button>
+
       <div class="dropdown">
-        <button class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="dropdown-toggle common-button" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           <img class="profile-img" src="/img/profile-img.png" alt="">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item bg-op border-radius-top" href="#">내정보</a></li>
+          <li><a class="dropdown-item bg-op border-radius-bottom" href="{{route('user.logout.get')}}"> @auth
+            로그아웃@endauth</a></li>
         </ul>
       </div>
-      <img class="profile-img" src="/img/profile-img.png" alt="">
+
      </div>
     </div>
 
     <div class="wrapper">
      <div class="left-side">
-      <button>새 프로젝트 생성</button>
+      <button onclick="location.href='/pjcreate'">새 프로젝트 생성</button>
       <div class="side-wrapper">
        <div class="side-title">메뉴</div>
        <div class="side-menu">

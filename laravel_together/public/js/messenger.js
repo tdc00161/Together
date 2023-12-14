@@ -15,17 +15,37 @@
      // 활성화된 탭 스타일 적용
      var activeTabs = document.getElementsByClassName('tab');
      for (var i = 0; i < activeTabs.length; i++) {
-         activeTabs[i].classList.remove('active');
+         activeTabs[i].classList.remove('tab-active');
      }
-     event.currentTarget.classList.add('active');
+     event.currentTarget.classList.add('tab-active');
  }
 
   // 모달 열기/닫기 함수
   function toggleModal() {
     var modal = document.getElementById('m-myModal');
+    var defaulttab = document.getElementById('defaulttab');
+     // 저장된 액티브 상태를 가져옴
+     const lastActiveElement = sessionStorage.getItem('lastActiveElement');
+
+     //모달이 열릴 때 모든 탭의 active 클래스를 제거
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
+
     if (modal.style.display === 'none' || modal.style.display === '') {
+        
         modal.style.display = 'block';
+
+         // 모달이 열릴 때 기본으로 활성화할 요소에 active 클래스 추가
+         if (lastActiveElement) {
+            document.getElementById(lastActiveElement).classList.add('tab-active');
+        } else {
+            defaulttab.classList.add('tab-active');
+        }
     } else {
+        // 현재 액티브 상태를 저장
+        const activeElement = document.querySelector('.tab-active');
+        if (activeElement) {
+            sessionStorage.setItem('lastActiveElement', activeElement.id); // 세션 스토리지에 저장
+        }
         modal.style.display = 'none';
     }
 }

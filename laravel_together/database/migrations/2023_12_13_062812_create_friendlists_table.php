@@ -11,6 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
+    // 친구목록 테이블
     public function up()
     {
         Schema::create('friendlists', function (Blueprint $table) {
