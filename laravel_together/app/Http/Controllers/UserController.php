@@ -26,7 +26,7 @@ class UserController extends Controller
         $remember = true;
 
         // 유저 정보 습득
-        // $result = User::where('email', $request->email)->first();
+        $result = User::where('email', $request->email)->first();
         if(!$result || !(Hash::check($request->password, $result->password))) {
             $errorMsg= '이메일과 비밀번호 다시 확인해주세요.';
             return view('login')->withErrors($errorMsg);
