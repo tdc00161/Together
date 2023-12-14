@@ -1,3 +1,5 @@
+// 원형 그래프
+
 window.onload = function() {
     var canvas = document.getElementById("chartcanvas");
     var context = canvas.getContext("2d");
@@ -5,10 +7,10 @@ window.onload = function() {
     var sh = canvas.height;
     var PADDING=100;
    
-    //Browser별 데이터 입력 chrome, IE, Firefox, Safari, Opera, etc 순
+    //데이터 입력
     var data = [30.3, 24.6,19.3,16.3];
 
-    //Browser별 색상 lawngreen, blue, deeppink, aquamarine3, magenta, gold
+    //데이터별 색상
     var colors = ["#7cfc00", "#0000ff", "#ff1493", "#66CDAA"];
    
     var center_X=sw/2;  //원의 중심 x 좌표
@@ -29,3 +31,41 @@ window.onload = function() {
          angle += Math.PI*2*(data[i]/total);
     }
   }
+
+// 상단바 d-day 계산
+
+let dday = document.getElementById("dday");
+function total(){
+   start_day = new Date(document.getElementById("start_date").value) // 시작일자 가져오기
+   console.log(start_day);
+   end_day = new Date(document.getElementById("end_date").value) // 디데이(마감일자)
+   console.log(end_day);
+   gap = end_day - start_day
+   console.log(gap)
+   result = Math.floor(gap / (1000 * 60 * 60 * 24))
+   // // 시작일 or 마감일 1개만 수정되었을 때도 변경ㅇ 설정?
+   // if(start_day!=null || end_day!=null) {
+   //    dday.innerHTML = result;
+   // }
+   dday.innerHTML = result;
+}
+
+// console.log(dday);
+
+// tab 기능
+
+function openTab(evt, tabName) {
+   var i, tabcontent, tabmenu;
+   tabcontent = document.getElementsByClassName("tabcontent");
+   for (i = 0; i < tabcontent.length; i++) {
+     tabcontent[i].style.display = "none";
+   }
+   console.log(tabcontent);
+   tabmenu = document.getElementsByClassName("tabmenu");
+   for (i = 0; i < tabmenu.length; i++) {
+      tabmenu[i].className = tabmenu[i].className.replace(" active", "");
+   }
+   console.log(tabmenu);
+   document.getElementById(tabName).style.display = "block";
+   evt.currentTarget.className += " active";
+}

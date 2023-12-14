@@ -38,7 +38,7 @@ Route::get('/pjcreate', function () {
 });
 
 // 프로젝트 개인/팀 화면
-Route::get('/pjindividual', [ProjectIndividualController::class,'index'])->name('project_individual');
+Route::get('/pjindividual', [ProjectIndividualController::class,'main'])->name('project_individual');
 Route::get('/project_team', function () {
     return view('/project_team');
 });

@@ -46,7 +46,7 @@
 
     <div class="wrapper">
      <div class="left-side">
-      <button>새 프로젝트 생성</button>
+      <button onclick="location.href='/pjcreate'">새 프로젝트 생성</button>
       <div class="side-wrapper">
        <div class="side-title">메뉴</div>
        <div class="side-menu">
