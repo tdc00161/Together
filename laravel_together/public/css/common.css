@@ -47,7 +47,7 @@ a {
  --content-title-color: #999ba5;
  --content-bg: rgb(146 151 179 / 13%);
  --button-inactive: rgb(249 250 251 / 55%);
- --dropdown-bg: #21242d;
+ --dropdown-bg: rgba(33, 36, 45, 0.712);
  --dropdown-hover: rgb(42 46 60);
  --popup-bg: rgb(22 25 37);
  --search-bg:  #14162b;
@@ -664,7 +664,7 @@ box-sizing: border-box;
  ul {
   position: absolute;
   background: var(--dropdown-bg);
-  height: 110px;
+  /* height: 110px; */
   width: 120px;
   right: 0;
   top: 20px;

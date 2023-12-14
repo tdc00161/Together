@@ -11,6 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
+    // 댓글 테이블
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
