@@ -201,6 +201,7 @@
 	height: auto;
 	background-color: #fff;
     border-radius: inherit;
+	width: -webkit-fill-available;
 }
 
 .gantt-items li input {

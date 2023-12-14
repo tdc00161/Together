@@ -94,7 +94,7 @@
 					<div>시작일</div>
 					<div>마감일</div>
 				</div>
-				<div class="gantt-task">
+				<div class="gantt-task" id="ganttTask">
 					<div id="gantt-editable-div" class="editable">업무명<img src="/img/gantt-plus.png" alt=""></div>
 					<div class="gantt-dropdown" id="gantt-teamDropdown">
 						<span id="gantt-currentTeam" onclick="toggleDropdown()">김민주</span>
@@ -157,16 +157,6 @@
 									$startDate->modify('+1 day');
 								@endphp
 							@endwhile
-							{{-- <div id="row2-20231201"></div>
-							<div id="row2-20231202"></div>
-							<div id="row2-20231203"></div>
-							<div id="row2-20231204"></div>
-							<div id="row2-20231205"></div>
-							<div id="row2-20231206"></div>
-							<div id="row2-20231207"></div>
-							<div id="row2-20231208"></div>
-							<div id="row2-20231209"></div>
-							<div id="row2-20231210"></div> --}}
 						</div>
 						<div class="gantt-chart">
 							@php
@@ -180,16 +170,6 @@
 									$startDate->modify('+1 day');
 								@endphp
 							@endwhile
-							{{-- <div id="row3-20231201"></div>
-							<div id="row3-20231202"></div>
-							<div id="row3-20231203"></div>
-							<div id="row3-20231204"></div>
-							<div id="row3-20231205"></div>
-							<div id="row3-20231206"></div>
-							<div id="row3-20231207"></div>
-							<div id="row3-20231208"></div>
-							<div id="row3-20231209"></div>
-							<div id="row3-20231210"></div> --}}
 						</div>
 						{{-- 간트 차트 본문 부분 --}}
 						
