@@ -14,7 +14,34 @@ for(let i = 0; i < checkLists.length; i++) {
 
 // ****** 하위 업무 추가
 // 새로운 gantt-task를 추가하는 함수
+function addNewTask() {
+   // 새로운 업무를 추가할 div 요소 생성
+   var newTaskDiv = document.createElement('div');
+   newTaskDiv.className = 'gantt-task';
+   newTaskDiv.style.height = '43.5px'; // 높이를 43.5로 설정
 
+   // 각각의 업무를 구성하는 요소들 생성 (div 안에 input이 들어간 형태)
+   var inputTypes = ['text', 'text', 'text', 'date', 'date']; // 각 input 요소에 적용할 타입 배열
+
+   for (var i = 0; i < inputTypes.length; i++) {
+       var newDiv = document.createElement('div');
+       var newInput = document.createElement('input');
+       newInput.setAttribute('type', inputTypes[i]); // input 타입 설정
+
+
+       // 생성한 input을 새로운 div 안에 추가
+       newDiv.appendChild(newInput);
+       // 새로운 div를 새로운 업무 div에 추가
+       newTaskDiv.appendChild(newDiv);
+   }
+
+  // 생성한 새로운 업무를 기존의 ganttTask 뒤에 추가
+  var ganttEditableDiv = document.getElementById('ganttTask');
+  ganttEditableDiv.parentNode.insertBefore(newTaskDiv, ganttEditableDiv.nextSibling);
+}
+
+// 이미지 클릭 시 새로운 업무 추가 함수 호출
+document.querySelector('img[src="/img/gantt-plus.png"]').addEventListener('click', addNewTask);
 
 
 // ***** 업무명 클릭하여 바로 수정
@@ -121,47 +148,4 @@ function test(rowNum) {
     }
   }
 }
-
-
-
-
-
-
-
-
-// // **** 차트생성
-// // 파라미터 : rowNum   테이블에서의 해당 row 번호
-// function test(rowNum) {
-//   // 해당 시작일, 종료일 요소 습득
-//       const sat = document.getElementById('sat-row'+rowNum).value;
-//       const eat = document.getElementById('eat-row'+rowNum).value;
-
-//       if(sat && eat) {
-//         // 기존 bk-row div 삭제
-//         const bkRowList = document.querySelectorAll('.bk-row');
-//         if(bkRowList) {
-//           bkRowList.forEach( function(item) {
-//             item.remove();
-//           });
-//         }
-
-//         // 추가 할 bk-row div의 데이트 포멧 변경 : yyyy-mm-dd >> yyyymmdd
-//         let startAt = sat.replace(/-/g, ''); // - 제거
-//         let endAt = eat.replace(/-/g, '');
-
-//         // bk-row div 추가
-//         for(startAt; startAt <= endAt; startAt++) {
-//           // 타겟 일자 요소 습득
-//           const target = document.getElementById('row' + rowNum + '-' + startAt); // ex) row1-231201
-
-//           // bk-row div 요소 생성
-//           const div = document.createElement('div');
-//           div.classList = 'bk-row';
-
-//           // 타겟에 bk-row div 추가
-//           target.appendChild(div);
-//         }
-//       }
-//     }
-
 
