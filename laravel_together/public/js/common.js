@@ -74,7 +74,7 @@ $(function () {
 
    // 상세 열기 함수
    function openModal() {
-    document.getElementById('myModal').style.display = 'block';
+    document.getElementById('task_modal').style.display = 'block';
 }
 //    // 상세 모달 열기 함수
 //    function openDetailModal() {
