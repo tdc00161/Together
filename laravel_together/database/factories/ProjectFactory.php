@@ -18,8 +18,8 @@ class ProjectFactory extends Factory
     {
         $date = $this->faker->dateTimeBetween('-1 years');
         return [
-            'user_id'=>$this->faker->randomNumber(1),         
-            'color_code'=> $this->faker->numberBetween(0,4), // 색상코드 pk
+            'user_pk'=>$this->faker->randomNumber(1),         
+            'color_code_pk'=> $this->faker->numberBetween(0,4), // 색상코드 pk
             'project_title'=> $this->faker->realText(15), // 프로젝트명
             'project_content'=> $this->faker->realText(43), // 설명
             'flg'=> $this->faker->numberBetween(0,1), // 조직구분

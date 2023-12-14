@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         // \App\Models\Project::factory(10)->create();
         // \App\Models\ProjectUser::factory(10)->create();
-        // \App\Models\Friendlist::factory(10)->create();
+        \App\Models\Friendlist::factory(10)->create();
         // \App\Models\FriendRequest::factory(10)->create();
-        for($i=0;$i<3;$i++){
-            \App\Models\Task::factory(10)->create();
-        }
+        // for($i=0;$i<3;$i++){
+        //     \App\Models\Task::factory(10)->create();
+        // }
         // \App\Models\Attachment::factory(10)->create();
         // \App\Models\Comment::factory(10)->create();
 

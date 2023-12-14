@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attachment extends Model // 첨부파일
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    public $timestamps = false;
 
        /**
      * The attributes that are mass assignable.
@@ -16,6 +18,7 @@ class Attachment extends Model // 첨부파일
      * @var array<int, string>
      */
     protected $fillable = [
+        'task_id',
         'type_flg',
         'address',
     ];
