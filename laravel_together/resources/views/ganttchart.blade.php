@@ -4,8 +4,7 @@
 @endsection
 @section('title', '간트차트')
 @section('main')
-@include('layout.projecttitle')
-	{{-- <div class="first_menu">
+	<div class="first_menu">
 		<div class="menu_title">
 			<div class="project_color"></div>
 			<div>
@@ -30,7 +29,7 @@
 		<button class="tabmenu active" onclick="openTab(event,field)">피드</button>
 		<button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button>
 	</div>
-	<div class="hr"></div> --}}
+	<div class="hr"></div>
 	{{-- 피드공통 헤더끝 --}}
 	<div class="gantt-content-wrap">
 		<div class="gantt-btn-wrap">

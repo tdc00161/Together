@@ -34,7 +34,7 @@
         <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
         <button class="tabmenu" onclick="openTab(event,'/ganttchart')">간트차트</button>
     </div>
-    <div class="hr"></div>
+    {{-- <div class="hr"></div> --}}
     <script src="/js/project.js"></script>
 </body>
 </html>
