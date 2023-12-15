@@ -14,7 +14,7 @@ return new class extends Migration
     // 친구요청 테이블
     public function up()
     {
-        Schema::create('friend_requests', function (Blueprint $table) {
+        Schema::create('friendRequests', function (Blueprint $table) {
             $table->id(); //pk
             $table->string('from_user_email'); // 친구 요청 보낸 유저 이메일
             $table->string('to_user_email'); // 친구 요청 받는 유저 이메일
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('friend_requests');
+        Schema::dropIfExists('friendRequests');
     }
 };

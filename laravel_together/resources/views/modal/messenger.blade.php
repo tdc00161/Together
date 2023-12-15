@@ -1,5 +1,6 @@
 <head>
     <link rel="stylesheet" href="/css/messenger.css">
+    <meta name="csrf-token">
 </head>
 <body>
     <div id="m-myModal" class="m-modal">
@@ -68,17 +69,23 @@
 
 {{-- 친구추가 모달 --}}
 <div id="friend-Modal">
-    <form action="" method="post">
+    <form id="friendRequestForm" action="{{ route('friend.sendFriendRequest') }}" method="post">
     @csrf
     <div class="friend-Modal-content">
         <div class="friend-Modal-header"><span class="f-r-modal-title">유저 이메일로 추가</span><button type="button" class="fclose-btn" onclick="fcloseModal()">X</button></div>
         <div class="friend-request-input-div">
-            <input class="friend-request-input" type="email" name="receiver_email" autocomplete="off" placeholder="email로 추가">
-            <button type="submit" class="add-button">+</button>
-            <p>@error('receiver_email')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror</p>
-        </div>
+            <input class="friend-request-input" type="email" name="receiver_email" id="receiver_email" autocomplete="off" placeholder="email로 추가">
+            <button id="submitBtn" type="submit" class="add-button">+</button>
+            <p class="request-messege">메세지 출력</p>
+            {{-- 에러출력 --}}
+            @if ($errors->has('receiver_email'))
+            <div class="alert alert-danger">{{ $errors->first('receiver_email') }}</div>
+            @endif
+            <!-- 뷰에서 성공 메시지 출력 -->
+            @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+        </>
     </div>
     </form>
 </div>

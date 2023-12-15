@@ -83,5 +83,13 @@ class UserController extends Controller
         
         return redirect()->route('user.login.get');
     }
+    
+    // 사용자를 이메일로 조회하는 메소드
+    public function getUserByEmail($email)
+    {
+        $user = User::where('email', $email)->first();
+
+        return $user;
+    }
 
 }

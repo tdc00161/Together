@@ -72,3 +72,37 @@ function mcloseModal() {
 function fcloseModal() {
     document.getElementById('friend-Modal').style.display = 'none';
 }
+
+document.getElementById('submitBtn').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    const receiverEmail = document.getElementById('receiver_email').value;
+
+    fetch('/friend/sendFriendRequest', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: JSON.stringify({
+            receiver_email: receiverEmail,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log(data.message);
+            // 성공 메시지를 출력하고 모달은 열어둡니다.
+            document.querySelector('.request-messege').textContent = data.message;
+            // 추가로 필요한 로직 수행...
+        } else {
+            console.error(data.message);
+            // 에러 메시지를 출력하고 모달은 열어둡니다.
+            document.querySelector('.request-messege').textContent = data.message;
+            // 추가로 필요한 로직 수행...
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
