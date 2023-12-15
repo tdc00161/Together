@@ -1,4 +1,6 @@
 // 변수 선언 ---------------------------------
+// body 전체
+const BODY = document.querySelector('body')
 // 모달 전체
 const TASK_MODAL = document.querySelectorAll('.task_modal')
 // 더보기모달
@@ -45,13 +47,13 @@ var clonePriority = PRIORITY_ONE[0].cloneNode(true)
 
 // 우선처리들 -------------------------
 // 미출력
-TASK_MODAL[0].style = 'display: none;'
-TASK_MODAL[1].style = 'display: none;'
-BEHIND_MODAL.style = 'display: none;'
-MORE_MODAL.style = 'display: none;'
-RESPONSIBLE_PERSON[0].style = 'display: none;'
-PRIORITY_ONE[0].style = 'display: none;'
-COMMENT_ONE[0].style = 'display: none;'
+// TASK_MODAL[0].style = 'display: none;'
+// TASK_MODAL[1].style = 'display: none;'
+// BEHIND_MODAL.style = 'display: none;'
+// MORE_MODAL.style = 'display: none;'
+// RESPONSIBLE_PERSON[0].style = 'display: none;'
+// PRIORITY_ONE[0].style = 'display: none;'
+// COMMENT_ONE[0].style = 'display: none;'
 // 기본 세팅
 STATUS_VALUE[statusValue].style = 'background-color: #1AE316';
 
@@ -64,21 +66,31 @@ function openTaskModal(a, b) {
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: block;'
 		TASK_MODAL[1].style = 'display: none;'
+		document.addEventListener('click', function (event) {
+			// 클릭된 엘리먼트가 특정 영역 내에 속하는지 확인
+			// if (!TASK_MODAL[1].contains(event.target)) {
+			// 	// 모달 외 클릭 시
+			// 	if (BEHIND_MODAL.contains(event.target)) {
+			// 		// 모달 && 어두운 배경 클릭 시
+			// 		closeTaskModal(1);
+			// 	}
+			// }
+			var modal = document.getElementById('m-myModal');
+			if (event.target == modal) {
+				modal.style.display = 'none';
+			}
+		});
 	} else {
 		BEHIND_MODAL.style = 'display: none;'
 		TASK_MODAL[0].style = 'display: none;'
 	}
 	// 글/업무 플래그
-	// if (b === 0) {
-	// 	BOARD_TYPE[b].classList.remove('d-none');
-	// 	BOARD_TYPE[b+1].classList.remove('d-none');
-	// } else {
-	// 	BOARD_TYPE[b].classList.add('d-none');
-	// 	BOARD_TYPE[b+1].classList.add('d-none');
-	// }
 	if (b === 1) {
 		BOARD_TYPE[a*2].classList.add('d-none');
 		BOARD_TYPE[(a*2)+1].classList.add('d-none');
+	} else {
+		BOARD_TYPE[a*2].classList.remove('d-none');
+		BOARD_TYPE[(a*2)+1].classList.remove('d-none');
 	}
 }
 function closeTaskModal(a) {

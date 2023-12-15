@@ -18,6 +18,7 @@
 	top: 6.3%;
 	right: 30%;
 	/* 내부 */
+	border-radius: 7px;
 	/* 크기 */
 	height: 87%;
 }

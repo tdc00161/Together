@@ -22,7 +22,7 @@
 				</div>
 				<div class="more" onclick="openMoreModal()">
 					<!-- 더보기 모달 -->
-					<div class="more_modal">
+					<div class="more_modal" style='display: none;'>
 						<div>
 							<div class="update_icon"></div>
 							<div>수정</div>
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 		<div class="comment">
-			<div class="comment_one">
+			<div class="comment_one" style='display: none;'>
 				<div class="user_profile"></div>
 				<div class="comment_content">
 					<div>
