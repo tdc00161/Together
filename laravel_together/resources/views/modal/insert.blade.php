@@ -27,7 +27,7 @@
 				</div>
 				<div class="responsible add_box">
 					<div class="responsible_icon"></div>
-					<div class="responsible_one">
+					<div class="responsible_one" style='display: none;'>
 						<div class="user_profile"></div>
 						<div>User</div>
 						<div class="cross_icon_b" onclick="removeResponsible(0)"></div>
@@ -55,7 +55,7 @@
 				</div>
 				<div class="priority add_box">
 					<div class="flag_icon"></div>
-					<div class="priority_one">
+					<div class="priority_one" style='display: none;'>
 						<div class="priority_icon"></div>
 						<div>보통</div>
 						<div class="cross_icon_b" onclick="removePriority(0)"></div>
