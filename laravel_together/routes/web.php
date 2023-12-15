@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\ProjectIndividualController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +34,13 @@ Route::get('/ganttchart', function () {
 Route::get('/ganttcharttest', function () {
     return view('ganttcharttest');
 });
-Route::get('/project-create', function () {
-    return view('/project-create');
-});
+
+// 프로젝트 생성
+Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
+Route::post('/create', [ProjectController::class,'tablepost'])->name('create.post');
 
 // 프로젝트 개인/팀 화면
-Route::get('/pjindividual', [ProjectIndividualController::class,'main'])->name('project_individual');
+Route::get('/individual', [ProjectController::class,'main'])->name('individual.get');
 Route::get('/project_team', function () {
     return view('/project_team');
 });

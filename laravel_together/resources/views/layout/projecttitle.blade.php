@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -9,13 +9,13 @@
 </head>
 <body>
     {{-- 상단바 --}}
-    <div class="first_menu">
+    {{-- <div class="first_menu">
         <div class="menu_title">
             <div class="project_color"></div>
             <div>
                 <input type="text" name="title" placeholder="프로젝트명">
                 {{-- <br> --}}
-                <textarea name="content" id="content" placeholder="설명"></textarea>
+                {{-- <textarea name="content" id="content" placeholder="설명"></textarea>
             </div>    
         </div>
         <div class="date_set">
@@ -33,8 +33,8 @@
     <div class="tabset">
         <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
         <button class="tabmenu" onclick="openTab(event,'/ganttchart')">간트차트</button>
-    </div>
+    </div> --}}
     {{-- <div class="hr"></div> --}}
-    <script src="/js/project.js"></script>
+    {{-- <script src="/js/project.js"></script>
 </body>
-</html>
+</html> --}}
