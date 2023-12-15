@@ -69,7 +69,6 @@ function openTaskModal(a) {
 		TASK_MODAL[0].style = 'display: none;'
 	}
 }
-
 function closeTaskModal(a) {
 	TASK_MODAL[a].style = 'display: none;'
 	if (a === 0) {

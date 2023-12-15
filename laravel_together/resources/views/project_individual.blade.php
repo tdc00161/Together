@@ -78,7 +78,7 @@
                 <div class="point_box">
                     <div class="point_box_title">
                         <div class="point_text">공지</div>
-                        <button class="point_button">+</button>
+                        <button class="point_button" onclick="openTaskModal(0)">+</button>
                     </div>
                     <table>
                         <colgroup>
@@ -93,7 +93,7 @@
                         </tr>
                         @foreach ($data as $item)
                             <tr id="box_ul">
-                                <td>{{$item->project_title}}</td>
+                                <td class="project_title" onclick="openTaskModal(1)">{{$item->project_title}}</td>
                                 <td>{{$item->project_content}}</td>
                                 <td>{{$item->user_id}}</td>
                             </tr>
@@ -115,7 +115,7 @@
                         </tr>
                         @foreach ($data as $item)
                             <tr class="box_ul">
-                                <td>{{$item->project_title}}</td>
+                                <td class="project_title" onclick="openTaskModal(1)">{{$item->project_title}}</td>
                                 <td>{{$item->project_content}}</td>
                                 <td>{{$item->user_id}}</td>
                             </tr>
@@ -142,7 +142,7 @@
                     @foreach ($data as $item)
                         <tr class="box_ul">
                             <td>{{$item->id}}</td>
-                            <td>{{$item->project_content}}</td>
+                            <td class="project_title" onclick="openTaskModal(1)">{{$item->project_content}}</td>
                             <td>{{$item->user_id}}</td>
                             <td>{{$item->user_id}}</td>
                         </tr>

@@ -15,24 +15,28 @@
 .insert_modal{
 	/* 배치 */
 	position: absolute;
-	top: 15%;
+	top: 6.3%;
 	right: 30%;
 	/* 내부 */
 	/* 크기 */
+	height: 87%;
 }
 .detail_modal{
 	/* 배치 */
 	position: absolute;
-	top: 15%;
+	top: 0;
 	right: 0;
 	/* 내부 */
 	/* 크기 */
+	height: 100%;
 }
 
 .behind_insert_modal {
 	/* 배치 */
 	position: absolute;
 	z-index: 1;
+	left: 0;
+    top: 0;
 	/* 내부 */
 	background-color: rgba(0, 0, 0, 0.5);
 	/* 크기 */
@@ -42,7 +46,7 @@
 
 /* ~ */
 
-body>.task_modal {
+.task_modal {
 	/* 배치 */
 	position: absolute;
 	z-index: 2;
@@ -53,10 +57,10 @@ body>.task_modal {
 	align-items: center;
 	/* 크기 */
 	width: 462px;
-	height: 645px;
+	/* height: 645px; */
 }
 
-body>.task_modal>div {
+ .task_modal>div {
 	/* 배치 */
 	/* 내부 */
 	/* 크기 */
@@ -64,7 +68,7 @@ body>.task_modal>div {
 	height: 10%;
 }
 
-body>.task_modal>div:nth-child(1) {
+.task_modal>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
 	padding: 20px;
@@ -73,7 +77,7 @@ body>.task_modal>div:nth-child(1) {
 	/* 크기 */
 }
 
-body>.task_modal>div:nth-child(2) {
+.task_modal>div:nth-child(2) {
 	/* 배치 */
 
 	/* 내부 */
@@ -82,7 +86,7 @@ body>.task_modal>div:nth-child(2) {
 	height: 80%;
 }
 
-body>.task_modal>div:nth-child(2):not(.noline) {
+.task_modal>div:nth-child(2):not(.noline) {
 	/* 배치 */
 	/* 내부 */
 	border-bottom: 1px solid rgb(163, 163, 163);
@@ -91,16 +95,16 @@ body>.task_modal>div:nth-child(2):not(.noline) {
 }
 
 /* 스크롤 */
-body>.task_modal>div:nth-child(2)::-webkit-scrollbar {
+.task_modal>div:nth-child(2)::-webkit-scrollbar {
 	width: 10px;
 }
 
-body>.task_modal>div:nth-child(2)::-webkit-scrollbar-thumb {
+.task_modal>div:nth-child(2)::-webkit-scrollbar-thumb {
 	background-color: #7D7D7D;
 	border-radius: 27px;
 }
 
-body>.task_modal>div:nth-child(2)::-webkit-scrollbar-track {
+.task_modal>div:nth-child(2)::-webkit-scrollbar-track {
 	background-color: transparent;
 }
 
@@ -117,7 +121,7 @@ body>.task_modal>div:nth-child(2)::-webkit-scrollbar-track {
 	background-color: transparent;
 }
 
-body>.task_modal>div:nth-child(2)>.content:not(.noline) {
+.task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	/* 내부 */
 	border-bottom: 1px solid rgb(163, 163, 163);
