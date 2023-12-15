@@ -82,39 +82,42 @@
     text-align: center;
 }
 
-.tabmenu.active {
+.gantt-tabmenu.active {
     width: 100%;
     color: white;
     font-weight: 800;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--inactive-color);
     display: inline-block;
     background-color: transparent;
     /* border-bottom: 2pax solid #6b6b6b; */
 }
 
-.hr {
+/* .hr {
     width: 100%;
     height: 2px;
     border: 1px solid white;
     margin: 5px 0;
+} */
+.gantt-tabmenu {
+	color: #fff;
 }
-
 
 
 
 /* 간트차트 전체 */
 .gantt-content-wrap {
-	background-color: #fff;
-	color: #000;
-	height: 656px;
+	background-color: var(--theme-bg-color);
+	/* background-color: #fff; */
+	/* color: #000; */
+	height: 664px;
 	margin: -40px;
 	position: relative;
-	top: 40px;
+	top: 42px;
 }
 
 /* 검색, 드롭박스, 업무추가버튼 영역 */
 .gantt-btn-wrap {
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid var(--inactive-color);
 	padding: 3px;
 	display: flex;
     justify-content: space-between;
@@ -191,9 +194,12 @@
 	width: -webkit-fill-available;
 }
 
-.gantt-items li input {
+.gantt-items li input{
 	margin: 0px 7px;
 	accent-color: #9656FF;
+}
+.gantt-item {
+	color: #000;
 }
 .gantt-rank {
 	width: 15px;
@@ -219,21 +225,21 @@
 .gantt-task-wrap {
 	width: 45%;
 	height: 100%;
-	border-right: 1px solid #000;
+	border-right: 1px solid var(--inactive-color);
 	text-align: center;
 }
 
 .gantt-task-header {
 	display: flex;
 	justify-content: space-around;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid var(--inactive-color);
 	text-align: center;
 	height: 30px;
 }
 
 .gantt-task-header div {
 	width: 20%;
-	border-right: 1px solid #000;
+	border-right: 1px solid var(--inactive-color);
 	padding: 3px 0px;
 	height: 30px;
 }
@@ -249,17 +255,21 @@
 	border: none;
 	width: 100%;
 	text-align: center;
+	background: none;
 }
 
 .gantt-task div {
 	width: 20%;
-	border-right: 1px solid #000;
-	border-bottom: 1px solid #000;
+	border-right: 1px solid var(--inactive-color);
+	border-bottom: 1px solid var(--inactive-color);
+	padding: 10px 0px;
+	height: 43.5px;
 }
 
-.gantt-task div {
+/* .gantt-task div {
 	padding: 10px 0px;
-}
+	height: 43.5px;
+} */
 
 /* .gantt-task div input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
@@ -343,7 +353,7 @@
     /* justify-content: center; */
     flex-direction: row;
 	height: 43.5px;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid var(--inactive-color);
 	padding: 6px 0px;
 }
 .gantt-chart-body div .bk-row {
@@ -362,8 +372,8 @@
 
 .gantt-header-scroll .date {
 	padding: 4px 15px;
-	border-bottom: 1px solid #000;
-	border-right: 1px solid #000;
+	border-bottom: 1px solid var(--inactive-color);
+	border-right: 1px solid var(--inactive-color);
 	width: 85px;
 }
 /* .task {

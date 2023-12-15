@@ -26,10 +26,10 @@
 		</div>
 	</div>
 	<div class="tabset">
-		<button class="tabmenu active" onclick="openTab(event,field)">피드</button>
-		<button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button>
+		<a href="{{ route('individual.get') }}" class="tabmenu">피드</a>
+		<button class="gantt-tabmenu active" onclick="openTab(event,gantt)">간트차트</button>
 	</div>
-	<div class="hr"></div>
+	{{-- <div class="hr"></div> --}}
 	{{-- 피드공통 헤더끝 --}}
 	<div class="gantt-content-wrap">
 		<div class="gantt-btn-wrap">
@@ -39,50 +39,50 @@
 				<div id="list1" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">상태</span>
 					<ul class="gantt-items">
-						<li><input type="checkbox" checked>시작전</li>
-						<li><input type="checkbox" checked>진행중</li>
-						<li><input type="checkbox" checked>피드백</li>
-						<li><input type="checkbox" checked>완료</li>
+						<li><input type="checkbox" checked><span class="gantt-item">시작전</span></li>
+						<li><input type="checkbox" checked><span class="gantt-item">진행중</span></li>
+						<li><input type="checkbox" checked><span class="gantt-item">피드백</span></li>
+						<li><input type="checkbox" checked><span class="gantt-item">완료</span></li>
 					</ul>
 				</div>	
 				<div id="list2" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">우선순위</span>
 					<ul class="gantt-items">
-						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-bisang.png" alt="">긴급</li>
-						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-up.png" alt="">높음</li>
-						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-line.png" alt="">보통</li>
-						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-down.png" alt="">낮음</li>
-						<li><input type="checkbox" >없음</li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-bisang.png" alt=""><span class="gantt-item">긴급</span></li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-up.png" alt=""><span class="gantt-item">높음</span></li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-line.png" alt=""><span class="gantt-item">보통</span></li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-down.png" alt=""><span class="gantt-item">낮음</span></li>
+						<li><input type="checkbox" ><span class="gantt-item">없음</span></li>
 					</ul>
 				</div>
 				<div id="list3" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">담당자</span>
 					<ul class="gantt-items">
-						<li><input type="checkbox" >김관호</li>
-						<li><input type="checkbox" >김민주</li>
-						<li><input type="checkbox" >양수진</li>
-						<li><input type="checkbox" >양주은</li>
+						<li><input type="checkbox" ><span class="gantt-item">김관호</span></li>
+						<li><input type="checkbox" ><span class="gantt-item">김민주</span></li>
+						<li><input type="checkbox" ><span class="gantt-item">양수진</span></li>
+						<li><input type="checkbox" ><span class="gantt-item">양주은</span></li>
 					</ul>
 				</div>
 				<div id="list4" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">시작일</span>
 					<ul class="gantt-items">
-						<li><input name="start" type="radio" checked>전체</li>
-						<li><input name="start" type="radio" >오늘</li>
-						<li><input name="start" type="radio" >이번주</li>
-						<li><input name="start" type="radio" >이번달</li>
+						<li><input name="start" type="radio" checked><span class="gantt-item">전체</span></li>
+						<li><input name="start" type="radio" ><span class="gantt-item">오늘</span></li>
+						<li><input name="start" type="radio" ><span class="gantt-item">이번주</span></li>
+						<li><input name="start" type="radio" ><span class="gantt-item">이번달</span></li>
 					</ul>
 				</div>
 				<div id="list5" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">마감일</span>
 					<ul class="gantt-items">
-						<li><input name="end" type="radio" checked>전체</li>
-						<li><input name="end" type="radio" >오늘</li>
-						<li><input name="end" type="radio" >이번주</li>
-						<li><input name="end" type="radio" >이번달</li>
+						<li><input name="end" type="radio" checked><span class="gantt-item">전체</span></li>
+						<li><input name="end" type="radio" ><span class="gantt-item">오늘</span></li>
+						<li><input name="end" type="radio" ><span class="gantt-item">이번주</span></li>
+						<li><input name="end" type="radio" ><span class="gantt-item">이번달</span></li>
 					</ul>
 				</div>
-				<button class="gantt-add-btn" onclick="">업무추가</button>
+				<button class="gantt-add-btn">업무추가</button>
 			</div>
 		</div>
 		<section class="gantt-all-task">
@@ -97,7 +97,7 @@
 				<div class="gantt-task ganttTask">
 					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
 					<div class="gantt-dropdown" id="gantt-teamDropdown">
-						<span id="gantt-currentTeam" onclick="toggleDropdown()">김민주</span>
+						<span id="gantt-currentTeam" onclick="toggleDropdown(this)">김민주</span>
 						<ul class="gantt-dropdown-content" id="gantt-teamOptions">
 							<li><a href="#" onclick="changeName('김관호')">김관호</a></li>
 							<li><a href="#" onclick="changeName('김민주')">김민주</a></li>
@@ -191,12 +191,7 @@
 					</div>
 				</div>
 			</div>
-			
-			<div>
-
-				</div>
-			</section>	
-		</div>
+		</section>	
 	</div>
 
 	<script src="/js/ganttchart.js"></script>
