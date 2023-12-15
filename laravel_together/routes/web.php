@@ -28,11 +28,10 @@ Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.log
 
 // 대시보드
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
+
+// 간트차트
 Route::get('/ganttchart', function () {
     return view('ganttchart');
-});
-Route::get('/ganttcharttest', function () {
-    return view('ganttcharttest');
 });
 
 // 프로젝트 생성

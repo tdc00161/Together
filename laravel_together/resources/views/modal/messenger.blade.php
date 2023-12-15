@@ -25,7 +25,7 @@
     {{-- 친구 검색 bar --}}
     <div class="friend-searchbar-div">
     <div class="friend-searchbar">
-        <input type="search" placeholder="친구 검색"> 
+        <input type="search" class="f-search" placeholder="친구 검색"> 
     <button class="search-icon"><img src="/img/icon-search.png" alt=""></button>
     </div>
     {{-- 친구 추가 버튼 --}}

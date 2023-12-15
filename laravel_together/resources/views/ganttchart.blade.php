@@ -26,10 +26,10 @@
 		</div>
 	</div>
 	<div class="tabset">
-		<button class="tabmenu active" onclick="openTab(event,field)">피드</button>
-		<button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button>
+		<button class="tabmenu" onclick="openTab(event,field)">피드</button>
+		<button class="gantt-tabmenu active" onclick="openTab(event,gantt)">간트차트</button>
 	</div>
-	<div class="hr"></div>
+	{{-- <div class="hr"></div> --}}
 	{{-- 피드공통 헤더끝 --}}
 	<div class="gantt-content-wrap">
 		<div class="gantt-btn-wrap">

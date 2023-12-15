@@ -135,7 +135,7 @@ button {
     margin-top: 3px;
 }
     
-input[type="search"] {
+.f-search {
     width: 83%;
     height: 35px;
    border: none;
