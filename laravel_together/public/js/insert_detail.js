@@ -59,7 +59,7 @@ STATUS_VALUE[statusValue].style = 'background-color: #1AE316';
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
-function openTaskModal(a) {
+function openTaskModal(a, b) {
 	TASK_MODAL[a].style = 'display: block;'
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: block;'
@@ -67,6 +67,18 @@ function openTaskModal(a) {
 	} else {
 		BEHIND_MODAL.style = 'display: none;'
 		TASK_MODAL[0].style = 'display: none;'
+	}
+	// 글/업무 플래그
+	// if (b === 0) {
+	// 	BOARD_TYPE[b].classList.remove('d-none');
+	// 	BOARD_TYPE[b+1].classList.remove('d-none');
+	// } else {
+	// 	BOARD_TYPE[b].classList.add('d-none');
+	// 	BOARD_TYPE[b+1].classList.add('d-none');
+	// }
+	if (b === 1) {
+		BOARD_TYPE[a*2].classList.add('d-none');
+		BOARD_TYPE[(a*2)+1].classList.add('d-none');
 	}
 }
 function closeTaskModal(a) {
@@ -94,14 +106,13 @@ function closeMoreModal() {
 	MORE_MODAL.style = 'display: none;'
 }
 
-// 글/업무 스위치
-function changTaskType() {
-	console.log(BOARD_TYPE);
-	BOARD_TYPE[0].classList.toggle('d-none');
-	BOARD_TYPE[1].classList.toggle('d-none');
-	BOARD_TYPE[2].classList.toggle('d-none');
-	BOARD_TYPE[3].classList.toggle('d-none');
-}
+// 글/업무 스위치 => 모달 여는 동시에 컨트롤 231215
+// function changTaskType() {
+// 	BOARD_TYPE[0].classList.toggle('d-none');
+// 	BOARD_TYPE[1].classList.toggle('d-none');
+// 	BOARD_TYPE[2].classList.toggle('d-none');
+// 	BOARD_TYPE[3].classList.toggle('d-none');
+// }
 
 // 업무상태 선택
 function changeStatus(a) {
@@ -146,15 +157,15 @@ function addComment() {
 	refresh_clone_comment.removeAttribute('style')
 	// 입력한 댓글 씌우기
 	DEFAULT_COMMENT_CONTENT.textContent = INPUT_COMMENT_CONTENT.value
-	
+
 	// 댓글 달기
 	refresh_comment_parent.append(refresh_clone_comment)
-	
+
 	// 삭제버튼 값 넣기
 	const RE_COMMENT_ONE = document.querySelectorAll('.comment_one')
 	const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
 	LAST_REMOVE_BTN.addEventListener('click', () => {
-		return RE_COMMENT_ONE[RE_COMMENT_ONE.length-1].remove();
+		return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
 	})
 	// 입력창 초기화
 	INPUT_COMMENT_CONTENT.value = ''

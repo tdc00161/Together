@@ -1,4 +1,4 @@
-<div class="task_modal detail_modal">
+<div class="task_modal detail_modal" style='display: none;'>
 	<div class="header">
 		<div>
 			<div class="project_color"></div>
