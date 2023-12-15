@@ -79,4 +79,4 @@
 		<div class="submit">등록</div>
 	</div>
 </div>
-<div class="behind_insert_modal"></div>
+<div class="behind_insert_modal" style='display: none;'></div>
