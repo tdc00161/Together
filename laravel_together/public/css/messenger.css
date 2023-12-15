@@ -267,5 +267,37 @@ input[type="search"] {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 10px;
+}
+.fclose-btn {
+    float: right;
+}
+.friend-Modal-header {
+    padding: 10px;
+    width: 100%;
+    height: 20%;
+}
+.f-r-modal-title {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.friend-request-input-div {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 
+}
+.friend-request-input {
+    display: block;
+    background-color: var(--scrollbar-bg);
+    border: none;
+    width: 80%;
+    height: 35px;
+    margin: 0 10px;
+    border-radius: 5px;
 }
