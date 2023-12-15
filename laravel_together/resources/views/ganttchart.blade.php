@@ -35,7 +35,7 @@
 		<div class="gantt-btn-wrap">
 			<input class="gantt-search" type="search" placeholder="   업무명, 업무번호 검색">
 			<div>
-				<img src="/img/filter.png" alt="filter">
+				<img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
 				<div id="list1" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">상태</span>
 					<ul class="gantt-items">
@@ -48,10 +48,10 @@
 				<div id="list2" class="gantt-dropdown-check-list" tabindex="100">
 					<span class="gantt-span">우선순위</span>
 					<ul class="gantt-items">
-						<li><input type="checkbox" >긴급</li>
-						<li><input type="checkbox" >높음</li>
-						<li><input type="checkbox" >보통</li>
-						<li><input type="checkbox" >낮음</li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-bisang.png" alt="">긴급</li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-up.png" alt="">높음</li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-line.png" alt="">보통</li>
+						<li><input type="checkbox" ><img class="gantt-rank" src="/img/gantt-down.png" alt="">낮음</li>
 						<li><input type="checkbox" >없음</li>
 					</ul>
 				</div>
@@ -94,8 +94,8 @@
 					<div>시작일</div>
 					<div>마감일</div>
 				</div>
-				<div class="gantt-task" id="ganttTask">
-					<div id="gantt-editable-div" class="editable">업무명<img src="/img/gantt-plus.png" alt=""></div>
+				<div class="gantt-task ganttTask">
+					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
 					<div class="gantt-dropdown" id="gantt-teamDropdown">
 						<span id="gantt-currentTeam" onclick="toggleDropdown()">김민주</span>
 						<ul class="gantt-dropdown-content" id="gantt-teamOptions">
@@ -106,22 +106,31 @@
 						</ul>
 					</div>
 					<div>시작전</div>
-					<div><input type="date" name="sat" id="sat-row1" onchange="test('1');"></div>
-					<div><input type="date" name="eat" id="eat-row1" onchange="test('1');"></div>
+					<div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
+					<div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
 				</div>
-				<div class="gantt-task">
-					<div id="gantt-editable-div" class="editable">업무명</div>
+				<div class="gantt-task ganttTask">
+					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
+					<div class="gantt-dropdown" id="gantt-teamDropdown">
+						<span>김민주</span>
+					</div>
+					<div>시작전</div>
+					<div><input type="date" name="start" id="start-row2" onchange="test('2');"></div>
+					<div><input type="date" name="end" id="end-row2" onchange="test('2');"></div>
+				</div>
+				<div class="gantt-task ganttTask">
+					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
 					<div>김민주</div>
 					<div>시작전</div>
-					<div><input type="date" name="sat" id="sat-row2" onchange="test('2');"></div>
-					<div><input type="date" name="eat" id="eat-row2" onchange="test('2');"></div>
+					<div><input type="date" name="start" id="start-row3" onchange="test('3');"></div>
+					<div><input type="date" name="end" id="end-row3" onchange="test('3');"></div>
 				</div>
-				<div class="gantt-task">
-					<div id="gantt-editable-div" class="editable">업무명</div>
+				<div class="gantt-task ganttTask">
+					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
 					<div>김민주</div>
 					<div>시작전</div>
-					<div><input type="date" name="sat" id="sat-row3" onchange="test('3');"></div>
-					<div><input type="date" name="eat" id="eat-row3" onchange="test('3');"></div>
+					<div><input type="date" name="start" id="start-row4" onchange="test('4');"></div>
+					<div><input type="date" name="end" id="end-row4" onchange="test('4');"></div>
 				</div>
 			</div>
 			<div class="gantt-chart-wrap">
@@ -136,43 +145,49 @@
 							@php
 								$startDate = new DateTime('2023-12-01');
 								$endDate = new DateTime('2023-12-31');
-							@endphp
 
-							@while ($startDate <= $endDate)
-								<div id="row1-{{ $startDate->format('Ymd') }}"></div>
-								@php
-									$startDate->modify('+1 day');
-								@endphp
-							@endwhile
+								for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+									echo "<div id='row1-" . $date->format('Ymd') . "'></div>";
+								}
+							@endphp
+						</div>
+						{{-- <tr>
+							<td id="row1-20231201"></td>
+							<td id="row1-20231202"></td>
+							<td id="row1-20231203"></td>
+							<td id="row1-20231204"></td>
+							<td id="row1-20231205"></td>
+						</tr> --}}
+						<div class="gantt-chart">
+							@php
+								$startDate = new DateTime('2023-12-01');
+								$endDate = new DateTime('2023-12-31');
+
+								for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+									echo "<div id='row2-" . $date->format('Ymd') . "'></div>";
+								}
+							@endphp
 						</div>
 						<div class="gantt-chart">
 							@php
 								$startDate = new DateTime('2023-12-01');
 								$endDate = new DateTime('2023-12-31');
-							@endphp
 
-							@while ($startDate <= $endDate)
-								<div id="row2-{{ $startDate->format('Ymd') }}"></div>
-								@php
-									$startDate->modify('+1 day');
-								@endphp
-							@endwhile
+								for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+									echo "<div id='row3-" . $date->format('Ymd') . "'></div>";
+								}
+							@endphp
 						</div>
 						<div class="gantt-chart">
 							@php
 								$startDate = new DateTime('2023-12-01');
 								$endDate = new DateTime('2023-12-31');
-							@endphp
 
-							@while ($startDate <= $endDate)
-								<div id="row3-{{ $startDate->format('Ymd') }}"></div>
-								@php
-									$startDate->modify('+1 day');
-								@endphp
-							@endwhile
+								for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+									echo "<div id='row4-" . $date->format('Ymd') . "'></div>";
+								}
+							@endphp
 						</div>
-						{{-- 간트 차트 본문 부분 --}}
-						
 					</div>
 				</div>
 			</div>
@@ -183,4 +198,6 @@
 			</section>	
 		</div>
 	</div>
+
+	<script src="/js/ganttchart.js"></script>
 @endsection

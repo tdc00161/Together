@@ -61,10 +61,14 @@ window.onclick = function (event) {
 
    // 모달 열기 함수
    function openModal() {
-    document.getElementById('myModal').style.display = 'block';
+    document.getElementById('friend-Modal').style.display = 'block';
 }
 
 // 모달 닫기 함수
-function closeModal() {
+function mcloseModal() {
     document.getElementById('m-myModal').style.display = 'none';
+}
+// 모달 닫기 함수
+function fcloseModal() {
+    document.getElementById('friend-Modal').style.display = 'none';
 }

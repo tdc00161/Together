@@ -8,9 +8,13 @@
   {{-- 부트스트랩 --}}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/common.css">
- 
+  {{-- 작성/상세 모달 css --}}
+  <link rel="stylesheet" href="/css/insert_detail.css">
+  
   @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
   <title>@yield('title', 'Laravel Board')</title>
+  {{-- 작성/상세 모달 js --}}
+  <script src="/js/insert_detail.js" defer></script>
 </head>
 <body>
   {{-- 다크모드 --}}
@@ -156,6 +160,9 @@
       <div class="content-wrapper">
         @yield('main')
         @extends('modal.messenger')
+        {{-- 모달 불러오기 --}}
+        @include('modal.insert')
+        @include('modal.detail')
     {{-- <div class="overlay-app">
       
     </div> --}}
@@ -167,6 +174,5 @@
    <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
    {{-- js --}}
    <script src="/js/common.js"></script>
-   <script src="/js/ganttchart.js"></script>
 </body>
 </html>
