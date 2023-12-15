@@ -55,8 +55,8 @@ a {
  --scrollbar-bg: rgb(1 2 3 / 40%);
  --m-request-bg: rgba(48, 48, 48, 0.144);
  --m-requestcancel-btn: rgba(0, 0, 0, 0.411);
- --m-btn: rgba(116, 116, 116, 0.411);
- --friendmodal-bg: rgba(34, 34, 34, 0.644);
+ --m-btn: rgba(116, 116, 116, 0.144);
+ --friendmodal-bg: rgba(19, 19, 19, 0.644);
 }
 
 .light-mode {

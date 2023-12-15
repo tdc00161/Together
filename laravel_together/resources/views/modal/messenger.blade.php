@@ -68,10 +68,19 @@
 
 {{-- 친구추가 모달 --}}
 <div id="friend-Modal">
+    <form action="" method="post">
+    @csrf
     <div class="friend-Modal-content">
-        <button onclick="fcloseModal()">X</button>
-        <div><input type="text" placeholder="email로 검색"></div>
+        <div class="friend-Modal-header"><span class="f-r-modal-title">유저 이메일로 추가</span><button type="button" class="fclose-btn" onclick="fcloseModal()">X</button></div>
+        <div class="friend-request-input-div">
+            <input class="friend-request-input" type="email" name="receiver_email" autocomplete="off" placeholder="email로 추가">
+            <button type="submit" class="add-button">+</button>
+            <p>@error('receiver_email')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror</p>
+        </div>
     </div>
+    </form>
 </div>
 
 <script src="/js/messenger.js"></script>
