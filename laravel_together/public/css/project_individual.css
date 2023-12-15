@@ -282,3 +282,8 @@ table {
 .col4 {
     width: 20%;
 }
+
+/* 클릭 가능 */
+.project_title {
+    cursor: pointer;
+}
