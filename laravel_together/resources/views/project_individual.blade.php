@@ -13,9 +13,9 @@
         <div class="menu_title">
             <div class="project_color"></div>
             <div>
-                <input type="text" name="title" placeholder="프로젝트명">
+                <input class="title" type="text" name="title" placeholder="프로젝트명">{{$result->project_title}}
                 {{-- <br> --}}
-                <textarea name="content" id="content" placeholder="설명"></textarea>
+                <textarea class="content" name="content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
             </div>    
         </div>    
         <div class="date_set">

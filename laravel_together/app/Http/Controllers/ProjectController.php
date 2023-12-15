@@ -3,27 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Models\Project;
-use App\Http\Models\ProjectUser;
-use App\Http\Models\Task;
-use App\Http\Models\User;
-use App\Http\Models\BaseData;
-use App\Http\Models\Friendlist;
+use App\Models\Project;
+use App\Models\ProjectUser;
+use App\Models\Task;
+use App\Models\User;
+use App\Models\BaseData;
+use App\Models\Friendlist;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ProjectController extends Controller
 {
     public function tableget() {
-
+        // dd($user_id);
         return view('project_create');
     }
 
-    public function tablepost(Request $request) {
-
-        // var_dump($request);
+    public function mainstore(Request $request) {
+        $user_id = Session::get('user')->only('id');
+        $color_code = 
+        // dd($user_id);
         $data= $request
-                ->only('user_id','project_title', 'project_content', 'flg', 'start_date', 'end_date');
-        
+                ->only('project_title', 'project_content', 'flg', 'start_date', 'end_date');
+        $data['user_id'] = $user_id['id'];
+        // dd($data);
+        $result = Project::create($data);
+        // dd($result);
         // DB::table('project')->insert([
         //     'user_id' => '',
         //     'project_title' => '',
@@ -33,17 +38,28 @@ class ProjectController extends Controller
         //     'end_date' =>'',
         // ]);
 
-        return redirect()->route('individual.get');
+        return redirect()->route('individual.get')->with('id',$user_id)->with('data',$data);
 
     }
 
-    public function main($id) {
+    // public function mainstore() {
 
-        $data = DB::table('Projects')->get();
-        // dd($data);
+    //     $data = DB::table('Projects')->get();
+    //     // dd($data);
 
-        // $result = 
+    //     // $result = 
 
-        return view('project_individual')->with('data',$data);
+    //     return view('project_individual')->with('data',$data);
+    // }
+
+
+    public function mainshow($id) {
+        $data = DB::table('projects')->get();
+        dd($data);
+
+        $result = Project::find($id);
+        dd($id);
+
+        return view('individual.get')->with('data',$data)->with('id',$result);
     }
 }
