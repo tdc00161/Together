@@ -37,7 +37,7 @@ class ProjectController extends Controller
 
     }
 
-    public function main($id) {
+    public function main() {
 
         $data = DB::table('Projects')->get();
         // dd($data);
