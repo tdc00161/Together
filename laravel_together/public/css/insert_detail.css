@@ -121,6 +121,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	/* 내부 */
 	border-bottom: 1px solid rgb(163, 163, 163);
+	padding-top: 10px;
 	/* 크기 */
 }
 
@@ -128,7 +129,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	/* 내부 */
 	display: flex;
-	padding: 10px 25px;
+	padding: 0 25px 10px;
 	font-size: small;
 	color: rgb(255, 255, 255, 0.7);
 	/* 크기 */
@@ -288,7 +289,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 
 .task_modal .content>.header {
 	/* 배치 */
-	padding: 0 20px;
+	padding: 0 28px;
 	/* 내부 */
 	display: flex;
 	flex-direction: row;
@@ -318,7 +319,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 .task_modal .content>.header>div:nth-child(1)>div:nth-child(3) {
 	/* 배치 */
 	margin-right: 10px;
-	margin-top: 10px;
+	margin-top: 7px;
 	/* 내부 */
 	font-size: 14px;
 	font-weight: lighter;
@@ -354,7 +355,7 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 .task_modal .content>.property {
 	/* 배치 */
 	/* 내부 */
-	padding: 15px 20px 0;
+	padding: 15px 30px 0;
 	/* 크기 */
 }
 
@@ -861,11 +862,13 @@ body>.task_modal>div:nth-child(2)>.content:not(.noline) {
 .task_modal .add_box_mgin,
 .task_modal .delete_comment,
 .task_modal .more_modal>div>div,
+.task_modal .start_date,
+.task_modal .end_date,
 .task_modal .submit {
 	cursor: pointer;
 }
 
 /* d-none 처리 */
-.task_modal .d-none {
+.d-none {
 	display: none;
 }

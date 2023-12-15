@@ -19,9 +19,15 @@ const RESPONSIBLE_ADD_BTN = document.querySelectorAll('.add_responsible')
 const PRIORITY_ONE = document.querySelectorAll('.priority_one')
 // 우선순위 아이콘
 // css img 입힐 때 중복이라서 flag_icon이라 적음. 담당자와 달라서 헷갈림 주의
-const PRIORITY_ICON = document.querySelectorAll('.flag_icon') 
+const PRIORITY_ICON = document.querySelectorAll('.flag_icon')
 // 담당자 추가/변경 버튼
 const PRIORITY_ADD_BTN = document.querySelectorAll('.add_priority')
+// 댓글 부모
+const COMMENT_PARENT = document.querySelector('.comment')
+// 댓글 하나
+const COMMENT_ONE = document.querySelectorAll('.comment_one')
+// 작성 댓글 내역
+const INPUT_COMMENT_CONTENT = document.querySelector('#comment_input')
 // 모달 배경 블러처리
 const BEHIND_MODAL = document.querySelector('.behind_insert_modal');
 
@@ -32,6 +38,7 @@ var statusValue = 0
 var cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true)
 // 우선순위 추가용 클론
 var clonePriority = PRIORITY_ONE[0].cloneNode(true)
+
 
 // console.log(STATUS_VALUE)
 
@@ -44,6 +51,7 @@ BEHIND_MODAL.style = 'display: none;'
 MORE_MODAL.style = 'display: none;'
 RESPONSIBLE_PERSON[0].style = 'display: none;'
 PRIORITY_ONE[0].style = 'display: none;'
+COMMENT_ONE[0].style = 'display: none;'
 // 기본 세팅
 STATUS_VALUE[statusValue].style = 'background-color: #1AE316';
 
@@ -88,15 +96,18 @@ function closeMoreModal() {
 }
 
 // 글/업무 스위치
-function changTaskNotice() {
+function changTaskType() {
+	console.log(BOARD_TYPE);
 	BOARD_TYPE[0].classList.toggle('d-none');
 	BOARD_TYPE[1].classList.toggle('d-none');
+	BOARD_TYPE[2].classList.toggle('d-none');
+	BOARD_TYPE[3].classList.toggle('d-none');
 }
 
 // 업무상태 선택
-function changeStatus(i) {
+function changeStatus(a) {
 	STATUS_VALUE[statusValue].style = 'background-color: #C7C7C7';
-	statusValue = i;
+	statusValue = a;
 	STATUS_VALUE[statusValue].style = 'background-color: #1AE316';
 }
 
@@ -117,4 +128,35 @@ function addPriority(a) {
 function removePriority(a) {
 	PRIORITY_ICON[a].nextSibling.remove()
 	PRIORITY_ADD_BTN[a].innerHTML = '우선순위추가'
+}
+
+// 댓글 삭제
+function removeComment(a) {
+	COMMENT_ONE[a].remove()
+}
+
+// 댓글 작성
+function addComment() {
+	// 댓글 추가용 클론 (갱신)
+	let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
+	// 댓글 부모 (갱신)
+	let refresh_comment_parent = document.querySelector('.comment')
+	// 클론한 댓글 내용 선택
+	const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
+	// 클론한 댓글 투명화 지우기
+	refresh_clone_comment.removeAttribute('style')
+	// 입력한 댓글 씌우기
+	DEFAULT_COMMENT_CONTENT.textContent = INPUT_COMMENT_CONTENT.value
+	
+	// 댓글 달기
+	refresh_comment_parent.append(refresh_clone_comment)
+	
+	// 삭제버튼 값 넣기
+	const RE_COMMENT_ONE = document.querySelectorAll('.comment_one')
+	const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+	LAST_REMOVE_BTN.addEventListener('click', () => {
+		return RE_COMMENT_ONE[RE_COMMENT_ONE.length-1].remove();
+	})
+	// 입력창 초기화
+	INPUT_COMMENT_CONTENT.value = ''
 }
