@@ -167,6 +167,5 @@
    <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
    {{-- js --}}
    <script src="/js/common.js"></script>
-   <script src="/js/ganttchart.js"></script>
 </body>
 </html>
