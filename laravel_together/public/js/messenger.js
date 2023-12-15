@@ -7,28 +7,28 @@
      var tabs = document.getElementsByClassName('tab-content');
      for (var i = 0; i < tabs.length; i++) {
          tabs[i].style.display = 'none';
-     }
-
-     // 선택한 탭 보이기
-     document.getElementById(tabId).style.display = 'block';
-
-     // 활성화된 탭 스타일 적용
-     var activeTabs = document.getElementsByClassName('tab');
-     for (var i = 0; i < activeTabs.length; i++) {
-         activeTabs[i].classList.remove('tab-active');
-     }
-     event.currentTarget.classList.add('tab-active');
- }
-
-  // 모달 열기/닫기 함수
-  function toggleModal() {
-    var modal = document.getElementById('m-myModal');
-    var defaulttab = document.getElementById('defaulttab');
+        }
+        
+        // 선택한 탭 보이기
+        document.getElementById(tabId).style.display = 'block';
+        
+        // 활성화된 탭 스타일 적용
+        var activeTabs = document.getElementsByClassName('tab');
+        for (var i = 0; i < activeTabs.length; i++) {
+            activeTabs[i].classList.remove('tab-active');
+        }
+        event.currentTarget.classList.add('tab-active');
+    }
+    
+    // 모달 열기/닫기 함수
+    function toggleModal() {
+        var modal = document.getElementById('m-myModal');
+        
      // 저장된 액티브 상태를 가져옴
      const lastActiveElement = sessionStorage.getItem('lastActiveElement');
 
      //모달이 열릴 때 모든 탭의 active 클래스를 제거
-        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
+        // document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
 
     if (modal.style.display === 'none' || modal.style.display === '') {
         
@@ -37,9 +37,10 @@
          // 모달이 열릴 때 기본으로 활성화할 요소에 active 클래스 추가
          if (lastActiveElement) {
             document.getElementById(lastActiveElement).classList.add('tab-active');
-        } else {
-            defaulttab.classList.add('tab-active');
-        }
+        } 
+        // else {
+        //     defaulttab.classList.add('tab-active');
+        // }
     } else {
         // 현재 액티브 상태를 저장
         const activeElement = document.querySelector('.tab-active');
@@ -60,10 +61,14 @@ window.onclick = function (event) {
 
    // 모달 열기 함수
    function openModal() {
-    document.getElementById('myModal').style.display = 'block';
+    document.getElementById('friend-Modal').style.display = 'block';
 }
 
 // 모달 닫기 함수
-function closeModal() {
+function mcloseModal() {
     document.getElementById('m-myModal').style.display = 'none';
+}
+// 모달 닫기 함수
+function fcloseModal() {
+    document.getElementById('friend-Modal').style.display = 'none';
 }

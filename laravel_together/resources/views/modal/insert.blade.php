@@ -1,4 +1,4 @@
-<div class="task_modal insert_modal">
+<div class="task_modal insert_modal" style='display: none;'>
 	<div class="header">
 		<div>
 			<div class="project_color"></div>
@@ -10,9 +10,11 @@
 	</div>
 	<div class="noline">
 		<div class="content noline">
-			<div class="overheader type_task">
-				<div class="task_name">> 업무1 (testTask1)</div>
-				<div class="task_name">> 업무2 (testTask2)</div>
+			<div class="type_task">
+				<div class="overheader">
+					<div class="task_name">> 업무1 (testTask1)</div>
+					<div class="task_name">> 업무2 (testTask2)</div>
+				</div>
 			</div>
 			<input type="text" class="insert_title" placeholder="제목을 입력하세요.">
 			<div class="property type_task">
@@ -77,4 +79,4 @@
 		<div class="submit">등록</div>
 	</div>
 </div>
-<div class="behind_insert_modal"></div>
+<div class="behind_insert_modal" style='display: none;'></div>
