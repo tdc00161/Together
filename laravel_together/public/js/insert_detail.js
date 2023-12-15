@@ -57,7 +57,13 @@ var clonePriority = PRIORITY_ONE[0].cloneNode(true)
 // 기본 세팅
 STATUS_VALUE[statusValue].style = 'background-color: #1AE316';
 
-
+document.addEventListener('click', function(event){
+	if(BEHIND_MODAL.contains(event.target)){
+		if(!TASK_MODAL[1].contains(event.target)){
+			closeTaskModal(1);
+		}
+	}
+})
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
@@ -66,20 +72,6 @@ function openTaskModal(a, b) {
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: block;'
 		TASK_MODAL[1].style = 'display: none;'
-		document.addEventListener('click', function (event) {
-			// 클릭된 엘리먼트가 특정 영역 내에 속하는지 확인
-			// if (!TASK_MODAL[1].contains(event.target)) {
-			// 	// 모달 외 클릭 시
-			// 	if (BEHIND_MODAL.contains(event.target)) {
-			// 		// 모달 && 어두운 배경 클릭 시
-			// 		closeTaskModal(1);
-			// 	}
-			// }
-			var modal = document.getElementById('m-myModal');
-			if (event.target == modal) {
-				modal.style.display = 'none';
-			}
-		});
 	} else {
 		BEHIND_MODAL.style = 'display: none;'
 		TASK_MODAL[0].style = 'display: none;'
