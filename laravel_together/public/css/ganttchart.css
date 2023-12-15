@@ -104,7 +104,7 @@
 
 /* 간트차트 전체 */
 .gantt-content-wrap {
-	background-color: #fff;
+	background-color: var(--theme-bg-color);
 	color: #000;
 	height: 656px;
 	margin: -40px;
