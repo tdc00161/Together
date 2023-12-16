@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GanttChartController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\TestController;
 use App\Models\User;
 
 
@@ -38,7 +39,6 @@ Route::get('/ganttchart', [GanttChartController::class,'index']);
 
 // Friend 
 // < Friend > 메소드
-Route::get('/friendsend', [FriendRequestController::class,'showSend'])->name('friend.show');
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
 
 // 프로젝트 생성
@@ -54,9 +54,7 @@ Route::get('/project_team', function () {
 
 
 // 모달
-Route::get('/modaltest', function () {
-    return view('modal/modaltest');
-});
+Route::get('/modaltest', [TestController::class,'index']);
 Route::get('/detail', function () {
     return view('modal/detail');
 });

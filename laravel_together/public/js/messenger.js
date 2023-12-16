@@ -27,9 +27,6 @@
      // 저장된 액티브 상태를 가져옴
      const lastActiveElement = sessionStorage.getItem('lastActiveElement');
 
-     //모달이 열릴 때 모든 탭의 active 클래스를 제거
-        // document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
-
     if (modal.style.display === 'none' || modal.style.display === '') {
         
         modal.style.display = 'block';
@@ -59,11 +56,10 @@ window.onclick = function (event) {
     }
 }
 
-   // 모달 열기 함수
-   function openModal() {
+// 모달 열기 함수
+function openModal() {
     document.getElementById('friend-Modal').style.display = 'block';
 }
-
 // 모달 닫기 함수
 function mcloseModal() {
     document.getElementById('m-myModal').style.display = 'none';
@@ -73,16 +69,22 @@ function fcloseModal() {
     document.getElementById('friend-Modal').style.display = 'none';
 }
 
-document.getElementById('submitBtn').addEventListener('click', function (event) {
-    event.preventDefault();
+// --------------------------------------------------------------
+const submitBtn = document.getElementById('submitBtn');
 
+
+submitBtn.addEventListener('click', function (event) {
+    event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
+
+    const fform = document.getElementById('friendRequestForm');
     const receiverEmail = document.getElementById('receiver_email').value;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    fetch('/friend/sendFriendRequest', {
+    fetch('/friendsend', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-CSRF-TOKEN': csrfToken,
         },
         body: JSON.stringify({
             receiver_email: receiverEmail,
@@ -91,18 +93,20 @@ document.getElementById('submitBtn').addEventListener('click', function (event) 
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log(data.message);
             // 성공 메시지를 출력하고 모달은 열어둡니다.
-            document.querySelector('.request-messege').textContent = data.message;
+            document.querySelector('.request-messege').innerHTML = data.message;
             // 추가로 필요한 로직 수행...
         } else {
-            console.error(data.message);
             // 에러 메시지를 출력하고 모달은 열어둡니다.
-            document.querySelector('.request-messege').textContent = data.message;
-            // 추가로 필요한 로직 수행...
+            document.querySelector('.request-messege').innerHTML = data.message;
         }
     })
     .catch(error => {
         console.error('Error:', error);
     });
+    // .finally(() => {
+    //     // 서브밋 처리 후 폼을 수동으로 서브밋
+    //     fform.submit();
+    // });
 });
+

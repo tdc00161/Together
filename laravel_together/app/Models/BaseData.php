@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Project;
+use App\Models\ProjectUser;
 
 class BaseData extends Model // 데이터
 {
@@ -40,4 +42,14 @@ class BaseData extends Model // 데이터
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    // 모델 연관 관리
+    // public function color_codes(){
+    //     // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면        
+    //     return $this->hasMany(Project::class,'id','color_code');
+    // }
+    // public function  authorities(){
+    //     // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면        
+    //     return $this->hasMany(ProjectUser::class,'id','authority_id');
+    // }
 }

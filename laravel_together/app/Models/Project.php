@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Task;
+use App\Models\User;
+use App\Models\BaseData;
 
 class Project extends Model // 프로젝트
 {
@@ -43,4 +46,13 @@ class Project extends Model // 프로젝트
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // 모델 연관 관리
+    // public function basedata(){
+    //     // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면        
+    //     return $this->belongsTo(BaseData::class,'color_code');
+    // }
+    // public function  users(){      
+    //     return $this->belongsTo(User::class);
+    // }
 }

@@ -6,16 +6,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\FriendRequest;
+use App\Models\Friendlist;
 
 class FriendRequestController extends Controller
 {
-    // 친구요청 페이지
-    public function showSend()
-    {
-        $user = Auth::user();
-        return view('messegenger', ['user' => $user]);
-    }
-
+   
     // 친구요청 보내기 로직
     public function sendFriendRequest(Request $request)
     {
@@ -36,19 +31,39 @@ class FriendRequestController extends Controller
         $sender = Auth::user();
 
         // 이미 친구인지 확인
-        if ($sender->id === $receiver->id || $sender->isFriendWith($receiver)) {
-            return response()->json(['success' => false, 'message' => '이미 친구입니다.']);
+        if ($sender->id === $receiver->id) {
+            return response()->json([
+                'success' => false, 
+                'message' => '나에게는 친구요청을 보낼수 없습니다.']);
         }
 
+        //  // 이미 친구인지 확인
+        //  if ($sender->id === $receiver->id || $sender->isFriendWith($receiver)) {
+        //     return response()->json([
+        //         'success' => false, 
+        //         'message' => '이미 친구입니다.']);
+        // }
+
         // 이미 친구 요청을 보냈는지 확인
-        if ($sender->hasPendingFriendRequestTo($receiver) || $receiver->hasPendingFriendRequestFrom($sender)) {
-            return response()->json(['success' => false, 'message' => '이미 친구 요청을 보냈습니다.']);
+        if ($sender->hasPendingFriendRequestTo($receiver) ) {
+        
+            return response()->json([
+                'success' => false, 
+                'message' => '이미 친구 요청을 보냈습니다.']);
         }
+
+        //    // 이미 친구 요청을 보냈는지 확인
+        //    if ($receiver->hasPendingFriendRequestFrom($sender)) {
+        
+        //     return response()->json([
+        //         'success' => false, 
+        //         'message' => '이미 친구 요청을 받았습니다.']);
+        // }
 
         // 친구 요청 생성
         $friendRequest = new FriendRequest([
-            'from_user_email' => $sender->email,
-            'to_user_email' => $receiver->email,
+            'from_user_id' => $sender->id,
+            'to_user_id' => $receiver->id,
             'status' => 'pending',
         ]);
 
