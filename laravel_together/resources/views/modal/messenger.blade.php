@@ -1,6 +1,6 @@
 <head>
     <link rel="stylesheet" href="/css/messenger.css">
-    <meta name="csrf-token">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <div id="m-myModal" class="m-modal">
@@ -19,7 +19,6 @@
     <h3>탭 1 내용</h3>
     <p>이곳에 탭 1의 내용이 들어갑니다.</p>
 </div>
-
 <div id="tab2" class="tab-content">
     
 
@@ -74,20 +73,21 @@
     <div class="friend-Modal-content">
         <div class="friend-Modal-header"><span class="f-r-modal-title">유저 이메일로 추가</span><button type="button" class="fclose-btn" onclick="fcloseModal()">X</button></div>
         <div class="friend-request-input-div">
-            <input class="friend-request-input" type="email" name="receiver_email" id="receiver_email" autocomplete="off" placeholder="email로 추가">
-            <button id="submitBtn" type="submit" class="add-button">+</button>
+            <input id="receiver_email" class="friend-request-input" type="email" name="receiver_email" autocomplete="off" placeholder="email로 추가">
+            <button id="submitBtn" type="button" class="add-button">+</button>
             <p class="request-messege">메세지 출력</p>
-            {{-- 에러출력 --}}
+            <div id="modalErrorMessage" class="modal-error-message"></div>
+            {{-- 에러출력
             @if ($errors->has('receiver_email'))
             <div class="alert alert-danger">{{ $errors->first('receiver_email') }}</div>
             @endif
             <!-- 뷰에서 성공 메시지 출력 -->
             @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-        </>
+            @endif --}}
     </div>
-    </form>
+    </div>
+</form>
 </div>
 
 <script src="/js/messenger.js"></script>
