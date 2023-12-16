@@ -44,6 +44,8 @@ class Attachment extends Model // 첨부파일
     ];
 
     public function tasks(){
-        return $this->belongsTo(Task::class);
-    }
+        // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면
+
+    
+return $this->belongsTo(Task::class);
 }
