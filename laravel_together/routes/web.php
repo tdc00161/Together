@@ -39,7 +39,6 @@ Route::get('/ganttchart', function () {
 
 // Friend 
 // < Friend > 메소드
-Route::get('/friendsend', [FriendRequestController::class,'showSend'])->name('friend.show');
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
 
 // 프로젝트 생성
