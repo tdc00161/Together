@@ -12,6 +12,8 @@
     <form action="{{route('create.post')}}" method="POST">
         @csrf
         <div class="container">
+        <input type="hidden" name="user_id">
+        <input type="hidden" name="color_code">
         <div class="flg_group">
             <div class="flg_div">
                 <input type="radio" id="radio-1" name="flg" value="0">

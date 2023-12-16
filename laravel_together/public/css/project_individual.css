@@ -21,7 +21,7 @@
     margin-right: 10px;
 }
 
-input {
+.title {
     display: inline-block;
     width: 260px;
     height: 20px;
@@ -30,7 +30,7 @@ input {
     background-color: transparent;
 }
 
-textarea {
+.content {
     display: inline-block;
     width: 260px;
     height: 40px;
