@@ -21,12 +21,15 @@ class ProjectController extends Controller
 
     public function mainstore(Request $request) {
         $user_id = Session::get('user')->only('id');
-        $color_code = 
         // dd($user_id);
+
+        $color_code = mt_rand(0,4);
+
         $data= $request
-                ->only('project_title', 'project_content', 'flg', 'start_date', 'end_date');
+                ->only('color_code','project_title', 'project_content', 'flg', 'start_date', 'end_date');
         $data['user_id'] = $user_id['id'];
-        // dd($data);
+        $data['color_code'] = $color_code;
+        dd($data);
         $result = Project::create($data);
         // dd($result);
         // DB::table('project')->insert([
