@@ -42,10 +42,10 @@ class GanttChartController extends Controller
                 ON tks.task_responsible_id = us.id
                 LEFT JOIN projects pj
                 ON tks.project_id = pj.id
-            LIMIT 9
+            LIMIT 15
             
         ");
-        $result['count']=count($result);
+        // $result['count']=count($result);
         // dd($result);
         return view('ganttchart')->with('data',$result);
     }

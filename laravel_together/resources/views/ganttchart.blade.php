@@ -102,14 +102,8 @@
                     <div class="gantt-task ganttTask">
                         <div id="gantt-editable-div" class="editable">{{$item->title}}<img class="gantt-plus-img"
                                 src="/img/gantt-plus.png" alt=""></div>
-                        <div class="gantt-dropdown" id="gantt-teamDropdown">
-                            <span id="gantt-currentTeam" onclick="toggleDropdown(this)">{{$item->task_responsible_id}}</span>
-                            <ul class="gantt-dropdown-content" id="gantt-teamOptions">
-                                <li><a href="#" onclick="changeName('김관호')">김관호</a></li>
-                                <li><a href="#" onclick="changeName('김민주')">김민주</a></li>
-                                <li><a href="#" onclick="changeName('양수진')">양수진</a></li>
-                                <li><a href="#" onclick="changeName('양주은')">양주은</a></li>
-                            </ul>
+                        <div class="gantt-dropdown">
+                            <span>{{$item->task_responsible_id}}</span>
                         </div>
                         <div>{{$item->task_status_name}}</div>
                         <div><input type="date" name="start" id="start-row{{$key+1}}" onchange="test('{{$key+1}}');" value="{{$item->start_date}}"></div>
@@ -168,16 +162,20 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body">
-                        <div class="gantt-chart">
+						@forelse ($data as $key => $item)
+						<div class="gantt-chart">
                             @php
                                 $startDate = new DateTime('2023-12-01');
                                 $endDate = new DateTime('2023-12-31');
 
                                 for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                    echo "<div id='row1-" . $date->format('Ymd') . "'></div>";
+                                    echo "<div id='row" . ($key + 1) . "-" . $date->format('Ymd') . "'></div>";
                                 }
                             @endphp
                         </div>
+						@empty
+						@endforelse
+                       
                         {{-- <tr>
 							<td id="row1-20231201"></td>
 							<td id="row1-20231202"></td>
@@ -185,7 +183,7 @@
 							<td id="row1-20231204"></td>
 							<td id="row1-20231205"></td>
 						</tr> --}}
-                        <div class="gantt-chart">
+                        {{-- <div class="gantt-chart">
                             @php
                                 $startDate = new DateTime('2023-12-01');
                                 $endDate = new DateTime('2023-12-31');
@@ -214,7 +212,7 @@
                                     echo "<div id='row4-" . $date->format('Ymd') . "'></div>";
                                 }
                             @endphp
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
