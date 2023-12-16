@@ -34,6 +34,7 @@ class GanttChartController extends Controller
                 ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
                 ,tks.task_parent
                 ,tks.task_depth
+                ,tks.title
                 ,tks.start_date
                 ,tks.end_date
             FROM tasks tks
@@ -44,7 +45,7 @@ class GanttChartController extends Controller
             LIMIT 9
             
         ");
-
+        $result['count']=count($result);
         // dd($result);
         return view('ganttchart')->with('data',$result);
     }

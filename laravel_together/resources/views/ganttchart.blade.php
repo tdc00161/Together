@@ -98,12 +98,12 @@
                     <div>시작일</div>
                     <div>마감일</div>
                 </div>
-                @forelse ($data as $item)
+                @forelse ($data as $key => $item)
                     <div class="gantt-task ganttTask">
-                        <div id="gantt-editable-div" class="editable"><img class="gantt-plus-img"
+                        <div id="gantt-editable-div" class="editable">{{$item->title}}<img class="gantt-plus-img"
                                 src="/img/gantt-plus.png" alt=""></div>
                         <div class="gantt-dropdown" id="gantt-teamDropdown">
-                            <span id="gantt-currentTeam" onclick="toggleDropdown(this)">{{$item->name}}</span>
+                            <span id="gantt-currentTeam" onclick="toggleDropdown(this)">{{$item->task_responsible_id}}</span>
                             <ul class="gantt-dropdown-content" id="gantt-teamOptions">
                                 <li><a href="#" onclick="changeName('김관호')">김관호</a></li>
                                 <li><a href="#" onclick="changeName('김민주')">김민주</a></li>
@@ -112,12 +112,12 @@
                             </ul>
                         </div>
                         <div>{{$item->task_status_name}}</div>
-                        <div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
-                        <div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
+                        <div><input type="date" name="start" id="start-row{{$key+1}}" onchange="test('{{$key+1}}');" value="{{$item->start_date}}"></div>
+                        <div><input type="date" name="end" id="end-row{{$key+1}}" onchange="test('{{$key+1}}');" value="{{$item->end_date}}"></div>
                     </div>
                 @empty
                 @endforelse
-                <div class="gantt-task ganttTask">
+                {{-- <div class="gantt-task ganttTask">
                     <div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img"
                             src="/img/gantt-plus.png" alt=""></div>
                     <div class="gantt-dropdown" id="gantt-teamDropdown">
@@ -129,11 +129,11 @@
                             <li><a href="#" onclick="changeName('양주은')">양주은</a></li>
                         </ul>
                     </div>
-                    <div>시작전</div>
+                    <div>{{$item->task_status_name}}</div>
                     <div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
                     <div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
-                </div>
-                <div class="gantt-task ganttTask">
+                </div> --}}
+                {{-- <div class="gantt-task ganttTask">
                     <div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img"
                             src="/img/gantt-plus.png" alt=""></div>
                     <div class="gantt-dropdown" id="gantt-teamDropdown">
@@ -158,7 +158,7 @@
                     <div>시작전</div>
                     <div><input type="date" name="start" id="start-row4" onchange="test('4');"></div>
                     <div><input type="date" name="end" id="end-row4" onchange="test('4');"></div>
-                </div>
+                </div> --}}
             </div>
             <div class="gantt-chart-wrap">
                 <div class="gantt-chart-container">
