@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\TestController;
 use App\Models\User;
 
 
@@ -54,9 +55,7 @@ Route::get('/project_team', function () {
 
 
 // 모달
-Route::get('/modaltest', function () {
-    return view('modal/modaltest');
-});
+Route::get('/modaltest', [TestController::class,'index']);
 Route::get('/detail', function () {
     return view('modal/detail');
 });

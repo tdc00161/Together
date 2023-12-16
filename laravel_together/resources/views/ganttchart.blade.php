@@ -112,6 +112,21 @@
 				<div class="gantt-task ganttTask">
 					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
 					<div class="gantt-dropdown" id="gantt-teamDropdown">
+						<span id="gantt-currentTeam" onclick="toggleDropdown(this)">김민주</span>
+						<ul class="gantt-dropdown-content" id="gantt-teamOptions">
+							<li><a href="#" onclick="changeName('김관호')">김관호</a></li>
+							<li><a href="#" onclick="changeName('김민주')">김민주</a></li>
+							<li><a href="#" onclick="changeName('양수진')">양수진</a></li>
+							<li><a href="#" onclick="changeName('양주은')">양주은</a></li>
+						</ul>
+					</div>
+					<div>시작전</div>
+					<div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
+					<div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
+				</div>
+				<div class="gantt-task ganttTask">
+					<div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img" src="/img/gantt-plus.png" alt=""></div>
+					<div class="gantt-dropdown" id="gantt-teamDropdown">
 						<span>김민주</span>
 					</div>
 					<div>시작전</div>
@@ -175,6 +190,16 @@
 
 								for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
 									echo "<div id='row3-" . $date->format('Ymd') . "'></div>";
+								}
+							@endphp
+						</div>
+						<div class="gantt-chart">
+							@php
+								$startDate = new DateTime('2023-12-01');
+								$endDate = new DateTime('2023-12-31');
+
+								for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+									echo "<div id='row4-" . $date->format('Ymd') . "'></div>";
 								}
 							@endphp
 						</div>

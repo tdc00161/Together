@@ -16,10 +16,13 @@ class TaskFactory extends Factory
      */
     public function definition()
     {
-        $date = $this->faker->dateTimeBetween('-1 years');
+        $date1 = $this->faker->dateTimeBetween('-1 years');
+        $date2 = $this->faker->dateTimeBetween('-1 years');
+        $date3 = $this->faker->dateTimeBetween('-1 years');
+        $date4 = $this->faker->dateTimeBetween('-1 years');
         return [
             
-            'project_id'=>$this->faker->randomNumber(1), // 프로젝트 pk
+            'project_id'=>$this->faker->randomNumber(1,10), // 프로젝트 pk
             'task_responsible_id'=>$this->faker->randomNumber(1), // 담당자 pk
             'task_writer_id'=>$this->faker->randomNumber(1), // 작성자 pk
             'task_status_id'=>$this->faker->numberBetween(0,3), // 업무상태 pk
@@ -30,8 +33,12 @@ class TaskFactory extends Factory
             'task_depth'=>$this->faker->numberBetween(0,2),// 업무깊이 1
             'title'=>$this->faker->realText(50), // 제목 50
             'content'=>$this->faker->realText(500), // 내용 500
-            'created_at'=> $date, // 작성일자
-            'updated_at'=> $date, // 수정일자
+            'start_date'=> null, // 시작일자
+            'end_date'=> null, // 마감일자
+            // 'start_date'=> $date1, // 시작일자
+            // 'end_date'=> $date2, // 마감일자
+            // 'created_at'=> $date3, // 작성일자
+            // 'updated_at'=> $date4, // 수정일자
             
             
         ];    }}

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Project;
+use App\Models\User;
+use App\Models\BaseData;
 
 class ProjectUser extends Model // 프로젝트 참여자
 {
@@ -39,4 +42,16 @@ class ProjectUser extends Model // 프로젝트 참여자
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    // 모델 연관 관리
+    // public function basedata(){
+    //     // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면        
+    //     return $this->belongsTo(BaseData::class,'authority_id','data_content_name');
+    // }
+    // public function  users(){      
+    //     return $this->belongsTo(User::class);
+    // }
+    // public function  projects(){      
+    //     return $this->belongsTo(Project::class);
+    // }
 }
