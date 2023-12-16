@@ -35,12 +35,12 @@ class FriendRequestController extends Controller
                 'message' => '자기 자신에게 요청할 수 없습니다.']);
         }
 
-        //  // 이미 친구인지 확인
-        //  if ($sender->id === $receiver->id || $sender->isFriendWith($receiver)) {
-        //     return response()->json([
-        //         'success' => false, 
-        //         'message' => '이미 친구입니다.']);
-        // }
+         // 이미 친구인지 확인
+         if ($sender->isFriendWith($receiver)) {
+            return response()->json([
+                'success' => false, 
+                'message' => '이미 친구입니다.']);
+        }
 
         // 친구요청 중복 방지
         $existingRequest = FriendRequest::where('from_user_id', $sender->id)
