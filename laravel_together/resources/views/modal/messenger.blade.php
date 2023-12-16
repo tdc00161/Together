@@ -36,10 +36,15 @@
     
     {{-- side title : 친구요청 --}}
     <div class="m-side-title-div"><p class="m-side-title">친구 요청</p><div class="notice-count">2</div></div>
+
+    {{-- @forelse ($friendRequestlist as $item)
+    <p class="user-text">{{$item->name}}</p>
+    @empty 
+    @endforelse --}}
     
     <div class="messenger-user-div m-received-bg">
         <div class="user-profile"><img src="/img/profile-img.png" alt=""></div>
-        <p class="user-text">누구셈</p>
+        <p class="user-text">이름</p>
         <p class="user-text">gffds@naver.com</p>
         <button class="accept-btn">수락</button>
         <button class="refuse-btn">거절</button>
@@ -75,17 +80,8 @@
         <div class="friend-request-input-div">
             <input id="receiver_email" class="friend-request-input" type="email" name="receiver_email" autocomplete="off" placeholder="email로 추가">
             <button id="submitBtn" type="button" class="add-button">+</button>
-            <p class="request-messege">메세지 출력</p>
-            <div id="modalErrorMessage" class="modal-error-message"></div>
-            {{-- 에러출력
-            @if ($errors->has('receiver_email'))
-            <div class="alert alert-danger">{{ $errors->first('receiver_email') }}</div>
-            @endif
-            <!-- 뷰에서 성공 메시지 출력 -->
-            @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-            @endif --}}
     </div>
+    <p class="request-message"></p>
     </div>
 </form>
 </div>

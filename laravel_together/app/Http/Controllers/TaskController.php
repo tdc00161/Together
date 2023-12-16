@@ -29,9 +29,6 @@ class TaskController extends Controller
         } else {
             return redirect('/user/login');
         }
-        var_dump($result);
-exit();
     }
-    
 }
 

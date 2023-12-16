@@ -76,9 +76,23 @@ const submitBtn = document.getElementById('submitBtn');
 submitBtn.addEventListener('click', function (event) {
     event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
 
-    const fform = document.getElementById('friendRequestForm');
-    const receiverEmail = document.getElementById('receiver_email').value;
+    const receiverEmail = document.getElementById('receiver_email').value; // 소문자로 변환;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const messageContainer = document.querySelector('.request-message');
+
+    // 이메일 형식 확인을 위한 정규 표현식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!receiverEmail.trim()) {
+        messageContainer.innerHTML = '이메일을 입력하세요.';
+        return;
+    }
+
+     // 이메일 형식 검사
+     if (!emailRegex.test(receiverEmail)) {
+        messageContainer.innerHTML = '올바른 이메일 형식이 아닙니다.';
+        return;
+    }
 
     fetch('/friendsend', {
         method: 'POST',
@@ -94,19 +108,15 @@ submitBtn.addEventListener('click', function (event) {
     .then(data => {
         if (data.success) {
             // 성공 메시지를 출력하고 모달은 열어둡니다.
-            document.querySelector('.request-messege').innerHTML = data.message;
+            messageContainer.innerHTML = data.message;
             // 추가로 필요한 로직 수행...
         } else {
             // 에러 메시지를 출력하고 모달은 열어둡니다.
-            document.querySelector('.request-messege').innerHTML = data.message;
+            messageContainer.innerHTML = data.message;
         }
     })
     .catch(error => {
         console.error('Error:', error);
     });
-    // .finally(() => {
-    //     // 서브밋 처리 후 폼을 수동으로 서브밋
-    //     fform.submit();
-    // });
 });
 

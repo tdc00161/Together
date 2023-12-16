@@ -263,7 +263,7 @@ button {
     position: absolute;
     background-color: var(--m-requestcancel-btn);
     width: 420px;
-    height: 200px;
+    height: 155px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -286,11 +286,12 @@ button {
 }
 .friend-request-input-div {
     width: 100%;
-    height: 60%;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 25px;
 
 }
 .friend-request-input {
@@ -302,4 +303,11 @@ button {
     margin: 0 10px;
     border-radius: 5px;
     color: var(--inactive-color);
+}
+.request-message {
+    width: 80%;
+    height: 30px;
+    margin-left: 25px;
+    font-size: 12px;
+    color: var(--content-title-color);
 }
