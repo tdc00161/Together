@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\GanttChartController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\TestController;
 use App\Models\User;
 
 
@@ -33,9 +35,7 @@ Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.log
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
 // 간트차트
-Route::get('/ganttchart', function () {
-    return view('ganttchart');
-});
+Route::get('/ganttchart', [GanttChartController::class,'index']);
 
 // Friend 
 // < Friend > 메소드
@@ -55,9 +55,7 @@ Route::get('/project_team', function () {
 
 
 // 모달
-Route::get('/modaltest', function () {
-    return view('modal/modaltest');
-});
+Route::get('/modaltest', [TestController::class,'index']);
 Route::get('/detail', function () {
     return view('modal/detail');
 });

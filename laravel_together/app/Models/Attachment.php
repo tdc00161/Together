@@ -43,9 +43,8 @@ class Attachment extends Model // 첨부파일
         'email_verified_at' => 'datetime',
     ];
 
-    public function tasks(){
-        // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면
-
-    
-return $this->belongsTo(Task::class);}
+    // public function tasks(){
+    //     // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면
+    //     return $this->belongsTo(Task::class);
+    // }
 }
