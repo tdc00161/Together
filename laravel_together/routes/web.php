@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\FriendRequestController;
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +36,11 @@ Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboa
 Route::get('/ganttchart', function () {
     return view('ganttchart');
 });
+
+// Friend 
+// < Friend > 메소드
+Route::get('/friendsend', [FriendRequestController::class,'showSend'])->name('friend.show');
+Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');

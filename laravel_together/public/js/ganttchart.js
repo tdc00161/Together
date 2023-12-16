@@ -1,3 +1,6 @@
+// ***** 개인 피드로 이동
+
+
 // ***** 드롭박스 생성
 let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
 
@@ -70,29 +73,8 @@ document.getElementById('gantt-editable-div').addEventListener('click', function
 
 
 // **** 드롭박스 클릭 후 선택 수정
-function toggleDropdown() {
-  var dropdown = document.getElementById('gantt-teamOptions');
-  if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-      dropdown.style.display = 'block';
-  } else {
-      dropdown.style.display = 'none';
-  }
-}
-function changeName(newName) {
-  document.getElementById('gantt-currentTeam').innerText = newName;
-  document.getElementById('gantt-teamOptions').style.display = 'none'; // 선택 후 드롭다운 숨김
-}
 
-// Document 클릭 시 드롭다운 닫기
-document.addEventListener('click', function(event) {
-  var dropdown = document.getElementById('gantt-teamOptions');
-  var teamDropdown = document.getElementById('gantt-teamDropdown');
-  var currentTeam = document.getElementById('gantt-currentTeam');
 
-  if (event.target !== teamDropdown && event.target !== currentTeam) {
-      dropdown.style.display = 'none';
-  }
-});
 
 
 

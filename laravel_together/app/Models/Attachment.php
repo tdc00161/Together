@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Task;
 
 class Attachment extends Model // 첨부파일
 {
@@ -41,4 +42,10 @@ class Attachment extends Model // 첨부파일
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function tasks(){
+        // return $this->belongsTo(Task::class,'task_id','id'); 이걸 생략하면
+
+    
+return $this->belongsTo(Task::class);}
 }
