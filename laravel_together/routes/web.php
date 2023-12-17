@@ -40,7 +40,7 @@ Route::get('/ganttchart', [GanttChartController::class,'index']);
 // Friend 
 // < Friend > 메소드
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
-Route::get('/friendlist', [FriendRequestController::class, 'friendRequests'])->name('friend.list');
+Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests'])->name('friend.Requests');
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');

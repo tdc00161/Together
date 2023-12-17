@@ -34,10 +34,8 @@
          // 모달이 열릴 때 기본으로 활성화할 요소에 active 클래스 추가
          if (lastActiveElement) {
             document.getElementById(lastActiveElement).classList.add('tab-active');
-        } 
-        // else {
-        //     defaulttab.classList.add('tab-active');
-        // }
+        }
+        friendRequestList();
     } else {
         // 현재 액티브 상태를 저장
         const activeElement = document.querySelector('.tab-active');
@@ -67,28 +65,136 @@ function mcloseModal() {
 // 모달 닫기 함수
 function fcloseModal() {
     document.getElementById('friend-Modal').style.display = 'none';
+
+    resetModal();
 }
 
-// --------------------------------------------------------------
-const submitBtn = document.getElementById('submitBtn');
+// 모달 메세지 초기화 함수
+function resetModal() {
+    messageContainer.innerHTML = '';  // 메세지 초기화
+}
+// ------------------------ 친구 요청 목록 -------------------------
 
+// 모달이 열릴때 실행 되는 함수
+function friendRequestList() {
+
+    // AJAX를 통해 친구 요청 목록 가져오기
+    fetch('/friendRequests')
+        .then(response => {
+            // 응답이 성공적인지 확인
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // JSON 형식으로 변환하여 반환
+            return response.json();
+        })
+        .then(data => {
+
+            var friendRequests = data.friendRequests;
+            var friendRequestCount = data.friendRequestCount;
+
+            if (friendRequestCount === 0) {
+                displayFriendRequests(['친구 요청이 없습니다.']);
+            } else {
+                displayFriendRequests(friendRequests, friendRequestCount);
+            }
+        })
+        .catch(error => {
+            // 오류 처리
+            console.error('Fetch error:', error);
+        });
+        
+}
+
+function displayFriendRequests(friendRequests, friendRequestCount) {
+    // friend-request-div
+    var friendrequestdiv = document.getElementById('friend-request-div');
+    var noticecount = document.getElementById('noticecount');
+
+    // 기존 내용 초기화
+    friendrequestdiv.innerHTML = '';
+
+    if (friendrequestdiv) {
+        // 받아온 친구 요청 목록을 모달 내부에 추가
+        for (var i = 0; i < friendRequests.length; i++) {
+            var friendRequest = friendRequests[i];
+
+            noticecount.textContent = friendRequestCount;
+
+            // friend-request-div > messenger-user-div, m-received-bg
+            var userDiv = document.createElement('div');
+            userDiv.classList.add('messenger-user-div', 'm-received-bg');
+
+            friendrequestdiv.appendChild(userDiv);
+
+            // friend-request-div > messenger-user-div, m-received-bg > user-profile 
+            var userprofilediv = document.createElement('div');
+            userprofilediv.classList.add('user-profile');
+
+            userDiv.appendChild(userprofilediv);
+
+            // 1. 이미지 추가
+             var userprofileImg = document.createElement('img');
+             userprofileImg.src = '/img/profile-img.png';
+
+             userprofilediv.appendChild(userprofileImg);
+
+            // 2. 이름 추가
+            var username = document.createElement('p');
+            username.classList.add('user-name');
+            username.textContent = friendRequest.name;
+
+            userDiv.appendChild(username);
+
+            // 3. 이메일 추가
+            var useremail = document.createElement('p');
+            useremail.classList.add('user-email');
+            useremail.textContent = friendRequest.email;
+
+            userDiv.appendChild(useremail);
+
+            // 4. 거절 버튼 추가
+            var refusebtn =  document.createElement('button');
+            refusebtn.classList.add('refuse-btn');
+            refusebtn.textContent = '거절'
+
+            userDiv.appendChild(refusebtn);
+
+            // 5. 수락 버튼 추가
+            var acceptbtn =  document.createElement('button');
+            acceptbtn.classList.add('accept-btn');
+            acceptbtn.textContent = '수락'
+
+            userDiv.appendChild(acceptbtn);
+
+            
+        }
+    } else {
+        console.error('Element with id "friend-request-div" not found.');
+    }
+}
+
+// ------------------------ 친구 요청 목록 -------------------------
+
+// -------------------------- 친구 요청 ----------------------------
+const submitBtn = document.getElementById('submitBtn');
+const messageContainer = document.querySelector('.request-message');
 
 submitBtn.addEventListener('click', function (event) {
     event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
 
     const receiverEmail = document.getElementById('receiver_email').value; // 소문자로 변환;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const messageContainer = document.querySelector('.request-message');
-
-    // 이메일 형식 확인을 위한 정규 표현식
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    
     if (!receiverEmail.trim()) {
         messageContainer.innerHTML = '이메일을 입력하세요.';
         return;
     }
 
-     // 이메일 형식 검사
+    // 이메일 형식 검사
+    // 이메일 형식 확인을 위한 정규 표현식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
      if (!emailRegex.test(receiverEmail)) {
         messageContainer.innerHTML = '올바른 이메일 형식이 아닙니다.';
         return;
@@ -119,4 +225,5 @@ submitBtn.addEventListener('click', function (event) {
         console.error('Error:', error);
     });
 });
+// -------------------------- 친구 요청 ----------------------------
 

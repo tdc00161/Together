@@ -198,11 +198,19 @@ button {
     margin-right: 5px;
     line-height: 55px;
 }
-.user-text {
+.user-name {
     display: inline-block;
     /* line-height: 70px; */
     margin: 0 3px;
     color: var(--inactive-color);
+    font-weight: 400
+}
+.user-email {
+    display: inline-block;
+    /* line-height: 70px; */
+    margin: 0 3px;
+    color: rgb(160, 160, 160);
+    font-weight: 400
 }
 
 /* 수락버튼 */

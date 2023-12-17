@@ -35,38 +35,24 @@
 
     
     {{-- side title : 친구요청 --}}
-    <div class="m-side-title-div"><p class="m-side-title">친구 요청</p><div class="notice-count">2</div></div>
+    <div class="m-side-title-div"><p class="m-side-title">친구 요청</p><div id="noticecount" class="notice-count"></div></div>
 
-    {{-- @forelse ($friendRequestlist as $item)
-    <p class="user-text">{{$item->name}}</p>
-    @empty 
-    @endforelse --}}
-    
-    <div class="messenger-user-div m-received-bg">
+    <div id="friend-request-div">
+        {{-- messenger.js ajax
+        <div class="messenger-user-div m-received-bg">
         <div class="user-profile"><img src="/img/profile-img.png" alt=""></div>
         <p class="user-text">이름</p>
         <p class="user-text">gffds@naver.com</p>
         <button class="accept-btn">수락</button>
         <button class="refuse-btn">거절</button>
+        </div>
+          --}}
     </div>
 
-    <div class="messenger-user-div m-received-bg">
-        <div class="user-profile"><img src="/img/profile-img.png" alt=""></div>
-        <p class="user-text">이이잉</p>
-        <p class="user-text">gffds@naver.com</p>
-        <button class="accept-btn">수락</button>
-        <button class="refuse-btn">거절</button>
-    </div>
-
-    <div class="messenger-user-div m-request-bg">
-        <div class="user-profile"><img src="/img/profile-img.png" alt=""></div>
-        <p class="user-text">이이잉</p>
-        <p class="user-text">fddefds@naver.com</p>
-        <button class="request-cancle-btn">요청취소</button>
-    </div>
+   
 
     {{-- side title : 현재활동중 --}}
-    <div class="m-side-title-div"><p class="m-side-title">현재활동중</p></div>
+    {{-- <div class="m-side-title-div"><p class="m-side-title">현재활동중</p></div> --}}
 </div>
     </div>
 </div>

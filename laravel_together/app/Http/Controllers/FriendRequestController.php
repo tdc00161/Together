@@ -28,6 +28,24 @@ class FriendRequestController extends Controller
             ]);
         }
 
+        // // 입력하지 않았을 때
+        // if (empty($receiverEmail)) {
+        //     return response()->json([
+        //         'success' => false, 
+        //         'message' => '이메일을 입력하세요.',
+        //     ]);
+        // }
+
+        // // 이메일 형식 검사
+        // $emailRegex = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
+
+        // if (!preg_match($emailRegex, $receiverEmail)) {
+        //     return response()->json([
+        //         'success' => false, 
+        //         'message' => '올바른 이메일 형식이 아닙니다.']);
+        // }
+
+
         // 자신에게 친구요청
         if ($sender->id === $receiver->id) {
             return response()->json([
@@ -91,13 +109,27 @@ class FriendRequestController extends Controller
         $userId = Auth::id();
 
         // 친구 요청을 보낸 사용자 목록
+        // $friendRequestlist = User::find($userId)->friendRequeststo()
+        // ->where('status', 'pending')
+        // ->with('from_user')
+        // ->get();
+
         $friendRequestlist = DB::table('friend_requests')
         ->join('users', 'users.id', '=', 'friend_requests.from_user_id')
-        ->select('users.id', 'users.name')
+        ->select('users.id', 'users.name', 'users.email')
         ->where('friend_requests.to_user_id', '=', $userId)
         ->where('friend_requests.status', '=', 'pending')
+        ->orderBy('friend_requests.created_at', 'desc')
         ->get();
-        dd($friendRequestlist);
-        return view('modal.messenger')->with('friendRequestlist', $friendRequestlist);
+
+        $friendRequestCount = DB::table('friend_requests')
+        ->where('to_user_id', $userId)
+        ->where('status', 'pending')
+        ->count();
+
+        return response()->json([
+            'friendRequests' => $friendRequestlist,
+            'friendRequestCount' => $friendRequestCount,
+        ]);
     }
 }
