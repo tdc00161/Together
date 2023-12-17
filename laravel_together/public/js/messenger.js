@@ -123,7 +123,9 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
 
             // friend-request-div > messenger-user-div, m-received-bg
             var userDiv = document.createElement('div');
+            var friendRequestId = friendRequest.id;
             userDiv.classList.add('messenger-user-div', 'm-received-bg');
+            userDiv.setAttribute('id', 'user_pk'+friendRequestId);
 
             friendrequestdiv.appendChild(userDiv);
 
@@ -154,10 +156,47 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
             userDiv.appendChild(useremail);
 
             // 4. 거절 버튼 추가
+            var friendRequestId = friendRequest.id;
             var refusebtn =  document.createElement('button');
             refusebtn.classList.add('refuse-btn');
+            refusebtn.setAttribute('value', friendRequestId);
             refusebtn.textContent = '거절'
 
+            refusebtn.addEventListener('click', function () {
+                var requestId = this.value;
+
+                // AJAX 요청 수행
+                fetch('/rejectFriendRequest', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({ requestId: requestId }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Unable to reject friend request.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 성공 응답을 받았을 때 처리
+                    console.log('Success: Friend request rejected.', data);
+                    var specificDivId = 'user_pk' + requestId; // 예시: div_123
+                    var specificDiv = document.getElementById(specificDivId);
+                    
+                    if (specificDiv) {
+                        specificDiv.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    // 실패 응답 또는 네트워크 오류 발생 시 처리
+                    console.error('Error:', error.message);
+                    // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
+                });
+                
+            });
             userDiv.appendChild(refusebtn);
 
             // 5. 수락 버튼 추가
@@ -166,26 +205,23 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
             acceptbtn.textContent = '수락'
 
             userDiv.appendChild(acceptbtn);
-
-            
         }
     } else {
         console.error('Element with id "friend-request-div" not found.');
     }
 }
-
 // ------------------------ 친구 요청 목록 -------------------------
 
 // -------------------------- 친구 요청 ----------------------------
 const submitBtn = document.getElementById('submitBtn');
 const messageContainer = document.querySelector('.request-message');
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 submitBtn.addEventListener('click', function (event) {
     event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
 
     const receiverEmail = document.getElementById('receiver_email').value; // 소문자로 변환;
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
+
     if (!receiverEmail.trim()) {
         messageContainer.innerHTML = '이메일을 입력하세요.';
         return;

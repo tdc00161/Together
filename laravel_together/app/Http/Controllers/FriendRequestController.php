@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class FriendRequestController extends Controller
 {
    
-    // 친구요청 보내기 로직
+    // 친구요청 보내기
     public function sendFriendRequest(Request $request)
     {
         $receiverEmail = $request->input('receiver_email'); // 입력된 이메일 주소
@@ -103,6 +103,7 @@ class FriendRequestController extends Controller
         ]);
     }
 
+    // 친구 요청 목록
     public function friendRequests()
     {
         // 현재 로그인한 사용자의 ID
@@ -131,5 +132,24 @@ class FriendRequestController extends Controller
             'friendRequests' => $friendRequestlist,
             'friendRequestCount' => $friendRequestCount,
         ]);
+    }
+
+    public function rejectFriendRequest(Request $request)
+    {
+    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 등의 작업 수행
+    $requestData = $request->json()->all();
+    $requestId = $requestData['requestId'];
+    
+    // 예시: FriendRequest 모델을 사용하여 업데이트
+    $friendRequest = FriendRequest::find($requestId);
+    
+    if ($friendRequest) {
+        $friendRequest->status = 'rejected';
+        $friendRequest->save();
+
+        return response()->json(['success' => true, 'message' => 'Friend request rejected.']);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Friend request not found.']);
+    }
     }
 }
