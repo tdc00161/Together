@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\BaseData;
@@ -55,4 +56,29 @@ class Project extends Model // 프로젝트
     // public function  users(){      
     //     return $this->belongsTo(User::class);
     // }
+    public static function project_depth(){
+        $result = DB::select(
+            "SELECT
+                pj.id
+                ,pj.user_pk
+                ,us.name user_name
+                ,pj.color_code_pk
+                ,base3.data_content_name
+                ,pj.project_title
+                ,pj.project_content
+                ,pj.flg
+                ,pj.start_date
+                ,pj.end_date
+                ,pj.created_at
+                ,pj.updated_at
+            FROM projects pj
+            LEFT JOIN users us
+                ON pj.user_pk = us.id
+            LEFT JOIN basedata base3
+                ON pj.color_code_pk = base3.id
+                AND data_title_code = 3
+            "
+        );
+        return $result;
+    }
 }
