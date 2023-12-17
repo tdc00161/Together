@@ -38,9 +38,11 @@ Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboa
 Route::get('/ganttchart', [GanttChartController::class,'index']);
 
 // Friend 
-// < Friend > 메소드
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
 Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests'])->name('friend.Requests');
+Route::patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']);
+Route::get('/rejectFriendRequestview', [FriendRequestController::class, 'rejectFriendRequest'] );
+
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
