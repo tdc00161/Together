@@ -87,17 +87,17 @@ class FriendRequestController extends Controller
 
     public function friendRequests()
     {
-        // 현재 로그인한 사용자의 ID를 가져옴
+        // 현재 로그인한 사용자의 ID
         $userId = Auth::id();
 
-        // 친구 요청을 보낸 사용자 목록을 가져옴
+        // 친구 요청을 보낸 사용자 목록
         $friendRequestlist = DB::table('friend_requests')
         ->join('users', 'users.id', '=', 'friend_requests.from_user_id')
         ->select('users.id', 'users.name')
         ->where('friend_requests.to_user_id', '=', $userId)
         ->where('friend_requests.status', '=', 'pending')
         ->get();
-        // dd($friendRequestlist);
+        dd($friendRequestlist);
         return view('modal.messenger')->with('friendRequestlist', $friendRequestlist);
     }
 }
