@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use App\Models\Project;
 use App\Models\Comment;
 use App\Models\Attachment;
@@ -61,5 +62,44 @@ class Task extends Model // 업무/공지
     }
     public function  projects(){      
         return $this->belongsTo(Project::class);
+    }
+
+    // task 깊이별로 가져오기
+    public static function depth($task_depth){
+        $result = DB::select(
+            "SELECT 
+                tsk.id
+                ,tsk.project_id
+                ,pj.project_title
+                ,tsk.task_responsible_id
+                ,us.name
+                ,tsk.task_status_id
+                ,base.data_content_name
+                ,tsk.priority_id
+                ,base2.data_content_name
+                ,tsk.category_id
+                ,base3.data_content_name
+                ,tsk.task_parent
+                ,tsk.task_depth
+                ,tsk.start_date
+                ,tsk.end_date
+            FROM tasks tsk
+                LEFT JOIN basedata base 
+                    ON tsk.task_status_id = base.data_content_code
+                    AND base.data_title_code = '0'
+                LEFT JOIN basedata base2 
+                    ON tsk.priority_id = base2.data_content_code
+                    AND base2.data_title_code = '1'
+                LEFT JOIN basedata base3 
+                    ON tsk.category_id = base3.data_content_code
+                    AND base3.data_title_code = '2'
+                LEFT JOIN users us
+                    ON tsk.task_responsible_id = us.id
+                LEFT JOIN projects pj
+                    ON tsk.project_id = pj.id
+            WHERE tsk.task_depth = " . $task_depth
+        );
+
+        return $result;
     }
 }
