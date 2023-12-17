@@ -1,7 +1,7 @@
-// ***** 개인 피드로 이동
+// ************* 개인 피드로 이동
 
 
-// ***** 드롭박스 생성
+// ************* 드롭박스 생성
 let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
 
 for(let i = 0; i < checkLists.length; i++) {
@@ -16,69 +16,57 @@ for(let i = 0; i < checkLists.length; i++) {
   }
 
 
- 
-// ****** 하위 업무 추가
-// const  
-
-// // ****** 하위 업무 추가
-// // 새로운 gantt-task를 추가하는 함수
-// function addNewTask() {
-//   // 새로운 업무를 추가할 div 요소 생성
-//   var newTaskDiv = document.createElement('div');
-//   newTaskDiv.className = 'gantt-task';
-//   newTaskDiv.style.height = '43.5px'; // 높이를 43.5로 설정
-
-//   var newChartDiv = document.createElement('div');
-//   newChartDiv.className = 'gantt-chart';
-//   newChartDiv.style.height = '43.5px';
-
-//   // 각각의 업무를 구성하는 요소들 생성 (div 안에 input이 들어간 형태)
-//   var inputTypes = ['text', 'text', 'text', 'date', 'date']; // 각 input 요소에 적용할 타입 배열
-
-//   for (var i = 0; i < inputTypes.length; i++) {
-//     var newDiv = document.createElement('div');
-//     var newInput = document.createElement('input');
-//     newInput.setAttribute('type', inputTypes[i]); // input 타입 설정
-
-
-//     // 생성한 input을 새로운 div 안에 추가
-//     newDiv.appendChild(newInput);
-//     // 새로운 div를 새로운 업무 div에 추가
-//     newTaskDiv.appendChild(newDiv);
-//   }
-//   // 생성한 새로운 업무를 기존의 ganttTask 뒤에 추가
-//   var ganttEditableDiv = document.querySelector('.ganttTask');
-//   ganttEditableDiv.parentNode.insertBefore(newTaskDiv, ganttEditableDiv.nextSibling);
-// }
-// // 이미지들을 선택하고 클릭 이벤트를 추가
-// var images = document.querySelectorAll('img.gantt-plus-img');
-// images.forEach(function(image) {
-//   image.addEventListener('click', addNewTask);
-// });
+// ************* 스크롤 한번에
 
 
 
-// ***** 업무명 클릭하여 바로 수정
+// ************* 하위 업무 추가
+
+
+
+
+// ************* 업무명 클릭하여 바로 수정
 // 요소를 클릭하여 편집 가능하게 만드는 함수
 function makeEditable(element) {
   element.contentEditable = true;
   element.focus();
 }
 // 요소를 클릭하여 편집 상태로 전환
-document.getElementById('gantt-editable-div').addEventListener('click', function(event) {
-  const targetElement = event.target;
-  makeEditable(targetElement);
+const editableDivs = document.querySelectorAll('.gantt-editable-div');
+editableDivs.forEach(function(element) {
+  element.addEventListener('click', function(event) {
+    const targetElement = event.target;
+    makeEditable(targetElement);
+  });
 });
 
 
 
-// **** 드롭박스 클릭 후 선택 수정
+// ************* 업무명에 마우스 올렸을 때 자세히 보기 버튼 보이기
+function showDropdown(element) {
+  var detailDropdown = element.querySelector('.gantt-detail');
+  if (detailDropdown) {
+    detailDropdown.style.display = 'block';
+  }
+}
+
+function hideDropdown(element) {
+  var detailDropdown = element.querySelector('.gantt-detail');
+  if (detailDropdown) {
+    detailDropdown.style.display = 'none';
+  }
+}
+// 자세히 보기 편집 이벤트 막기
+var detailButtons = document.querySelectorAll('.gantt-detail-btn');
+detailButtons.forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.stopPropagation(); // 부모 요소로 이벤트 전파 방지
+    });
+});
 
 
 
-
-
-// ***** 차트영역 헤더에 날짜 추가
+// ************* 차트영역 헤더에 날짜 추가
 const headerScroll = document.querySelector('.gantt-header-scroll');
 
 // 예시 데이터 - 날짜
@@ -101,10 +89,9 @@ function addDatesToHeader() {
 
 addDatesToHeader();
 
-// 챗 차트생성
 
 
-// **** 차트생성
+// ************* 차트생성
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
 function test(rowNum) {
   // 해당 시작일, 종료일 요소 습득
@@ -142,4 +129,7 @@ function test(rowNum) {
     }
   }
 }
+
+// ************* 업무추가 버튼클릭 시 상위업무 추가
+
 
