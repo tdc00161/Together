@@ -75,6 +75,58 @@ function resetModal() {
     inputdiv.value = '';
 }
 
+// -------------------------- 친구 요청 ----------------------------
+const submitBtn = document.getElementById('submitBtn');
+const messageContainer = document.querySelector('.request-message');
+const inputdiv = document.querySelector('#receiver_email');
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+submitBtn.addEventListener('click', function (event) {
+    event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
+
+    const receiverEmail = document.getElementById('receiver_email').value; // 소문자로 변환;
+
+    if (!receiverEmail.trim()) {
+        messageContainer.innerHTML = '이메일을 입력하세요.';
+        return;
+    }
+
+    // 이메일 형식 검사
+    // 이메일 형식 확인을 위한 정규 표현식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(receiverEmail)) {
+        messageContainer.innerHTML = '올바른 이메일 형식이 아닙니다.';
+        return;
+    }
+
+    fetch('/friendsend', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        body: JSON.stringify({
+            receiver_email: receiverEmail,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 성공 메시지를 출력하고 모달은 열어둡니다.
+                messageContainer.innerHTML = data.message;
+                // 추가로 필요한 로직 수행...
+            } else {
+                // 에러 메시지를 출력하고 모달은 열어둡니다.
+                messageContainer.innerHTML = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+// -------------------------- 친구 요청 ----------------------------
+
 // ------------------------ 친구 요청 목록 -------------------------
 // 친구요청 0일때 msg 표시 div
 var emptydiv = document.getElementById('emptydiv');
@@ -428,56 +480,4 @@ function displayFriendsends(friendSendlist) {
 }
 
 // --------------------- 친구 요청 보낸 목록 끝----------------------
-
-// -------------------------- 친구 요청 ----------------------------
-const submitBtn = document.getElementById('submitBtn');
-const messageContainer = document.querySelector('.request-message');
-const inputdiv = document.querySelector('#receiver_email');
-const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-submitBtn.addEventListener('click', function (event) {
-    event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
-
-    const receiverEmail = document.getElementById('receiver_email').value; // 소문자로 변환;
-
-    if (!receiverEmail.trim()) {
-        messageContainer.innerHTML = '이메일을 입력하세요.';
-        return;
-    }
-
-    // 이메일 형식 검사
-    // 이메일 형식 확인을 위한 정규 표현식
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(receiverEmail)) {
-        messageContainer.innerHTML = '올바른 이메일 형식이 아닙니다.';
-        return;
-    }
-
-    fetch('/friendsend', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
-        },
-        body: JSON.stringify({
-            receiver_email: receiverEmail,
-        }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // 성공 메시지를 출력하고 모달은 열어둡니다.
-                messageContainer.innerHTML = data.message;
-                // 추가로 필요한 로직 수행...
-            } else {
-                // 에러 메시지를 출력하고 모달은 열어둡니다.
-                messageContainer.innerHTML = data.message;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-});
-// -------------------------- 친구 요청 ----------------------------
 

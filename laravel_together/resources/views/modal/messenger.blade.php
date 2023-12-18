@@ -53,7 +53,11 @@
     </div>
 
     {{-- side title : 현재활동중 --}}
-    <div class="m-side-title-div"><p class="m-side-title">현재활동중</p></div>
+    <div class="m-side-title-div"><p class="m-side-title">친구</p></div>
+
+    <div id="friend-list-div">
+
+    </div>
 </div>
     </div>
 </div>

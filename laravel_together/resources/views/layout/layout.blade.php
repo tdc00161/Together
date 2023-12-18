@@ -29,8 +29,8 @@
      </div>
      <div class="header-profile">
       
-      <button class="icon-Sub"><img src="/img/icon-bell.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
-      <button class="icon-Sub" onclick="toggleModal()"><img src="/img/icon-Subtract.png" alt=""></button>
+      <button class="icon-Sub"><img class="header-btn" src="/img/icon-notice.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
+      <button class="icon-Sub" onclick="toggleModal()"><img class="header-btn" src="/img/icon-messenger.png" alt=""></button>
 
       <div class="dropdown">
         <button class="dropdown-toggle common-button" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

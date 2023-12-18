@@ -145,6 +145,23 @@ class FriendRequestController extends Controller
         ]);
     }
 
+    // 친구 목록
+    public function friendList()
+    {
+        $userId = Auth::id();
+
+        $friendList = DB::table('friendlists as f')
+        ->join('users as u', 'u.id','=', 'f.friend_id')
+        ->select('u.name', 'u.email')
+        ->where('f.user_id', '=', $userId)
+        ->orderBy('u.name', 'asc')
+        ->get();
+
+        return response()->json([
+            '$friendList' => $friendList,
+        ]);
+    }
+    
     // 친구요청 취소
     public function cancleFriendRequest(Request $request)
     {
@@ -185,25 +202,38 @@ class FriendRequestController extends Controller
     }
     }
 
-    // 친구요청 수락
+    // <친구요청 수락> 및 <친구 목록에 추가>
     public function acceptFriendRequest(Request $request)
     {
-
     $userId = Auth::id();
     // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 작업 수행
     $requestData = $request->json()->all();
     $requestId = $requestData['requestId'];
 
     if($requestId) {
+        // 친구 요청 상태를 'accepted'로 업데이트
         DB::table('friend_requests')
         ->where('from_user_id', $requestId)
         ->where('to_user_id', $userId)
         ->update(['status' => 'accepted']);
 
+         // 친구 목록에 추가
+         $friendRequest = DB::table('friend_requests')
+         ->where('from_user_id', $requestId)
+         ->where('to_user_id', $userId)
+         ->first();
+
+     if ($friendRequest) {
+         $addfriendlist = new Friendlist();
+         $addfriendlist->user_id = $friendRequest->to_user_id;
+         $addfriendlist->friend_id = $friendRequest->from_user_id;
+         $addfriendlist->save();
+     }
         return response()->json(['success' => true, 'message' => 'Friend request accepted.']);
     } else {
         return response()->json(['success' => false, 'message' => 'Friend request not found.']);
     }
     }
+
 }
 
