@@ -36,6 +36,7 @@ Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboa
 
 // 간트차트
 Route::get('/ganttchart', [GanttChartController::class,'index']);
+// Route::post()
 
 // Friend 
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
