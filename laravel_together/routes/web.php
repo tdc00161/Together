@@ -41,8 +41,7 @@ Route::get('/ganttchart', [GanttChartController::class,'index']);
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
 Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests'])->name('friend.Requests');
 Route::patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']);
-Route::get('/rejectFriendRequestview', [FriendRequestController::class, 'rejectFriendRequest'] );
-
+Route::patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']);
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');

@@ -126,12 +126,12 @@ class FriendRequestController extends Controller
             'friendRequestCount' => $friendRequestCount,
         ]);
     }
+    
     // 친구요청 거절
     public function rejectFriendRequest(Request $request)
     {
-
     $userId = Auth::id();
-    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 등의 작업 수행
+    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 작업 수행
     $requestData = $request->json()->all();
     $requestId = $requestData['requestId'];
 
@@ -146,12 +146,13 @@ class FriendRequestController extends Controller
         return response()->json(['success' => false, 'message' => 'Friend request not found.']);
     }
     }
+
     // 친구요청 수락
     public function acceptFriendRequest(Request $request)
     {
 
     $userId = Auth::id();
-    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 등의 작업 수행
+    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 작업 수행
     $requestData = $request->json()->all();
     $requestId = $requestData['requestId'];
 
@@ -159,9 +160,9 @@ class FriendRequestController extends Controller
         DB::table('friend_requests')
         ->where('from_user_id', $requestId)
         ->where('to_user_id', $userId)
-        ->update(['status' => 'rejected']);
+        ->update(['status' => 'accepted']);
 
-        return response()->json(['success' => true, 'message' => 'Friend request rejected.']);
+        return response()->json(['success' => true, 'message' => 'Friend request accepted.']);
     } else {
         return response()->json(['success' => false, 'message' => 'Friend request not found.']);
     }

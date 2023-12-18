@@ -1,38 +1,38 @@
- // 초기 탭 설정
- document.getElementById('tab1').style.display = 'block';
+// 초기 탭 설정
+document.getElementById('tab1').style.display = 'block';
 
- // 탭 열기 함수
- function openTab(tabId) {
-     // 모든 탭 숨기기
-     var tabs = document.getElementsByClassName('tab-content');
-     for (var i = 0; i < tabs.length; i++) {
-         tabs[i].style.display = 'none';
-        }
-        
-        // 선택한 탭 보이기
-        document.getElementById(tabId).style.display = 'block';
-        
-        // 활성화된 탭 스타일 적용
-        var activeTabs = document.getElementsByClassName('tab');
-        for (var i = 0; i < activeTabs.length; i++) {
-            activeTabs[i].classList.remove('tab-active');
-        }
-        event.currentTarget.classList.add('tab-active');
+// 탭 열기 함수
+function openTab(tabId) {
+    // 모든 탭 숨기기
+    var tabs = document.getElementsByClassName('tab-content');
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].style.display = 'none';
     }
-    
-    // 모달 열기/닫기 함수
-    function toggleModal() {
-        var modal = document.getElementById('m-myModal');
 
-     // 저장된 액티브 상태를 가져옴
-     const lastActiveElement = sessionStorage.getItem('lastActiveElement');
+    // 선택한 탭 보이기
+    document.getElementById(tabId).style.display = 'block';
+
+    // 활성화된 탭 스타일 적용
+    var activeTabs = document.getElementsByClassName('tab');
+    for (var i = 0; i < activeTabs.length; i++) {
+        activeTabs[i].classList.remove('tab-active');
+    }
+    event.currentTarget.classList.add('tab-active');
+}
+
+// 모달 열기/닫기 함수
+function toggleModal() {
+    var modal = document.getElementById('m-myModal');
+
+    // 저장된 액티브 상태를 가져옴
+    const lastActiveElement = sessionStorage.getItem('lastActiveElement');
 
     if (modal.style.display === 'none' || modal.style.display === '') {
-        
+
         modal.style.display = 'block';
 
-         // 모달이 열릴 때 기본으로 활성화할 요소에 active 클래스 추가
-         if (lastActiveElement) {
+        // 모달이 열릴 때 기본으로 활성화할 요소에 active 클래스 추가
+        if (lastActiveElement) {
             document.getElementById(lastActiveElement).classList.add('tab-active');
         }
         friendRequestList();
@@ -79,7 +79,7 @@ function resetModal() {
 function friendRequestList() {
 
     var friendrequestdiv = document.getElementById('friend-request-div');
-    
+
     // AJAX를 통해 친구 요청 목록 가져오기
     fetch('/friendRequests')
         .then(response => {
@@ -94,26 +94,27 @@ function friendRequestList() {
 
             var friendRequests = data.friendRequests;
             var friendRequestCount = data.friendRequestCount;
+            var noticecount = document.getElementById('noticecount');
 
             if (friendRequestCount === 0) {
-                var noticecount = document.getElementById('noticecount');
                 noticecount.innerHTML = '0';
                 friendrequestdiv.style.display = 'none';
             } else {
-                displayFriendRequests(friendRequests, friendRequestCount);
+                friendrequestdiv.style.display = 'block';
+                noticecount.innerHTML = friendRequestCount;
+                displayFriendRequests(friendRequests);
             }
         })
         .catch(error => {
             // 오류 처리
             console.error('Fetch error:', error);
         });
-        
 }
 
-function displayFriendRequests(friendRequests, friendRequestCount) {
+function displayFriendRequests(friendRequests) {
     // friend-request-div
     var friendrequestdiv = document.getElementById('friend-request-div');
-    
+
 
     // 기존 내용 초기화
     friendrequestdiv.innerHTML = '';
@@ -123,13 +124,12 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
         for (var i = 0; i < friendRequests.length; i++) {
             var friendRequest = friendRequests[i];
 
-            noticecount.textContent = friendRequestCount;
 
             // friend-request-div > messenger-user-div, m-received-bg
             var userDiv = document.createElement('div');
             var friendRequestId = friendRequest.id;
             userDiv.classList.add('messenger-user-div', 'm-received-bg');
-            userDiv.setAttribute('id', 'user_pk'+friendRequestId);
+            userDiv.setAttribute('id', 'user_pk' + friendRequestId);
 
             friendrequestdiv.appendChild(userDiv);
 
@@ -161,15 +161,17 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
 
             // 4. 거절 버튼 추가
             var friendRequestId = friendRequest.id;
-            var refusebtn =  document.createElement('button');
+            var refusebtn = document.createElement('button');
             refusebtn.classList.add('refuse-btn');
             refusebtn.setAttribute('value', friendRequestId);
             refusebtn.textContent = '거절'
 
             refusebtn.addEventListener('click', function () {
                 var requestId = this.value;
-                
-                noticecount.textContent = friendRequests.length-1;
+
+                noticecount.innerHTML = noticecount.innerHTML - 1;
+                console.log(noticecount.innerHTML);
+                console.log(friendRequests.length);
                 // AJAX 요청 수행
                 fetch('/rejectFriendRequest', {
                     method: 'PATCH',
@@ -179,36 +181,74 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
                     },
                     body: JSON.stringify({ requestId: requestId }),
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Unable to reject friend request.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // 성공 응답을 받았을 때 처리
-                    console.log('Success: Friend request rejected.', data);
-                    
-                    var specificDivId = 'user_pk' + requestId; // 예시: div_123
-                    var specificDiv = document.getElementById(specificDivId);
-                    
-                    if (specificDiv) {
-                        specificDiv.style.display = 'none';
-                    }
-                })
-                .catch(error => {
-                    // 실패 응답 또는 네트워크 오류 발생 시 처리
-                    console.error('Error:', error.message);
-                    // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
-                });
-                
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Unable to reject friend request.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 성공 응답을 받았을 때 처리
+                        console.log('Success: Friend request rejected.', data);
+
+                        var specificDivId = 'user_pk' + requestId; // 예시: div_123
+                        var specificDiv = document.getElementById(specificDivId);
+
+                        if (specificDiv) {
+                            specificDiv.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        // 실패 응답 또는 네트워크 오류 발생 시 처리
+                        console.error('Error:', error.message);
+                        // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
+                    });
             });
+
             userDiv.appendChild(refusebtn);
 
             // 5. 수락 버튼 추가
-            var acceptbtn =  document.createElement('button');
+            var acceptbtn = document.createElement('button');
             acceptbtn.classList.add('accept-btn');
+            acceptbtn.setAttribute('value', friendRequestId);
             acceptbtn.textContent = '수락'
+
+            acceptbtn.addEventListener('click', function () {
+                var requestId = this.value;
+
+                noticecount.textContent = friendRequests.length - 1;
+                // AJAX 요청 수행
+                fetch('/acceptFriendRequest', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({ requestId: requestId }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Unable to reject friend request.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 성공 응답을 받았을 때 처리
+                        console.log('Success: Friend request accepted.', data);
+
+                        var specificDivId = 'user_pk' + requestId; // 예시: div_123
+                        var specificDiv = document.getElementById(specificDivId);
+
+                        if (specificDiv) {
+                            specificDiv.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        // 실패 응답 또는 네트워크 오류 발생 시 처리
+                        console.error('Error:', error.message);
+                        // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
+                    });
+            });
 
             userDiv.appendChild(acceptbtn);
         }
@@ -238,7 +278,7 @@ submitBtn.addEventListener('click', function (event) {
     // 이메일 형식 확인을 위한 정규 표현식
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-     if (!emailRegex.test(receiverEmail)) {
+    if (!emailRegex.test(receiverEmail)) {
         messageContainer.innerHTML = '올바른 이메일 형식이 아닙니다.';
         return;
     }
@@ -253,20 +293,20 @@ submitBtn.addEventListener('click', function (event) {
             receiver_email: receiverEmail,
         }),
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // 성공 메시지를 출력하고 모달은 열어둡니다.
-            messageContainer.innerHTML = data.message;
-            // 추가로 필요한 로직 수행...
-        } else {
-            // 에러 메시지를 출력하고 모달은 열어둡니다.
-            messageContainer.innerHTML = data.message;
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 성공 메시지를 출력하고 모달은 열어둡니다.
+                messageContainer.innerHTML = data.message;
+                // 추가로 필요한 로직 수행...
+            } else {
+                // 에러 메시지를 출력하고 모달은 열어둡니다.
+                messageContainer.innerHTML = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 });
 // -------------------------- 친구 요청 ----------------------------
 
