@@ -40,6 +40,11 @@ function enterkeySearch() {
   }
 }
 
+
+// ************* 체크박스 필터링
+
+
+
 // ************* 업무상태 색상
 document.addEventListener('DOMContentLoaded', function() {
   var elements = document.querySelectorAll('.gantt-status-color');

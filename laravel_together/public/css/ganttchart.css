@@ -383,6 +383,7 @@
 .gantt-chart-container {
 	/* flex: 1; */
 	/* overflow: auto; */
+	/* overflow-y: hidden; */
 }
 
 .gantt-chart-header {
@@ -401,6 +402,7 @@
     flex-direction: row;
 	height: 570px; */
 	/* background-color: aqua */
+	width: fit-content;
 }
 .gantt-chart {
 	display: flex;

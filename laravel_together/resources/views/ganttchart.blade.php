@@ -39,41 +39,41 @@
                 <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
                     <span class="gantt-span">상태</span>
                     <ul class="gantt-items">
-                        <li><input type="checkbox" checked><div class="gantt-color gantt-status1"></div><span class="gantt-item">시작전</span></li>
-                        <li><input type="checkbox" checked><div class="gantt-color gantt-status2"></div><span class="gantt-item">진행중</span></li>
-                        <li><input type="checkbox" checked><div class="gantt-color gantt-status3"></div><span class="gantt-item">피드백</span></li>
-                        <li><input type="checkbox" checked><div class="gantt-color gantt-status4"></div><span class="gantt-item">완료</span></li>
+                        <li><input type="checkbox" name="status" value="status1" onclick="getCheckboxValue()" checked><div class="gantt-color gantt-status1"></div><span class="gantt-item">시작전</span></li>
+                        <li><input type="checkbox" name="status" value="status2" onclick="getCheckboxValue()" checked><div class="gantt-color gantt-status2"></div><span class="gantt-item">진행중</span></li>
+                        <li><input type="checkbox" name="status" value="status3" onclick="getCheckboxValue()" checked><div class="gantt-color gantt-status3"></div><span class="gantt-item">피드백</span></li>
+                        <li><input type="checkbox" name="status" value="status4" onclick="getCheckboxValue()" checked><div class="gantt-color gantt-status4"></div><span class="gantt-item">완료</span></li>
                     </ul>
                 </div>
                 <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
                     <span class="gantt-span">우선순위</span>
                     <ul class="gantt-items">
-                        <li><input type="checkbox"><img class="gantt-rank" src="/img/gantt-bisang.png" alt=""><span
+                        <li><input type="checkbox" name="priority" value="priority1" onclick="getCheckboxValue()"><img class="gantt-rank" src="/img/gantt-bisang.png" alt=""><span
                                 class="gantt-item">긴급</span></li>
-                        <li><input type="checkbox"><img class="gantt-rank" src="/img/gantt-up.png" alt=""><span
+                        <li><input type="checkbox" name="priority" value="priority1" onclick="getCheckboxValue()"><img class="gantt-rank" src="/img/gantt-up.png" alt=""><span
                                 class="gantt-item">높음</span></li>
-                        <li><input type="checkbox"><img class="gantt-rank" src="/img/gantt-line.png" alt=""><span
+                        <li><input type="checkbox" name="priority" value="priority1" onclick="getCheckboxValue()"><img class="gantt-rank" src="/img/gantt-line.png" alt=""><span
                                 class="gantt-item">보통</span></li>
-                        <li><input type="checkbox"><img class="gantt-rank" src="/img/gantt-down.png" alt=""><span
+                        <li><input type="checkbox" name="priority" value="priority1" onclick="getCheckboxValue()"><img class="gantt-rank" src="/img/gantt-down.png" alt=""><span
                                 class="gantt-item">낮음</span></li>
-                        <li><input type="checkbox"><span class="gantt-item">없음</span></li>
+                        <li><input type="checkbox" name="priority" value="priority1" onclick="getCheckboxValue()"><span class="gantt-item">없음</span></li>
                     </ul>
                 </div>
                 <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
                     <span class="gantt-span">담당자</span>
                     <ul class="gantt-items">
                         @foreach (array_unique(array_column($data, 'name')) as $itemName)
-                            <li><input type="checkbox"><span class="gantt-item">{{ $itemName }}</span></li>
+                            <li><input type="checkbox" onclick="getCheckboxValue()"><span class="gantt-item">{{ $itemName }}</span></li>
                         @endforeach
                     </ul>
                 </div>
                 <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
                     <span class="gantt-span">시작일</span>
                     <ul class="gantt-items">
-                        <li><input name="start" type="radio" checked><span class="gantt-item">전체</span></li>
-                        <li><input name="start" type="radio"><span class="gantt-item">오늘</span></li>
-                        <li><input name="start" type="radio"><span class="gantt-item">이번주</span></li>
-                        <li><input name="start" type="radio"><span class="gantt-item">이번달</span></li>
+                        <li><input name="start" type="radio" onclick="getCheckboxValue()" checked><span class="gantt-item">전체</span></li>
+                        <li><input name="start" type="radio" onclick="getCheckboxValue()"><span class="gantt-item">오늘</span></li>
+                        <li><input name="start" type="radio" onclick="getCheckboxValue()"><span class="gantt-item">이번주</span></li>
+                        <li><input name="start" type="radio" onclick="getCheckboxValue()"><span class="gantt-item">이번달</span></li>
                     </ul>
                 </div>
                 <div id="list5" class="gantt-dropdown-check-list" tabindex="100">
