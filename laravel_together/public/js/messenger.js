@@ -23,7 +23,7 @@
     // 모달 열기/닫기 함수
     function toggleModal() {
         var modal = document.getElementById('m-myModal');
-        
+
      // 저장된 액티브 상태를 가져옴
      const lastActiveElement = sessionStorage.getItem('lastActiveElement');
 
@@ -78,6 +78,8 @@ function resetModal() {
 // 모달이 열릴때 실행 되는 함수
 function friendRequestList() {
 
+    var friendrequestdiv = document.getElementById('friend-request-div');
+    
     // AJAX를 통해 친구 요청 목록 가져오기
     fetch('/friendRequests')
         .then(response => {
@@ -94,7 +96,9 @@ function friendRequestList() {
             var friendRequestCount = data.friendRequestCount;
 
             if (friendRequestCount === 0) {
-                displayFriendRequests(['친구 요청이 없습니다.']);
+                var noticecount = document.getElementById('noticecount');
+                noticecount.innerHTML = '0';
+                friendrequestdiv.style.display = 'none';
             } else {
                 displayFriendRequests(friendRequests, friendRequestCount);
             }
@@ -109,7 +113,7 @@ function friendRequestList() {
 function displayFriendRequests(friendRequests, friendRequestCount) {
     // friend-request-div
     var friendrequestdiv = document.getElementById('friend-request-div');
-    var noticecount = document.getElementById('noticecount');
+    
 
     // 기존 내용 초기화
     friendrequestdiv.innerHTML = '';
@@ -119,7 +123,6 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
         for (var i = 0; i < friendRequests.length; i++) {
             var friendRequest = friendRequests[i];
 
-            noticecount.textContent = 0;
             noticecount.textContent = friendRequestCount;
 
             // friend-request-div > messenger-user-div, m-received-bg
@@ -165,7 +168,8 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
 
             refusebtn.addEventListener('click', function () {
                 var requestId = this.value;
-                noticecount.textContent = friendRequestCount-1;
+                
+                noticecount.textContent = friendRequests.length-1;
                 // AJAX 요청 수행
                 fetch('/rejectFriendRequest', {
                     method: 'PATCH',
