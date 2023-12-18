@@ -74,10 +74,14 @@ class TestController extends Controller
 
     public function view($id){
         $result['task'] = Task::task_detail($id);
-        $result['parents'] = Task::task_detail_parents($id);
         $result['children'] = Task::task_detail_children($id);
         $result['comment'] = Task::task_detail_comment($id);
 
+        // task->depth 값을 보고 부모를 데려올지 결정
+        if($result['task'][0]->task_depth !== '0'){
+            $result['parents'] = Task::task_detail_parents($result['task'][0]->task_depth, $id);
+        }
+        
         return $result;
     }
 }
