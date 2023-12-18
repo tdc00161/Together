@@ -20,14 +20,20 @@ class Project extends Model // 프로젝트
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'color_code',
+        'user_pk',
+        'color_code_pk',
         'project_title',
         'project_content',
         'flg',
         'start_date',
         'end_date',
     ];
+
+
+    protected $table = 'projects'; // 디폴트값을 따르고싶지않다면 테이블명 설정해주면 됨
+
+    // pk 정의(정의하지 않을 경우에는 'id'컬럼을 pk로 인식)
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that should be hidden for serialization.
