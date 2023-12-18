@@ -36,6 +36,7 @@ function toggleModal() {
             document.getElementById(lastActiveElement).classList.add('tab-active');
         }
         friendRequestList();
+        friendSendList();
     } else {
         // 현재 액티브 상태를 저장
         const activeElement = document.querySelector('.tab-active');
@@ -79,6 +80,9 @@ function resetModal() {
 var emptydiv = document.getElementById('emptydiv');
 var emptyRequesMsg = document.createElement('p');
 
+// friend-request-div
+var friendrequestdiv = document.getElementById('friend-request-div');
+
 // 모달이 열릴때 실행 되는 함수
 function friendRequestList() {
 
@@ -115,7 +119,7 @@ function friendRequestList() {
                 friendrequestdiv.style.display = 'block';
                 noticecount.innerHTML = friendRequestCount;
 
-                // 친구목록 함수 실행
+                // 친구 요청 목록 함수 실행
                 displayFriendRequests(friendRequests);
 
                 // 메세지 출력 none
@@ -127,9 +131,6 @@ function friendRequestList() {
             console.error('Fetch error:', error);
         });
 }
-
-// friend-request-div
-var friendrequestdiv = document.getElementById('friend-request-div');
 
 function displayFriendRequests(friendRequests) {
     
@@ -287,7 +288,146 @@ function displayFriendRequests(friendRequests) {
         console.error('Element with id "friend-request-div" not found.');
     }
 }
-// ------------------------ 친구 요청 목록 -------------------------
+// ------------------------ 친구 요청 목록 끝 -----------------------
+
+// ---------------------- 친구 요청 보낸 목록 -----------------------
+// friend-send-div
+var friendsenddiv = document.getElementById('friend-send-div');
+
+// 모달이 열릴때 실행 되는 함수
+function friendSendList() {
+
+    // AJAX를 통해 친구 요청 보낸 목록 가져오기
+    fetch('/friendSendlist')
+        .then(response => {
+            // 응답이 성공적인지 확인
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // JSON 형식으로 변환하여 반환
+            return response.json();
+        })
+        .then(data => {
+
+            var friendSendlist = data.friendSendlist;
+
+            // 0 :
+            if (friendSendlist === 0) {
+            // !0 :
+            } else {
+                // 친구 요청 보낸 목록 함수 실행
+                displayFriendsends(friendSendlist);
+            }
+        })
+        .catch(error => {
+            // 오류 처리
+            console.error('Fetch error:', error);
+        });
+}
+
+function displayFriendsends(friendSendlist) {
+    
+    // 기존 내용 초기화
+    friendsenddiv.innerHTML = '';
+
+    if (friendsenddiv) {
+        // 컨트롤러에서 받아온 친구 요청 보낸 목록을 모달 내부에 추가
+        for (var i = 0; i < friendSendlist.length; i++) {
+            var friendSends = friendSendlist[i];
+
+            // friend-send-div > messenger-user-div, m-received-bg
+            var userDiv = document.createElement('div');
+            var friendSendId = friendSends.id;
+            userDiv.classList.add('messenger-user-div', 'm-request-bg');
+            userDiv.setAttribute('id', 'user_pk' + friendSendId);
+
+            friendsenddiv.appendChild(userDiv);
+
+            // friend-send-div > messenger-user-div, m-received-bg > user-profile 
+            var userprofilediv = document.createElement('div');
+            userprofilediv.classList.add('user-profile');
+
+            userDiv.appendChild(userprofilediv);
+
+            // 1. 이미지 추가
+            var userprofileImg = document.createElement('img');
+            userprofileImg.src = '/img/profile-img.png';
+
+            userprofilediv.appendChild(userprofileImg);
+
+            // 2. 이름 추가
+            var username = document.createElement('p');
+            username.classList.add('user-name');
+            username.textContent = friendSends.name;
+
+            userDiv.appendChild(username);
+
+            // 3. 이메일 추가
+            var useremail = document.createElement('p');
+            useremail.classList.add('user-email');
+            useremail.textContent = friendSends.email;
+
+            userDiv.appendChild(useremail);
+
+            // 4. 요청 취소 버튼 추가
+            var friendSendId = friendSends.id;
+            var refusebtn = document.createElement('button');
+            refusebtn.classList.add('request-cancle-btn');
+            refusebtn.setAttribute('value', friendSendId);
+            refusebtn.textContent = '요청 취소'
+
+            refusebtn.addEventListener('click', function () {
+                
+                var SendId = this.value;
+
+                if(noticecount.innerHTML==='0'){
+                    emptydiv.style.display = 'block';
+                    emptyRequesMsg.classList.add('empty-msg-css');
+                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptydiv.appendChild(emptyRequesMsg);
+                }
+
+                // AJAX 요청 수행
+                fetch('/rejectFriendRequest', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({ SendId: SendId }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Unable to reject friend request.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 성공 응답을 받았을 때 처리
+                        console.log('Success: Friend request rejected.', data);
+
+                        var clickDivId = 'user_pk' + requestId; // 예시: div_123
+                        var clickDiv = document.getElementById(clickDivId);
+
+                        if (clickDiv) {
+                            clickDiv.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        // 실패 응답 또는 네트워크 오류 발생 시 처리
+                        console.error('Error:', error.message);
+                        // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
+                    });
+            });
+
+            userDiv.appendChild(refusebtn);
+        }
+    } else {
+        console.error('Element with id "friend-request-div" not found.');
+    }
+}
+
+// --------------------- 친구 요청 보낸 목록 끝----------------------
 
 // -------------------------- 친구 요청 ----------------------------
 const submitBtn = document.getElementById('submitBtn');

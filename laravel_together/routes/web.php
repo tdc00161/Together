@@ -43,6 +43,7 @@ Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 
 Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests'])->name('friend.Requests');
 Route::patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']);
 Route::patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']);
+route::get('/friendSendlist', [FriendRequestController::class, 'friendSendlist']);
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
