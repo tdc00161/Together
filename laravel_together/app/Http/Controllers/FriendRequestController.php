@@ -137,11 +137,32 @@ class FriendRequestController extends Controller
         ->join('users as u', 'u.id', '=', 'f.to_user_id')
         ->select('u.id', 'u.name', 'u.email')
         ->where('f.from_user_id', '=', $userId)
+        ->where('f.status', '=', 'pending')
         ->get();
 
         return response()->json([
             'friendSendlist' => $friendSendlist,
         ]);
+    }
+
+    // 친구요청 취소
+    public function cancleFriendRequest(Request $request)
+    {
+    $userId = Auth::id();
+    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 작업 수행
+    $sendData = $request->json()->all();
+    $sendId = $sendData['sendId'];
+
+    if($sendId) {
+        DB::table('friend_requests')
+        ->where('from_user_id', $userId)
+        ->where('to_user_id', $sendId)
+        ->update(['status' => 'rejected']);
+
+        return response()->json(['success' => true, 'message' => 'Friend request rejected.']);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Friend request not found.']);
+    }
     }
     
     // 친구요청 거절

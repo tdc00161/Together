@@ -371,14 +371,14 @@ function displayFriendsends(friendSendlist) {
 
             // 4. 요청 취소 버튼 추가
             var friendSendId = friendSends.id;
-            var refusebtn = document.createElement('button');
-            refusebtn.classList.add('request-cancle-btn');
-            refusebtn.setAttribute('value', friendSendId);
-            refusebtn.textContent = '요청 취소'
+            var requestcanclebtn = document.createElement('button');
+            requestcanclebtn.classList.add('request-cancle-btn');
+            requestcanclebtn.setAttribute('value', friendSendId);
+            requestcanclebtn.textContent = '요청 취소'
 
-            refusebtn.addEventListener('click', function () {
+            requestcanclebtn.addEventListener('click', function () {
                 
-                var SendId = this.value;
+                var sendId = this.value;
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
@@ -388,13 +388,13 @@ function displayFriendsends(friendSendlist) {
                 }
 
                 // AJAX 요청 수행
-                fetch('/rejectFriendRequest', {
+                fetch('/cancleFriendRequest', {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken,
                     },
-                    body: JSON.stringify({ SendId: SendId }),
+                    body: JSON.stringify({ sendId: sendId }),
                 })
                     .then(response => {
                         if (!response.ok) {
@@ -406,7 +406,7 @@ function displayFriendsends(friendSendlist) {
                         // 성공 응답을 받았을 때 처리
                         console.log('Success: Friend request rejected.', data);
 
-                        var clickDivId = 'user_pk' + requestId; // 예시: div_123
+                        var clickDivId = 'user_pk' + sendId; 
                         var clickDiv = document.getElementById(clickDivId);
 
                         if (clickDiv) {
@@ -420,7 +420,7 @@ function displayFriendsends(friendSendlist) {
                     });
             });
 
-            userDiv.appendChild(refusebtn);
+            userDiv.appendChild(requestcanclebtn);
         }
     } else {
         console.error('Element with id "friend-request-div" not found.');
