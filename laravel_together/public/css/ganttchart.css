@@ -110,7 +110,7 @@
 	/* background-color: #fff; */
 	/* color: #000; */
 	height: auto;
-	margin: -40px;
+	margin: -40px -40px 0 -40px;
 	position: relative;
 	top: 42px;
 }
@@ -357,6 +357,7 @@
 
 .gantt-chart-header {
 	/* overflow-x: auto; */
+	text-align: center;
 }
 
 .gantt-header-scroll {
