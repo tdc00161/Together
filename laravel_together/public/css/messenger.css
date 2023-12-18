@@ -326,3 +326,8 @@ button {
     color: var(--content-title-color);
     margin-top: 8px;
 }
+.empty-msg-css {
+    text-align: center;
+    color: #ccc;
+    margin: 30px 0;
+}

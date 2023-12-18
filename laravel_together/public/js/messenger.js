@@ -54,15 +54,15 @@ window.onclick = function (event) {
     }
 }
 
-// 모달 열기 함수
-function openModal() {
-    document.getElementById('friend-Modal').style.display = 'block';
-}
 // 모달 닫기 함수
 function mcloseModal() {
     document.getElementById('m-myModal').style.display = 'none';
 }
-// 모달 닫기 함수
+// 친구요청 모달 열기 함수
+function openModal() {
+    document.getElementById('friend-Modal').style.display = 'block';
+}
+// 친구요청 모달 닫기 함수
 function fcloseModal() {
     document.getElementById('friend-Modal').style.display = 'none';
     resetModal();
@@ -73,12 +73,14 @@ function resetModal() {
     messageContainer.innerHTML = '';  // 메세지 초기화
     inputdiv.value = '';
 }
+
 // ------------------------ 친구 요청 목록 -------------------------
+// 친구요청 0일때 msg 표시 div
+var emptydiv = document.getElementById('emptydiv');
+var emptyRequesMsg = document.createElement('p');
 
 // 모달이 열릴때 실행 되는 함수
 function friendRequestList() {
-
-    var friendrequestdiv = document.getElementById('friend-request-div');
 
     // AJAX를 통해 친구 요청 목록 가져오기
     fetch('/friendRequests')
@@ -96,13 +98,28 @@ function friendRequestList() {
             var friendRequestCount = data.friendRequestCount;
             var noticecount = document.getElementById('noticecount');
 
+            // 0 :
             if (friendRequestCount === 0) {
+                // 0 == '0' / none
                 noticecount.innerHTML = '0';
                 friendrequestdiv.style.display = 'none';
+
+                // 메세지 출력
+                emptyRequesMsg.classList.add('empty-msg-css');
+                emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                emptydiv.appendChild(emptyRequesMsg);
+
+            // !0 :
             } else {
+                // div 표시 및 count 출력
                 friendrequestdiv.style.display = 'block';
                 noticecount.innerHTML = friendRequestCount;
+
+                // 친구목록 함수 실행
                 displayFriendRequests(friendRequests);
+
+                // 메세지 출력 none
+                emptydiv.style.display = 'none'; 
             }
         })
         .catch(error => {
@@ -111,11 +128,11 @@ function friendRequestList() {
         });
 }
 
+// friend-request-div
+var friendrequestdiv = document.getElementById('friend-request-div');
+
 function displayFriendRequests(friendRequests) {
-    // friend-request-div
-    var friendrequestdiv = document.getElementById('friend-request-div');
-
-
+    
     // 기존 내용 초기화
     friendrequestdiv.innerHTML = '';
 
@@ -167,11 +184,17 @@ function displayFriendRequests(friendRequests) {
             refusebtn.textContent = '거절'
 
             refusebtn.addEventListener('click', function () {
+                
                 var requestId = this.value;
-
                 noticecount.innerHTML = noticecount.innerHTML - 1;
-                console.log(noticecount.innerHTML);
-                console.log(friendRequests.length);
+
+                if(noticecount.innerHTML==='0'){
+                    emptydiv.style.display = 'block';
+                    emptyRequesMsg.classList.add('empty-msg-css');
+                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptydiv.appendChild(emptyRequesMsg);
+                }
+
                 // AJAX 요청 수행
                 fetch('/rejectFriendRequest', {
                     method: 'PATCH',
@@ -191,11 +214,11 @@ function displayFriendRequests(friendRequests) {
                         // 성공 응답을 받았을 때 처리
                         console.log('Success: Friend request rejected.', data);
 
-                        var specificDivId = 'user_pk' + requestId; // 예시: div_123
-                        var specificDiv = document.getElementById(specificDivId);
+                        var clickDivId = 'user_pk' + requestId; // 예시: div_123
+                        var clickDiv = document.getElementById(clickDivId);
 
-                        if (specificDiv) {
-                            specificDiv.style.display = 'none';
+                        if (clickDiv) {
+                            clickDiv.style.display = 'none';
                         }
                     })
                     .catch(error => {
@@ -214,9 +237,17 @@ function displayFriendRequests(friendRequests) {
             acceptbtn.textContent = '수락'
 
             acceptbtn.addEventListener('click', function () {
-                var requestId = this.value;
 
-                noticecount.textContent = friendRequests.length - 1;
+                var requestId = this.value;
+                noticecount.innerHTML = noticecount.innerHTML - 1;
+
+                if(noticecount.innerHTML==='0'){
+                    emptydiv.style.display = 'block';
+                    emptyRequesMsg.classList.add('empty-msg-css');
+                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptydiv.appendChild(emptyRequesMsg);
+                }
+
                 // AJAX 요청 수행
                 fetch('/acceptFriendRequest', {
                     method: 'PATCH',
