@@ -229,7 +229,7 @@
 	margin-left: 15px;
 	/* 내부 */
 	font-size: 22px;
-	color: rgb(255, 255, 255, 0.7);
+	color: rgb(255, 255, 255);
 	/* 크기 */
 }
 
@@ -623,7 +623,7 @@
 	/* 크기 */
 }
 
-.task_modal .content>.content>div {
+.task_modal .comment_start {
 	/* 배치 */
 	margin: 15px 5px 0 15px;
 	/* 내부 */
@@ -869,7 +869,9 @@
 .task_modal .more_modal>div>div,
 .task_modal .start_date,
 .task_modal .end_date,
-.task_modal .submit {
+.task_modal .submit,
+span.task_detail,
+span.project_detail {
 	cursor: pointer;
 }
 

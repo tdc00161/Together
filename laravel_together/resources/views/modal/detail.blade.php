@@ -17,8 +17,8 @@
 			<div class="header">
 				<div>
 					<div class="user_profile"></div>
-					<div>User</div>
-					<div>2023-12-13 11:30</div>
+					<div class="wri_name">User</div>
+					<div class="task_created_at">2023-12-13 11:30</div>
 				</div>
 				<div class="more" onclick="openMoreModal()">
 					<!-- 더보기 모달 -->
@@ -44,8 +44,7 @@
 					<div class="responsible_icon"></div>
 					<div class="responsible_one">
 						<div class="user_profile"></div>
-						<div>User</div>
-						<div></div>
+						<div class="responsible_user">User</div>						
 					</div>
 					{{-- <div class="add_box_mgin add_responsible">담당자변경</div> --}}
 				</div>
@@ -70,15 +69,17 @@
 					<div></div>
 					<div>
 						<div class="priority_icon"></div>
-						<div>보통</div>
+						<div class="priority_val">보통</div>
 						<div></div>
 					</div>
 					{{-- <div class="add_box_mgin">우선순위변경</div> --}}
 				</div>
 			</div>
 			<div class="content">
-				코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식
-				<div>댓글</div>
+				<p class="detail_content">
+					코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식코스요리 열심히 시식
+				</p>
+				<div class="comment_start">댓글</div>
 			</div>
 		</div>
 		<div class="comment">
@@ -93,58 +94,6 @@
 						<div class="delete_comment" onclick="removeComment(0)">삭제</div>
 					</div>
 					<div class="comment_line">기본 댓글</div>
-				</div>
-			</div>
-			<div class="comment_one">
-				<div class="user_profile"></div>
-				<div class="comment_content">
-					<div>
-						<div>
-							<div class="user_name">User2</div>
-							<div class="comment_date">2023-12-13 14:34</div>
-						</div>
-						<div class="delete_comment" onclick="removeComment(1)">삭제</div>
-					</div>
-					<div class="comment_line">이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥</div>
-				</div>
-			</div>
-			<div class="comment_one">
-				<div class="user_profile"></div>
-				<div class="comment_content">
-					<div>
-						<div>
-							<div class="user_name">User3</div>
-							<div class="comment_date">2023-12-13 14:34</div>
-						</div>
-						<div class="delete_comment" onclick="removeComment(2)">삭제</div>
-					</div>
-					<div class="comment_line">이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥</div>
-				</div>
-			</div>
-			<div class="comment_one">
-				<div class="user_profile"></div>
-				<div class="comment_content">
-					<div>
-						<div>
-							<div class="user_name">User4</div>
-							<div class="comment_date">2023-12-13 14:34</div>
-						</div>
-						<div class="delete_comment" onclick="removeComment(3)">삭제</div>
-					</div>
-					<div class="comment_line">이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥</div>
-				</div>
-			</div>
-			<div class="comment_one">
-				<div class="user_profile"></div>
-				<div class="comment_content">
-					<div>
-						<div>
-							<div class="user_name">User5</div>
-							<div class="comment_date">2023-12-13 14:34</div>
-						</div>
-						<div class="delete_comment" onclick="removeComment(4)">삭제</div>
-					</div>
-					<div class="comment_line">이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥이거 먹을바에 국밥</div>
 				</div>
 			</div>
 		</div>

@@ -52,7 +52,7 @@ class TestController extends Controller
                 }
             }
         }
-        dd($data);  
+        // dd($data);  
         // 정렬 (data배열의 값에 상응하는 key값을 따로 변수로 선언해, (0 => title_6, 1 => title_9 ...)
         //     그 변수를 정렬하고 (4 => title_1, 6 => title_2, ...) 그 정렬 순으로 data[4], data[6], ... data값과 키를 이용해 부를 예정)
 
@@ -70,5 +70,13 @@ class TestController extends Controller
         // }
 
         return view('modal/modaltest')->with('data', $data);
+    }
+
+    public function view($id){
+        $result['task'] = Task::task_detail($id);
+        $result['children'] = Task::task_detail_children($id);
+        $result['comment'] = Task::task_detail_comment($id);
+
+        return $result;
     }
 }
