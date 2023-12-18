@@ -46,10 +46,10 @@
         <button class="accept-btn">수락</button>
         <button class="refuse-btn">거절</button>
         </div>
-          --}}
+        --}}
     </div>
 
-   
+
 
     {{-- side title : 현재활동중 --}}
     {{-- <div class="m-side-title-div"><p class="m-side-title">현재활동중</p></div> --}}

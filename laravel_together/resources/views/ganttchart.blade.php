@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body">
-						@foreach ($data as $key => $item)
+                        @foreach ($data as $key => $item)
                             <div class="gantt-chart" id="ganttChart">
                                 @php
                                     $startDate = new DateTime('2023-12-01');
@@ -153,7 +153,7 @@
                                     }
                                 @endphp
                             </div>
-						@endforeach
+                        @endforeach
                         {{-- <div class="gantt-chart">
                             @php
                                 $startDate = new DateTime('2023-12-01');
