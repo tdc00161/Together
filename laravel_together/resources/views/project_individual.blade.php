@@ -13,9 +13,9 @@
         <div class="menu_title">
             <div class="project_color"></div>
             <div>
-                <input class="title" type="text" name="title" placeholder="프로젝트명">{{$result->project_title}}
+                <input class="title" type="text" name="project_title" placeholder="프로젝트명">{{$result->project_title}}
                 {{-- <br> --}}
-                <textarea class="content" name="content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
+                <textarea class="content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
             </div>    
         </div>    
         <div class="date_set">
@@ -93,9 +93,9 @@
                         </tr>
                         @foreach ($data as $item)
                             <tr id="box_ul">
-                                <td class="project_title" onclick="openTaskModal(1,1)">{{$item->project_title}}</td>
-                                <td>{{$item->project_content}}</td>
-                                <td>{{$item->user_id}}</td>
+                                <td class="project_title" onclick="openTaskModal(1,1)">{{$item->title}}</td>
+                                {{-- <td>{{$item->project_content}}</td>
+                                <td>{{$item->user_id}}</td> --}}
                             </tr>
                         @endforeach
                     </table>
@@ -109,15 +109,15 @@
                             <col class="col3">
                         </colgroup>
                         <tr class="box_ul">
+                            <th>카테고리</th>
                             <th>제목</th>
-                            <th>내용</th>
-                            <th>담당자</th>
+                            {{-- <th>담당자</th> --}}
                         </tr>
                         @foreach ($data as $item)
                             <tr class="box_ul">
-                                <td class="project_title" onclick="openTaskModal(1,0)">{{$item->project_title}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
-                                <td>{{$item->project_content}}</td>
-                                <td>{{$item->user_id}}</td>
+                                <td class="project_title" onclick="openTaskModal(1,0)">{{$item->category_id}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+                                <td>{{$item->title}}</td>
+                                {{-- <td>{{$item->user_id}}</td> --}}
                             </tr>
                         @endforeach
                     </table>
@@ -142,9 +142,9 @@
                     @foreach ($data as $item)
                         <tr class="box_ul">
                             <td>{{$item->id}}</td>
-                            <td class="project_title" onclick="openTaskModal(1,0)">{{$item->project_content}}</td>
+                            <td class="project_title" onclick="openTaskModal(1,0)">{{$item->title}}</td>
                             <td>{{$item->user_id}}</td>
-                            <td>{{$item->user_id}}</td>
+                            <td>{{$item->data_content_name}}</td>
                         </tr>
                     @endforeach
                 </table>
