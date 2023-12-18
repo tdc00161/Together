@@ -126,6 +126,23 @@ class FriendRequestController extends Controller
             'friendRequestCount' => $friendRequestCount,
         ]);
     }
+
+    // 친구 요청 보낸 목록
+    public function friendSendlist()
+    {
+        // 현재 로그인한 사용자의 ID
+        $userId = Auth::id();
+
+        $friendSendlist = DB::table('friend_requests as f')
+        ->join('users as u', 'u.id', '=', 'f.to_user_id')
+        ->select('u.id', 'u.name', 'u.email')
+        ->where('f.from_user_id', '=', $userId)
+        ->get();
+
+        return response()->json([
+            'friendSendlist' => $friendSendlist,
+        ]);
+    }
     
     // 친구요청 거절
     public function rejectFriendRequest(Request $request)
