@@ -1,6 +1,4 @@
-@extends('modal.detail')
-@extends('modal.insert')
-{{-- @extends('layout.layout') --}}
+@extends('layout.layout')
 
 <head>
     <link rel="stylesheet" href="/css/insert_detail.css">
@@ -8,19 +6,41 @@
 </head>
 
 <body>
-    {{-- @section('main') --}}
+    @section('main')
         @forelse ($data as $item)
             <p>
-                프로젝트 명 : {{$item->project_title}}
+                프로젝트 명 : <span class="project_detail">{{$item->project_title}}</span>
             </p>
-            @if ($item->depth_)
-                ㄴ하위업무 이름 : {{$task_1->title}}
-                            ㄴㅡ하위업무 이름 : {{$task_2->title}}
+            @if (isset($item->depth_0))
+            @forelse ($item->depth_0 as $task_0)
+                <p>
+                    ㄴ하위업무 이름 : <span class="task_detail" onclick="openTaskModal(1,0,{{$task_0->id}})">{{$task_0->title}}</span>
+                </p>
+                @if (isset($task_0->depth_1))
+                @forelse ($task_0->depth_1 as $task_1)
+                    <p>
+                        ㄴㅡ하위업무 이름 : <span class="task_detail" onclick="openTaskModal(1,0,{{$task_1->id}})">{{$task_1->title}}</span>
+                    </p>
+                    @if (isset($task_1->depth_2))
+                    @forelse ($task_1->depth_2 as $task_2)
+                        <p>
+                            ㄴㅡㅡ하위업무 이름 : <span class="task_detail" onclick="openTaskModal(1,0,{{$task_2->id}})">{{$task_2->title}}</span>
+                        </p>
+                    @empty
+                    @endforelse
+                    @endif   
+                @empty
+                @endforelse
+                @endif                
+            @empty
+            @endforelse
             @endif
         @empty            
         @endforelse
-        <button onclick="openTaskModal(0)">작성모달 오픈</button>
+        {{-- <button onclick="openTaskModal(0)">작성모달 오픈</button>
         <button onclick="openTaskModal(1)">상세모달 오픈</button>
-        <button onclick="changTaskType()">상세모달 업무/글</button>
-    {{-- @endsection --}}
+        <button onclick="changTaskType()">상세모달 업무/글</button> --}}
+    @include('modal.insert') {{-- include 순서 중요: 작성/상세 --}}
+    @include('modal.detail')
+    @endsection      
 </body>
