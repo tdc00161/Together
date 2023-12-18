@@ -110,7 +110,7 @@
 	/* background-color: #fff; */
 	/* color: #000; */
 	height: auto;
-	margin: -40px;
+	margin: -40px -40px 0 -40px;
 	position: relative;
 	top: 42px;
 }
@@ -145,7 +145,7 @@
 	position: relative;
 	cursor: pointer;
 	display: inline-block;
-	padding: 5px 40px 5px 10px;
+	padding: 5px 50px 5px 10px;
 	border: 1px solid #ccc;
 }
 
@@ -195,12 +195,38 @@
 }
 
 .gantt-items li input{
-	margin: 0px 7px;
+	margin: 0px 5px;
 	accent-color: #9656FF;
 }
 .gantt-item {
+	padding-left: 4px;
 	color: #000;
 }
+
+/* 업무상태 색깔 */
+.gantt-color {
+	border-radius: 50%;
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+}
+.gantt-status1 {
+	background-color: #B1B1B1;
+}
+.gantt-status2 {
+	background-color: #04A5FF;
+}
+.gantt-status3 {
+	background-color: #F34747;
+}
+.gantt-status4 {
+	background-color: #64C139;
+}
+.gantt-status-color {
+	padding: 4px 0px;
+    border-radius: 15px;
+}
+
 .gantt-rank {
 	width: 15px;
     margin-right: 9px;
@@ -308,6 +334,7 @@
 }
 .gantt-detail-btn {
 	border: none;
+	padding: 3px;
 }
 
 /* 드롭박스 선택 수정 */
@@ -315,8 +342,11 @@
 	position: relative;
 	display: inline-block;
 }
+.gantt-status-color {
+	background-color: #000000c5;
+}
 
-.gantt-dropdown-content {
+/* .gantt-dropdown-content {
 	display: none;
 	position: absolute;
 	background-color: #f9f9f9;
@@ -335,7 +365,7 @@
 .gantt-dropdown-content li a {
 	color: #000;
 
-}
+} */
 /* .gantt-dropdown:hover .gantt-dropdown-content {
 	display: block;
 } */
@@ -357,6 +387,7 @@
 
 .gantt-chart-header {
 	/* overflow-x: auto; */
+	text-align: center;
 }
 
 .gantt-header-scroll {

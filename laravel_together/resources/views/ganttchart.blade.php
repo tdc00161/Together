@@ -33,16 +33,16 @@
     {{-- 피드공통 헤더끝 --}}
     <div class="gantt-content-wrap">
         <div class="gantt-btn-wrap">
-            <input class="gantt-search" type="search" placeholder="   업무명, 업무번호 검색">
+            <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="   업무명, 업무번호 검색">
             <div>
                 <img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
                 <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
                     <span class="gantt-span">상태</span>
                     <ul class="gantt-items">
-                        <li><input type="checkbox" checked><span class="gantt-item">시작전</span></li>
-                        <li><input type="checkbox" checked><span class="gantt-item">진행중</span></li>
-                        <li><input type="checkbox" checked><span class="gantt-item">피드백</span></li>
-                        <li><input type="checkbox" checked><span class="gantt-item">완료</span></li>
+                        <li><input type="checkbox" checked><div class="gantt-color gantt-status1"></div><span class="gantt-item">시작전</span></li>
+                        <li><input type="checkbox" checked><div class="gantt-color gantt-status2"></div><span class="gantt-item">진행중</span></li>
+                        <li><input type="checkbox" checked><div class="gantt-color gantt-status3"></div><span class="gantt-item">피드백</span></li>
+                        <li><input type="checkbox" checked><div class="gantt-color gantt-status4"></div><span class="gantt-item">완료</span></li>
                     </ul>
                 </div>
                 <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
@@ -62,10 +62,9 @@
                 <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
                     <span class="gantt-span">담당자</span>
                     <ul class="gantt-items">
-                        <li><input type="checkbox"><span class="gantt-item">김관호</span></li>
-                        <li><input type="checkbox"><span class="gantt-item">김민주</span></li>
-                        <li><input type="checkbox"><span class="gantt-item">양수진</span></li>
-                        <li><input type="checkbox"><span class="gantt-item">양주은</span></li>
+                        @foreach (array_unique(array_column($data, 'name')) as $itemName)
+                            <li><input type="checkbox"><span class="gantt-item">{{ $itemName }}</span></li>
+                        @endforeach
                     </ul>
                 </div>
                 <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
@@ -102,37 +101,23 @@
                     @foreach ($data as $key => $item)
                         <div class="gantt-task" id="ganttTask">
                             <div class="gantt-editable-div editable" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
-                                <span class="editable-title">{{$item->title}}</span>
-                                <img class="gantt-plus-img" src="/img/gantt-plus.png" alt="">
+                                <span class="taskKey">{{$item->id}}</span>
+                                <span class="taskName editable-title">{{$item->title}}</span>
                                 <div class="gantt-detail">
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="subTaskAdd()">하위업무 추가</button>
                                 </div>
                             </div>
-                            <div class="gantt-dropdown">
-                                <span>{{$item->task_responsible_id}}</span>
+                            <div class="gantt-dropdown">{{$item->name}}</div>
+                            <div>
+                                <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
                             </div>
-                            <div>{{$item->task_status_name}}</div>
-                            <div><input type="date" name="start" id="start-row{{$key+1}}" onchange="test('{{$key+1}}');" value="{{$item->start_date}}"></div>
-                            <div><input type="date" name="end" id="end-row{{$key+1}}" onchange="test('{{$key+1}}');" value="{{$item->end_date}}"></div>
+                            <div><input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}"></div>
+                            <div><input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end_date}}"></div>
                         </div>
                     @endforeach
                 </div>
-                {{-- <div class="gantt-task ganttTask">
-                    <div id="gantt-editable-div" class="editable">업무명<img class="gantt-plus-img"
-                            src="/img/gantt-plus.png" alt=""></div>
-                    <div class="gantt-dropdown" id="gantt-teamDropdown">
-                        <span id="gantt-currentTeam" onclick="toggleDropdown(this)">김민주</span>
-                        <ul class="gantt-dropdown-content" id="gantt-teamOptions">
-                            <li><a href="#" onclick="changeName('김관호')">김관호</a></li>
-                            <li><a href="#" onclick="changeName('김민주')">김민주</a></li>
-                            <li><a href="#" onclick="changeName('양수진')">양수진</a></li>
-                            <li><a href="#" onclick="changeName('양주은')">양주은</a></li>
-                        </ul>
-                    </div>
-                    <div>{{$item->task_status_name}}</div>
-                    <div><input type="date" name="start" id="start-row1" onchange="test('1');"></div>
-                    <div><input type="date" name="end" id="end-row1" onchange="test('1');"></div>
-                </div> --}}
             </div>
             <div class="gantt-chart-wrap">
                 <div class="gantt-chart-container">
@@ -142,28 +127,18 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body">
-						@foreach ($data as $key => $item)
+                        @foreach ($data as $key => $item)
                             <div class="gantt-chart" id="ganttChart">
                                 @php
                                     $startDate = new DateTime('2023-12-01');
                                     $endDate = new DateTime('2023-12-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                        echo "<div id='row" . ($key + 1) . "-" . $date->format('Ymd') . "'></div>";
+                                        echo "<div id='row" . ($item->id) . "-" . $date->format('Ymd') . "'></div>";
                                     }
                                 @endphp
                             </div>
-						@endforeach
-                        {{-- <div class="gantt-chart">
-                            @php
-                                $startDate = new DateTime('2023-12-01');
-                                $endDate = new DateTime('2023-12-31');
-
-                                for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                    echo "<div id='row2-" . $date->format('Ymd') . "'></div>";
-                                }
-                            @endphp
-                        </div> --}}
+                        @endforeach
                     </div>
                 </div>
             </div>

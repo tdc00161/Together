@@ -5,7 +5,7 @@
 <body>
     <div id="m-myModal" class="m-modal">
     <div class="m-modal-content">
-        <span class="m-modal-close" onclick="mcloseModal()">&times;</span>
+        <span class="m-modal-close" onclick="mcloseModal()"></span>
        <!-- 탭 목록 -->
 <ul class="tabs">
     <li class="tab tab-active" onclick="openTab('tab1')"><img class="tab-icon" src="/img/icon-Subtract.png" alt=""></li>
@@ -16,8 +16,7 @@
 
 <!-- 탭 내용 -->
 <div id="tab1" class="tab-content">
-    <h3>탭 1 내용</h3>
-    <p>이곳에 탭 1의 내용이 들어갑니다.</p>
+    <div id="errordiv" class="empty-msg-css"> 3차 개발 예정 </div>
 </div>
 <div id="tab2" class="tab-content">
     
@@ -37,6 +36,7 @@
     {{-- side title : 친구요청 --}}
     <div class="m-side-title-div"><p class="m-side-title">친구 요청</p><div id="noticecount" class="notice-count"></div></div>
 
+    <div id="emptydiv"></div>
     <div id="friend-request-div">
         {{-- messenger.js ajax
         <div class="messenger-user-div m-received-bg">
@@ -46,13 +46,14 @@
         <button class="accept-btn">수락</button>
         <button class="refuse-btn">거절</button>
         </div>
-          --}}
+        --}}
+    </div>
+    <div id="friend-send-div">
+        
     </div>
 
-   
-
     {{-- side title : 현재활동중 --}}
-    {{-- <div class="m-side-title-div"><p class="m-side-title">현재활동중</p></div> --}}
+    <div class="m-side-title-div"><p class="m-side-title">현재활동중</p></div>
 </div>
     </div>
 </div>
@@ -62,7 +63,7 @@
     <form id="friendRequestForm" action="{{ route('friend.sendFriendRequest') }}" method="post">
     @csrf
     <div class="friend-Modal-content">
-        <div class="friend-Modal-header"><span class="f-r-modal-title">유저 이메일로 추가</span><button type="button" class="fclose-btn" onclick="fcloseModal()">X</button></div>
+        <div class="friend-Modal-header"><span class="f-r-modal-title">유저 이메일로 추가</span><button type="button" class="fclose-btn" onclick="fcloseModal()">&times;</button></div>
         <div class="friend-request-input-div">
             <input id="receiver_email" class="friend-request-input" type="email" name="receiver_email" autocomplete="off" placeholder="email로 추가">
             <button id="submitBtn" type="button" class="add-button">+</button>

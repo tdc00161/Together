@@ -16,11 +16,124 @@ for(let i = 0; i < checkLists.length; i++) {
   }
 
 
+// ************* 검색 기능
+// 검색창에서 엔터치면 searchPost()실행
+function enterkeySearch() {
+  let search = document.getElementById('keySearch').value.toLowerCase();
+  let ganttTask = document.getElementsByClassName('gantt-task');
+
+  for (let i = 0; i < ganttTask.length; i++) {
+    taskKey = ganttTask[i].getElementsByClassName('taskKey');
+    taskName = ganttTask[i].getElementsByClassName('taskName');
+    let ganttChart = document.getElementsByClassName('gantt-chart')[i]; // 해당 인덱스의 차트 가져오기
+
+    if (
+      taskKey[0].innerHTML.toLowerCase().includes(search) ||
+      taskName[0].innerHTML.toLowerCase().includes(search)
+    ) {
+      ganttTask[i].style.display = 'flex';
+      ganttChart.style.display = 'flex'; // 검색에 맞는 업무가 있다면 해당 차트 보이기
+    } else {
+      ganttTask[i].style.display = 'none';
+      ganttChart.style.display = 'none'; // 검색에 맞지 않는 업무는 해당 차트 숨기기
+    }
+  }
+}
+
+// ************* 업무상태 색상
+document.addEventListener('DOMContentLoaded', function() {
+  var elements = document.querySelectorAll('.gantt-status-color');
+
+  elements.forEach(function(element) {
+      var status = element.getAttribute('data-status');
+      var backgroundColor;
+
+      switch (status) {
+          case '시작전':
+              backgroundColor = '#B1B1B1';
+              break;
+          case '진행중':
+              backgroundColor = '#04A5FF';
+              break;
+          case '피드백':
+              backgroundColor = '#F34747';
+              break;
+          case '완료':
+              backgroundColor = '#64C139';
+              break;
+          default:
+              backgroundColor = '#FFFFFF'; // 기본값 설정
+              break;
+      }
+
+      element.style.backgroundColor = backgroundColor;
+  });
+});
+
+
+
+
+
 // ************* 스크롤 한번에
 
 
 
 // ************* 하위 업무 추가
+
+
+
+// function subTaskAdd() {
+//   // 새로운 하위 작업을 추가할 데이터를 정의합니다.
+//   const newItem = {
+//       id: generateUniqueId(), // 새로운 작업의 ID 생성 (예시 함수)
+//       title: "새 하위 업무",
+//       name: null,
+//       task_status_name: null,
+//       start_date: null,
+//       end_date: null,
+//    // 다른 필요한 데이터 추가
+//   };
+//   data.push(newItem);
+
+//   console.log("새로운 작업이 추가되었습니다:", newItem);
+
+//   // gantt-tasks에 새로운 작업을 추가합니다.
+//   const tasksContainer = document.querySelector('.gantt-task-body');
+//   const newTask = document.createElement('div');
+//   newTask.classList.add('gantt-task');
+//   newTask.id = `ganttTask${newItem.id}`;
+//   newTask.innerHTML = `
+//       <!-- 여기에 newItem에 관련된 HTML 추가 -->
+//   `;
+//   tasksContainer.appendChild(newTask);
+
+//   // gantt-chart에 새로운 작업 행을 추가합니다.
+//   const chartContainer = document.querySelector('.gantt-chart-body');
+//   const newRow = document.createElement('div');
+//   newRow.classList.add('gantt-chart');
+//   newRow.id = `ganttRow${newItem.id}`;
+//   // 새로운 작업에 대한 날짜 행 생성 등의 작업을 수행합니다.
+//   chartContainer.appendChild(newRow);
+
+//   // 새로운 작업을 추가한 후 추가적인 로직을 수행할 수 있습니다.
+//   // 예를 들어, 새로운 작업에 대한 이벤트 처리기를 추가하거나 다른 데이터를 채우는 등의 작업을 수행할 수 있습니다.
+// }
+
+// // 유일한 ID를 생성하는 함수 예시
+// function generateUniqueId() {
+//   // 여기서는 data 배열이 있다고 가정하고, 해당 배열에 있는 ID 중 가장 큰 ID를 찾습니다.
+//   let maxId = 0;
+    
+//   // data 배열에서 최대 ID 찾기
+//   data.forEach(item => {
+//       if (item.id > maxId) {
+//           maxId = item.id;
+//       }
+//   });
+
+//   // 가장 큰 ID에서 1을 더한 값을 반환합니다.
+//   return (maxId + 1).toString();
+// }
 
 
 
@@ -131,5 +244,8 @@ function test(rowNum) {
 }
 
 // ************* 업무추가 버튼클릭 시 상위업무 추가
+
+// ************* ajax 수정
+
 
 

@@ -36,20 +36,20 @@ Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboa
 
 // 간트차트
 Route::get('/ganttchart', [GanttChartController::class,'index']);
+// Route::post()
 
 // Friend 
 Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest');
 Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests'])->name('friend.Requests');
 Route::patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']);
-Route::get('/rejectFriendRequestview', [FriendRequestController::class, 'rejectFriendRequest'] );
-
+Route::patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']);
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
 Route::post('/create', [ProjectController::class,'mainstore'])->name('create.post');
 
 // 프로젝트 개인/팀 화면
-Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
+Route::get('/individual/{user_id}', [ProjectController::class,'mainshow'])->name('individual.get');
 // Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
 Route::get('/project_team', function () {
     return view('/project_team');
