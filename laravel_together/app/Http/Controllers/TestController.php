@@ -74,6 +74,7 @@ class TestController extends Controller
 
     public function view($id){
         $result['task'] = Task::task_detail($id);
+        $result['parents'] = Task::task_detail_parents($id);
         $result['children'] = Task::task_detail_children($id);
         $result['comment'] = Task::task_detail_comment($id);
 
