@@ -18,6 +18,23 @@ class FriendRequestController extends Controller
         $receiverEmail = $request->input('receiver_email'); // 입력된 이메일 주소
         $sender = Auth::user(); // 현재 사용자 정보
 
+        // 입력하지 않았을 때
+        if (empty($receiverEmail)) {
+            return response()->json([
+                'success' => false, 
+                'message' => '이메일을 입력하세요.',
+            ]);
+        }
+
+        // 이메일 형식 검사
+        $emailRegex = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
+
+        if (!preg_match($emailRegex, $receiverEmail)) {
+            return response()->json([
+                'success' => false, 
+                'message' => '올바른 이메일 형식이 아닙니다.']);
+        }
+
         // 수신자 정보 찾기 (이메일 중복방지)
         try {
             $receiver = User::where('email', $receiverEmail)->firstOrFail();
@@ -28,24 +45,6 @@ class FriendRequestController extends Controller
             ]);
         }
 
-        // // 입력하지 않았을 때
-        // if (empty($receiverEmail)) {
-        //     return response()->json([
-        //         'success' => false, 
-        //         'message' => '이메일을 입력하세요.',
-        //     ]);
-        // }
-
-        // // 이메일 형식 검사
-        // $emailRegex = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
-
-        // if (!preg_match($emailRegex, $receiverEmail)) {
-        //     return response()->json([
-        //         'success' => false, 
-        //         'message' => '올바른 이메일 형식이 아닙니다.']);
-        // }
-
-
         // 자신에게 친구요청
         if ($sender->id === $receiver->id) {
             return response()->json([
@@ -54,7 +53,7 @@ class FriendRequestController extends Controller
         }
 
          // 이미 친구인지 확인
-         if ($sender->isFriendWith($receiver)) {
+        if ($sender->isFriendWith($receiver)) {
             return response()->json([
                 'success' => false, 
                 'message' => '이미 친구입니다.']);
@@ -109,12 +108,6 @@ class FriendRequestController extends Controller
         // 현재 로그인한 사용자의 ID
         $userId = Auth::id();
 
-        // 친구 요청을 보낸 사용자 목록
-        // $friendRequestlist = User::find($userId)->friendRequeststo()
-        // ->where('status', 'pending')
-        // ->with('from_user')
-        // ->get();
-
         $friendRequestlist = DB::table('friend_requests')
         ->join('users', 'users.id', '=', 'friend_requests.from_user_id')
         ->select('users.id', 'users.name', 'users.email')
@@ -133,19 +126,40 @@ class FriendRequestController extends Controller
             'friendRequestCount' => $friendRequestCount,
         ]);
     }
-
+    // 친구요청 거절
     public function rejectFriendRequest(Request $request)
     {
+
+    $userId = Auth::id();
     // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 등의 작업 수행
     $requestData = $request->json()->all();
     $requestId = $requestData['requestId'];
-    
-    // 예시: FriendRequest 모델을 사용하여 업데이트
-    $friendRequest = FriendRequest::find($requestId);
-    
-    if ($friendRequest) {
-        $friendRequest->status = 'rejected';
-        $friendRequest->save();
+
+    if($requestId) {
+        DB::table('friend_requests')
+        ->where('from_user_id', $requestId)
+        ->where('to_user_id', $userId)
+        ->update(['status' => 'rejected']);
+
+        return response()->json(['success' => true, 'message' => 'Friend request rejected.']);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Friend request not found.']);
+    }
+    }
+    // 친구요청 수락
+    public function acceptFriendRequest(Request $request)
+    {
+
+    $userId = Auth::id();
+    // 요청에서 받은 requestId를 사용하여 데이터베이스 업데이트 등의 작업 수행
+    $requestData = $request->json()->all();
+    $requestId = $requestData['requestId'];
+
+    if($requestId) {
+        DB::table('friend_requests')
+        ->where('from_user_id', $requestId)
+        ->where('to_user_id', $userId)
+        ->update(['status' => 'rejected']);
 
         return response()->json(['success' => true, 'message' => 'Friend request rejected.']);
     } else {
@@ -153,3 +167,4 @@ class FriendRequestController extends Controller
     }
     }
 }
+

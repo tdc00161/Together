@@ -65,13 +65,13 @@ function mcloseModal() {
 // 모달 닫기 함수
 function fcloseModal() {
     document.getElementById('friend-Modal').style.display = 'none';
-
     resetModal();
 }
 
 // 모달 메세지 초기화 함수
 function resetModal() {
     messageContainer.innerHTML = '';  // 메세지 초기화
+    inputdiv.value = '';
 }
 // ------------------------ 친구 요청 목록 -------------------------
 
@@ -119,6 +119,7 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
         for (var i = 0; i < friendRequests.length; i++) {
             var friendRequest = friendRequests[i];
 
+            noticecount.textContent = 0;
             noticecount.textContent = friendRequestCount;
 
             // friend-request-div > messenger-user-div, m-received-bg
@@ -136,10 +137,10 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
             userDiv.appendChild(userprofilediv);
 
             // 1. 이미지 추가
-             var userprofileImg = document.createElement('img');
-             userprofileImg.src = '/img/profile-img.png';
+            var userprofileImg = document.createElement('img');
+            userprofileImg.src = '/img/profile-img.png';
 
-             userprofilediv.appendChild(userprofileImg);
+            userprofilediv.appendChild(userprofileImg);
 
             // 2. 이름 추가
             var username = document.createElement('p');
@@ -164,7 +165,7 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
 
             refusebtn.addEventListener('click', function () {
                 var requestId = this.value;
-
+                noticecount.textContent = friendRequestCount-1;
                 // AJAX 요청 수행
                 fetch('/rejectFriendRequest', {
                     method: 'PATCH',
@@ -183,6 +184,7 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
                 .then(data => {
                     // 성공 응답을 받았을 때 처리
                     console.log('Success: Friend request rejected.', data);
+                    
                     var specificDivId = 'user_pk' + requestId; // 예시: div_123
                     var specificDiv = document.getElementById(specificDivId);
                     
@@ -215,6 +217,7 @@ function displayFriendRequests(friendRequests, friendRequestCount) {
 // -------------------------- 친구 요청 ----------------------------
 const submitBtn = document.getElementById('submitBtn');
 const messageContainer = document.querySelector('.request-message');
+const inputdiv = document.querySelector('#receiver_email');
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 submitBtn.addEventListener('click', function (event) {
