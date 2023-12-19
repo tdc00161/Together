@@ -15,12 +15,16 @@
 
     .accordion-button:not(.collapsed) {
         background-color: transparent;
+        color: white;
+        border-color: white;
     }
 
     .accordion-button:focus {
-        /* bor */
-        
+        border-color: transparent;
+        box-shadow: none;
+        /* background-color: #e2e2e288; */
     }
+
     .accordion-button:not(.collapsed)::after {
         background-image: url(/img/icon-uparrow.png);
         transform: none;
@@ -46,15 +50,15 @@
         }
 
         .m-modal-content {
-            min-width: 360px;
-            width: 30%;
+            min-width: 460px;
+            width: 460px;
             height: 100%;
             position: absolute;
             right: 0px;
             /* padding-top: 10px; */
             /* transform: translate(-50%, -50%); */
-            background: var(--scrollbar-bg);
-            border-radius: 5px;
+            background: #181818;
+            border-radius: 14px 0px 0px 14px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
             max-height: 100vh; /* 최대 높이 설정 */
@@ -173,8 +177,8 @@ button {
     color: var(--popup-bg);
     float: right;
     line-height: 35px;
-    margin-top: 2px;
     font-weight: bold;
+    margin-right: 7px;
 }
 .search-icon {
     float: right;

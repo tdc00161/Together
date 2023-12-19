@@ -166,7 +166,7 @@ function friendRequestList() {
 
                 // 메세지 출력
                 emptyRequesMsg.classList.add('empty-msg-css');
-                emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                emptyRequesMsg.innerHTML = '요청 없음';
                 emptydiv.appendChild(emptyRequesMsg);
 
             // !0 :
@@ -249,7 +249,7 @@ function displayFriendRequests(friendRequests) {
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptyRequesMsg.innerHTML = '요청 없음';
                     emptydiv.appendChild(emptyRequesMsg);
                 }
 
@@ -302,7 +302,7 @@ function displayFriendRequests(friendRequests) {
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptyRequesMsg.innerHTML = '요청 없음';
                     emptydiv.appendChild(emptyRequesMsg);
                 }
 
@@ -370,6 +370,9 @@ function friendSendList() {
 
             // 0 :
             if (friendSendlist === 0) {
+                emptyRequesMsg.classList.add('empty-msg-css');
+                emptyRequesMsg.innerHTML = '요청 없음';
+                emptydiv.appendChild(emptyRequesMsg);
             // !0 :
             } else {
                 // 친구 요청 보낸 목록 함수 실행
@@ -441,7 +444,7 @@ function displayFriendsends(friendSendlist) {
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptyRequesMsg.innerHTML = '요청 없음';
                     emptydiv.appendChild(emptyRequesMsg);
                 }
 

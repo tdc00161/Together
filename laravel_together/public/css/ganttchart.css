@@ -245,7 +245,7 @@
 /* 간트차트 section 업무 영역 */
 .gantt-all-task {
 	display: flex;
-	height: 94%;
+	/* height: 94%; */
 }
 
 .gantt-task-wrap {
@@ -264,11 +264,23 @@
 	height: 30px;
 }
 
-.gantt-task-header div {
+.gantt-task-header .gantt-task-header-div {
 	width: 20%;
 	border-right: 1px solid var(--inactive-color);
 	padding: 3px 0px;
 	height: 30px;
+}
+.gantt-order {
+
+}
+.gantt-order-div {
+	display: none;
+    /* width: fit-content; */
+    position: absolute;
+    border: 1px solid #fff;
+    background-color: #000;
+    z-index: 1;
+    /* margin-left: 17px; */
 }
 .gantt-task-body {
 
