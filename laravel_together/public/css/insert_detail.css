@@ -61,7 +61,14 @@
 	/* height: 645px; */
 }
 
- .task_modal>div {
+ .task_modal>div:nth-child(1) {
+	/* 배치 */
+	/* 내부 */
+	/* 크기 */
+	width: 100%;
+	height: 8%;
+}
+ .task_modal>div:nth-child(3) {
 	/* 배치 */
 	/* 내부 */
 	/* 크기 */
@@ -75,6 +82,7 @@
 	padding: 20px;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	/* 크기 */
 }
 
@@ -84,7 +92,7 @@
 	/* 내부 */
 	overflow: auto;
 	/* 크기 */
-	height: 80%;
+	height: 82%;
 }
 
 .task_modal>div:nth-child(2):not(.noline) {
@@ -467,7 +475,7 @@
 	border-radius: 7px;
 }
 
-.task_modal .content>.property>.add_box:not(.priority)>div:nth-child(2) {
+.task_modal .content>.property>.add_box>div:nth-child(2) { /* :not(.priority) 뺌 231219*/
 	/* 배치 */
 	/* 내부 */
 	background-color: #c7c7c7;
@@ -642,7 +650,7 @@
 	resize: none;
 	/* 크기 */
 	width: 90%;
-	height: 238px;
+	height: 280px;
 }
 
 .task_modal .comment {
@@ -834,6 +842,7 @@
 	align-items: center;
 	background-color: white;
 	font-size: 14px;
+	color: black;
 	/* 크기 */
 	width: 25%;
 	height: 80%;

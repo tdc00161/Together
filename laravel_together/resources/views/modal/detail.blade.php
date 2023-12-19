@@ -1,5 +1,5 @@
 <div class="task_modal detail_modal" style='display: none;'>
-	<div class="header">
+	<div class="header task_modal_header">
 		<div>
 			<div class="project_color"></div>
 			<div class="project_name">Project1</div>
@@ -14,7 +14,7 @@
 					<div class="task_name parent" style="display: none">> parent</div>
 				</div>
 			</div>
-			<div class="header">
+			<div class="header task_modal_header">
 				<div>
 					<div class="user_profile"></div>
 					<div class="wri_name">User</div>
@@ -70,7 +70,6 @@
 					<div>
 						<div class="priority_icon"></div>
 						<div class="priority_val">보통</div>
-						<div></div>
 					</div>
 					{{-- <div class="add_box_mgin">우선순위변경</div> --}}
 				</div>

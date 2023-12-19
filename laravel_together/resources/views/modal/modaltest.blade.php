@@ -7,6 +7,8 @@
 
 <body>
     @section('main')
+    <button onclick="openTaskModal(0,1)">공지작성</button>
+    <button onclick="openTaskModal(0,0)">업무추가</button>
         @forelse ($data as $item)
             <p>
                 프로젝트 명 : <span class="project_detail">{{$item->project_title}}</span>

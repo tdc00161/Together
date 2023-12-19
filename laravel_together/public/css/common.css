@@ -194,7 +194,7 @@ body.light-mode .video-bg:before {
  font-weight: 500;
 }
 
-:not(.task_modal) .header {
+.header:not(.task_modal_header) {
  display: flex;
  align-items: center;
  flex-shrink: 0;
