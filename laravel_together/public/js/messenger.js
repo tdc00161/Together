@@ -1,3 +1,8 @@
+//  0일때 msg 표시
+var emptydiv = document.getElementById('emptydiv');
+var emptyRequestMsg = document.createElement('p');
+var emptysenddiv = document.getElementById('emptysenddiv');
+
 // 초기 탭 설정
 document.getElementById('tab1').style.display = 'block';
 
@@ -129,9 +134,6 @@ submitBtn.addEventListener('click', function (event) {
 // -------------------------- 친구 요청 ----------------------------
 
 // ------------------------ 친구 요청 목록 -------------------------
-// 친구요청 0일때 msg 표시 div
-var emptydiv = document.getElementById('emptydiv');
-var emptyRequesMsg = document.createElement('p');
 
 // friend-request-div
 var friendrequestdiv = document.getElementById('friend-request-div');
@@ -162,9 +164,9 @@ function friendRequestList() {
                 friendrequestdiv.style.display = 'none';
 
                 // 메세지 출력
-                emptyRequesMsg.classList.add('empty-msg-css');
-                emptyRequesMsg.innerHTML = '요청 없음';
-                emptydiv.appendChild(emptyRequesMsg);
+                emptyRequestMsg.classList.add('empty-msg-css');
+                emptyRequestMsg.innerHTML = '요청 없음';
+                emptydiv.appendChild(emptyRequestMsg);
 
             // !0 :
             } else {
@@ -245,9 +247,9 @@ function displayFriendRequests(friendRequests) {
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
-                    emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequesMsg);
+                    emptyRequestMsg.classList.add('empty-msg-css');
+                    emptyRequestMsg.innerHTML = '요청 없음';
+                    emptydiv.appendChild(emptyRequestMsg);
                 }
 
                 // AJAX 요청 수행
@@ -296,9 +298,9 @@ function displayFriendRequests(friendRequests) {
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
-                    emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequesMsg);
+                    emptyRequestMsg.classList.add('empty-msg-css');
+                    emptyRequestMsg.innerHTML = '요청 없음';
+                    emptydiv.appendChild(emptyRequestMsg);
                 }
 
                 for (var i = 0; i < friendRequests.length; i++) {
@@ -417,9 +419,9 @@ function friendSendList() {
 
             // 0 :
             if (friendSendlist === 0) {
-                emptyRequesMsg.classList.add('empty-msg-css');
-                emptyRequesMsg.innerHTML = '요청 없음';
-                emptydiv.appendChild(emptyRequesMsg);
+                emptyRequestMsg.classList.add('empty-msg-css');
+                emptyRequestMsg.innerHTML = '요청 없음';
+                emptydiv.appendChild(emptyRequestMsg);
             // !0 :
             } else {
                 // 친구 요청 보낸 목록 함수 실행
@@ -490,9 +492,9 @@ function displayFriendsends(friendSendlist) {
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
-                    emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequesMsg);
+                    emptyRequestMsg.classList.add('empty-msg-css');
+                    emptyRequestMsg.innerHTML = '요청 없음';
+                    emptydiv.appendChild(emptyRequestMsg);
                 }
 
                 // AJAX 요청 수행

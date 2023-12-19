@@ -54,14 +54,16 @@
     <div class="accordion-item bg-op100">
       <h2 class="accordion-header bg-op100" id="panelsStayOpen-headingOne">
         <button class="accordion-button bg-op100 padding-0 m-side-title-div " type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-            {{-- side title : 친구요청 --}}
+            {{-- side title : 친구 요청 --}}
             <p class="m-side-title">친구 요청</p><div id="noticecount" class="notice-count"></div>
         </button>
       </h2>
       <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
         <div class="accordion-body padding-0">
-            <div id="emptydiv"></div> <!-- 친구요청 없을때 msg -->
-            <div id="friend-request-div"> </div> <!-- 친구 요청 받은 목록 -->
+            <!-- 0 -->
+            <div id="emptydiv"></div>
+            <!-- 친구 요청 받은 목록 div -->
+            <div id="friend-request-div"></div>
         </div>
       </div>
     </div>
@@ -69,11 +71,15 @@
     <div class="accordion-item bg-op100">
       <h2 class="accordion-header bg-op100" id="panelsStayOpen-headingTwo">
         <button class="accordion-button bg-op100 padding-0 m-side-title-div" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            {{-- side title : 내가 보낸 요청 --}}
             <p class="m-side-title">내가 보낸 요청</p>
         </button>
       </h2>
       <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
         <div class="accordion-body padding-0">
+            <!-- 0 -->
+            <div id="emptysenddiv"></div>
+            <!-- 내가 보낸 요청 div -->
             <div id="friend-send-div">
         </div>
       </div>
@@ -82,13 +88,16 @@
     <div class="accordion-item bg-op100">
       <h2 class="accordion-header bg-op100" id="panelsStayOpen-headingThree">
         <button class="accordion-button bg-op100 padding-0 m-side-title-div" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-            {{-- side title : 현재활동중 --}}
+            {{-- side title : 친구 목록 --}}
             <p class="m-side-title">친구 목록</p>
         </button>
       </h2>
       <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree">
         <div class="accordion-body padding-0">
-            <div id="friend-list-div"> </div> <!-- 친구 목록 -->
+            <!-- 0 -->
+            <div id="emptyfrienddiv"></div>
+            <!-- 친구 목록 div -->
+            <div id="friend-list-div"> </div> 
         </div>
       </div>
     </div>
