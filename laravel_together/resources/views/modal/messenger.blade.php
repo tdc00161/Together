@@ -41,7 +41,7 @@
   </ul> --}}
     <div class="friend-searchbar-div">
     <div class="friend-searchbar">
-        <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색" onkeyup="friendsearch()"> 
+        <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
     <button class="search-icon"><img src="/img/icon-search.png" alt=""></button>
     </div>
     {{-- 친구 추가 버튼 --}}
