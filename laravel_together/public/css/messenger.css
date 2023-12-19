@@ -15,12 +15,16 @@
 
     .accordion-button:not(.collapsed) {
         background-color: transparent;
+        color: white;
+        border-color: white;
     }
 
     .accordion-button:focus {
-        /* bor */
-        
+        border-color: transparent;
+        box-shadow: none;
+        /* background-color: #e2e2e288; */
     }
+
     .accordion-button:not(.collapsed)::after {
         background-image: url(/img/icon-uparrow.png);
         transform: none;
@@ -53,8 +57,8 @@
             right: 0px;
             /* padding-top: 10px; */
             /* transform: translate(-50%, -50%); */
-            background: var(--scrollbar-bg);
-            border-radius: 5px;
+            background: #181818;
+            border-radius: 35px 0px 0px 35px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
             max-height: 100vh; /* 최대 높이 설정 */
