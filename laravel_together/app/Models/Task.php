@@ -126,6 +126,7 @@ class Task extends Model // 업무/공지
             tsk.id
             ,tsk.project_id
             ,pj.project_title
+            ,pj_clr.data_content_name project_color
             ,tsk.task_responsible_id
             ,res.name res_name
             ,tsk.task_writer_id
@@ -161,6 +162,9 @@ class Task extends Model // 업무/공지
           JOIN basedata base3 
             ON tsk.category_id = base3.data_content_code
             AND base3.data_title_code = '2'
+          JOIN basedata pj_clr 
+            ON pj.color_code_pk = pj_clr.data_content_code
+            AND pj_clr.data_title_code = '3'
         WHERE tsk.id = " . $id
     );
 
@@ -173,7 +177,7 @@ class Task extends Model // 업무/공지
     $result = [];
     // depth 값을 보고 셀렉트 결정
     if ($depth !== '0') {
-      $result[] = DB::select(
+        $parent = DB::select(
         "SELECT 
         tsk.id
         ,res.name responsible_name
@@ -197,9 +201,10 @@ class Task extends Model // 업무/공지
           AND pri.data_title_code = 1"
         . " LIMIT 1 "
       );
+      $result[] = $parent[0];
     }
     if ($depth !== '1') {
-        $result[] = DB::select(
+        $grandParent[] = DB::select(
             "SELECT 
           tsk.id
           ,res.name responsible_name
@@ -222,8 +227,9 @@ class Task extends Model // 업무/공지
             AND pri.data_title_code = 1"
         . " LIMIT 1 "
       );  
+      $result[] = $grandParent[0][0];
     }
-    return $result;
+    return $result; // [0]이 바로 상위, [1]이 상상위
   }
 
   // 하위업무 데려오기

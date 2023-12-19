@@ -249,6 +249,7 @@
 	right: 0;
 	top: 24px;
 	/* 내부 */
+	background-color: #8F8F8F;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -676,6 +677,13 @@
 	/* 크기 */
 }
 
+.task_modal .comment>div>.comment_content .delete_comment {
+	/* 배치 */
+	margin-right: 11px;
+	/* 내부 */
+	/* 크기 */
+}
+
 .task_modal .comment>div>.comment_content>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
@@ -739,7 +747,7 @@
 
 .task_modal .comment .comment_content .comment_line {
 	/* 배치 */
-	margin: 0 0;
+	margin: 0 11px 0 0;
 	/* 내부 */
 	font-size: 12.5px;
 	font-weight: lighter;
