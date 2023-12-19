@@ -15,18 +15,18 @@
             <div>
                 <input class="title" type="text" name="project_title" placeholder="프로젝트명" value="{{$result->project_title}}">
                 {{-- <br> --}}
-                <textarea class="content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
+                <textarea class="content" name="project_content" id="content" placeholder="설명"></textarea>
             </div>    
         </div>    
         <div class="date_set">
             <label for="d_day"> D-day
-                <span class="date" id="dday" value="{{$result->dday}}"></span>
+                <span class="date" id="dday">{{$result->dday}}</span>
             </label>
             <label for="start_date"> 시작일
-                <input class="date" type="date" name="start_date" id="start_date" value="{{$result->start_date}}" onchange="total()">
+                <input class="date" type="date" name="start_date" id="start_date" onchange="total()">
             </label>
             <label for="end_date"> 마감일
-                <input class="date" type="date" name="end_date" id="end_date" value="{{$result->end_date}}" onchange="total()">
+                <input class="date" type="date" name="end_date" id="end_date" onchange="total()">
             </label>
         </div>
     </div>
@@ -153,6 +153,10 @@
                 </table>
             </div>
         </div>
+    </div>
+    <!-- {{-- 다크모드 --}} -->
+    <div class="dark-light">
+        <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
     </div>
 </div>
 
