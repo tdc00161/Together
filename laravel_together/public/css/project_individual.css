@@ -71,6 +71,7 @@
 .date_set {
     display: flex;
     align-items: flex-end;
+    color: black;
 }
 
 .date {
@@ -78,6 +79,7 @@
     height: 30px;
     padding-left: 10px;
     border: none;
+    color: black;
     background-color: transparent;
 }
 
@@ -268,7 +270,7 @@ table {
 }
 
 .col1 {
-    width: 10%;
+    width: 7%;
 }
 
 .col2 {
@@ -281,6 +283,10 @@ table {
 
 .col4 {
     width: 20%;
+}
+
+.col5 {
+    width: 3%;
 }
 
 /* 클릭 가능 */
