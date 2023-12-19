@@ -113,7 +113,25 @@ function openTaskModal(a, b = 0, c) { // (작성/상세, 업무/공지, 출력�
 			WRITER_NAME.textContent = detail_data.task[0].wri_name;
 			TASK_CREATED_AT.textContent = detail_data.task[0].created_at;
 			TASK_TITLE.textContent = detail_data.task[0].title;
+			// 업무상태 값과 색상 주기
 			DET_STATUS_VAL.textContent = detail_data.task[0].status_name;
+			switch (DET_STATUS_VAL.textContent) {
+				case '시작전':
+					DET_STATUS_VAL.style = 'background-color: #B1B1B1;';
+					break;
+				case '진행중':
+					DET_STATUS_VAL.style = 'background-color: #04A5FF;';
+					break;
+				case '피드백':
+					DET_STATUS_VAL.style = 'background-color: #F34747;';
+					break;
+				case '완료':
+					DET_STATUS_VAL.style = 'background-color: #64C139;';
+					break;
+				default:
+					DET_STATUS_VAL.style = 'background-color: #FFFFFF;'; 
+					break;
+			}
 			RESPONSIBLE_USER.textContent = detail_data.task[0].res_name;
 			if (detail_data.task[0].start_date === null || detail_data.task[0].end_date === null) {
 				DEAD_LINE[a].style = 'display: none;' // TODO: 널가능 애들 처리 동일
