@@ -5,8 +5,16 @@ const BODY = document.querySelector('body')
 const TASK_MODAL = document.querySelectorAll('.task_modal')
 // 더보기모달 (디테일)
 const MORE_MODAL = document.querySelector('.more_modal')
+// 프로젝트 색상
+const PROJECT_COLOR = document.querySelectorAll('.project_color')
 // 프로젝트명 (공통)
 const PROJECT_NAME = document.querySelectorAll('.project_name')
+// 상위 업무 틀
+const OVERHEADER = document.querySelectorAll('.overheader')
+// 상위 업무 parent
+const OVERHEADER_PARENT = document.querySelectorAll('.parent')
+// 상위 업무 grand_parent
+const OVERHEADER_GRAND_PARENT = document.querySelectorAll('.grand_parent')
 // 작성자
 const WRITER_NAME = document.querySelector('.wri_name')
 // 업무 작성일
@@ -84,7 +92,7 @@ let detail_data = {};
 STATUS_VALUE[statusValue].style = 'background-color: #1AE316'; // 전체 status 컨트롤
 
 // TODO: 바깥영역 클릭시 인서트모달 닫기
-document.addEventListener('click', function (event) { 
+document.addEventListener('click', function (event) {
 	if (BEHIND_MODAL.contains(event.target)) {
 		if (!TASK_MODAL[1].contains(event.target)) {
 			closeTaskModal(1);
@@ -94,7 +102,7 @@ document.addEventListener('click', function (event) {
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
-function openTaskModal(a, b = 0, c) { // (여닫기, 업무/공지, 출력데이터)
+function openTaskModal(a, b = 0, c) { // (작성/상세, 업무/공지, 출력데이터)
 	// 모달 값 넣기
 	// 특정 task값 가져오기
 	axios.get('/api/task/' + c)
@@ -152,9 +160,34 @@ function openTaskModal(a, b = 0, c) { // (여닫기, 업무/공지, 출력데이
 			}
 
 			// 댓글 없으면 댓글창 없애기
-			if(!COMMENT_PARENT.hasChildNodes()){
+			if (!COMMENT_PARENT.hasChildNodes()) {
 				COMMENT_PARENT.style = 'padding: 0;'
 			}
+
+			// 상위업무 초기화
+			OVERHEADER[a].style = 'display: none;'
+			OVERHEADER_PARENT[a].style = 'display: none;'
+			// OVERHEADER_GRAND_PARENT[a].style = 'display: none;'
+			// 상위업무 있는지 체크
+			if (Object.keys(detail_data).includes('parents')) {
+				// 상위업무 달아주기
+				OVERHEADER[a].style = 'display: block;'
+				// 상위업무 개수 체크
+				if (detail_data.parents.length !== 0) {
+					// 상위업무 달아주기
+					OVERHEADER_PARENT[a].textContent = ' > ' + detail_data.parents[0].title
+					OVERHEADER_PARENT[a].style = 'display: inline-block;'
+					// if (detail_data.parents.length !== 1) {
+					// 	// 상위업무 달아주기
+					// 	OVERHEADER_PARENT[a].textContent += ' > ' + detail_data.parents[1].title
+					// 	// OVERHEADER_GRAND_PARENT[a].style = 'display: inline-block;'
+					// }
+				}
+			}
+
+			// 프로젝트 색 띄우기
+
+			PROJECT_COLOR[a].style = 'background-color: ' + detail_data.task[0].project_color + ';'
 
 			// 모달 띄우기
 			TASK_MODAL[a].style = 'display: block;'
