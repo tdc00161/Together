@@ -24,8 +24,8 @@
 					<!-- 더보기 모달 -->
 					<div class="more_modal" style='display: none;'>
 						<div>
-							<div class="update_icon detail_update"></div>
-							<div class="detail_update">수정</div>
+							<div class="update_icon detail_update" onclick="updateModalOpen()"></div>
+							<div class="detail_update" onclick="updateModalOpen()">수정</div>
 						</div>
 						<div>
 							<div class="delete_icon detail_delete"></div>
