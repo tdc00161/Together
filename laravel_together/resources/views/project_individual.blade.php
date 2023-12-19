@@ -13,20 +13,20 @@
         <div class="menu_title">
             <div class="project_color"></div>
             <div>
-                <input class="title" type="text" name="project_title" placeholder="프로젝트명">{{$result->project_title}}
+                <input class="title" type="text" name="project_title" placeholder="프로젝트명" value="{{$result->project_title}}">
                 {{-- <br> --}}
                 <textarea class="content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
             </div>    
         </div>    
         <div class="date_set">
             <label for="d_day"> D-day
-                <span class="date" id="dday"></span>
+                <span class="date" id="dday" value="{{$result->dday}}"></span>
             </label>
             <label for="start_date"> 시작일
-                <input class="date" type="date" name="start_date" id="start_date" onchange="total()">
+                <input class="date" type="date" name="start_date" id="start_date" value="{{$result->start_date}}" onchange="total()">
             </label>
             <label for="end_date"> 마감일
-                <input class="date" type="date" name="end_date" id="end_date" onchange="total()">
+                <input class="date" type="date" name="end_date" id="end_date" value="{{$result->end_date}}" onchange="total()">
             </label>
         </div>
     </div>
@@ -83,13 +83,13 @@
                     <table>
                         <colgroup>
                             <col class="col1">
-                            <col class="col2">
-                            <col class="col3">
+                            {{-- <col class="col2">
+                            <col class="col3"> --}}
                         </colgroup>
                         <tr class="box_ul">
                             <th>제목</th>
-                            <th>내용</th>
-                            <th>작성자</th>
+                            {{-- <th>내용</th>
+                            <th>작성자</th> --}}
                         </tr>
                         @foreach ($data as $item)
                             <tr id="box_ul">
@@ -106,7 +106,7 @@
                         <colgroup>
                             <col class="col1">
                             <col class="col2">
-                            <col class="col3">
+                            {{-- <col class="col3"> --}}
                         </colgroup>
                         <tr class="box_ul">
                             <th>카테고리</th>
@@ -128,12 +128,14 @@
                 <div class="point_text">마감순 업무 목록</div>
                 <table>
                     <colgroup>
+                        <col class="col5">
                         <col class="col1">
                         <col class="col2">
                         <col class="col3">
                         <col class="col4">
                     </colgroup>
                     <tr class="box_ul">
+                        <th></th>
                         <th>D-day</th>
                         <th>업무명</th>
                         <th>담당자</th>
@@ -141,10 +143,11 @@
                     </tr>
                     @foreach ($data as $item)
                         <tr class="box_ul">
-                            <td>{{$item->id}}</td>
+                            <td></td>
+                            <td>{{$item->dday}}</td>
                             <td class="project_title" onclick="openTaskModal(1,0)">{{$item->title}}</td>
-                            <td>{{$item->user_id}}</td>
-                            <td>{{$item->data_content_name}}</td>
+                            <td>{{$item->task_responsible_id}}</td>
+                            <td>{{$item->status_name}}</td>
                         </tr>
                     @endforeach
                 </table>

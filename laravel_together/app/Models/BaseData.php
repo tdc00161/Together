@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\Task;
 
 class BaseData extends Model // 데이터
 {
@@ -18,10 +19,10 @@ class BaseData extends Model // 데이터
      * @var array<int, string>
      */
     protected $fillable = [
-        'class1',
-        'class1_name',
-        'class2',
-        'class2_name',
+        'data_title_code',
+        'data_title_name',
+        'data_content_code',
+        'data_content_name',
     ];
 
     /**

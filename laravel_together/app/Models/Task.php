@@ -21,9 +21,9 @@ class Task extends Model // 업무/공지
    */
   protected $fillable = [
     'project_id',
-    'responsible_id',
-    'writer_id',
-    'status_id',
+    'task_responsible_id',
+    'task_writer_id',
+    'task_status_id',
     'priority_id',
     'category_id',
     'task_number',
@@ -33,6 +33,7 @@ class Task extends Model // 업무/공지
     'content',
   ];
 
+  protected $primaryKey = 'id';
   /**
    * The attributes that should be hidden for serialization.
    *
