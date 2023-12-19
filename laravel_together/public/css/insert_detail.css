@@ -39,7 +39,8 @@
 	left: 0;
     top: 0;
 	/* 내부 */
-	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(100px);
+    background: var(--scrollbar-bg);
 	/* 크기 */
 	width: 100%;
 	height: 100%;
@@ -52,12 +53,13 @@
 	position: absolute;
 	z-index: 2;
 	/* 내부 */
-	background-color: #8F8F8F;
+	background-color: #181818;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	/* 크기 */
-	width: 462px;
+	width: 460px;
+	border-radius: 14px 0 0 14px;
 	/* height: 645px; */
 }
 
@@ -98,8 +100,8 @@
 .task_modal>div:nth-child(2):not(.noline) {
 	/* 배치 */
 	/* 내부 */
-	border-bottom: 1px solid rgb(163, 163, 163);
-	border-top: 1px solid rgb(163, 163, 163);
+	border-bottom: 1px solid var(--border-color);
+	border-top: 1px solid var(--border-color);
 	/* 크기 */
 }
 
@@ -109,7 +111,7 @@
 }
 
 .task_modal>div:nth-child(2)::-webkit-scrollbar-thumb {
-	background-color: #7D7D7D;
+	background-color: var(--scrollbar-bg);
 	border-radius: 27px;
 }
 
@@ -122,7 +124,7 @@
 }
 
 .task_modal .insert_content::-webkit-scrollbar-thumb {
-	background-color: #7D7D7D;
+	background-color: var(--scrollbar-bg);
 	border-radius: 27px;
 }
 
@@ -133,7 +135,7 @@
 .task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	/* 내부 */
-	border-bottom: 1px solid rgb(163, 163, 163);
+	border-bottom: 1px solid var(--border-color);
 	padding-top: 10px;
 	/* 크기 */
 }
@@ -257,13 +259,13 @@
 	right: 0;
 	top: 24px;
 	/* 내부 */
-	background-color: #8F8F8F;
+	background-color: #181818;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	gap: 5px;
-	border: 1px solid #D4D4D4;
+	border: 1px solid var(--border-color);
 	border-radius: 5px;
 	/* 크기 */
 	width: 90px;
@@ -360,7 +362,6 @@
 	background-image: url(/img/free-icon-more-information-7151956-1.png);
 	background-position: center;
 	background-size: cover;
-	opacity: 0.7;
 	/* 크기 */
 	width: 12px;
 	height: 22px;
@@ -478,7 +479,7 @@
 .task_modal .content>.property>.add_box>div:nth-child(2) { /* :not(.priority) 뺌 231219*/
 	/* 배치 */
 	/* 내부 */
-	background-color: #c7c7c7;
+	background-color: var(--m-btn);
 	/* 크기 */
 }
 
@@ -538,7 +539,7 @@
 	/* 내부 */
 	color: white;
 	/* 크기 */
-	width: 25%;
+	width: 20%;
 }
 
 .task_modal .content>.property>.dead_line>input::placeholder {
@@ -615,7 +616,7 @@
 .task_modal .content:not(.noline)>.title {
 	/* 배치 */
 	/* 내부 */
-	border-bottom: 1px solid rgb(163, 163, 163);
+	border-bottom: 1px solid var(--border-color);
 	color: white;
 	font-size: 17px;
 	font-weight: 600;
@@ -656,7 +657,7 @@
 .task_modal .comment {
 	/* 배치 */
 	/* 내부 */
-	background-color: #737373;
+	background-color: var(--m-request-bg);
 	padding: 20px;
 	/* 크기 */
 }
@@ -672,7 +673,7 @@
 .task_modal .comment>div:not(:last-child) {
 	/* 배치 */
 	/* 내부 */
-	border-bottom: 1px solid rgb(163, 163, 163);
+	border-bottom: 1px solid var(--border-color);
 	/* 크기 */
 }
 
@@ -780,7 +781,8 @@
 	/* 내부 */
 	padding: 8px 12px;
 	resize: none;
-	border: 1px solid #D4D4D4;
+	border: 1px solid var(--border-color);
+	background-color: var(--scrollbar-bg);
 	border-radius: 5px;
 	/* 크기 */
 	width: 100%;
@@ -803,17 +805,15 @@
 .task_modal .footer>div:nth-child(3) {
 	/* 배치 */
 	/* 내부 */
-
+	background-color: var(--m-btn);
 	/* 크기 */
 	width: 75%;
-	height: 55%;
+	height: 53%;
 }
 
 .task_modal .footer .submit {
 	/* 배치 */
 	/* 내부 */
-	border: 1px solid #a4a4a4;
-	background-color: #D4D4D4;
 	color: white;
 
 	display: flex;
@@ -840,13 +840,13 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: white;
+	background-color: var(--m-btn);
 	font-size: 14px;
-	color: black;
+	color: white;
 	/* 크기 */
 	width: 25%;
 	height: 80%;
-	border-radius: 7px;
+	border-radius: 14px;
 }
 
 /* 오류 처리 */

@@ -1,5 +1,5 @@
 <div class="task_modal insert_modal" style='display: none;'>
-	<div class="header">
+	<div class="header task_modal_header">
 		<div>
 			<div class="project_color"></div>
 			<div class="project_name">Project1</div>
@@ -76,7 +76,7 @@
 		</div>
 	</div>
 	<div class="insert_footer">
-		<div class="submit">등록</div>
+		<div class="submit" onclick="store_update()">등록</div>
 	</div>
 </div>
 <div class="behind_insert_modal" style='display: none;'></div>

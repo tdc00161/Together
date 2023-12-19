@@ -298,6 +298,21 @@ function closeTaskModal(a) {
 	}
 }
 
+// 작성/등록 버튼으로 작성/수정
+function store_update(){
+	const INSERT_TITLE = document.querySelector('.insert_title')
+	const INSERT_CONTENT = document.querySelector('.insert_content')
+	console.log(INSERT_TITLE.value);
+	console.log(INSERT_CONTENT.value);
+	axios.get('')
+		.then(res => {
+			console.log(res)
+		})
+		.catch(res => {
+				detail_data = res.response.data
+		})
+}
+
 // 더보기 모달 여닫기
 function openMoreModal() {
 	MORE_MODAL.style = 'display: flex;'
