@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/task/{id}', [TestController::class, 'view']);
+Route::post('/task/{id}',[TestController::class,'store']); // 작성
+Route::put('/task/{id}',[TestController::class,'update']); // 수정
+Route::delete('/task/{id}',[TestController::class,'delete']); // 삭제

@@ -21,6 +21,8 @@ const WRITER_NAME = document.querySelector('.wri_name')
 const TASK_CREATED_AT = document.querySelector('.task_created_at')
 // 업무 제목
 const TASK_TITLE = document.querySelector('.title')
+// 업무 제목 입력
+const INSERT_TASK_TITLE = document.querySelector('.insert_title')
 // 업무상태 (공통)
 const STATUS_VALUE = document.getElementsByClassName('status_val')
 // 상세 업무 상태
@@ -30,7 +32,7 @@ const RESPONSIBLE = document.querySelectorAll('.responsible')
 // 담당자 (공통)
 const RESPONSIBLE_PERSON = document.querySelectorAll('.responsible_one')
 // 상세 업무 담당자
-const RESPONSIBLE_USER = document.querySelector('.responsible_user')
+const RESPONSIBLE_USER = document.querySelectorAll('.responsible_user')
 // 담당자 아이콘
 const RESPONSIBLE_ICON = document.querySelectorAll('.responsible_icon')
 // 담당자 추가/변경 버튼
@@ -46,7 +48,7 @@ const PRIORITY = document.querySelectorAll('.priority')
 // 우선순위 (공통)
 const PRIORITY_ONE = document.querySelectorAll('.priority_one')
 // 상세 업무 우선순위
-const PRIORITY_VAL = document.querySelector('.priority_val')
+const PRIORITY_VAL = document.querySelectorAll('.priority_val')
 // 우선순위 옆 아이콘
 // css img 입힐 때 중복이라서 flag_icon이라 적음. 담당자와 달라서 헷갈림 주의
 const PRIORITY_ICON = document.querySelectorAll('.flag_icon')
@@ -70,6 +72,9 @@ const COMMENT_ONE = document.querySelectorAll('.comment_one')
 const INPUT_COMMENT_CONTENT = document.querySelector('#comment_input')
 // 모달 배경 블러처리
 const BEHIND_MODAL = document.querySelector('.behind_insert_modal');
+// 입력용
+const INSERT_TITLE = document.querySelector('.insert_title')
+const CHECKED_STATUS = document.querySelectorAll('#checked')[0]
 
 
 // 업무상태 값 (색표시용)
@@ -84,19 +89,6 @@ let cloneResetComments = COMMENT_PARENT.cloneNode(true)
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
 let detail_id = 0;
-
-// console.log(STATUS_VALUE)
-
-
-// 우선처리들 -------------------------
-// 미출력
-// TASK_MODAL[0].style = 'display: none;'
-// TASK_MODAL[1].style = 'display: none;'
-// BEHIND_MODAL.style = 'display: none;'
-// MORE_MODAL.style = 'display: none;'
-// RESPONSIBLE_PERSON[0].style = 'display: none;'
-// PRIORITY_ONE[0].style = 'display: none;'
-// COMMENT_ONE[0].style = 'display: none;'
 
 // 기본 세팅
 STATUS_VALUE[statusValue].style = 'background-color: #1AE316'; // 전체 status 컨트롤
@@ -114,124 +106,51 @@ document.addEventListener('click', function (event) {
 // 모달 여닫기 (중복 열기 불가)
 function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터 id)
 	// 작성 모달 띄우기
-	if(a === 0){
-		// 입력창 플래그별로 길이조정
-		if(b === 0) {
-			INSERT_CONTENT.style = ''
-		}
-	}
+	// if(a === 0){
+	// 	// 입력창 플래그별로 길이조정
+	// 	if(b === 0) {
+	// 		INSERT_CONTENT.value = ''
+	// 	}
+	// }
 
 	// 상세 모달 띄우기
-	if(a === 1){
+	if (a === 1) {
 		axios.get('/api/task/' + c)
 			.then(res => {
 				// 값을 모달에 삽입
-				insertModalValue(res.data);
+				insertModalValue(res.data, a);
 
 				// 업무상태 값과 색상 주기
 				statusColor(res.data);
 
 				// 담당자 값체크, 삽입
-				responsibleName(res.data);
-				
+				responsibleName(res.data, a);
+
 				// 마감일자 값체크, 삽입
-				deadLineValue(res.data);
+				deadLineValue(res.data, a);
 
 				// 우선순위 값체크, 삽입
-				priorityValue(res.data);
+				priorityValue(res.data, a);
 
 				// 상세업무 내용 값체크, 삽입
-				modalContentValue(res.data);
+				modalContentValue(res.data, a);
 
-				
-				// 댓글창 없을 때 사라질 값 갱신선언
-				COMMENT_PARENT.style = 'padding: 20;' 
+				// 댓글 컨트롤
+				commentControl(res.data);
 
-				// 댓글창 갱신
-				COMMENT_PARENT.removeChildren
-				while (COMMENT_PARENT.hasChildNodes()) {
-					COMMENT_PARENT.removeChild(COMMENT_PARENT.firstChild);
-				} // 다 지우고 달아도 처음에 기본 댓글을 들고있기 때문에 추가하는데 상관 없나보다
-
-				// 댓글 달아주기
-				if (detail_data.comment.length) {
-					for (let i = 0; i < detail_data.comment.length; i++) {
-						// 댓글 추가용 클론 (갱신)
-						let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
-						// 댓글 부모 (갱신)
-						let refresh_comment_parent = document.querySelector('.comment')
-						// 클론한 댓글 내용 선택
-						const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
-						// 클론한 댓글 이름 선택
-						const DEFAULT_COMMENT_NAME = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.firstElementChild
-						// 클론한 댓글 투명화 지우기
-						refresh_clone_comment.removeAttribute('style')
-						// 댓글에 값 씌우기
-						DEFAULT_COMMENT_CONTENT.textContent = detail_data.comment[i].content
-						DEFAULT_COMMENT_NAME.textContent = detail_data.comment[i].user_name
-
-						// 댓글 달기
-						refresh_comment_parent.append(refresh_clone_comment)
-
-						// 삭제버튼 값 넣기
-						const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
-						const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
-						LAST_REMOVE_BTN.addEventListener('click', () => {
-							return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
-						})
-					}
-				}
-
-				// 댓글 없으면 댓글창 없애기
-				if (!COMMENT_PARENT.hasChildNodes()) {
-					COMMENT_PARENT.style = 'padding: 0;'
-				}
-
-				// 상위업무 초기화
-				OVERHEADER[a].style = 'display: none;'
-				OVERHEADER_PARENT[a].style = 'display: none;'
-				// OVERHEADER_GRAND_PARENT[a].style = 'display: none;'
-
-				// 상위업무 있는지 체크
-				if (Object.keys(detail_data).includes('parents')) {
-					// 상위업무 달아주기
-					OVERHEADER[a].style = 'display: block;'
-					// 상위업무 개수 체크
-					if (detail_data.parents.length !== 0) {
-						// 상위업무 달아주기
-						OVERHEADER_PARENT[a].textContent = ' > ' + detail_data.parents[0].title
-						OVERHEADER_PARENT[a].style = 'display: inline-block;'
-						// if (detail_data.parents.length !== 1) {
-						// 	// 상위업무 달아주기
-						// 	OVERHEADER_PARENT[a].textContent += ' > ' + detail_data.parents[1].title
-						// 	// OVERHEADER_GRAND_PARENT[a].style = 'display: inline-block;'
-						// }
-					}
-				}
+				// 상위업무 컨트롤
+				parentTaskControl(res.data, a);
 			})
-			.catch(res => {
-				detail_data = res.response.data
+			.catch(err => {
+				console.log(err.message);
 			})
 	}
 	// 모달 띄우기
-	TASK_MODAL[a].style = 'display: block;'
-	if (a === 0) {
-		BEHIND_MODAL.style = 'display: block;'
-		TASK_MODAL[1].style = 'display: none;'
-	} else {
-		BEHIND_MODAL.style = 'display: none;'
-		TASK_MODAL[0].style = 'display: none;'
-	}
+	openInsertDetailModal(a);
 	// 글/업무 플래그
-	if (b === 1) {
-		BOARD_TYPE[a * 2].classList.add('d-none');
-		BOARD_TYPE[(a * 2) + 1].classList.add('d-none');
-	} else {
-		BOARD_TYPE[a * 2].classList.remove('d-none');
-		BOARD_TYPE[(a * 2) + 1].classList.remove('d-none');
-	}
+	TaskFlg(a, b);
 }
-	
+// 모달 닫기
 function closeTaskModal(a) {
 	TASK_MODAL[a].style = 'display: none;'
 	if (a === 0) {
@@ -239,38 +158,33 @@ function closeTaskModal(a) {
 	}
 }
 
-// 작성/등록 버튼으로 작성/수정
-function store_update(){
-	const INSERT_TITLE = document.querySelector('.insert_title')
-	const INSERT_CONTENT = document.querySelector('.insert_content')
-	console.log(INSERT_TITLE.value);
-	console.log(INSERT_CONTENT.value);
-	axios.get('')
+// 등록 버튼으로 작성/수정
+function store_update() {
+	let data = { 
+		'title': INSERT_TITLE.value,
+		'content': INSERT_CONTENT.value,
+		'task_status_id': CHECKED_STATUS.textContent,
+		'task_responsible_id': RESPONSIBLE_USER[0].textContent,
+		'start_date': START_DATE[0].placeholder,
+		'end_date': END_DATE[0].placeholder,
+		'priority_id': PRIORITY_VAL[0].textContent
+	}
+	let headers = {
+		headers: { 'Content-Type': 'application/json', }
+	}
+	axios.put('/api/task/' + now_task_id, data, headers)
 		.then(res => {
-			console.log(res)
+			window.location.href = window.location.pathname;;
 		})
-		.catch(res => {
-				detail_data = res.response.data
-		})
+		.catch(err => {
+			console.log(err.message)
+		});
 }
 
 // 더보기 모달 여닫기
 function openMoreModal() {
 	MORE_MODAL.style = 'display: flex;'
 	document.addEventListener('click', function (event) {
-		// 클릭된 엘리먼트가 특정 영역 내에 속하는지 확인
-		DETAIL_DELETE = document.querySelectorAll('.detail_delete')
-			// 업무인지 아닌지에 따라 띄우는 수정창 변경
-			PROPERTY_VAL = document.querySelectorAll('.property')[1].classList
-			if (DETAIL_DELETE[0].contains(event.target) || DETAIL_DELETE[1].contains(event.target)){
-				axios.get('/api/task/' + c)
-					
-				if(PROPERTY_VAL.contains('d-none')){
-					openTaskModal(0, 1, detail_id)
-				} else {
-					openTaskModal(0, 0, detail_id)
-				}
-			}
 		if (!MORE.contains(event.target)) {
 			// 더보기 버튼 외 클릭 시
 			if (!MORE_MODAL.contains(event.target)) {
@@ -280,6 +194,7 @@ function openMoreModal() {
 		}
 	});
 }
+// 더보기 닫기
 function closeMoreModal() {
 	MORE_MODAL.style = 'display: none;'
 }
@@ -341,22 +256,26 @@ function addComment() {
 	INPUT_COMMENT_CONTENT.value = ''
 }
 
+// 오픈모달 모듈------------------------------------------------------
+
 // 값을 모달에 삽입
-function insertModalValue(data){
+function insertModalValue(data, a) {
+	if (a === 1) { // 상세
+		WRITER_NAME.textContent = data.task[0].wri_name;
+		TASK_CREATED_AT.textContent = data.task[0].created_at;
+		TASK_TITLE.textContent = data.task[0].title;
+	} else { // 작성
+		INSERT_TASK_TITLE.value = data.task[0].title;
+	}
 	PROJECT_NAME[a].textContent = data.task[0].project_title;
-	WRITER_NAME.textContent = data.task[0].wri_name;
-	TASK_CREATED_AT.textContent = data.task[0].created_at;
-	TASK_TITLE.textContent = data.task[0].title;
 	// 프로젝트 색 띄우기
 	PROJECT_COLOR[a].style = 'background-color: ' + data.task[0].project_color + ';'
 	// 더보기에 쓸 id값 숨겨두기
-	detail_id = data.task[0].id
+	now_task_id = data.task[0].id
 }
 
-
-
 // 업무상태 값과 색상 주기
-function statusColor(data){
+function statusColor(data) {
 	DET_STATUS_VAL.textContent = data.task[0].status_name;
 	switch (DET_STATUS_VAL.textContent) {
 		case '시작전':
@@ -372,25 +291,25 @@ function statusColor(data){
 			DET_STATUS_VAL.style = 'background-color: #64C139;';
 			break;
 		default:
-			DET_STATUS_VAL.style = 'background-color: #FFFFFF;'; 
+			DET_STATUS_VAL.style = 'background-color: #FFFFFF;';
 			break;
 	}
 }
 
 // 담당자 값체크, 삽입
-function responsibleName(data) {
-	if (data.task[0].res_name === null) {
-		RESPONSIBLE[a].style = 'display: none;' 
+function responsibleName(data, a) {
+	if (data.task[0].res_name !== null) {
+		RESPONSIBLE_USER[a].textContent = data.task[0].res_name;
+		RESPONSIBLE_PERSON[a].style = 'display: flex;'
 	} else {
-		RESPONSIBLE_USER.textContent = data.task[0].res_name;
-		RESPONSIBLE[a].style = 'display: flex;'
+		RESPONSIBLE_PERSON[a].style = 'display: none;'
 	}
 }
 
 // 마감일자 값체크, 삽입
-function deadLineValue(data) {
+function deadLineValue(data, a) {
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
-		DEAD_LINE[a].style = 'display: none;' // TODO: 널가능 애들 처리 동일하게 하기 (+ 우선순위)
+		DEAD_LINE[a].style = 'display: none;'
 	} else {
 		START_DATE[a].placeholder = data.task[0].start_date;
 		END_DATE[a].placeholder = data.task[0].end_date;
@@ -399,14 +318,12 @@ function deadLineValue(data) {
 }
 
 // 우선순위 값체크, 삽입
-function priorityValue(data) {
-	if (data.task[0].priority_name === null) {
-		PRIORITY[a].style = 'display: none;' 
-	} else {
-		RESPONSIBLE_USER.textContent = data.task[0].priority_name;
+function priorityValue(data, a) {
+	if (data.task[0].priority_name !== null) {
+		PRIORITY_VAL[a].textContent = data.task[0].priority_name;
 		PRIORITY[a].style = 'display: flex;'
 		// 우선순위 값별로 이미지 삽입
-		switch (PRIORITY_VAL.textContent) {
+		switch (PRIORITY_VAL[a].textContent) {
 			case '긴급':
 				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/gantt-bisang.png);'
 				break;
@@ -419,36 +336,39 @@ function priorityValue(data) {
 			case '낮음':
 				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/gantt-down.png);'
 				break;
-			default:
-				PRIORITY[a].style = 'display: none;'
-				break;
 		}
+	} else {
+		PRIORITY[a].style = 'display: none;'
 	}
 }
 
 // 상세업무 내용 값체크, 삽입
-function modalContentValue(data) {
-	if (data.task[0].content === null) {
-		DETAIL_CONTENT.textContent = '';
-	} else {					
-		DETAIL_CONTENT.textContent = data.task[0].content;
+function modalContentValue(data, a) {
+	if (a === 1) {
+		if (data.task[0].content === null) {
+			DETAIL_CONTENT.textContent = '';
+		} else {
+			DETAIL_CONTENT.textContent = data.task[0].content;
+		}
+	} else {
+		INSERT_CONTENT.value = data.task[0].content;
 	}
 }
 
 // 댓글 컨트롤
-function commentControl(){
+function commentControl(data) {
 	// 댓글창 없을 때 사라질 값 갱신선언
-	COMMENT_PARENT.style = 'padding: 20;' 
-	
+	COMMENT_PARENT.style = 'padding: 20;'
+
 	// 댓글창 갱신
 	COMMENT_PARENT.removeChildren
 	while (COMMENT_PARENT.hasChildNodes()) {
 		COMMENT_PARENT.removeChild(COMMENT_PARENT.firstChild);
 	} // 다 지우고 달아도 처음에 기본 댓글을 들고있기 때문에 추가하는데 상관 없나보다
-	
+
 	// 댓글 달아주기
-	if (detail_data.comment.length) {
-		for (let i = 0; i < detail_data.comment.length; i++) {
+	if (data.comment.length) {
+		for (let i = 0; i < data.comment.length; i++) {
 			// 댓글 추가용 클론 (갱신)
 			let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
 			// 댓글 부모 (갱신)
@@ -460,12 +380,12 @@ function commentControl(){
 			// 클론한 댓글 투명화 지우기
 			refresh_clone_comment.removeAttribute('style')
 			// 댓글에 값 씌우기
-			DEFAULT_COMMENT_CONTENT.textContent = detail_data.comment[i].content
-			DEFAULT_COMMENT_NAME.textContent = detail_data.comment[i].user_name
-	
+			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
+			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
+
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
-	
+
 			// 삭제버튼 값 넣기
 			const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
 			const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
@@ -474,7 +394,7 @@ function commentControl(){
 			})
 		}
 	}
-	
+
 	// 댓글 없으면 댓글창 없애기
 	if (!COMMENT_PARENT.hasChildNodes()) {
 		COMMENT_PARENT.style = 'padding: 0;'
@@ -482,26 +402,100 @@ function commentControl(){
 }
 
 // 상위업무 컨트롤
-function parentTaskControl(params) {
+function parentTaskControl(data, a) {
 	// 상위업무 초기화
 	OVERHEADER[a].style = 'display: none;'
 	OVERHEADER_PARENT[a].style = 'display: none;'
 	// OVERHEADER_GRAND_PARENT[a].style = 'display: none;'
-	
+
 	// 상위업무 있는지 체크
-	if (Object.keys(detail_data).includes('parents')) {
+	if (Object.keys(data).includes('parents')) {
 		// 상위업무 달아주기
 		OVERHEADER[a].style = 'display: block;'
 		// 상위업무 개수 체크
-		if (detail_data.parents.length !== 0) {
+		if (data.parents.length !== 0) {
 			// 상위업무 달아주기
-			OVERHEADER_PARENT[a].textContent = ' > ' + detail_data.parents[0].title
+			OVERHEADER_PARENT[a].textContent = ' > ' + data.parents[0].title
 			OVERHEADER_PARENT[a].style = 'display: inline-block;'
-			// if (detail_data.parents.length !== 1) {
+			// if (data.parents.length !== 1) {
 			// 	// 상위업무 달아주기
-			// 	OVERHEADER_PARENT[a].textContent += ' > ' + detail_data.parents[1].title
+			// 	OVERHEADER_PARENT[a].textContent += ' > ' + data.parents[1].title
 			// 	// OVERHEADER_GRAND_PARENT[a].style = 'display: inline-block;'
 			// }
 		}
+	}
+}
+
+// 모달 띄우기
+function openInsertDetailModal(a) {
+	TASK_MODAL[a].style = 'display: block;'
+	if (a === 0) {
+		BEHIND_MODAL.style = 'display: block;'
+		TASK_MODAL[1].style = 'display: none;'
+	} else {
+		BEHIND_MODAL.style = 'display: none;'
+		TASK_MODAL[0].style = 'display: none;'
+	}
+}
+// 글/업무 플래그
+function TaskFlg(a, b) {
+	if (b === 1) {
+		BOARD_TYPE[a * 2].classList.add('d-none');
+		BOARD_TYPE[(a * 2) + 1].classList.add('d-none');
+	} else {
+		BOARD_TYPE[a * 2].classList.remove('d-none');
+		BOARD_TYPE[(a * 2) + 1].classList.remove('d-none');
+	}
+}
+let test = null;
+// 수정 모달 값 넣기
+function updateModalOpen() {
+	axios.get('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
+		.then(res => {
+			test = res.data
+			// 값을 모달에 삽입
+			insertModalValue(res.data, 0);
+
+			// 업무상태 값과 색상 주기
+			statusColor(res.data);
+
+			// 담당자 값체크, 삽입
+			responsibleName(res.data, 0);
+
+			// 마감일자 값체크, 삽입
+			deadLineValue(res.data, 0);
+
+			// 우선순위 값체크, 삽입
+			priorityValue(res.data, 0);
+
+			// 상세업무 내용 값체크, 삽입
+			modalContentValue(res.data, 0);
+
+
+			// 댓글창 없을 때 사라질 값 갱신선언
+			COMMENT_PARENT.style = 'padding: 20;'
+
+			// 댓글 컨트롤
+			commentControl(res.data);
+
+			// 상위업무 컨트롤
+			parentTaskControl(res.data, 0);
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
+	PROPERTY_VAL = document.querySelectorAll('.property')[1].classList
+	if (PROPERTY_VAL.contains('d-none')) {
+		// 모달 띄우기
+		openInsertDetailModal(0);
+
+		// 글/업무 플래그
+		TaskFlg(0, 1);
+	} else {
+		// 모달 띄우기
+		openInsertDetailModal(0);
+
+		// 글/업무 플래그
+		TaskFlg(0, 0);
 	}
 }
