@@ -146,20 +146,33 @@ class FriendRequestController extends Controller
     }
 
     // 친구 목록
-    public function friendList()
+    public function myfriendList()
     {
         $userId = Auth::id();
 
-        $friendList = DB::table('friendlists as f')
+        $myfriendList = DB::table('friendlists as f')
         ->join('users as u', 'u.id','=', 'f.friend_id')
-        ->select('u.name', 'u.email')
+        ->select('f.friend_id', 'u.name', 'u.email')
         ->where('f.user_id', '=', $userId)
         ->orderBy('u.name', 'asc')
         ->get();
 
+        // dd($friendList);
         return response()->json([
-            '$friendList' => $friendList,
+            'myfriendList' => $myfriendList,
         ]);
+    }
+
+    // 친구 on/off 
+    public function loginUser()
+    {
+        session_start(); // 세션을 시작합니다.
+
+        // 로그인된 사용자의 정보 가져오기
+        $loggedInUser = $_SESSION['user'];
+
+        // 사용자 정보 출력 또는 활용
+        echo "Welcome, " . $loggedInUser['username'];
     }
     
     // 친구요청 취소

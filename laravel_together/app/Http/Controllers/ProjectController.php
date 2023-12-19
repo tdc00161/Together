@@ -11,6 +11,7 @@ use App\Models\BaseData;
 use App\Models\Friendlist;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+
 use Carbon\Carbon;
 
 class ProjectController extends Controller
@@ -44,6 +45,8 @@ class ProjectController extends Controller
           
         // $color_coded = array_rand($color_code,count($color_code));
 
+        
+
         // dd($color_code);
         $data= $request
                 ->only('user_pk','color_code_pk','project_title', 'project_content', 'flg', 'start_date', 'end_date');
@@ -52,7 +55,21 @@ class ProjectController extends Controller
         // $data['color_code_pk'] = $color_code->data_content_name;
         $data['color_code_pk'] = $color_code->data_title_code;
         // dd($data);
-            
+
+        // $start = $data['start_date'];
+        // $start = Carbon::create($data['start_date']);
+        // $end = Carbon::create($data['end_date']);
+        // $dday[] = $start->diffInDays($end);
+
+        foreach ($data as $items) {
+          $start = Carbon::create($data['start_date']);
+          $end = Carbon::create($data['end_date']);
+          // $dday[] = $start->diffInDays($end);
+          $data['dday'] = $start->diffInDays($end); // data에 dday 추가
+        }
+        // dd($data);
+
+
 
         $result = Project::create($data);
         // dd($result);
@@ -65,44 +82,101 @@ class ProjectController extends Controller
         //     'end_date' =>'',
         // ]);
 
-        return redirect()->route('individual.get',['user_id' => $user_id['id']]);
+        if ($result->flg == '0'){
+          return redirect()->route('individual.get',['id' => $user_id['id']]);
+        } elseif ($result->flg == '1'){
+          return redirect()->route('team.get',['id' => $user_id['id']]);
+        } else {
+          return '다시 확인해주세요';
+        }
 
     }
 
 
-    public function mainshow(Request $request, $user_id) {
+    public function mainshow($id) {
         
+        $result = project::find($id);
+
+
         $tkdata = DB::table('projects')
-                  -> select('tasks.project_id',
-                            'tasks.task_responsible_id',
-                            'tasks.title',
-                            'tasks.content',
-                            'tasks.category_id',
-                            'projects.start_date',
-                            'projects.end_date',
-                            'base1.data_content_name status_name',
-                            'base2.data_content_name category_name',
-                            )
-                  -> join('tasks', function($join) {
-                    $join->on('tasks.projects.id','=','projects.id')->where('projects.user_pk', '=', $user_id);
-                  })
-                  -> join('basedata base1', function($base1){
-                    $join->on('base1.data_content_code','=','tasks.task_status_id')->where('base1.data_title_code', '=', '0');
-                  })
-                  -> join('basedata base2', function($base2){
-                    $join->on('base2.data_content_code','=','tasks.category_id')->where('base2.data_title_code', '=', '2');
-                  })
-                  -> get();
-        dd($tkdata);
+                      -> select('tasks.id',
+                                'projects.user_pk',
+                                'tasks.project_id',
+                                'tasks.task_responsible_id',
+                                'tasks.title',
+                                'tasks.content',
+                                'tasks.category_id',
+                                'tasks.start_date',
+                                'tasks.end_date',
+                                'base1.data_content_name as status_name',
+                                'base2.data_content_name as category_name',
+                                )
+                      -> join('tasks', function($join) {
+                        $join->on('tasks.project_id','=','projects.id')->where('projects.user_pk', '=', 7);
+                      })
+                      -> join('basedata as base1', function($base1){
+                        $base1->on('base1.data_content_code','=','tasks.task_status_id')->where('base1.data_title_code', '=', '0');
+                      })
+                      -> join('basedata as base2', function($base2){
+                        $base2->on('base2.data_content_code','=','tasks.category_id')->where('base2.data_title_code', '=', '2');
+                      })
+                      -> get();
+        // dd($tkdata);
+        // $projectdata = DB::table('projects')
+        //               -> select('projects.user_pk',
+        //                         'projects.start_date',
+        //                         'projects.end_date',
+        //                         'tasks.project_id',
+        //                         'tasks.task_responsible_id',
+        //                         'tasks.title',
+        //                         'tasks.content',
+        //                         'tasks.category_id'
+        //               )
+        //               -> join('tasks', function($join) {
+        //                 $join->on('tasks.project_id','=','projects.id')->where('projects.user_pk', '=', 7);
+        //               })
+        //               -> get();
+        // dd($projectdata);
 
-        $start = project::start_date();
-        dd($start);
-        $end = parse($data->end_date);
+        // $statusdata = DB::table('tasks')
+        //                   -> select('data_content_name')
+        //                   -> join('basedata', function($base1){
+        //                     $base1->on('data_content_code','=','tasks.task_status_id')->where('data_title_code', '=', '0');
+        //                   })
+        //                   // -> join('basedata', function($base2){
+        //                   //   $base2->on('data_content_code','=','tasks.category_id')->where('data_title_code', '=', '2');
+        //                   // })
+        //                   -> get();
+        // // dd($statusdata);
 
-        $dday = $start->diffInDays($end);
+        // $categorydata = DB::table('tasks')
+        //                     -> select('data_content_name')
+        //                     // -> join('basedata', function($base1){
+        //                     //   $base1->on('data_content_code','=','tasks.task_status_id')->where('data_title_code', '=', '0');
+        //                     // })
+        //                     -> join('basedata', function($base2){
+        //                       $base2->on('data_content_code','=','tasks.category_id')->where('data_title_code', '=', '2');
+        //                     })
+        //                     -> get();
+          // dd($categorydata);
 
-        $result = project::find($user_id);
+        // 업무 시작/마감일자 d-day 설정
+        foreach ($tkdata as $items) {
+          $start = Carbon::create($items->start_date);
+          $end = Carbon::create($items->end_date);
+          // $dday[] = $start->diffInDays($end);
+          $items->dday = $start->diffInDays($end); // tkdata에 dday 추가
+        }
+        // dd($tkdata);
+
+
+
+
         // dd($result);
+
+        // $data2 = if ($tkdata->category_id = 0) {
+          
+        // }
 
         return view('project_individual')->with('result',$result)->with('data',$tkdata);
     }
