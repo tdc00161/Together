@@ -93,6 +93,7 @@
                 <div class="gantt-task-header">
                     <div class="gantt-task-header-div" onclick="orderDropdown('orderTask')">
                         <span class="gantt-order">업무명</span>
+                        <img src="/img/table.png" alt="">
                         <div class="gantt-order-div" id="orderTaskDropdown">
                             <button class="gantt-order-task">오름차순</button>
                             <br>

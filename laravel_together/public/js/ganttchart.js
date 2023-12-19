@@ -56,41 +56,6 @@ function orderDropdown(category) {
 // ************* 체크박스 필터링
 
 
-
-// ************* 업무상태 색상
-document.addEventListener('DOMContentLoaded', function() {
-  var elements = document.querySelectorAll('.gantt-status-color');
-
-  elements.forEach(function(element) {
-      var status = element.getAttribute('data-status');
-      var backgroundColor;
-
-      switch (status) {
-          case '시작전':
-              backgroundColor = '#B1B1B1';
-              break;
-          case '진행중':
-              backgroundColor = '#04A5FF';
-              break;
-          case '피드백':
-              backgroundColor = '#F34747';
-              break;
-          case '완료':
-              backgroundColor = '#64C139';
-              break;
-          default:
-              backgroundColor = '#FFFFFF'; // 기본값 설정
-              break;
-      }
-
-      element.style.backgroundColor = backgroundColor;
-  });
-});
-
-
-
-
-
 // ************* 스크롤 한번에
 
 
@@ -110,40 +75,40 @@ function addSubTask(mainId) {
   // 새로운 gantt-task 요소 생성
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
   const newTask = document.createElement('div');
-  newTask.classList = 'gantt-task';
+  newTask.classList.add('gantt-task');
   newTask.id = 'gantt-task-800';
   
   // gantt-task 안에 5개 div 생성
   // <div class="gantt-editable-div editable"></div>
   const addGanttEditableDiv = document.createElement('div');
-  addGanttEditableDiv.classList = 'gantt-editable-div editable';
-  addGanttEditableDiv.setAttribute('onmouseover', e => showDropdown(this));
-  addGanttEditableDiv.setAttribute('onmouseout', e => hideDropdown(this));
+  addGanttEditableDiv.classList.add('gantt-editable-div', 'editable');
+  addGanttEditableDiv.setAttribute('onmouseover', 'showDropdown(this)');
+  addGanttEditableDiv.setAttribute('onmouseout', 'hideDropdown(this)');
 
   // <span class="taskKey">{{$item->id}}</span>
   const addTaskKey = document.createElement('span');
-  addTaskKey.classList = 'taskKey';
-  addTaskKey.textContent = '800 '; 
+  addTaskKey.classList.add('taskKey');
+  addTaskKey.textContent = '800'; 
 
   // <span class="taskName editable-title">{{$item->title}}</span>
   const addTaskName = document.createElement('span');
-  addTaskName.classList = 'taskName editable-title';
+  addTaskName.classList.add('taskName', 'editable-title');
   addTaskName.textContent = '업무명'; 
 
   // <div class="gantt-detail"></div>
   const addGanttDetail = document.createElement('div');
-  addGanttDetail.classList = 'gantt-detail';
+  addGanttDetail.classList.add('gantt-detail');
 
   // <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
   const addDetailButton = document.createElement('button');
-  addDetailButton.classList = 'gantt-detail-btn';
+  addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
-  addDetailButton.setAttribute('onclick', e => openTaskModal(1));
+  addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
   
 
   // <div class="gantt-dropdown">{{$item->name}}</div>
   const addUserName = document.createElement('div');
-  addUserName.classList = 'gantt-dropdown';
+  addUserName.classList.add('gantt-dropdown');
   addUserName.textContent = '담당자';
 
   //  <div>
@@ -153,11 +118,10 @@ function addSubTask(mainId) {
 
   //  <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
   const addStatusColor = document.createElement('div');
-  addStatusColor.classList = 'gantt-status-color';
-  // addStatusColor.setAttribute('data-status', '시작전');
-  addStatusColor.dataset.status = '시작전';
+  addStatusColor.classList.add('gantt-status-color');
+  addStatusColor.setAttribute('data-status', '시작전');
+  // addStatusColor.dataset.status = '시작전';
   addStatusColor.textContent = '시작전';
-  console.log(addStatusColor);
 
   // <div>
   //    <input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}">
@@ -169,7 +133,7 @@ function addSubTask(mainId) {
   addTaskStartDate.type = 'date';  
   addTaskStartDate.name = 'start';  
   addTaskStartDate.id = 'start-row800';
-  // addTaskStartDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨
+  // addTaskStartDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   addTaskStartDate.value = '20231201';
 
   // <div>
@@ -182,7 +146,7 @@ function addSubTask(mainId) {
   addTaskEndDate.type = 'date';  
   addTaskEndDate.name = 'end';  
   addTaskEndDate.id = 'end-row800';
-  // addTaskEndDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨
+  // addTaskEndDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   addTaskEndDate.value = '20231205';
 
 
@@ -220,7 +184,7 @@ function addSubTask(mainId) {
   const doMGanttChart = document.getElementById('gantt-chart-282'); // 원래 자리접근
   
   const newChart = document.createElement('div');
-  newChart.classList = 'gantt-chart';
+  newChart.classList.add('gantt-chart');
   newChart.id = 'gantt-chart-800';
 
   // 원래있던 282 다음에 800 생성
@@ -253,12 +217,47 @@ function addSubTask(mainId) {
   }
 
   // addEventListener 로 하는 방법
+  //
   const eventSubStartDate = document.getElementById(addTaskStartDate.id);
   const eventSubEndDate = document.getElementById(addTaskEndDate.id);
   eventSubStartDate.addEventListener('change', e => test(800));
   eventSubEndDate.addEventListener('change', e => test(800));
+
+  
   // --- 차트 부분 생성 완
 }  
+
+
+
+// ************* 업무상태 색상
+document.addEventListener('DOMContentLoaded', function() {
+  var elements = document.querySelectorAll('.gantt-status-color');
+
+  elements.forEach(function(element) {
+      var status = element.getAttribute('data-status');
+      var backgroundColor;
+
+      switch (status) {
+          case '시작전':
+              backgroundColor = '#B1B1B1';
+              break;
+          case '진행중':
+              backgroundColor = '#04A5FF';
+              break;
+          case '피드백':
+              backgroundColor = '#F34747';
+              break;
+          case '완료':
+              backgroundColor = '#64C139';
+              break;
+          default:
+              backgroundColor = '#FFFFFF'; // 기본값 설정
+              break;
+      }
+
+      element.style.backgroundColor = backgroundColor;
+  });
+});
 
 
 
@@ -336,8 +335,8 @@ function test(rowNum) {
   const start = document.getElementById('start-row' + rowNum).value;
   const end = document.getElementById('end-row' + rowNum).value;
 
-  console.log(start);
-  console.log(end);
+  // console.log(start);
+  // console.log(end);
 
   if (start && end) {
     // 추가 할 bk-row div의 데이트 포멧 변경 : yyyy-mm-dd >> yyyymmdd
