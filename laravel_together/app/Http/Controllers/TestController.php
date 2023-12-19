@@ -16,37 +16,23 @@ class TestController extends Controller
         $project = Project::project_depth();
         $depth_0 = Task::depth(0); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
         $depth_1 = Task::depth(1);
-        $depth_2 = Task::depth(2);
+        // $depth_2 = Task::depth(2);
         // 변수에 프로젝트와 하위 업무들을 다차원으로 합친다
         $data = [];
-        // foreach ($depth_1 as $key_1 => $value_1) {
-        //     foreach ($depth_2 as $key_2 => $value_2) {
-        //         if($value_1->id === $value_2->task_parent){
-        //             $value_1->depth_2[] = $value_2;
-        //         }
-        //     }
-        // }
-        // foreach ($depth_0 as $key_0 => $value_0) {
-        //     foreach ($depth_1 as $key_1 => $value_1) {
-        //         if($value_0->id === $value_1->task_parent){
-        //             $value_0->depth_1[] = $value_1;
-        //             $data[] = $value_0;
-        //         }
-        //     }
-        // }
-        foreach ($project as $key_pj => $value_pj) {
-            foreach ($depth_0 as $key_0 => $value_0) { // 위에꺼랑 속도 테스트 필요
+        foreach ($project as $value_pj) {
+            foreach ($depth_0 as $value_0) { // 위에꺼랑 속도 테스트 필요
                 if($value_pj->id === $value_0->project_id){
                     $value_pj->depth_0[] = $value_0;
-                    foreach ($depth_1 as $key_1 => $value_1) {
+                    foreach ($depth_1 as $value_1) {
                         if($value_0->id === $value_1->task_parent){
                             $value_0->depth_1[] = $value_1;
-                            foreach ($depth_2 as $key_2 => $value_2) {
-                                if($value_1->id === $value_2->task_parent){
-                                    $value_1->depth_2[] = $value_2;
-                                    $data[$value_pj->id] = $value_pj;
-                                }
-                            }
+                            $data[$value_pj->id] = $value_pj;
+                            // foreach ($depth_2 as $key_2 => $value_2) {
+                                //     if($value_1->id === $value_2->task_parent){
+                                    //         $value_1->depth_2[] = $value_2;
+                                            // $data[$value_pj->id] = $value_pj;
+                            //     }
+                            // }
                         }
                     }
                 }

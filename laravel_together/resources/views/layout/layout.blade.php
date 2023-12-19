@@ -16,9 +16,9 @@
 </head>
 <body>
   {{-- 다크모드 --}}
-  <div class="dark-light">
+  {{-- <div class="dark-light">
         <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
-  </div>
+  </div> --}}
    <div class="app">
 
     <div class="header">
