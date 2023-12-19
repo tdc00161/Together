@@ -127,6 +127,7 @@
 .gantt-search {
 	/* border: 1px solid #000; */
 	border-radius: 10px;
+	color: #000;
 }
 
 .gantt-filter {
