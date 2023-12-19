@@ -9,9 +9,9 @@
 	<div>
 		<div class="content">
 			<div class="type_task">
-				<div class="overheader">
-					<div class="task_name">> 업무1 (testTask1)</div>
-					<div class="task_name">> 업무2 (testTask2)</div>
+				<div class="overheader" style="display: none">
+					{{-- <div class="task_name grand_parent" style="display: none">> grand_parent</div> --}}
+					<div class="task_name parent" style="display: none">> parent</div>
 				</div>
 			</div>
 			<div class="header">
