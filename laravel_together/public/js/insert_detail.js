@@ -82,6 +82,8 @@ let clonePriority = PRIORITY_ONE[0].cloneNode(true)
 let cloneResetComments = COMMENT_PARENT.cloneNode(true)
 // 모달 내용 저장소
 let detail_data = {};
+// 띄운 상세 업무 id (더보기용)
+let detail_id = 0;
 
 // console.log(STATUS_VALUE)
 
@@ -110,7 +112,7 @@ document.addEventListener('click', function (event) {
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
-function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터)
+function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터 id)
 	// 작성 모달 띄우기
 	if(a === 0){
 		// 입력창 플래그별로 길이조정
@@ -132,6 +134,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 				
 				// 프로젝트 색 띄우기
 				PROJECT_COLOR[a].style = 'background-color: ' + detail_data.task[0].project_color + ';'
+
+				// 더보기에 쓸 id값 숨겨두기
+				detail_id = detail_data.task[0].id
 
 				// 업무상태 값과 색상 주기
 				DET_STATUS_VAL.textContent = detail_data.task[0].status_name;
@@ -318,6 +323,18 @@ function openMoreModal() {
 	MORE_MODAL.style = 'display: flex;'
 	document.addEventListener('click', function (event) {
 		// 클릭된 엘리먼트가 특정 영역 내에 속하는지 확인
+		DETAIL_DELETE = document.querySelectorAll('.detail_delete')
+			// 업무인지 아닌지에 따라 띄우는 수정창 변경
+			PROPERTY_VAL = document.querySelectorAll('.property')[1].classList
+			if (DETAIL_DELETE[0].contains(event.target) || DETAIL_DELETE[1].contains(event.target)){
+				axios.get('/api/task/' + c)
+					
+				if(PROPERTY_VAL.contains('d-none')){
+					openTaskModal(0, 1, detail_id)
+				} else {
+					openTaskModal(0, 0, detail_id)
+				}
+			}
 		if (!MORE.contains(event.target)) {
 			// 더보기 버튼 외 클릭 시
 			if (!MORE_MODAL.contains(event.target)) {
@@ -386,4 +403,163 @@ function addComment() {
 	})
 	// 입력창 초기화
 	INPUT_COMMENT_CONTENT.value = ''
+}
+
+// 값을 모달에 삽입
+function insertModalValue(data){
+	PROJECT_NAME[a].textContent = data.task[0].project_title;
+	WRITER_NAME.textContent = data.task[0].wri_name;
+	TASK_CREATED_AT.textContent = data.task[0].created_at;
+	TASK_TITLE.textContent = data.task[0].title;
+	// 프로젝트 색 띄우기
+	PROJECT_COLOR[a].style = 'background-color: ' + data.task[0].project_color + ';'
+	// 더보기에 쓸 id값 숨겨두기
+	detail_id = data.task[0].id
+}
+
+
+
+// 업무상태 값과 색상 주기
+function statusColor(){
+	DET_STATUS_VAL.textContent = data.task[0].status_name;
+	switch (DET_STATUS_VAL.textContent) {
+		case '시작전':
+			DET_STATUS_VAL.style = 'background-color: #B1B1B1;';
+			break;
+		case '진행중':
+			DET_STATUS_VAL.style = 'background-color: #04A5FF;';
+			break;
+		case '피드백':
+			DET_STATUS_VAL.style = 'background-color: #F34747;';
+			break;
+		case '완료':
+			DET_STATUS_VAL.style = 'background-color: #64C139;';
+			break;
+		default:
+			DET_STATUS_VAL.style = 'background-color: #FFFFFF;'; 
+			break;
+	}
+}
+
+// 담당자 값체크, 삽입
+function responsibleName(params) {
+	if (data.task[0].res_name === null) {
+		RESPONSIBLE[a].style = 'display: none;' 
+	} else {
+		RESPONSIBLE_USER.textContent = data.task[0].res_name;
+		RESPONSIBLE[a].style = 'display: flex;'
+	}
+}
+
+// 마감일자 값체크, 삽입
+function deadLineValue(params) {
+	if (data.task[0].start_date === null || data.task[0].end_date === null) {
+		DEAD_LINE[a].style = 'display: none;' // TODO: 널가능 애들 처리 동일하게 하기 (+ 우선순위)
+	} else {
+		START_DATE[a].placeholder = data.task[0].start_date;
+		END_DATE[a].placeholder = data.task[0].end_date;
+		DEAD_LINE[a].style = 'display: flex;'
+	}
+}
+
+// 우선순위 값체크, 삽입
+function priorityValue(params) {
+	if (data.task[0].priority_name === null) {
+		PRIORITY[a].style = 'display: none;' 
+	} else {
+		RESPONSIBLE_USER.textContent = data.task[0].priority_name;
+		PRIORITY[a].style = 'display: flex;'
+		// 우선순위 값별로 이미지 삽입
+		switch (PRIORITY_VAL.textContent) {
+			case '긴급':
+				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/gantt-bisang.png);'
+				break;
+			case '높음':
+				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/gantt-up.png);'
+				break;
+			case '보통':
+				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/free-icon-long-horizontal-25426-nomal.png);'
+				break;
+			case '낮음':
+				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/gantt-down.png);'
+				break;
+			default:
+				PRIORITY[a].style = 'display: none;'
+				break;
+		}
+	}
+}
+
+// 상세업무 내용 값체크, 삽입
+function modalContentValue(params) {
+	if (data.task[0].content === null) {
+		DETAIL_CONTENT.textContent = '';
+	} else {					
+		DETAIL_CONTENT.textContent = data.task[0].content;
+	}
+}
+
+// 댓글창 없을 때 사라질 값 갱신선언
+COMMENT_PARENT.style = 'padding: 20;' 
+
+// 댓글창 갱신
+COMMENT_PARENT.removeChildren
+while (COMMENT_PARENT.hasChildNodes()) {
+	COMMENT_PARENT.removeChild(COMMENT_PARENT.firstChild);
+} // 다 지우고 달아도 처음에 기본 댓글을 들고있기 때문에 추가하는데 상관 없나보다
+
+// 댓글 달아주기
+if (detail_data.comment.length) {
+	for (let i = 0; i < detail_data.comment.length; i++) {
+		// 댓글 추가용 클론 (갱신)
+		let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
+		// 댓글 부모 (갱신)
+		let refresh_comment_parent = document.querySelector('.comment')
+		// 클론한 댓글 내용 선택
+		const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
+		// 클론한 댓글 이름 선택
+		const DEFAULT_COMMENT_NAME = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.firstElementChild
+		// 클론한 댓글 투명화 지우기
+		refresh_clone_comment.removeAttribute('style')
+		// 댓글에 값 씌우기
+		DEFAULT_COMMENT_CONTENT.textContent = detail_data.comment[i].content
+		DEFAULT_COMMENT_NAME.textContent = detail_data.comment[i].user_name
+
+		// 댓글 달기
+		refresh_comment_parent.append(refresh_clone_comment)
+
+		// 삭제버튼 값 넣기
+		const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
+		const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+		LAST_REMOVE_BTN.addEventListener('click', () => {
+			return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
+		})
+	}
+}
+
+// 댓글 없으면 댓글창 없애기
+if (!COMMENT_PARENT.hasChildNodes()) {
+	COMMENT_PARENT.style = 'padding: 0;'
+}
+
+// 상위업무 초기화
+OVERHEADER[a].style = 'display: none;'
+OVERHEADER_PARENT[a].style = 'display: none;'
+// OVERHEADER_GRAND_PARENT[a].style = 'display: none;'
+
+// 상위업무 있는지 체크
+if (Object.keys(detail_data).includes('parents')) {
+	// 상위업무 달아주기
+	OVERHEADER[a].style = 'display: block;'
+	// 상위업무 개수 체크
+	if (detail_data.parents.length !== 0) {
+		// 상위업무 달아주기
+		OVERHEADER_PARENT[a].textContent = ' > ' + detail_data.parents[0].title
+		OVERHEADER_PARENT[a].style = 'display: inline-block;'
+		// if (detail_data.parents.length !== 1) {
+		// 	// 상위업무 달아주기
+		// 	OVERHEADER_PARENT[a].textContent += ' > ' + detail_data.parents[1].title
+		// 	// OVERHEADER_GRAND_PARENT[a].style = 'display: inline-block;'
+		// }
+	}
 }

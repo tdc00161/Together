@@ -24,12 +24,12 @@
 					<!-- 더보기 모달 -->
 					<div class="more_modal" style='display: none;'>
 						<div>
-							<div class="update_icon"></div>
-							<div>수정</div>
+							<div class="update_icon detail_update"></div>
+							<div class="detail_update">수정</div>
 						</div>
 						<div>
-							<div class="delete_icon"></div>
-							<div>삭제</div>
+							<div class="delete_icon detail_delete"></div>
+							<div class="detail_delete">삭제</div>
 						</div>
 					</div>
 				</div>
