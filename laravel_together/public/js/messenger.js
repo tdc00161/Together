@@ -166,7 +166,7 @@ function friendRequestList() {
 
                 // 메세지 출력
                 emptyRequesMsg.classList.add('empty-msg-css');
-                emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                emptyRequesMsg.innerHTML = '요청 없음';
                 emptydiv.appendChild(emptyRequesMsg);
 
             // !0 :
@@ -249,7 +249,7 @@ function displayFriendRequests(friendRequests) {
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptyRequesMsg.innerHTML = '요청 없음';
                     emptydiv.appendChild(emptyRequesMsg);
                 }
 
@@ -302,7 +302,7 @@ function displayFriendRequests(friendRequests) {
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptyRequesMsg.innerHTML = '요청 없음';
                     emptydiv.appendChild(emptyRequesMsg);
                 }
 
@@ -370,6 +370,9 @@ function friendSendList() {
 
             // 0 :
             if (friendSendlist === 0) {
+                emptyRequesMsg.classList.add('empty-msg-css');
+                emptyRequesMsg.innerHTML = '요청 없음';
+                emptydiv.appendChild(emptyRequesMsg);
             // !0 :
             } else {
                 // 친구 요청 보낸 목록 함수 실행
@@ -441,7 +444,7 @@ function displayFriendsends(friendSendlist) {
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '친구요청이 없습니다.';
+                    emptyRequesMsg.innerHTML = '요청 없음';
                     emptydiv.appendChild(emptyRequesMsg);
                 }
 
@@ -586,24 +589,3 @@ function displayFriendlist(friendList) {
 }
 
 // 친구 목록 끝
-
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const itemList = document.getElementById('itemList');
-    const items = itemList.getElementsByTagName('li');
-  
-    searchInput.addEventListener('input', function() {
-      const searchTerm = searchInput.value.toLowerCase();
-  
-      // 숨겨진 클래스를 제거하여 모든 항목을 보이게 한 후, 검색어와 일치하지 않는 항목은 숨김
-      for (let i = 0; i < items.length; i++) {
-        const itemText = items[i].textContent.toLowerCase();
-  
-        if (itemText.includes(searchTerm)) {
-          items[i].style.display = 'block';
-        } else {
-          items[i].style.display = 'none';
-        }
-      }
-    });
-  });

@@ -7,6 +7,7 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 use App\Models\Task;
 use App\Models\Project;
+use Illuminate\Support\Facades\Session;
 
 class TestController extends Controller
 {
@@ -21,16 +22,16 @@ class TestController extends Controller
         $data = [];
         foreach ($project as $value_pj) {
             foreach ($depth_0 as $value_0) { // 위에꺼랑 속도 테스트 필요
-                if($value_pj->id === $value_0->project_id){
+                if ($value_pj->id === $value_0->project_id) {
                     $value_pj->depth_0[] = $value_0;
                     foreach ($depth_1 as $value_1) {
-                        if($value_0->id === $value_1->task_parent){
+                        if ($value_0->id === $value_1->task_parent) {
                             $value_0->depth_1[] = $value_1;
                             $data[$value_pj->id] = $value_pj;
                             // foreach ($depth_2 as $key_2 => $value_2) {
-                                //     if($value_1->id === $value_2->task_parent){
-                                    //         $value_1->depth_2[] = $value_2;
-                                            // $data[$value_pj->id] = $value_pj;
+                            //     if($value_1->id === $value_2->task_parent){
+                            //         $value_1->depth_2[] = $value_2;
+                            // $data[$value_pj->id] = $value_pj;
                             //     }
                             // }
                         }
@@ -54,20 +55,20 @@ class TestController extends Controller
         // foreach ($sort as $key => $item) {
         //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
         // }
-
-        return view('modal/modaltest')->with('data', $data);
+        return view('modal/modaltest')->with('data', $data)->with('user', Session::get('user'));
     }
 
-    public function view($id){
+    public function view($id)
+    {
         $result['task'] = Task::task_detail($id);
         $result['children'] = Task::task_detail_children($id);
         $result['comment'] = Task::task_detail_comment($id);
 
         // task->depth 값을 보고 부모를 데려올지 결정
-        if($result['task'][0]->task_depth !== '0'){
+        if ($result['task'][0]->task_depth !== '0') {
             $result['parents'] = Task::task_detail_parents($result['task'][0]->task_depth, $id);
         }
-        
+
         return $result;
     }
 }

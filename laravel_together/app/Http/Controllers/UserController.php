@@ -36,11 +36,13 @@ class UserController extends Controller
         Auth::login($result, $remember);
         if(Auth::check()) {
             session(['user' => $result]);
+            // 유저쿠키 만들기
+            $cookie = cookie('userCookie', $result);
         } else {
             $errorMsg = "인증 에러가 발생 했습니다.";
             return view('login')->withErrors($errorMsg);
         }
-        return redirect('/dashboard');
+        return redirect('/dashboard')->cookie($cookie);
     }
 
    
@@ -80,8 +82,11 @@ class UserController extends Controller
 
         Session::flush(); // 세션파기
         Auth::logout(); // 로그아웃
+
+        // 쿠키 없애기
+        $cookie = cookie('userCookie', null, -1);
         
-        return redirect()->route('user.login.get');
+        return redirect()->route('user.login.get')->cookie($cookie);
     }
     
     // 사용자를 이메일로 조회하는 메소드
@@ -91,5 +96,4 @@ class UserController extends Controller
 
         return $user;
     }
-
 }
