@@ -30,18 +30,18 @@
     
 
     {{-- 친구 검색 bar --}}
-    <input type="text" id="searchInput" placeholder="Search...">
+    {{-- <input type="text" id="searchInput" placeholder="Search..."> --}}
 
-  <ul id="itemList">
+  {{-- <ul id="itemList">
     <li>Apple</li>
     <li>Orange</li>
     <li>Banana</li>
     <li>Grapes</li>
     <li>Strawberry</li>
-  </ul>
+  </ul> --}}
     <div class="friend-searchbar-div">
     <div class="friend-searchbar">
-        <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
+        <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색" onkeyup="friendsearch()"> 
     <button class="search-icon"><img src="/img/icon-search.png" alt=""></button>
     </div>
     {{-- 친구 추가 버튼 --}}
