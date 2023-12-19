@@ -396,7 +396,7 @@ function displayFriendsends(friendSendlist) {
             var userDiv = document.createElement('div');
             var friendSendId = friendSends.id;
             userDiv.classList.add('messenger-user-div', 'm-request-bg');
-            userDiv.setAttribute('id', 'user_pk' + friendSendId);
+            userDiv.setAttribute('id', 'user_pk');
 
             friendsenddiv.appendChild(userDiv);
 
@@ -535,9 +535,8 @@ function displayFriendlist(friendList) {
 
             // friend-send-div > messenger-user-div, m-received-bg
             var userDiv = document.createElement('div');
-            var friendlistId = friendlistdata.friend_id;
             userDiv.classList.add('messenger-user-div', 'm-request-bg');
-            userDiv.setAttribute('id', 'user_pk' + friendlistId);
+            userDiv.setAttribute('id', 'user_pk');
 
             friendlistdiv.appendChild(userDiv);
 
@@ -557,6 +556,7 @@ function displayFriendlist(friendList) {
             // 2. 이름 추가
             var username = document.createElement('p');
             username.classList.add('user-name');
+            username.id = 'fsitem';
             username.textContent = friendlistdata.name;
 
             userDiv.appendChild(username);
@@ -564,11 +564,12 @@ function displayFriendlist(friendList) {
             // 3. 이메일 추가
             var useremail = document.createElement('p');
             useremail.classList.add('user-email');
+            useremail.id = 'fsitem';
             useremail.textContent = friendlistdata.email;
 
             userDiv.appendChild(useremail);
 
-            // 4. 요청 취소 버튼 추가
+            // 4. 더보기 버튼 추가
             var friendId = friendlistdata.friend_id;
             var frienddeletebtn = document.createElement('button');
             var frienddeletebtnImg = document.createElement('img');
@@ -588,12 +589,14 @@ function displayFriendlist(friendList) {
 // 친구 목록 끝
 
 document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const itemList = document.getElementById('itemList');
-    const items = itemList.getElementsByTagName('li');
+    const friendSearchInput = document.getElementById('friendSearchInput');
+    const items = document.getElementById('fsitem');
+document.body.appendChild(items);
+    // 동적으로 생성한 요소를 추가
+    console.log(items);
   
     searchInput.addEventListener('input', function() {
-      const searchTerm = searchInput.value.toLowerCase();
+      const searchTerm = friendSearchInput.value.toLowerCase();
   
       // 숨겨진 클래스를 제거하여 모든 항목을 보이게 한 후, 검색어와 일치하지 않는 항목은 숨김
       for (let i = 0; i < items.length; i++) {
