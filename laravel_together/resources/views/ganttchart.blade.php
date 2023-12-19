@@ -91,22 +91,57 @@
         <section class="gantt-all-task">
             <div class="gantt-task-wrap">
                 <div class="gantt-task-header">
-                    <div>업무명</div>
-                    <div>담당자</div>
-                    <div>상태</div>
-                    <div>시작일</div>
-                    <div>마감일</div>
+                    <div class="gantt-task-header-div" onclick="orderDropdown('orderTask')">
+                        <span class="gantt-order">업무명</span>
+                        <div class="gantt-order-div" id="orderTaskDropdown">
+                            <button class="gantt-order-task">오름차순</button>
+                            <br>
+                            <button class="gantt-order-task">내림차순</button>
+                        </div>
+                    </div>
+                    <div class="gantt-task-header-div" onclick="orderDropdown('orderUser')">
+                        <span class="gantt-order">담당자</span>
+                        <div class="gantt-order-div" id="orderUserDropdown">
+                            <button class="gantt-order-task">오름차순</button>
+                            <br>
+                            <button class="gantt-order-task">내림차순</button>
+                        </div>
+                    </div>
+                    <div class="gantt-task-header-div" onclick="orderDropdown('orderStatus')">
+                        <span class="gantt-order">상태</span>
+                        <div class="gantt-order-div" id="orderStatusDropdown">
+                            <button class="gantt-order-task">오름차순</button>
+                            <br>
+                            <button class="gantt-order-task">내림차순</button>
+                        </div>
+                    </div>
+                    <div class="gantt-task-header-div" onclick="orderDropdown('orderStart')">
+                        <span class="gantt-order">시작일</span>
+                        <div class="gantt-order-div" id="orderStartDropdown">
+                            <button class="gantt-order-task">오름차순</button>
+                            <br>
+                            <button class="gantt-order-task">내림차순</button>
+                        </div>
+                    </div>
+                    <div class="gantt-task-header-div" onclick="orderDropdown('orderEnd')">
+                        <span class="gantt-order">마감일</span>
+                        <div class="gantt-order-div" id="orderEndDropdown">
+                            <button class="gantt-order-task">오름차순</button>
+                            <br>
+                            <button class="gantt-order-task">내림차순</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="gantt-task-body">
                     @foreach ($data as $key => $item)
-                        <div class="gantt-task" id="ganttTask">
+                        <div class="gantt-task">
                             <div class="gantt-editable-div editable" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
                                 <span class="taskKey">{{$item->id}}</span>
                                 <span class="taskName editable-title">{{$item->title}}</span>
                                 <div class="gantt-detail">
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
                                     <br>
-                                    <button class="gantt-detail-btn" onclick="subTaskAdd()">하위업무 추가</button>
+                                    <button class="gantt-detail-btn" onclick="addSubTask('{{$item->id}}')">하위업무 추가</button>
                                 </div>
                             </div>
                             <div class="gantt-dropdown">{{$item->name}}</div>
