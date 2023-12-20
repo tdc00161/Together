@@ -58,9 +58,7 @@ class GanttChartController extends Controller
      */
     public function ganttstore(Request $request)
     {
-        $result = Task::find($id);
-
-        $result->
+        
     }
 
     /**
@@ -72,46 +70,46 @@ class GanttChartController extends Controller
      */
     public function ganttupdate(Request $request, $id)
     {
-        $responseData = [
-            "code" => "0",
-            "msg" => "",
-            "data" => []
-        ];
+        // $responseData = [
+        //     "code" => "0",
+        //     "msg" => "",
+        //     "data" => []
+        // ];
 
-        $result = Task::find($id);
+        // $result = Task::find($id);
 
-        if (!$result) {
-            // 예외 처리 : 데이터 0건
-            $responseData['code'] = 'E01';
-            $responseData['msg'] = 'No Date.';
-        } else {
-            // 정상 처리
-            $resposibleName = User::where('name', $request['task_reponsible_id'])->first();
-            $statusName = DB::table('basedata')->where('data_content_name', $request['task_status_id'])->first();
-            $priorityName = DB::table('basedata')->where('data_content_name', $request['priority_id'])->first();
+        // if (!$result) {
+        //     // 예외 처리 : 데이터 0건
+        //     $responseData['code'] = 'E01';
+        //     $responseData['msg'] = 'No Date.';
+        // } else {
+        //     // 정상 처리
+        //     $resposibleName = User::where('name', $request['task_reponsible_id'])->first();
+        //     $statusName = DB::table('basedata')->where('data_content_name', $request['task_status_id'])->first();
+        //     $priorityName = DB::table('basedata')->where('data_content_name', $request['priority_id'])->first();
 
-            $result->task_responsible_id = $resposibleName->id;
-            $result->task_status_id = $statusName->id;
-            // $result->prioity_id = $priorityName->id;
+        //     $result->task_responsible_id = $resposibleName->id;
+        //     $result->task_status_id = $statusName->id;
+        //     // $result->prioity_id = $priorityName->id;
 
-            $result->title = $request->title;
-            $result->content = $request->content;
+        //     $result->title = $request->title;
+        //     $result->content = $request->content;
 
-            if($request->start_date !== '시작일'){
-                $result->start_date = $request->start_date;
-                Log::debug('$result->start_date :'.$result->start_date);
-            }
-            Log::debug($request->end_date);
-            if($request->end_date !== '마감일'){
-                $result->end_date = $request->end_date;
-                Log::debug('$result->end_date :'.$result->end_date);
-            }
-            // $result->updated_at = $request->data['completed'] === '1' ? Carbon::now() : null;
-            $result->save();
+        //     if($request->start_date !== '시작일'){
+        //         $result->start_date = $request->start_date;
+        //         Log::debug('$result->start_date :'.$result->start_date);
+        //     }
+        //     Log::debug($request->end_date);
+        //     if($request->end_date !== '마감일'){
+        //         $result->end_date = $request->end_date;
+        //         Log::debug('$result->end_date :'.$result->end_date);
+        //     }
+        //     // $result->updated_at = $request->data['completed'] === '1' ? Carbon::now() : null;
+        //     $result->save();
 
-            $responseData['data'] = $result;
-        }
-        return $responseData;
+        //     $responseData['data'] = $result;
+        // }
+        // return $responseData;
     }
 
 }

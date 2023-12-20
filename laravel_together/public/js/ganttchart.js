@@ -68,7 +68,6 @@ function orderDropdown(category) {
    * 6. 
    */
 
-
 // ************* 하위 업무 추가
 function addSubTask(mainId) {
   const doMGanttTask = document.getElementById('gantt-task-282'); // 원래 자리접근
@@ -103,7 +102,7 @@ function addSubTask(mainId) {
   const addDetailButton = document.createElement('button');
   addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
-  // addDetailButton.setAttribute('onclick', 'openTaskModal(1,0,312)');
+  addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
   
 
   // <div class="gantt-dropdown">{{$item->name}}</div>
