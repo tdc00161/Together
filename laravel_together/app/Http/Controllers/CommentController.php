@@ -14,28 +14,28 @@ class CommentController extends Controller
     // 댓글 작성
     public function store(Request $request, $id) // 업무 id
     {
-        $responseData = [
-            "code" => "0",
-            "msg" => "",
-            "data" => []
-        ];
-        // Log::debug('cookie: '.$request->cookie('user'));
-        // Log::debug('Auth: '. Auth::id());
+        // $responseData = [
+        //     "code" => "0",
+        //     "msg" => "",
+        //     "data" => []
+        // ];
+        // // Log::debug('cookie: '.$request->cookie('user'));
+        // // Log::debug('Auth: '. Auth::id());
 
-        $usr = Auth::id();
-        $con = $request['content']; // TODO: 유효성 처리 추가
+        // $usr = Auth::id();
+        // $con = $request['content']; // TODO: 유효성 처리 추가
 
-        $request['task_id'] = $id;
-        $request['user_id'] = $usr;
-        $request['content'] = $con;
+        // $request['task_id'] = $id;
+        // $request['user_id'] = $usr;
+        // $request['content'] = $con;
 
-        Log::debug($request);
-        $result = Comment::create($request->toArray());
-        $responseData['msg'] = 'comment created.';
-        $responseData['data'] = $result;
+        Log::debug([$request,$id]);
+        // $result = Comment::create($request->toArray());
+        // $responseData['msg'] = 'comment created.';
+        // $responseData['data'] = $result;
 
 
-        return $responseData;
+        // return $responseData;
     }
 
     // 댓글 수정

@@ -694,11 +694,20 @@
 	/* 크기 */
 }
 
+.task_modal .update_comment {
+	/* 배치 */
+	position: absolute;
+	right: 43px;
+	/* 내부 */
+	/* 크기 */
+}
+
 .task_modal .comment>div>.comment_content>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
 	display: flex;
 	justify-content: space-between;
+	position: relative;
 	/* 크기 */
 }
 
@@ -951,6 +960,7 @@
 .task_modal .content>.property>.status>div:not(:nth-child(1)),
 .task_modal .cross_icon_b,
 .task_modal .add_box_mgin,
+.task_modal .update_comment,
 .task_modal .delete_comment,
 .task_modal .more_modal>div>div,
 .task_modal .start_date,

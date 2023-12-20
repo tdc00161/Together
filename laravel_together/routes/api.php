@@ -35,3 +35,5 @@ Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작�
 Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id
 Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id
 });
+
+Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출

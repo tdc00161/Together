@@ -90,6 +90,7 @@
 							<div class="user_name">User1</div>
 							<div class="comment_date">2023-12-13 14:34</div>
 						</div>
+						<div class="update_comment" onclick="updateComment(event, 0)">편집</div>
 						<div class="delete_comment" onclick="removeComment(event, 0)">삭제</div>
 					</div>
 					<div class="comment_line">기본 댓글</div>
@@ -106,6 +107,6 @@
 			placeholder="댓글 작성란"
 		></textarea>
 		{{-- onchange="testareaHeight()" --}}
-		<div class="submit" onclick="addComment()">작성</div>
+		<div class="submit" onclick="addComment()">등록</div>
 	</div>
 </div>

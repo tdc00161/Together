@@ -9,6 +9,7 @@
 @section('title', '개인프로젝트')
 
 @section('main')
+    <input type="hidden" id="user" value="{{$user}}">
     <input type="hidden" id="chart" value="{{$result->id}}">
     {{-- 상단바 --}}
     <div class="first_menu">

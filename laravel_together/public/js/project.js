@@ -8,23 +8,38 @@ window.onload = function( ) {
     var sw = canvas.width;
     var sh = canvas.height;
     var PADDING=100;
-   console.log(id);
+   // console.log(id);
     const formData = new FormData();
     formData.append('id', idget);
 
-    fetch('/individual/'+idget, {
-         method: 'POST',
-         body: formData,
-    })
-    .then(response => {
-      // console.log(response);
-      return response.json();
-    })
-    .then(data => {
-         // console.log(data);
+   //  fetch('/individual/'+idget, {
+   //       method: 'POST',
+   //       body: formData,
+   //  })
+   //  .then(response => {
+   //    // console.log(response);
+   //    return response.json();
+   //  })
+   //  .then(data => {
+   //       // console.log(data);
 
 
-    }).catch(error => console.log(error));
+   //  }).catch(error => console.log(error));
+   let postData = {
+      "test": "test1",
+      "user_id": ""
+	}
+	let headers = {
+		'headers': { 'Content-Type': 'application/json', }
+	}
+   axios.post('/individual/'+ idget, postData, headers) 
+      .then(res => {
+         console.log(res.data);
+      })
+      .catch(err => {
+         console.log(err.message);
+      })
+
    //  //데이터 입력
     var data = ['before', '{ing}', '{feedback}', '{complete}'];
    //  var data = [];
