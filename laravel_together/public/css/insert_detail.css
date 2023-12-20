@@ -228,7 +228,7 @@
 .task_modal>.header>div:nth-child(1)>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
-	background-color: #ff7474;
+	background-color: transparent;
 	/* 크기 */
 	width: 20px;
 	height: 20px;

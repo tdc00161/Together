@@ -28,8 +28,8 @@
 							<div class="detail_update" onclick="updateModalOpen()">수정</div>
 						</div>
 						<div>
-							<div class="delete_icon detail_delete"></div>
-							<div class="detail_delete">삭제</div>
+							<div class="delete_icon detail_delete" onclick="deleteTask()"></div>
+							<div class="detail_delete" onclick="deleteTask()">삭제</div>
 						</div>
 					</div>
 				</div>

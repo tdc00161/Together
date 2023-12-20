@@ -76,7 +76,7 @@
 		</div>
 	</div>
 	<div class="insert_footer">
-		<div class="submit" onclick="store_update()">등록</div>
+		<div class="submit" onclick="">등록</div>
 	</div>
 </div>
 <div class="behind_insert_modal" style='display: none;'></div>

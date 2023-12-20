@@ -20,7 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/task/{id}', [TestController::class, 'view']);
-Route::post('/task/{id}',[TestController::class,'store']); // 작성
+Route::get('/task', [TestController::class, 'index']); // 전체
+Route::get('/task/{id}', [TestController::class, 'view']); // 상세
+Route::get('/project/{id}', [TestController::class, 'project_color']); // 프로젝트 색상 가져오기
+Route::post('/task',[TestController::class,'store']); // 작성
 Route::put('/task/{id}',[TestController::class,'update']); // 수정
 Route::delete('/task/{id}',[TestController::class,'delete']); // 삭제

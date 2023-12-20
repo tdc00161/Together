@@ -89,6 +89,13 @@ let cloneResetComments = COMMENT_PARENT.cloneNode(true)
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
 let detail_id = 0;
+// 작성/수정 플래그
+let createUpdate = 0;
+// 업무/공지 플래그
+let TaskNoticeFlg = 0;
+// 현재 프로젝트 확인
+let thisProjectId = 0;
+thisProjectId = 1; // 임시
 
 // 기본 세팅
 STATUS_VALUE[statusValue].style = 'background-color: #1AE316'; // 전체 status 컨트롤
@@ -106,12 +113,34 @@ document.addEventListener('click', function (event) {
 // 모달 여닫기 (중복 열기 불가)
 function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터 id)
 	// 작성 모달 띄우기
-	// if(a === 0){
-	// 	// 입력창 플래그별로 길이조정
-	// 	if(b === 0) {
-	// 		INSERT_CONTENT.value = ''
-	// 	}
-	// }
+	if(a === 0){
+		// 프로젝트 색 가져오기
+		axios.get('/api/project/' + thisProjectId)
+			.then(res => {
+				// 프로젝트 색 띄우기
+				PROJECT_COLOR[a].style = 'background-color: ' + res.data.data[0].data_content_name + ';'
+			})
+			.catch(err => {
+				console.log(err.message);
+			})
+
+
+		// 입력창 플래그별로 길이조정
+		if(b === 0) {
+			INSERT_CONTENT.value = ''
+		}
+	}
+
+	// 업무/공지 플래그 넣기 (나중에 변수로 통합가능)
+	TaskNoticeFlg = b
+
+	// 작성/수정 플래그별 등록버튼 기능
+	const SUBMIT = document.querySelector('.submit')
+	if(createUpdate === 1){
+		SUBMIT.setAttribute('onclick','updateTask()')
+	} else {
+		SUBMIT.setAttribute('onclick','createTask()')
+	}
 
 	// 상세 모달 띄우기
 	if (a === 1) {
@@ -158,8 +187,35 @@ function closeTaskModal(a) {
 	}
 }
 
+// 모달 작성
+function createTask() {
+	let postData = { 
+		"title": INSERT_TITLE.value,
+		"content": INSERT_CONTENT.value,
+		"project_id": thisProjectId
+	}
+	if(TaskNoticeFlg === 0){
+		postData.task_status_id = CHECKED_STATUS.textContent
+		postData.task_responsible_id = RESPONSIBLE_USER[0].textContent
+		postData.start_date = START_DATE[0].placeholder
+		postData.end_date = END_DATE[0].placeholder
+		postData.priority_id = PRIORITY_VAL[0].textContent
+	}
+	let headers = {
+		'headers': { 'Content-Type': 'application/json', }
+	}
+	axios.post('/api/task', postData, headers)
+		.then(res => {
+			console.log('작성되었습니다.');
+			console.log(res.data);
+		})
+		.catch(err => {
+			console.log(err.message)
+		});
+}
+
 // 등록 버튼으로 작성/수정
-function store_update() {
+function updateTask() {
 	let data = { 
 		'title': INSERT_TITLE.value,
 		'content': INSERT_CONTENT.value,
@@ -174,7 +230,8 @@ function store_update() {
 	}
 	axios.put('/api/task/' + now_task_id, data, headers)
 		.then(res => {
-			window.location.href = window.location.pathname;;
+			console.log('수정되었습니다.');
+			console.log(res.data);
 		})
 		.catch(err => {
 			console.log(err.message)
@@ -450,7 +507,8 @@ function TaskFlg(a, b) {
 let test = null;
 // 수정 모달 값 넣기
 function updateModalOpen() {
-	axios.get('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
+	createUpdate = 1
+	axios.put('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
 		.then(res => {
 			test = res.data
 			// 값을 모달에 삽입
@@ -498,4 +556,17 @@ function updateModalOpen() {
 		// 글/업무 플래그
 		TaskFlg(0, 0);
 	}
+
+	createUpdate = 0
+}
+
+// 모달 삭제
+function deleteTask() {
+	axios.delete('/api/task/' + now_task_id)
+		.then(res => {
+			console.log(res.data);
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
 }

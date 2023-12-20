@@ -112,7 +112,9 @@ class Task extends Model // 업무/공지
                 ON tsk.task_writer_id = wri.id
               JOIN projects pj
                 ON tsk.project_id = pj.id
-            WHERE tsk.task_depth = " . $task_depth
+            WHERE 
+              tsk.deleted_at IS NULL
+              AND tsk.task_depth = " . $task_depth
     );
 
     return $result;
