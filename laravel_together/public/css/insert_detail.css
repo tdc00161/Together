@@ -453,7 +453,7 @@
 	/* 배치 */
 	margin-left: 5px;
 	/* 내부 */
-	background-color: #C7C7C7;
+	background-color: var(--m-btn);
 	text-align: center;
 	padding: 1%;
 	/* 크기 */
@@ -465,24 +465,23 @@
 .task_modal .status #checked {
 	/* 배치 */
 	/* 내부 */
-	/* background-color: #1AE316; */
 	/* 크기 */
 }
 
 .task_modal .content>.property>.add_box>div:nth-child(2) {
 	/* 배치 */
 	/* 내부 */
-	display: flex;
-	padding: 1%;
+	/* display: flex; */
+	/* padding: 1%; */
 	/* 크기 */
-	border-radius: 7px;
+	/* border-radius: 7px; */
 }
 
 .task_modal .content>.property>.add_box>div:nth-child(2) {
 	/* :not(.priority) 뺌 231219*/
 	/* 배치 */
 	/* 내부 */
-	background-color: var(--m-btn);
+	/* background-color: var(--m-btn); */
 	/* 크기 */
 }
 
@@ -531,7 +530,6 @@
 
 .task_modal .content>.property>.responsible>div:nth-child(3) {
 	/* 배치 */
-	margin-left: 17px;
 	/* 내부 */
 	/* 크기 */
 }
@@ -862,6 +860,74 @@
 /* display: none; */
 /* position: absolute; */
 /* } */
+
+.responsible, .priority {
+	position: relative;
+}
+
+.add_responsible_modal{
+	/* 배치 */
+	position: absolute;
+    top: 28px;
+    left: 35px;
+	/* 내부 */
+    background-color: var(--dropdown-bg);
+    overflow: scroll;
+	/* 크기 */
+    width: 77px;
+    min-height: 28px;
+    max-height: 100px;
+}
+
+.add_priority_modal {
+	/* 배치 */
+	position: absolute;
+    top: 28px;
+    left: 38px;
+	/* 내부 */
+    background-color: var(--dropdown-bg);
+    overflow: scroll;
+	/* 크기 */
+    width: 77px;
+    min-height: 28px;
+    max-height: 100px;
+}
+
+.add_responsible_modal_one, .add_priority_modal_one{
+	display: flex;
+	margin: 5px 0;
+}
+
+.priority_one, .responsible_one{
+	background-color: var(--m-btn);
+	display: flex;
+    padding: 1%;
+    border-radius: 7px;
+}
+
+.add_responsible_modal_one_icon {
+	background-image: url('/img/profile-img.png');
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+    height: 18px;
+    margin: 0px 5px;
+}
+
+.add_priority_modal_one_icon {
+	/* background-image: url('/img/profile-img.png'); */
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+    height: 18px;
+    margin: 0px 5px;
+}
+
+.add_responsible_modal_one_name, .add_priority_modal_one_name {
+	width: 100%;
+}
 
 /* 입력창 디자인 */
 .task_modal input {

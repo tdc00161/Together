@@ -3,6 +3,8 @@
 const BODY = document.querySelector('body')
 // 모달 전체
 const TASK_MODAL = document.querySelectorAll('.task_modal')
+// 작성 모달
+const INSERT_MODAL = document.querySelector('.insert_modal')
 // 더보기모달 (디테일)
 const MORE_MODAL = document.querySelector('.more_modal')
 // 프로젝트 색상
@@ -37,6 +39,10 @@ const RESPONSIBLE_USER = document.querySelectorAll('.responsible_user')
 const RESPONSIBLE_ICON = document.querySelectorAll('.responsible_icon')
 // 담당자 추가/변경 버튼
 const RESPONSIBLE_ADD_BTN = document.querySelectorAll('.add_responsible')
+// 담당자 모달
+const ADD_RESPONSIBLE_MODAL = document.querySelector('.add_responsible_modal')
+// 담당자 모달 하나
+const ADD_RESPONSIBLE_MODAL_ONE = document.querySelector('.add_responsible_modal_one')
 // 상세 시작일
 const START_DATE = document.querySelectorAll('.start_date')
 // 상세 마감일
@@ -56,6 +62,10 @@ const PRIORITY_ICON = document.querySelectorAll('.flag_icon')
 const PRIORITY_ICON_VALUE = document.querySelectorAll('.priority_icon')
 // 우선순위 추가/변경 버튼
 const PRIORITY_ADD_BTN = document.querySelectorAll('.add_priority')
+// 우선순위 모달
+const ADD_PRIORITY_MODAL = document.querySelector('.add_priority_modal')
+// 우선순위 모달 하나
+const ADD_PRIORITY_MODAL_ONE = document.querySelector('.add_priority_modal_one')
 // 상세 업무/글 내용
 const DETAIL_CONTENT = document.querySelector('.detail_content')
 // 작성 업무/글 내용
@@ -77,10 +87,12 @@ const INSERT_TITLE = document.querySelector('.insert_title')
 const CHECKED_STATUS = document.querySelectorAll('#checked')[0]
 
 
-// 업무상태 값 (색표시용)
-let statusValue = 0
+// 담당자 모달용 클론
+let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
 // 담당자 추가용 클론
 let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true)
+// 우선순위 모달용 클론
+let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 // 우선순위 추가용 클론
 let clonePriority = PRIORITY_ONE[0].cloneNode(true)
 // 댓글 초기화용 클론
@@ -97,14 +109,14 @@ let TaskNoticeFlg = 0;
 let thisProjectId = 0;
 thisProjectId = 1; // 임시
 
-// 기본 세팅
-STATUS_VALUE[statusValue].style = 'background-color: #1AE316'; // 전체 status 컨트롤
+// 업무상태 기본값 설정
+STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
 
 // TODO: 바깥영역 클릭시 인서트모달 닫기
-document.addEventListener('click', function (event) {
+BEHIND_MODAL.addEventListener('click', function (event) {
 	if (BEHIND_MODAL.contains(event.target)) {
-		if (!TASK_MODAL[1].contains(event.target)) {
-			closeTaskModal(1);
+		if (!TASK_MODAL[0].contains(event.target)) {
+			closeTaskModal(0);
 		}
 	}
 })
@@ -129,7 +141,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 		TASK_MODAL[0].style = 'border-radius: 14px;'
 
 		// 프로젝트 명 뒤의 task 타입
-		if (b === 1) {			
+		if (b === 1) {
 			const INSERT_TYPE = document.querySelector('.insert_type')
 			INSERT_TYPE.textContent = '공지'
 		}
@@ -183,8 +195,8 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 				console.log(err.message);
 			})
 
-			// 작성모달 모서리 둥글게
-			TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
+		// 작성모달 모서리 둥글게
+		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 	}
 	// 모달 띄우기
 	openInsertDetailModal(a);
@@ -196,6 +208,12 @@ function closeTaskModal(a) {
 	TASK_MODAL[a].style = 'display: none;'
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: none;'
+		// 업무상태 기본값 설정
+		for (let index = 0; index < STATUS_VALUE.length; index++) {
+			STATUS_VALUE[index].removeAttribute('id');
+			STATUS_VALUE[index].style = 'background-color: var(--m-btn);';
+		}
+		STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
 	}
 }
 
@@ -218,7 +236,6 @@ function createTask() {
 	}
 	axios.post('/api/task', postData, headers)
 		.then(res => {
-			console.log('작성되었습니다.');
 			console.log(res.data);
 		})
 		.catch(err => {
@@ -269,29 +286,72 @@ function closeMoreModal() {
 }
 
 // 업무상태 선택
-function changeStatus(a) {
-	STATUS_VALUE[statusValue].style = 'background-color: #C7C7C7';
-	statusValue = a;
-	STATUS_VALUE[statusValue].style = 'background-color: #1AE316';
+function changeStatus(event) {
+	// 체크인 애들 다 없애기
+	for (let index = 0; index < STATUS_VALUE.length; index++) {
+		STATUS_VALUE[index].removeAttribute('id');
+		STATUS_VALUE[index].style = 'background-color: var(--m-btn);';
+	}
+	// 이벤트 발생지 선택 후 id추가
+	var chk = event.target;
+	chk.setAttribute('id', "checked")
+	// 체크된 상태 갱신하여 받아오기
+	const NOW_CHECKED = document.querySelector('#checked')
+	// 색 삽입
+	switch (NOW_CHECKED.textContent) {
+		case '시작전':
+			NOW_CHECKED.style = 'background-color: #B1B1B1;';
+			break;
+		case '진행중':
+			NOW_CHECKED.style = 'background-color: #04A5FF;';
+			break;
+		case '피드백':
+			NOW_CHECKED.style = 'background-color: #F34747;';
+			break;
+		case '완료':
+			NOW_CHECKED.style = 'background-color: #64C139;';
+			break;
+	}
 }
 
-// 담당자 추가/삭제
+// 담당자 추가
 function addResponsible(a) {
-	RESPONSIBLE_ICON[a].after(cloneResponsible)
-	RESPONSIBLE_ADD_BTN[a].innerHTML = '담당자변경'
+	axios.get('/api/project/' + thisProjectId)
+			.then(res => {
+				//
+			})
+			.catch(err => {
+				console.log(err.message);
+			})
+
+	ADD_RESPONSIBLE_MODAL.classList.remove('d-none')
+	// RESPONSIBLE_ICON[a].after(cloneResponsible)
+	// 담당자 모달, 담당자추가버튼 외 영역으로 끄기
+	INSERT_MODAL.addEventListener('click', function (event) {
+		if (!ADD_RESPONSIBLE_MODAL.contains(event.target) && !RESPONSIBLE_ADD_BTN[a].contains(event.target)) {
+			ADD_RESPONSIBLE_MODAL.classList.add('d-none')
+		}
+	});
 }
+
+// 담당자 삭제
 function removeResponsible(a) {
 	RESPONSIBLE_ICON[a].nextSibling.remove()
-	RESPONSIBLE_ADD_BTN[a].innerHTML = '담당자추가'
 }
+
 // 우선순위 추가/삭제
 function addPriority(a) {
-	PRIORITY_ICON[a].after(clonePriority)
-	PRIORITY_ADD_BTN[a].innerHTML = '우선순위변경'
+	ADD_PRIORITY_MODAL.classList.remove('d-none')
+	// PRIORITY_ICON[a].after(clonePriority)
+	// 우선순위 모달, 우선순위추가버튼 외 영역으로 끄기
+	INSERT_MODAL.addEventListener('click', function (event) {
+		if (!ADD_PRIORITY_MODAL.contains(event.target) && !PRIORITY_ADD_BTN[a].contains(event.target)) {
+			ADD_PRIORITY_MODAL.classList.add('d-none')
+		}
+	});
 }
 function removePriority(a) {
 	PRIORITY_ICON[a].nextSibling.remove()
-	PRIORITY_ADD_BTN[a].innerHTML = '우선순위추가'
 }
 
 // 댓글 삭제
