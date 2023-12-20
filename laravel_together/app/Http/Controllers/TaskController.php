@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\Task;
+use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -137,15 +140,40 @@ class TaskController extends Controller
             "msg" => "",
             "data" => []
         ];
-        
-        // Log::debug($request->data['title']);
-        // $request->data['task_writer_id'] = Session::get('user')->id;
-        Log::debug(['세션',session('user')]);
-        // $result = Task::create($request->data);
-        // $responseData['msg'] = 'task created.';
-        // $responseData['data'] = $result;
+        // Log::debug('cookie: '.$request->cookie('user'));
+        // Log::debug('Auth: '. Auth::id());
+        $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+        $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
+        $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
+        // $eml = DB::table('users')->where('email', $request['email'])->first();
+        if($request['start_date'] === '시작일') {
+            $start = null;
+        } else {
+            $start = $request['start_date'];
+        }
+        if($request['end_date'] === '마감일') {
+            $end = null;
+        } else {
+            $end = $request['end_date'];
+        }
+        $tit = $request['title']; // TODO: 유효성 처리 추가
+        $con = $request['content']; // TODO: 유효성 처리 추가
 
-        // return $responseData;
+        $request['title'] = $tit;
+        $request['content'] = $con;
+        // $request['project_id'] = $con;
+        $request['task_status_id'] = $sta->data_content_code;
+        // $request['task_responsible_id'] = $res->id;
+        $request['start_date'] = $start;
+        $request['end_date'] = $end;
+        $request['priority_id'] = $pri->data_content_code;
+
+        // Log::debug($request);
+        $result = Task::create($request->data);
+        $responseData['msg'] = 'task created.';
+        $responseData['data'] = $result;
+
+        return $responseData;
     }
 
     // 업무 수정
