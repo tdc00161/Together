@@ -66,8 +66,8 @@
 	  				>
 				</div>
 				<div class="priority add_box">
-					<div></div>
-					<div>
+					<div class="flag_icon"></div>
+					<div class="priority_one">
 						<div class="priority_icon"></div>
 						<div class="priority_val">보통</div>
 					</div>
@@ -90,9 +90,10 @@
 							<div class="user_name">User1</div>
 							<div class="comment_date">2023-12-13 14:34</div>
 						</div>
-						<div class="delete_comment" onclick="removeComment(0)">삭제</div>
+						<div class="delete_comment" onclick="removeComment(event, 0)">삭제</div>
 					</div>
 					<div class="comment_line">기본 댓글</div>
+					<input type="hidden" name="id" value="">
 				</div>
 			</div>
 		</div>

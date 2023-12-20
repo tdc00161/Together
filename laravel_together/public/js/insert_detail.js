@@ -108,6 +108,8 @@ let TaskNoticeFlg = 0;
 // 현재 프로젝트 확인
 let thisProjectId = 0;
 thisProjectId = 1; // 임시
+// 현재 업무번호 확인
+let thisTaskId = 0;
 
 // 업무상태 기본값 설정
 STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
@@ -123,7 +125,10 @@ BEHIND_MODAL.addEventListener('click', function (event) {
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
-function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터 id)
+function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, task_id)
+	// 업무/공지 플래그
+	TaskNoticeFlg = b
+
 	// 작성 모달 띄우기
 	if (a === 0) {
 		// 프로젝트 색 가져오기
@@ -165,6 +170,10 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 
 	// 상세 모달 띄우기
 	if (a === 1) {
+		// 작성모달 모서리 둥글게
+		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
+		
+		// 상세 정보 가져오기
 		axios.get('/api/task/' + c)
 			.then(res => {
 				// 값을 모달에 삽입
@@ -190,13 +199,13 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 
 				// 상위업무 컨트롤
 				parentTaskControl(res.data, a);
+
+				// 현재 업무 id 저장
+				thisTaskId = res.data.task[0].id
 			})
 			.catch(err => {
 				console.log(err.message);
 			})
-
-		// 작성모달 모서리 둥글게
-		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 	}
 	// 모달 띄우기
 	openInsertDetailModal(a);
@@ -355,8 +364,21 @@ function removePriority(a) {
 }
 
 // 댓글 삭제
-function removeComment(a) {
-	COMMENT_ONE[a].remove()
+function removeComment(event, a) {
+	let thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
+	axios.delete('/api/comment/' + thisCommentId.value)
+			.then(res => {
+				console.log(res.data);
+				return openTaskModal(1, TaskNoticeFlg, thisTaskId)
+			})
+			.then(()=> {
+				let comment_box = document.querySelector('.comment')
+				comment_box.scrollIntoView(false)
+			})
+			.catch(err => {
+				console.log(err.message);
+			})
+	// COMMENT_ONE[a].remove()
 }
 
 // 댓글 작성
@@ -369,18 +391,40 @@ function addComment() {
 	const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
 	// 클론한 댓글 투명화 지우기
 	refresh_clone_comment.removeAttribute('style')
-	// 입력한 댓글 씌우기
-	DEFAULT_COMMENT_CONTENT.textContent = INPUT_COMMENT_CONTENT.value
 
-	// 댓글 달기
-	refresh_comment_parent.append(refresh_clone_comment)
+	// 댓글 내용을 ajax로 송신
+	let postData = {
+		"task_id": thisTaskId,
+		"content": INPUT_COMMENT_CONTENT.value
+	}
+	let headers = {
+		'headers': { 'Content-Type': 'application/json', }
+	}
+	axios.post('/api/comment/' + thisTaskId, postData, headers)
+			.then(res => {
+				console.log(res.data);
+				return openTaskModal(1, TaskNoticeFlg, thisTaskId)
+			})
+			.then(()=> {
+				let comment_box = document.querySelector('.comment')
+				comment_box.scrollIntoView(false)
+			})
+			.catch(err => {
+				console.log(err.message);
+			})
 
-	// 삭제버튼 값 넣기
-	const RE_COMMENT_ONE = document.querySelectorAll('.comment_one')
-	const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
-	LAST_REMOVE_BTN.addEventListener('click', () => {
-		return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
-	})
+	// // 입력한 댓글 씌우기
+	// DEFAULT_COMMENT_CONTENT.textContent = INPUT_COMMENT_CONTENT.value
+
+	// // 댓글 달기
+	// refresh_comment_parent.append(refresh_clone_comment)
+
+	// // 삭제버튼 값 넣기
+	// const RE_COMMENT_ONE = document.querySelectorAll('.comment_one')
+	// const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+	// LAST_REMOVE_BTN.addEventListener('click', () => {
+	// 	return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
+	// })
 	// 입력창 초기화
 	INPUT_COMMENT_CONTENT.value = ''
 }
@@ -506,11 +550,14 @@ function commentControl(data) {
 			const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
 			// 클론한 댓글 이름 선택
 			const DEFAULT_COMMENT_NAME = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.firstElementChild
+			// 클론한 댓글 id값 선택
+			const DEFAULT_COMMENT_ID = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
 			// 클론한 댓글 투명화 지우기
 			refresh_clone_comment.removeAttribute('style')
 			// 댓글에 값 씌우기
 			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
 			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
+			DEFAULT_COMMENT_ID.value = data.comment[i].id
 
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)

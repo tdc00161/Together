@@ -246,7 +246,7 @@ class TaskController extends Controller
         } else {
             $result->delete();
             $responseData['code'] = 'D01';
-            $responseData['msg'] = $id.'->deleted.';
+            $responseData['msg'] = 'task : '.$id.'->deleted.';
         }
 
         return $responseData;
