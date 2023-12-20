@@ -31,6 +31,8 @@ class Task extends Model // 업무/공지
     'task_parent',
     'title',
     'content',
+    'start_date',
+    'end_date',
   ];
 
   protected $primaryKey = 'id';

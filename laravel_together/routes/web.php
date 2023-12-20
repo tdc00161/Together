@@ -35,8 +35,8 @@ Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.log
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
 // 간트차트
-Route::get('/ganttchart', [GanttChartController::class,'index']);
-// Route::post()
+Route::get('/ganttchart', [GanttChartController::class,'ganttshow']);
+// Route::post('/')
 
 // Friend 
 Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
