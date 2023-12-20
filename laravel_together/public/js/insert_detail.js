@@ -368,7 +368,7 @@ function removePriority(a) {
 
 // 댓글 수정
 function updateComment(event, a) {
-	let comment_input = document.querySelector('#comment_input')
+	var comment_input = document.querySelector('#comment_input')
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
 	let thisCommentContent = event.target.parentElement.nextElementSibling
 
@@ -378,7 +378,13 @@ function updateComment(event, a) {
 
 // 댓글 수정 적용 버튼
 function commitUpdateComment() {
-	axios.put('/api/comment/' + thisCommentId.value)
+	let putData = {
+		"content": comment_input.textContent
+	}
+	let headers = {
+		headers: { 'Content-Type': 'application/json', }
+	}
+	axios.put('/api/comment/' + thisCommentId.value, putData, headers)
 		.then(res => {
 			console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
@@ -399,11 +405,7 @@ function removeComment(event, a) {
 	axios.delete('/api/comment/' + thisCommentId.value)
 		.then(res => {
 			console.log(res.data);
-			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
-		})
-		.then(() => {
-			let comment_box = document.querySelector('.comment')
-			comment_box.scrollIntoView(false)
+			openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -592,12 +594,12 @@ function commentControl(data) {
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
 
-			// 삭제버튼 값 넣기
-			const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
-			const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
-			LAST_REMOVE_BTN.addEventListener('click', () => {
-				return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
-			})
+			// // 삭제버튼 값 넣기
+			// const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
+			// const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+			// LAST_REMOVE_BTN.addEventListener('click', () => {
+			// 	return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
+			// })
 		}
 	}
 
