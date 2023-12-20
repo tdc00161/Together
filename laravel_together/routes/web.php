@@ -42,23 +42,24 @@ Route::group(['middleware' => ['web']], function () { // web이라는 기본 미
     Route::get('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
     Route::get('/ganttchart', [GanttChartController::class, 'ganttupdate'])->name('gantt.update'); // 간트 업무 수정
 
-    // Friend 
-    Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
-    Route::get('/friendSendlist', [FriendRequestController::class, 'friendSendlist']); // 친구요청 보낸 목록
-    Route::get('/myfriendlist', [FriendRequestController::class, 'myfriendList']); // 친구 목록
-    Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest'); // 친구요청
-    Route::middleware('auth')->patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
-    Route::middleware('auth')->patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
-    Route::middleware('auth')->patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
+// Friend 
+Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
+Route::get('/friendSendlist', [FriendRequestController::class, 'friendSendlist']); // 친구요청 보낸 목록
+Route::get('/myfriendlist', [FriendRequestController::class, 'myfriendList']); // 친구 목록
+Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest'); // 친구요청
+Route::middleware('auth')->patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
+Route::middleware('auth')->patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
+Route::middleware('auth')->patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
+Route::middleware('auth')->delete('/frienddelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
 
     // 프로젝트 생성
     Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
     Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post');
 
-    // 프로젝트 개인/팀 화면
-    Route::get('/individual/{user_pk}', [ProjectController::class,'mainshow'])->name('individual.get');
-    // Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
-    Route::get('/team/{user_pk}', [ProjectController::class,'mainshow'])->name('team.get');
+// 프로젝트 개인/팀 화면
+Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
+// Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
+Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
 
 
     // 모달

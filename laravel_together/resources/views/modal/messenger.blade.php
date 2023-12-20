@@ -97,7 +97,8 @@
             <!-- 0 -->
             <div id="emptyfrienddiv"></div>
             <!-- 친구 목록 div -->
-            <div id="friend-list-div"> </div> 
+            <div id="friend-list-div"> 
+            </div> 
         </div>
       </div>
     </div>
