@@ -46,6 +46,7 @@ Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 
 Route::middleware('auth')->patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
 Route::middleware('auth')->patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
 Route::middleware('auth')->patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
+Route::middleware('auth')->delete('/frienddelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
 
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
