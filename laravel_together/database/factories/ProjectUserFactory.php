@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProjectUser>
@@ -16,6 +17,7 @@ class ProjectUserFactory extends Factory
      */
     public function definition()
     {
+        DB::table('projects')->get()->toArray();
         $date = $this->faker->dateTimeBetween('-1 years');
         return [
             'project_id'=>$this->faker->randomNumber(1), // 프로젝트 pk
