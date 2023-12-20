@@ -542,7 +542,6 @@ function displayFriendsends(friendSendlist) {
 
 // friend-list-div
 var friendlistdiv = document.getElementById('friend-list-div');
-
 // 모달이 열릴때 실행 되는 함수
 function friendList() {
 
@@ -580,57 +579,78 @@ function displayFriendlist(friendList) {
     friendlistdiv.innerHTML = '';
 
     if (friendlistdiv) {
-        // 컨트롤러에서 받아온 친구 요청 보낸 목록을 모달 내부에 추가
         for (var i = 0; i < friendList.length; i++) {
             var friendlistdata = friendList[i];
-
-            // friend-send-div > messenger-user-div, m-received-bg
+    
             var userDiv = document.createElement('div');
             var friendlistId = friendlistdata.friend_id;
             userDiv.classList.add('messenger-user-div', 'm-request-bg');
             userDiv.setAttribute('id', 'user_pk' + friendlistId);
-
+    
             friendlistdiv.appendChild(userDiv);
-
-            // friend-send-div > messenger-user-div, m-received-bg > user-profile 
+    
             var userprofilediv = document.createElement('div');
             userprofilediv.classList.add('user-profile');
-
             userDiv.appendChild(userprofilediv);
-
-            // 1. 이미지 추가
+    
             var userprofileImg = document.createElement('img');
             userprofileImg.src = '/img/profile-img.png';
             userprofileImg.classList.add('m-div-userprofile-icon');
-
             userprofilediv.appendChild(userprofileImg);
-
-            // 2. 이름 추가
+    
             var username = document.createElement('p');
             username.classList.add('user-name');
             username.textContent = friendlistdata.name;
-
             userDiv.appendChild(username);
-
-            // 3. 이메일 추가
+    
             var useremail = document.createElement('p');
-            useremail.classList.add('user-email');
+            useremail.classList.add('user-email-friend');
             useremail.textContent = friendlistdata.email;
-
             userDiv.appendChild(useremail);
-
-            // 4. 더보기 버튼 추가
+    
             var friendId = friendlistdata.friend_id;
+    
+            // 더보기 버튼 및 이미지 추가
+            var friendmorebtn = document.createElement('button');
+            var friendmorebtnImg = document.createElement('img');
+            friendmorebtnImg.src = '/img/icon-more.png';
+            friendmorebtn.classList.add('more-btn');
+            friendmorebtnImg.classList.add('more-btn-img');
+            friendmorebtn.setAttribute('value', friendId);
+            friendmorebtn.appendChild(friendmorebtnImg);
+            userDiv.appendChild(friendmorebtn);
+    
+            // 드롭다운 생성
+            var moredropdowndiv = document.createElement("div");
+            moredropdowndiv.className = "moredropdown-content";
+            moredropdowndiv.id = 'morebtnpk'+friendId;
             var frienddeletebtn = document.createElement('button');
-            var frienddeletebtnImg = document.createElement('img');
-            frienddeletebtnImg.src = '/img/icon-more.png';
-            frienddeletebtn.classList.add('more-btn');
-            frienddeletebtnImg.classList.add('more-btn-img');
-            frienddeletebtn.setAttribute('value', friendId);
+            frienddeletebtn.innerHTML = '친구삭제';
+            frienddeletebtn.value = friendId;
+            userDiv.appendChild(moredropdowndiv);
+            moredropdowndiv.appendChild(frienddeletebtn);
+    
+            // 클릭 이벤트 핸들러 추가
+            friendmorebtn.addEventListener("click", function(event) {
+                console.log("Toggling Dropdown");
+                var dropdownContent = event.currentTarget.nextElementSibling;
+                console.log("Dropdown Content:", dropdownContent);
+                toggleDropdown(dropdownContent);
+            });
 
-            userDiv.appendChild(frienddeletebtn);
-            frienddeletebtn.appendChild(frienddeletebtnImg);
-        }
+            function toggleDropdown(clickedDropdown) {
+                var dropdowns = document.getElementsByClassName("moredropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var dropdown = dropdowns[i];
+                    if (dropdown !== clickedDropdown && dropdown.style.display === "block") {
+                        dropdown.style.display = "none";
+                    }
+                }
+
+                var display = clickedDropdown.style.display;
+                clickedDropdown.style.display = (display === "block") ? "none" : "block";
+            }
+        }// for
     } else {
         console.error('Element with id "friend-request-div" not found.');
     }

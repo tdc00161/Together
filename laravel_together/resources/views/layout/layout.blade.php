@@ -36,8 +36,8 @@
       <button class="icon-Sub" onclick="toggleModal()"><img class="header-btn" src="/img/icon-messenger.png" alt=""></button>
 
       <div class="dropdown">
-        <button class="dropdown-toggle common-button" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img class="profile-img" src="/img/profile-img.png" alt="">
+        <button class="dropdown-toggle icon-Sub" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img class="header-btn" src="/img/profile-img.png" alt="">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item bg-op border-radius-top" style="color: #21D9AD; pointer-events : none;">{{$user->email}}</a></li>
