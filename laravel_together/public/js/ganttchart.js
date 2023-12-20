@@ -68,7 +68,6 @@ function orderDropdown(category) {
    * 6. 
    */
 
-
 // ************* 하위 업무 추가
 function addSubTask(mainId) {
   const doMGanttTask = document.getElementById('gantt-task-282'); // 원래 자리접근

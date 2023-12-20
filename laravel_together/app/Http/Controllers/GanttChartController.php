@@ -17,7 +17,7 @@ class GanttChartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function ganttshow()
     {
         $result = DB::select("
             SELECT
@@ -51,46 +51,14 @@ class GanttChartController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function ganttstore(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        
     }
 
     /**
@@ -100,19 +68,48 @@ class GanttChartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function ganttupdate(Request $request, $id)
     {
-        //
+        // $responseData = [
+        //     "code" => "0",
+        //     "msg" => "",
+        //     "data" => []
+        // ];
+
+        // $result = Task::find($id);
+
+        // if (!$result) {
+        //     // 예외 처리 : 데이터 0건
+        //     $responseData['code'] = 'E01';
+        //     $responseData['msg'] = 'No Date.';
+        // } else {
+        //     // 정상 처리
+        //     $resposibleName = User::where('name', $request['task_reponsible_id'])->first();
+        //     $statusName = DB::table('basedata')->where('data_content_name', $request['task_status_id'])->first();
+        //     $priorityName = DB::table('basedata')->where('data_content_name', $request['priority_id'])->first();
+
+        //     $result->task_responsible_id = $resposibleName->id;
+        //     $result->task_status_id = $statusName->id;
+        //     // $result->prioity_id = $priorityName->id;
+
+        //     $result->title = $request->title;
+        //     $result->content = $request->content;
+
+        //     if($request->start_date !== '시작일'){
+        //         $result->start_date = $request->start_date;
+        //         Log::debug('$result->start_date :'.$result->start_date);
+        //     }
+        //     Log::debug($request->end_date);
+        //     if($request->end_date !== '마감일'){
+        //         $result->end_date = $request->end_date;
+        //         Log::debug('$result->end_date :'.$result->end_date);
+        //     }
+        //     // $result->updated_at = $request->data['completed'] === '1' ? Carbon::now() : null;
+        //     $result->save();
+
+        //     $responseData['data'] = $result;
+        // }
+        // return $responseData;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
