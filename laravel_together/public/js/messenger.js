@@ -1,3 +1,8 @@
+//  0일때 msg 표시
+var emptydiv = document.getElementById('emptydiv');
+var emptyRequestMsg = document.createElement('p');
+var emptysenddiv = document.getElementById('emptysenddiv');
+
 // 초기 탭 설정
 document.getElementById('tab1').style.display = 'block';
 
@@ -20,7 +25,7 @@ function openTab(tabId) {
     event.currentTarget.classList.add('tab-active');
 }
 
-// 모달 열기/닫기 함수
+// <Messenger> 모달 토글
 function toggleModal() {
     var modal = document.getElementById('m-myModal');
 
@@ -86,9 +91,9 @@ const inputdiv = document.querySelector('#receiver_email');
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 submitBtn.addEventListener('click', function (event) {
-    event.preventDefault(); // 서브밋 버튼의 기본 동작 방지
+    event.preventDefault(); // submit 버튼 기본 동작 방지
 
-    const receiverEmail = document.getElementById('receiver_email').value; // 소문자로 변환;
+    const receiverEmail = document.getElementById('receiver_email').value;
 
     if (!receiverEmail.trim()) {
         messageContainer.innerHTML = '이메일을 입력하세요.';
@@ -117,11 +122,8 @@ submitBtn.addEventListener('click', function (event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // 성공 메시지를 출력하고 모달은 열어둡니다.
                 messageContainer.innerHTML = data.message;
-                // 추가로 필요한 로직 수행...
             } else {
-                // 에러 메시지를 출력하고 모달은 열어둡니다.
                 messageContainer.innerHTML = data.message;
             }
         })
@@ -132,9 +134,6 @@ submitBtn.addEventListener('click', function (event) {
 // -------------------------- 친구 요청 ----------------------------
 
 // ------------------------ 친구 요청 목록 -------------------------
-// 친구요청 0일때 msg 표시 div
-var emptydiv = document.getElementById('emptydiv');
-var emptyRequesMsg = document.createElement('p');
 
 // friend-request-div
 var friendrequestdiv = document.getElementById('friend-request-div');
@@ -165,9 +164,9 @@ function friendRequestList() {
                 friendrequestdiv.style.display = 'none';
 
                 // 메세지 출력
-                emptyRequesMsg.classList.add('empty-msg-css');
-                emptyRequesMsg.innerHTML = '요청 없음';
-                emptydiv.appendChild(emptyRequesMsg);
+                emptyRequestMsg.classList.add('empty-msg-css');
+                emptyRequestMsg.innerHTML = '요청 없음';
+                emptydiv.appendChild(emptyRequestMsg);
 
             // !0 :
             } else {
@@ -248,9 +247,9 @@ function displayFriendRequests(friendRequests) {
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
-                    emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequesMsg);
+                    emptyRequestMsg.classList.add('empty-msg-css');
+                    emptyRequestMsg.innerHTML = '요청 없음';
+                    emptydiv.appendChild(emptyRequestMsg);
                 }
 
                 // AJAX 요청 수행
@@ -269,7 +268,7 @@ function displayFriendRequests(friendRequests) {
                         return response.json();
                     })
                     .then(data => {
-                        // 성공 응답을 받았을 때 처리
+                        // 성공 응답 받았을 때 처리
                         console.log('Success: Friend request rejected.', data);
 
                         var clickDivId = 'user_pk' + requestId; // 예시: div_123
@@ -282,7 +281,6 @@ function displayFriendRequests(friendRequests) {
                     .catch(error => {
                         // 실패 응답 또는 네트워크 오류 발생 시 처리
                         console.error('Error:', error.message);
-                        // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
                     });
             });
 
@@ -293,7 +291,6 @@ function displayFriendRequests(friendRequests) {
             acceptbtn.classList.add('accept-btn');
             acceptbtn.setAttribute('value', friendRequestId);
             acceptbtn.textContent = '수락'
-
             acceptbtn.addEventListener('click', function () {
 
                 var requestId = this.value;
@@ -301,10 +298,63 @@ function displayFriendRequests(friendRequests) {
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
-                    emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequesMsg);
+                    emptyRequestMsg.classList.add('empty-msg-css');
+                    emptyRequestMsg.innerHTML = '요청 없음';
+                    emptydiv.appendChild(emptyRequestMsg);
                 }
+
+                for (var i = 0; i < friendRequests.length; i++) {
+                    var friendRequest = friendRequests[i];
+
+                    // 친구 목록에 '추가된 유저' 표시
+                    if(friendRequest.id == requestId) {
+                    var addfriendlistdiv = document.createElement('div');
+                    friendlistdiv.appendChild(addfriendlistdiv);
+                    addfriendlistdiv.classList.add('messenger-user-div', 'm-request-bg');
+                    addfriendlistdiv.id = 'add_user_pk'+ requestId;
+    
+                    // 0. div 생성
+                    var adduserprofilediv = document.createElement('div');
+                    adduserprofilediv.classList.add('user-profile');
+    
+                    addfriendlistdiv.appendChild(adduserprofilediv);
+                    // 1. 이미지 추가
+                    var adduserprofileImg = document.createElement('img');
+                    adduserprofileImg.src = '/img/profile-img.png';
+                    adduserprofileImg.classList.add('m-div-userprofile-icon');
+    
+                    adduserprofilediv.appendChild(adduserprofileImg);
+    
+                    // 2. 이름 추가
+                    var addusername = document.createElement('p');
+                    addusername.classList.add('user-name');
+                    addusername.textContent = friendRequest.name;
+        
+                    addfriendlistdiv.appendChild(addusername);
+
+                    // 3. 이메일 추가
+                    var adduseremail = document.createElement('p');
+                    adduseremail.classList.add('user-email');
+                    adduseremail.textContent = friendRequest.email;
+
+                    addfriendlistdiv.appendChild(adduseremail);
+
+                    // 4. 더보기 버튼 추가
+                    var addfriendId = friendRequest.id;
+                    var addmorebtn = document.createElement('button');
+                    var addmorebtnImg = document.createElement('img');
+                    addmorebtnImg.src = '/img/icon-more.png';
+                    addmorebtn.classList.add('more-btn');
+                    addmorebtnImg.classList.add('more-btn-img');
+                    addmorebtn.setAttribute('value', addfriendId);
+
+                    addfriendlistdiv.appendChild(addmorebtn);
+                    addmorebtn.appendChild(addmorebtnImg);
+                    }
+                    else {
+                        console.log('error')
+                    }
+                 }
 
                 // AJAX 요청 수행
                 fetch('/acceptFriendRequest', {
@@ -335,7 +385,6 @@ function displayFriendRequests(friendRequests) {
                     .catch(error => {
                         // 실패 응답 또는 네트워크 오류 발생 시 처리
                         console.error('Error:', error.message);
-                        // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
                     });
             });
 
@@ -370,9 +419,9 @@ function friendSendList() {
 
             // 0 :
             if (friendSendlist === 0) {
-                emptyRequesMsg.classList.add('empty-msg-css');
-                emptyRequesMsg.innerHTML = '요청 없음';
-                emptydiv.appendChild(emptyRequesMsg);
+                emptyRequestMsg.classList.add('empty-msg-css');
+                emptyRequestMsg.innerHTML = '요청 없음';
+                emptydiv.appendChild(emptyRequestMsg);
             // !0 :
             } else {
                 // 친구 요청 보낸 목록 함수 실행
@@ -443,9 +492,9 @@ function displayFriendsends(friendSendlist) {
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
-                    emptyRequesMsg.classList.add('empty-msg-css');
-                    emptyRequesMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequesMsg);
+                    emptyRequestMsg.classList.add('empty-msg-css');
+                    emptyRequestMsg.innerHTML = '요청 없음';
+                    emptydiv.appendChild(emptyRequestMsg);
                 }
 
                 // AJAX 요청 수행
@@ -477,7 +526,6 @@ function displayFriendsends(friendSendlist) {
                     .catch(error => {
                         // 실패 응답 또는 네트워크 오류 발생 시 처리
                         console.error('Error:', error.message);
-                        // 에러 메시지를 사용자에게 표시하거나 다른 실패 처리 수행
                     });
             });
 
@@ -571,7 +619,7 @@ function displayFriendlist(friendList) {
 
             userDiv.appendChild(useremail);
 
-            // 4. 요청 취소 버튼 추가
+            // 4. 더보기 버튼 추가
             var friendId = friendlistdata.friend_id;
             var frienddeletebtn = document.createElement('button');
             var frienddeletebtnImg = document.createElement('img');
@@ -587,5 +635,4 @@ function displayFriendlist(friendList) {
         console.error('Element with id "friend-request-div" not found.');
     }
 }
-
-// 친구 목록 끝
+// ---------------------------- 친구 목록 끝----------------------------

@@ -127,6 +127,7 @@
 .gantt-search {
 	/* border: 1px solid #000; */
 	border-radius: 10px;
+	color: #000;
 }
 
 .gantt-filter {
@@ -328,17 +329,23 @@
 	padding: 5px;
 	cursor: pointer;
 }
-.editable > img {
+
+.editable:hover {
+	background-color: #9656FF;
+
+}
+
+/* .editable > img {
 	width: 15px;
 	margin: 0px 5px;
-}
+} */
 
 /* 업무명 자세히 보기 */
 .gantt-detail {
 	display: none;
 	position: absolute;
 	left: 30px;
-    background-color: #000;
+    background-color: rgba(151, 86, 255, 0.9);
     width: auto;
     padding: 5px;
     z-index: 1;
@@ -354,9 +361,9 @@
 	position: relative;
 	display: inline-block;
 }
-.gantt-status-color {
+/* .gantt-status-color {
 	background-color: #000000c5;
-}
+} */
 
 /* .gantt-dropdown-content {
 	display: none;

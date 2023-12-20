@@ -93,6 +93,7 @@
                 <div class="gantt-task-header">
                     <div class="gantt-task-header-div" onclick="orderDropdown('orderTask')">
                         <span class="gantt-order">업무명</span>
+                        <img src="/img/table.png" alt="">
                         <div class="gantt-order-div" id="orderTaskDropdown">
                             <button class="gantt-order-task">오름차순</button>
                             <br>
@@ -134,22 +135,22 @@
                 </div>
                 <div class="gantt-task-body">
                     @foreach ($data as $key => $item)
-                        <div class="gantt-task">
+                        <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
                                 <span class="taskKey">{{$item->id}}</span>
                                 <span class="taskName editable-title">{{$item->title}}</span>
                                 <div class="gantt-detail">
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
                                     <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask('{{$item->id}}')">하위업무 추가</button>
+                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
                                 </div>
                             </div>
                             <div class="gantt-dropdown">{{$item->name}}</div>
                             <div>
                                 <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
                             </div>
-                            <div><input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}"></div>
-                            <div><input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end_date}}"></div>
+                            <div><input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
+                            <div><input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
                         </div>
                     @endforeach
                 </div>
@@ -163,7 +164,7 @@
                     </div>
                     <div class="gantt-chart-body">
                         @foreach ($data as $key => $item)
-                            <div class="gantt-chart" id="ganttChart">
+                            <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
                                     $startDate = new DateTime('2023-12-01');
                                     $endDate = new DateTime('2023-12-31');
@@ -175,6 +176,8 @@
                             </div>
                         @endforeach
                     </div>
+                    {{-- <div id="row{{$item->id}}-231201"></div>
+                    <div id="row{{$item->id}}-231231"></div> --}}
                 </div>
             </div>
         </section>

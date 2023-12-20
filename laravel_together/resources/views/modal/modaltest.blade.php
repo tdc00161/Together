@@ -7,6 +7,10 @@
 
 <body>
     @section('main')
+    <input class="now_user_name" type="hidden" value="{{$user->name}}">
+    <button onclick="openTaskModal(0,1)">공지작성</button>
+    <button onclick="openTaskModal(0,0)">업무추가</button>
+    <button onclick="openTaskModal(1,1,312)">공지열람</button>
         @forelse ($data as $item)
             <p>
                 프로젝트 명 : <span class="project_detail">{{$item->project_title}}</span>

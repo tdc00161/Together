@@ -69,7 +69,7 @@ class Project extends Model // 프로젝트
                 ,pj.user_pk
                 ,us.name user_name
                 ,pj.color_code_pk
-                ,base3.data_content_name
+                ,base3.data_content_name project_color
                 ,pj.project_title
                 ,pj.project_content
                 ,pj.flg

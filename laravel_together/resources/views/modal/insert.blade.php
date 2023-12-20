@@ -1,5 +1,5 @@
 <div class="task_modal insert_modal" style='display: none;'>
-	<div class="header">
+	<div class="header task_modal_header">
 		<div>
 			<div class="project_color"></div>
 			<div class="project_name">Project1</div>
@@ -29,7 +29,7 @@
 					<div class="responsible_icon"></div>
 					<div class="responsible_one" style='display: none;'>
 						<div class="user_profile"></div>
-						<div>User</div>
+						<div class="responsible_user">User</div>
 						<div class="cross_icon_b" onclick="removeResponsible(0)"></div>
 					</div>
 					<div class="add_box_mgin add_responsible" onclick="addResponsible(0)">담당자추가</div>
@@ -55,9 +55,9 @@
 				</div>
 				<div class="priority add_box">
 					<div class="flag_icon"></div>
-					<div class="priority_one" style='display: none;'>
+					<div class="priority_one">
 						<div class="priority_icon"></div>
-						<div>보통</div>
+						<div class="priority_val">보통</div>
 						<div class="cross_icon_b" onclick="removePriority(0)"></div>
 					</div>
 					<div class="add_box_mgin add_priority" onclick="addPriority(0)">우선순위추가</div>
@@ -76,7 +76,7 @@
 		</div>
 	</div>
 	<div class="insert_footer">
-		<div class="submit">등록</div>
+		<div class="submit" onclick="store_update()">등록</div>
 	</div>
 </div>
 <div class="behind_insert_modal" style='display: none;'></div>

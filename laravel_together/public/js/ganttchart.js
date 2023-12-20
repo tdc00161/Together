@@ -56,6 +56,178 @@ function orderDropdown(category) {
 // ************* 체크박스 필터링
 
 
+// ************* 스크롤 한번에
+
+
+ /*******************
+   * 1. ajax로 백앤에 request
+   * 2. id를 이용해서 해당 프로젝트의 하위업무 갯수 획득
+   * 3. [2]에서 획득한 갯수+1해서 하위업무 생성
+   * 4. [3]에서 생성한 데이터 json으로 respone
+   * 5. [4]에서 받은 데이터를 기반으로 프론트 테이블 로우 요소 생성
+   * 6. 
+   */
+
+
+// ************* 하위 업무 추가
+function addSubTask(mainId) {
+  const doMGanttTask = document.getElementById('gantt-task-282'); // 원래 자리접근
+  // 새로운 gantt-task 요소 생성
+  // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
+  const newTask = document.createElement('div');
+  newTask.classList.add('gantt-task');
+  newTask.id = 'gantt-task-800';
+  
+  // gantt-task 안에 5개 div 생성
+  // <div class="gantt-editable-div editable"></div>
+  const addGanttEditableDiv = document.createElement('div');
+  addGanttEditableDiv.classList.add('gantt-editable-div', 'editable');
+  addGanttEditableDiv.setAttribute('onmouseover', 'showDropdown(this)');
+  addGanttEditableDiv.setAttribute('onmouseout', 'hideDropdown(this)');
+
+  // <span class="taskKey">{{$item->id}}</span>
+  const addTaskKey = document.createElement('span');
+  addTaskKey.classList.add('taskKey');
+  addTaskKey.textContent = '800'; 
+
+  // <span class="taskName editable-title">{{$item->title}}</span>
+  const addTaskName = document.createElement('span');
+  addTaskName.classList.add('taskName', 'editable-title');
+  addTaskName.textContent = '업무명'; 
+
+  // <div class="gantt-detail"></div>
+  const addGanttDetail = document.createElement('div');
+  addGanttDetail.classList.add('gantt-detail');
+
+  // <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
+  const addDetailButton = document.createElement('button');
+  addDetailButton.classList.add('gantt-detail-btn');
+  addDetailButton.textContent = '자세히보기';
+  addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
+  
+
+  // <div class="gantt-dropdown">{{$item->name}}</div>
+  const addUserName = document.createElement('div');
+  addUserName.classList.add('gantt-dropdown');
+  addUserName.textContent = '담당자';
+
+  //  <div>
+  //    <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
+  //  </div> 여기서 부모 div 생성
+  const addStatusColorDiv = document.createElement('div');
+
+  //  <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
+  const addStatusColor = document.createElement('div');
+  addStatusColor.classList.add('gantt-status-color');
+  addStatusColor.setAttribute('data-status', '시작전');
+  // addStatusColor.dataset.status = '시작전';
+  addStatusColor.textContent = '시작전';
+
+  // <div>
+  //    <input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}">
+  // </div> 여기서 부모 div 생성
+  const addTaskStartDateDiv = document.createElement('div');
+  
+  // <input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}">
+  const addTaskStartDate = document.createElement('input');
+  addTaskStartDate.type = 'date';  
+  addTaskStartDate.name = 'start';  
+  addTaskStartDate.id = 'start-row800';
+  // addTaskStartDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
+  addTaskStartDate.value = '20231201';
+
+  // <div>
+  //    <input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end}}">
+  // </div> 여기서 부모 div 생성 
+  const addTaskEndDateDiv = document.createElement('div');
+
+  // <input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end_date}}">
+  const addTaskEndDate = document.createElement('input');
+  addTaskEndDate.type = 'date';  
+  addTaskEndDate.name = 'end';  
+  addTaskEndDate.id = 'end-row800';
+  // addTaskEndDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
+  addTaskEndDate.value = '20231205';
+
+
+  // gantt-task 안에 edit
+  newTask.appendChild(addGanttEditableDiv);
+  // edit안에 taskkey, taskname, detail(detail-btn)
+  addGanttEditableDiv.appendChild(addTaskKey);
+  addGanttEditableDiv.appendChild(addTaskName);
+  addGanttEditableDiv.appendChild(addGanttDetail);
+  // 자세히보기 버튼을 gantt-detail에 추가
+  addGanttDetail.appendChild(addDetailButton);
+
+  // gantt-task 안에 name
+  newTask.appendChild(addUserName);
+  // gantt-task 안에 statusdiv
+  newTask.appendChild(addStatusColorDiv);
+  // statusdiv 안에 statuscolor
+  addStatusColorDiv.appendChild(addStatusColor);
+
+  // gantt-task 안에 startdatediv
+  newTask.appendChild(addTaskStartDateDiv);
+  // startdiv 안에 startdate
+  addTaskStartDateDiv.appendChild(addTaskStartDate);
+
+  // gantt-task 안에 enddatediv
+  newTask.appendChild(addTaskEndDateDiv);
+  // startdiv 안에 enddate
+  addTaskEndDateDiv.appendChild(addTaskEndDate);
+
+  // 원래 자리 다음에 생성
+  doMGanttTask.after(newTask);
+  // --- 업무부분 생성 완
+
+  // 차트 부분
+  const doMGanttChart = document.getElementById('gantt-chart-282'); // 원래 자리접근
+  
+  const newChart = document.createElement('div');
+  newChart.classList.add('gantt-chart');
+  newChart.id = 'gantt-chart-800';
+
+  // 원래있던 282 다음에 800 생성
+  doMGanttChart.after(newChart);
+
+  // 시작일 종료일 날짜 설정
+  const chartStartDate = new Date('2023-12-01');
+  const chartEndDate = new Date('2023-12-31');
+
+  // chartStartDate를 클론하여 chartNewStartDate에 할당
+  const chartNewStartDate = new Date(chartStartDate);
+
+  // 요소 생성 배치
+  // end가 start보다 이전인지 확인
+  while (chartNewStartDate <= chartEndDate) {
+    // 날짜 yyyymmdd 변경
+    const chartFormatDate = chartNewStartDate.toISOString().slice(0,10).replace(/-/g,"");
+
+    // gantt-chart안에 들어갈 새로운 div
+    const ganttChartRow = document.createElement('div');
+    ganttChartRow.id = 'row800'+ '-' + chartFormatDate;
+
+    // 다음 날짜 이동
+    chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
+
+    // <div class="gantt-chart" id="ganbtt-chart-800">
+    //    <div id="row800-(231201~231231)"></div>
+    // </div> 생성
+    newChart.appendChild(ganttChartRow);
+  }
+
+  // addEventListener 로 하는 방법
+  //
+  const eventSubStartDate = document.getElementById(addTaskStartDate.id);
+  const eventSubEndDate = document.getElementById(addTaskEndDate.id);
+  eventSubStartDate.addEventListener('change', e => test(800));
+  eventSubEndDate.addEventListener('change', e => test(800));
+
+  
+  // --- 차트 부분 생성 완
+}  
+
+
 
 // ************* 업무상태 색상
 document.addEventListener('DOMContentLoaded', function() {
@@ -89,162 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-// ************* 스크롤 한번에
-
-
-
-
-// ************* 하위 업무 추가
-function addSubTask() {
-  var doMGanttTask = document.querySelectorAll('.gantt-task');
-
-
-  // 새로운 작업 요소를 생성하는 코드
-  var newTask = document.createElement('div');
-  newTask.className = 'gantt-task';
-
-  // gantt-editable-div 요소 생성
-  var addGanttEditableDiv = document.createElement('div');
-  addGanttEditableDiv.className = 'gantt-editable-div editable';
-  addGanttEditableDiv.setAttribute('onmouseover', 'showDropdown(this)');
-  addGanttEditableDiv.setAttribute('onmouseout', 'hideDropdown(this)');
-
-  // 새 작업의 ID를 나타내는 taskKey 생성
-  var addTaskKey = document.createElement('span');
-  addTaskKey.className = 'taskKey';
-  addTaskKey.textContent = ''; 
-
-  // 새 작업의 제목을 표시하는 taskName 생성
-  var addTaskName = document.createElement('span');
-  addTaskName.className = 'taskName editable-title';
-  addTaskName.textContent = ''; 
-
-  // gantt-detail 요소 생성
-  var addGanttDetail = document.createElement('div');
-  addGanttDetail.className = 'gantt-detail';
-
-  // 자세히보기 버튼 생성
-  var addDetailButton = document.createElement('button');
-  addDetailButton.className = 'gantt-detail-btn';
-  addDetailButton.textContent = '자세히보기';
-  addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
-
-  // 자세히보기 버튼을 gantt-detail에 추가
-  addGanttDetail.appendChild(addDetailButton);
-
-  // 각 요소들을 순서대로 조립하여 새로운 작업에 추가
-  newTask.appendChild(addGanttEditableDiv);
-  addGanttEditableDiv.appendChild(addTaskKey);
-  addGanttEditableDiv.appendChild(addTaskName);
-  addGanttEditableDiv.appendChild(addGanttDetail);
-
-  // gantt-chart 요소 생성 및 추가
-  var doMGanttChart = document.querySelectorAll('gantt-chart');
-
-  var addGanttChart = document.createElement('div');
-  addGanttChart.className = 'gantt-chart';
-  addGanttChart.id = 'ganttChart';
-
-  // 새 작업의 날짜 범위에 해당하는 요소들을 gantt-chart에 추가
-  var addStartDate = new Date('2023-12-01');
-  var addEndDate = new Date('2023-12-31');
-
-  for (var date = new Date(addStartDate); date <= addEndDate; date.setDate(date.getDate() + 1)) {
-      var rowId = 'rowNewTaskID-' + date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2);
-      var newRow = document.createElement('div');
-      newRow.id = rowId;
-      addGanttChart.appendChild(newRow);
-    }
-
-  // 새로운 gantt-chart를 새 작업에 추가
-  newTask.appendChild(addGanttChart);
-
-
-}
-
-
-
-// function addSubTask(element) {
-//   // '하위업무 추가' 버튼이 속한 요소의 부모(.gantt-detail)의 부모(.gantt-editable-div)의 부모(.gantt-task)를 찾습니다.
-//   var grandParentGanttTask = element.closest('.gantt-detail').parentNode.parentNode;
-
-//   var newTask = document.createElement('div');
-//   newTask.className = 'gantt-task';
-
-//   // 새로운 작업 요소를 생성하는 코드
-//   // gantt-editable-div 요소 생성
-//   var addGanttEditableDiv = document.createElement('div');
-//   addGanttEditableDiv.className = 'gantt-editable-div editable';
-//   addGanttEditableDiv.setAttribute('onmouseover', 'showDropdown(this)');
-//   addGanttEditableDiv.setAttribute('onmouseout', 'hideDropdown(this)');
-
-//   // 새 작업의 ID를 나타내는 taskKey 생성
-//   var addTaskKey = document.createElement('span');
-//   addTaskKey.className = 'taskKey';
-//   addTaskKey.textContent = 'New Task ID'; // 새로운 작업의 ID를 할당하십시오.
-
-//   // 새 작업의 제목을 표시하는 taskName 생성
-//   var addTaskName = document.createElement('span');
-//   addTaskName.className = 'taskName editable-title';
-//   addTaskName.textContent = 'New Task Title'; // 새로운 작업의 제목을 할당하십시오.
-
-//   // gantt-detail 요소 생성
-//   var addGanttDetail = document.createElement('div');
-//   addGanttDetail.className = 'gantt-detail';
-
-//   // 자세히보기 버튼 생성
-//   var addDetailButton = document.createElement('button');
-//   addDetailButton.className = 'gantt-detail-btn';
-//   addDetailButton.textContent = '자세히보기';
-//   addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
-
-//   // 자세히보기 버튼을 gantt-detail에 추가
-//   addGanttDetail.appendChild(addDetailButton);
-
-//   // 각 요소들을 순서대로 조립하여 새로운 작업에 추가
-//   newTask.appendChild(addGanttEditableDiv);
-//   addGanttEditableDiv.appendChild(addTaskKey);
-//   addGanttEditableDiv.appendChild(addTaskName);
-//   addGanttEditableDiv.appendChild(addGanttDetail);
-  
-
-//   // // gantt-chart 요소 생성 및 추가
-//   // var addGanttChart = document.createElement('div');
-//   // addGanttChart.className = 'gantt-chart';
-//   // addGanttChart.id = 'ganttChart';
-
-//   // // 새 작업의 날짜 범위에 해당하는 요소들을 gantt-chart에 추가
-//   // var addStartDate = new Date('2023-12-01');
-//   // var addEndDate = new Date('2023-12-31');
-
-//   // for (var date = new Date(addStartDate); date <= addEndDate; date.setDate(date.getDate() + 1)) {
-//   //     var rowId = 'rowNewTaskID-' + date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2);
-//   //     var newRow = document.createElement('div');
-//   //     newRow.id = rowId;
-//   //     addGanttChart.appendChild(newRow);
-//   // }
-
-//   // // 새로운 gantt-chart를 새 작업에 추가
-//   // newTask.appendChild(addGanttChart);
-
-//   // 만약 해당 부모 .gantt-task 요소를 찾았다면,
-//   if (grandParentGanttTask) {
-//       // 새로운 작업을 해당 부모 .gantt-task 요소의 하위로 추가합니다.
-//       grandParentGanttTask.appendChild(newTask);
-//   } else {
-//       // 만약 해당 부모 .gantt-task 요소를 찾을 수 없다면,
-//       // 기본적으로 문서의 body에 새로운 작업을 추가합니다.
-//       document.body.appendChild(newTask);
-//   }
-// }
-
-
-
-
-
-
 // ************* 업무명 클릭하여 바로 수정
 // 요소를 클릭하여 편집 가능하게 만드는 함수
 function makeEditable(element) {
@@ -259,9 +275,6 @@ editableDivs.forEach(function(element) {
     makeEditable(targetElement);
   });
 });
-
-
-
 
 
 
@@ -317,9 +330,13 @@ addDatesToHeader();
 // ************* 차트생성
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
 function test(rowNum) {
+  console.log('***** test() Start *****');
   // 해당 시작일, 종료일 요소 습득
   const start = document.getElementById('start-row' + rowNum).value;
   const end = document.getElementById('end-row' + rowNum).value;
+
+  // console.log(start);
+  // console.log(end);
 
   if (start && end) {
     // 추가 할 bk-row div의 데이트 포멧 변경 : yyyy-mm-dd >> yyyymmdd
@@ -328,6 +345,8 @@ function test(rowNum) {
 
     // 기존 bk-row div 삭제
     const existingBkRowList = document.querySelectorAll('.bk-row[data-row-num="' + rowNum + '"]');
+    
+  console.log(existingBkRowList);
     existingBkRowList.forEach(function (item) {
       item.parentNode.removeChild(item);
     });
