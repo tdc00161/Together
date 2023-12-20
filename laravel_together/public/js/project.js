@@ -40,7 +40,7 @@ window.onload = function( ) {
          console.log(err.message);
       })
 
-   //  //데이터 입력
+   // 데이터 입력
     var data = ['before', '{ing}', '{feedback}', '{complete}'];
    //  var data = [];
 
@@ -71,7 +71,17 @@ window.onload = function( ) {
     }
   }
 
-// 상단바 d-day 계산
+// 카테고리 색상
+var categoryColor = document.getElementById('color');
+while(categoryColor = true){
+      if(category_name = '공지'){
+         categoryColor.style.color = 'red';
+      } else if(category_name = '업무'){
+         categoryColor.style.color = 'blue';
+      }
+}
+
+// 프로젝트 d-day 계산
 
 let dday = document.getElementById("dday");
 function total(){
@@ -86,7 +96,7 @@ function total(){
    // if(start_day!=null || end_day!=null) {
    //    dday.innerHTML = result;
    // }
-   dday.innerHTML = result;
+   dday.innerHTML = 'D-'+result;
 }
 
 // console.log(dday);
