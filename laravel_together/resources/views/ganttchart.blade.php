@@ -31,8 +31,8 @@
     </div>
     {{-- <div class="hr"></div> --}}
     {{-- 피드공통 헤더끝 --}}
-    {{-- <form id="ganttChartSave" action="{{ route('') }}" method="post"> --}}
-        {{-- @csrf --}}
+    <form id="ganttChartSave" action="{{ route('gantt.update') }}" method="patch">
+        @csrf
         <div class="gantt-btn-wrap">
             <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="   업무명, 업무번호 검색">
             <div>
@@ -162,17 +162,17 @@
                                         <span class="taskKey">{{$item->id}}</span>
                                         <span class="taskName editable-title" spellcheck="false">{{$item->title}}</span>
                                         <div class="gantt-detail">
-                                            <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
+                                            <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
                                             <br>
                                             <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
                                         </div>
                                     </div>
-                                    <div class="gantt-dropdown">{{$item->name}}</div>
+                                    <div class="responName gantt-dropdown">{{$item->name}}</div>
                                     <div>
                                         <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
                                     </div>
-                                    <div><input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
-                                    <div><input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
+                                    <div><input class="start-date" type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
+                                    <div><input class="end-date" type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
                                 </div>
                             @endforeach
                         </div>
@@ -203,7 +203,7 @@
                 </div>
             </section>
         </div>
-    {{-- </form> --}}
+    </form>
 
     <script src="/js/ganttchart.js"></script>
 @endsection
