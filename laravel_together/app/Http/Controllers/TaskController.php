@@ -30,5 +30,18 @@ class TaskController extends Controller
             return redirect('/user/login');
         }
     }
+
+    public function showheader() {
+
+        $user = Auth::user();
+
+        if(Auth::check()) {
+            return view('layout', [
+                'user' => $user,
+            ]);
+        } else {
+            return redirect('/user/login');
+        }
+    }
 }
 
