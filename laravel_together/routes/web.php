@@ -37,9 +37,9 @@ Route::group(['middleware' => ['web']], function () { // web이라는 기본 미
     // 대시보드
     Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
-    // 간트차트
-    Route::get('/ganttchart', [GanttChartController::class,'index']);
-    // Route::post()
+// 간트차트
+Route::get('/ganttchart', [GanttChartController::class,'index']);
+// Route::post()
 
     // Friend 
     Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록

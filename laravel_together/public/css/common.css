@@ -28,6 +28,15 @@ a {
     background: transparent;
 }
 
+/* 헤더 drop button 크기 */
+#dropdownMenuButton1 {
+  height: auto;
+}
+
+.accordion-item {
+    border: none;
+}
+
 .app-card-title {
     display: inline-block;
     margin-left: 10px;
@@ -179,7 +188,7 @@ body.light-mode .video-bg:before {
 
 .app {
  background-color: var(--theme-bg-color);
- max-width: 1460px;
+ max-width: 1700px;
  max-height: 860px;
  height: 90vh;
  display: flex;
@@ -280,7 +289,7 @@ body.light-mode .video-bg:before {
 .header-profile {
  display: flex;
  align-items: center;
- padding: 0 16px 0 40px;
+ padding: 0 20px 0 20px;
  margin-left: auto;
  flex-shrink: 0;
  svg {
@@ -296,7 +305,7 @@ body.light-mode .video-bg:before {
  border-radius: 50%;
  object-fit: cover;
  /* border: 2px solid var(--theme-color); */
- margin-left: 17px;
+vertical-align: middle;
 }
 
 .wide {
@@ -668,15 +677,17 @@ box-sizing: border-box;
 }
 
 .dropdown {
- /* position: relative; */
- height: 53px;
- width: 40px;
- /* top: -24px; */
+ width: 35px;
+ height: 35px;
  display: flex;
- left: -5px;
+ justify-content: center;
+ align-items: center;
  background: transparent;
  border: none;
  cursor: pointer;
+ border-radius: 50%;
+ /* background-color: #1e59f1; */
+ margin-left: 10px;
  ul {
   position: absolute;
   background: var(--dropdown-bg);
@@ -684,6 +695,7 @@ box-sizing: border-box;
   width: 160px;
   right: 0;
   top: 20px;
+  margin-top: 20px;
   pointer-events: none;
   opacity: 0;
   transform: translatey(10px);
@@ -703,6 +715,7 @@ box-sizing: border-box;
 .dropdown-menu {
     background-color: transparent;
     padding: 0;
+    top: 30px;
 }
 
 .dropdown-item {
@@ -1013,69 +1026,6 @@ box-sizing: border-box;
     background: transparent;
     border: none;
     width: 40px;
-    margin-left: 15px;
     cursor: pointer;
+    margin: 7px;
 }
-
-/*커스텀 커서 시작==========*/
-.custom-cursor {
-    width: 12px;
-    height: 12px;
-    position: fixed;
-    top: -45px;
-    left: -35px;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    transform: translate(-50%, 50%);
-    background-color: #ffffff96; /*사용자 수정*/
-    backface-visibility: hidden;
-    transition: none;
-    /* mix-blend-mode: difference; 사용자 수정 */
-    pointer-events: none;
-    border-radius: 50%;
-    transform: scale(1);
-  }
-  
-  .custom-cursor-icon {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: #ffffff96; /*사용자 수정*/
-    transition: all .2s ease;
-    transform-origin: 50% 50%
-  }
-  
-  .custom-cursor.custom_cursor_visible {
-    opacity: 1
-  }
-  
-  .custom-cursor.custom_cursor_hidden {
-    opacity: 0
-  }
-  
-  @media (pointer:none),
-  (pointer:coarse) {
-  
-    #custom_cursor,
-    #custom_cursor .custom-cursor-icon {
-      display: none !important;
-      visibility: hidden;
-      opacity: 0
-    }
-  
-    * {
-      cursor: auto !important
-    }
-  }
-  
-  @media (max-width:767.98px) {
-    .custom-cursor {
-      display: none
-    }
-  }
-  
-  .custom-cursor.custom_cursor_hover .custom-cursor-icon {
-    transform: scale(1.6)
-  }
-  /*커스텀 커서 끝==========*/
