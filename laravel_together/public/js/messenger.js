@@ -310,7 +310,7 @@ function displayFriendRequests(friendRequests) {
                     if(friendRequest.id == requestId) {
                     var addfriendlistdiv = document.createElement('div');
                     friendlistdiv.appendChild(addfriendlistdiv);
-                    addfriendlistdiv.classList.add('messenger-user-div', 'm-request-bg');
+                    addfriendlistdiv.classList.add('messenger-user-div');
                     addfriendlistdiv.id = 'add_user_pk'+ requestId;
     
                     // 0. div 생성
@@ -334,27 +334,26 @@ function displayFriendRequests(friendRequests) {
 
                     // 3. 이메일 추가
                     var adduseremail = document.createElement('p');
-                    adduseremail.classList.add('user-email');
+                    adduseremail.classList.add('user-email-friend');
                     adduseremail.textContent = friendRequest.email;
 
                     addfriendlistdiv.appendChild(adduseremail);
 
-                    // 4. 더보기 버튼 추가
-                    var addfriendId = friendRequest.id;
-                    var addmorebtn = document.createElement('button');
-                    var addmorebtnImg = document.createElement('img');
-                    addmorebtnImg.src = '/img/icon-more.png';
-                    addmorebtn.classList.add('more-btn');
-                    addmorebtnImg.classList.add('more-btn-img');
-                    addmorebtn.setAttribute('value', addfriendId);
+                    // 4. 삭제 버튼 추가
+                    var addfdeletebtn = document.createElement('button');
+                    addfdeletebtn.classList.add('fdeletebtn');
+                    addfdeletebtn.innerHTML = '삭제';
+                    addfdeletebtn.value = requestId;
+                    addfriendlistdiv.appendChild(addfdeletebtn);
 
-                    addfriendlistdiv.appendChild(addmorebtn);
-                    addmorebtn.appendChild(addmorebtnImg);
+                    addfriendlistdiv.addEventListener('click', function() {
+                        toggleDeletePanel(this);
+                        });
                     }
                     else {
                         console.log('error')
                     }
-                 }
+                }
 
                 // AJAX 요청 수행
                 fetch('/acceptFriendRequest', {
@@ -542,7 +541,6 @@ function displayFriendsends(friendSendlist) {
 
 // friend-list-div
 var friendlistdiv = document.getElementById('friend-list-div');
-
 // 모달이 열릴때 실행 되는 함수
 function friendList() {
 
@@ -575,64 +573,106 @@ function friendList() {
 }
 
 function displayFriendlist(friendList) {
-    
     // 기존 내용 초기화
     friendlistdiv.innerHTML = '';
 
     if (friendlistdiv) {
-        // 컨트롤러에서 받아온 친구 요청 보낸 목록을 모달 내부에 추가
         for (var i = 0; i < friendList.length; i++) {
             var friendlistdata = friendList[i];
 
-            // friend-send-div > messenger-user-div, m-received-bg
             var userDiv = document.createElement('div');
             var friendlistId = friendlistdata.friend_id;
-            userDiv.classList.add('messenger-user-div', 'm-request-bg');
+            userDiv.classList.add('messenger-user-div');
             userDiv.setAttribute('id', 'user_pk' + friendlistId);
 
             friendlistdiv.appendChild(userDiv);
 
-            // friend-send-div > messenger-user-div, m-received-bg > user-profile 
             var userprofilediv = document.createElement('div');
             userprofilediv.classList.add('user-profile');
-
             userDiv.appendChild(userprofilediv);
 
-            // 1. 이미지 추가
             var userprofileImg = document.createElement('img');
             userprofileImg.src = '/img/profile-img.png';
             userprofileImg.classList.add('m-div-userprofile-icon');
-
             userprofilediv.appendChild(userprofileImg);
 
-            // 2. 이름 추가
             var username = document.createElement('p');
             username.classList.add('user-name');
             username.textContent = friendlistdata.name;
-
             userDiv.appendChild(username);
 
-            // 3. 이메일 추가
             var useremail = document.createElement('p');
-            useremail.classList.add('user-email');
+            useremail.classList.add('user-email-friend');
             useremail.textContent = friendlistdata.email;
-
             userDiv.appendChild(useremail);
 
-            // 4. 더보기 버튼 추가
             var friendId = friendlistdata.friend_id;
-            var frienddeletebtn = document.createElement('button');
-            var frienddeletebtnImg = document.createElement('img');
-            frienddeletebtnImg.src = '/img/icon-more.png';
-            frienddeletebtn.classList.add('more-btn');
-            frienddeletebtnImg.classList.add('more-btn-img');
-            frienddeletebtn.setAttribute('value', friendId);
 
-            userDiv.appendChild(frienddeletebtn);
-            frienddeletebtn.appendChild(frienddeletebtnImg);
+            // 삭제 버튼 추가
+            var fdeletebtn = document.createElement('button');
+            fdeletebtn.classList.add('fdeletebtn');
+            fdeletebtn.innerHTML = '삭제';
+            fdeletebtn.value = friendId;
+            userDiv.appendChild(fdeletebtn);
+
+            fdeletebtn.addEventListener('click', function () {
+                var deletefriendId = this.value;
+
+                // AJAX 요청 수행
+                fetch('/frienddelete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({ deletefriendId: deletefriendId }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Unable to delete friend.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 성공 응답 받았을 때 처리
+                        console.log('Success: Friend delete.', data);
+
+                        var clickDivId = 'user_pk' + requestId; // 예시: div_123
+                        var clickDiv = document.getElementById(clickDivId);
+
+                        if (clickDiv) {
+                            clickDiv.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        // 실패 응답 또는 네트워크 오류 발생 시 처리
+                        console.error('Error:', error.message);
+                    });
+
+            })
+
+
+
+
+            userDiv.addEventListener('click', function() {
+                toggleDeletePanel(this);
+            });
         }
     } else {
         console.error('Element with id "friend-request-div" not found.');
+    }
+}
+ // 토글 로직을 수행하는 함수
+ function toggleDeletePanel(userDiv) {
+    var deleteBtn = userDiv.querySelector('.fdeletebtn');
+
+    // 클래스를 토글
+    deleteBtn.classList.toggle('visible');
+    userDiv.classList.toggle('messenger-user-div-click');
+
+    // 초기에는 숨겨둔 상태면 보이도록 처리
+    if (deleteBtn.classList.contains('visible')) {
+        deleteBtn.style.display = 'block';
     }
 }
 // ---------------------------- 친구 목록 끝----------------------------

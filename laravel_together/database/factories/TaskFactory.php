@@ -22,7 +22,7 @@ class TaskFactory extends Factory
         $date4 = $this->faker->dateTimeBetween('-1 years');
         return [
             
-            'project_id'=>16, // 프로젝트 pk
+            'project_id'=>$this->faker->randomNumber(1,10), // 프로젝트 pk
             'task_responsible_id'=>$this->faker->randomNumber(1), // 담당자 pk
             'task_writer_id'=>$this->faker->randomNumber(1), // 작성자 pk
             'task_status_id'=>$this->faker->numberBetween(0,3), // 업무상태 pk

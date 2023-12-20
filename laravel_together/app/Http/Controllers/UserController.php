@@ -37,7 +37,7 @@ class UserController extends Controller
         if(Auth::check()) {
             session(['user' => $result]);
             // 유저쿠키 만들기
-            $cookie = cookie('userCookie', $result);
+            $cookie = cookie('user', $result->id);
         } else {
             $errorMsg = "인증 에러가 발생 했습니다.";
             return view('login')->withErrors($errorMsg);
@@ -84,7 +84,7 @@ class UserController extends Controller
         Auth::logout(); // 로그아웃
 
         // 쿠키 없애기
-        $cookie = cookie('userCookie', null, -1);
+        $cookie = cookie('user', null, -1);
         
         return redirect()->route('user.login.get')->cookie($cookie);
     }

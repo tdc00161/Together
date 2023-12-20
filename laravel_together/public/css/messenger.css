@@ -6,6 +6,10 @@
         padding: 0; */
     }
 
+    /* color */
+.red {
+    color: rgb(204, 7, 7);
+}
     .padding-0 {
         padding: 0;
     }
@@ -220,7 +224,7 @@ button {
 }
 .m-side-title {
     margin: 0;
-    height: 30px;
+    height: 35px;
     display: inline-block;
     font-size: small;
     margin-left: 10px;
@@ -231,7 +235,7 @@ button {
     display: inline-block;
     width: 20px;
     height: 20px;
-    background-color: #ff000077;
+    background-color: #e93434;
     font-size: 12px;
     text-align: center;
     margin-left: 5px;
@@ -242,18 +246,30 @@ button {
 /* user div */
 .messenger-user-div {
     display: inline-block;
-    height: 70px;
+    position: relative;
+    height: 65px;
     width: 100%;
     margin-top: 3px;
     margin-bottom: 3px;
-    padding: 7px;
+    padding: 0px 0px 0px 7px;
+    background-color: rgba(48, 48, 48, 0.144);
+}
+
+#friend-list-div .messenger-user-div {
+    cursor: pointer;
+}
+.messenger-user-div:hover {
+    background-color: rgba(12, 12, 12, 0.829);
+}
+.messenger-user-div-click {
+    background-color: rgba(12, 12, 12, 0.829);
 }
 .user-profile {
     display: inline-block;
     width: 45px;
     height: auto;
     margin-right: 5px;
-    line-height: 55px;
+    line-height: 65px;
 }
 .user-name {
     display: inline-block;
@@ -268,9 +284,18 @@ button {
     margin: -7px 3px;
     color: rgb(160, 160, 160);
     font-weight: 400;
-    width: 115px;
+    width: 210px;
     overflow-x: scroll;
+}
 
+.user-email-friend {
+    display: inline-block;
+    /* line-height: 70px; */
+    margin: -7px 3px;
+    color: rgb(160, 160, 160);
+    font-weight: 400;
+    width: 260px;
+    overflow-x: scroll;
 }
 ::-webkit-scrollbar { height: 3px; margin: 0; padding: 0;}
 
@@ -284,7 +309,7 @@ button {
     color: var(--inactive-color);
     margin-left: 5px;
     float: right;
-    margin-top: 11px;
+    margin-top: 19px;
 }
 /* 거절버튼 */
 .refuse-btn {
@@ -296,16 +321,18 @@ button {
     color: var(--inactive-color);
     margin-left: 5px;
     float: right;
-    margin-top: 11px;
+    margin-top: 19px;
+    margin-right: 10px;
 }
 /* 요청취소 버튼 */
 .request-cancle-btn {
     float: right;
-    margin-top: 11px;
     width: 80px;
-    height: 30px;
+    height: 40px;
     background-color: var(--m-btn);
     border-radius: 5px;
+    margin-right: 10px;
+    margin-top: 12px;
 }
 
 .m-received-bg {
@@ -394,4 +421,64 @@ button {
 .more-btn-img {
     width: 3.5px;
     height: auto;
+}
+
+/* 스타일링을 위한 기본 CSS */
+.moredropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .moredropdown-content {
+    display: none;
+    position: absolute;
+    right: 27px;
+    background-color: #0f0f0f;
+    border-radius: 12px;
+    min-width: 95px;
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); */
+    z-index: 3;
+  }
+
+  .moredropdown-content button {
+    width: 100%;
+    color: rgb(255, 255, 255);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .moredropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  #f-deleteconfirmModal {
+    background-color: rgba(15, 15, 15, 0.616);
+  }
+  .f-delete-modal-content {
+    background-color: #0f0f0f;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 230px;
+    height: 135px;
+    text-align: center;
+  }
+
+ .fdeletebtn {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: -200px; /* 초기에는 오른쪽으로 숨겨둠 */
+    height: 65px;
+    width: 70px;
+    line-height: 65px;
+    text-align: center;
+    background-color: #e93434;
+    transition: right 0.3s ease; /* 트랜지션 속성을 사용하여 부드러운 이동 효과 추가 */
+}
+
+/* 추가로 visible 클래스를 토글할 때 보이도록 처리 */
+.fdeletebtn.visible {
+    right: 0;
 }

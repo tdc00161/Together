@@ -12,22 +12,24 @@
 }
 
 /* 모달 위치 테스트 ~ */
-.insert_modal{
+.insert_modal {
 	/* 배치 */
 	position: absolute;
 	top: 6.3%;
 	right: 30%;
 	/* 내부 */
-	border-radius: 7px;
+	border-radius: 14px;
 	/* 크기 */
 	height: 87%;
 }
-.detail_modal{
+
+.detail_modal {
 	/* 배치 */
 	position: absolute;
 	top: 0;
 	right: 0;
 	/* 내부 */
+	border-radius: 14px 0 0 14px;
 	/* 크기 */
 	height: 100%;
 }
@@ -37,10 +39,10 @@
 	position: absolute;
 	z-index: 1;
 	left: 0;
-    top: 0;
+	top: 0;
 	/* 내부 */
 	backdrop-filter: blur(100px);
-    background: var(--scrollbar-bg);
+	background: var(--scrollbar-bg);
 	/* 크기 */
 	width: 100%;
 	height: 100%;
@@ -59,18 +61,18 @@
 	align-items: center;
 	/* 크기 */
 	width: 460px;
-	border-radius: 14px 0 0 14px;
 	/* height: 645px; */
 }
 
- .task_modal>div:nth-child(1) {
+.task_modal>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
 	/* 크기 */
 	width: 100%;
 	height: 8%;
 }
- .task_modal>div:nth-child(3) {
+
+.task_modal>div:nth-child(3) {
 	/* 배치 */
 	/* 내부 */
 	/* 크기 */
@@ -228,7 +230,7 @@
 .task_modal>.header>div:nth-child(1)>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
-	background-color: #ff7474;
+	background-color: transparent;
 	/* 크기 */
 	width: 20px;
 	height: 20px;
@@ -451,7 +453,7 @@
 	/* 배치 */
 	margin-left: 5px;
 	/* 내부 */
-	background-color: #C7C7C7;
+	background-color: var(--m-btn);
 	text-align: center;
 	padding: 1%;
 	/* 크기 */
@@ -463,23 +465,23 @@
 .task_modal .status #checked {
 	/* 배치 */
 	/* 내부 */
-	/* background-color: #1AE316; */
 	/* 크기 */
 }
 
 .task_modal .content>.property>.add_box>div:nth-child(2) {
 	/* 배치 */
 	/* 내부 */
-	display: flex;
-	padding: 1%;
+	/* display: flex; */
+	/* padding: 1%; */
 	/* 크기 */
-	border-radius: 7px;
+	/* border-radius: 7px; */
 }
 
-.task_modal .content>.property>.add_box>div:nth-child(2) { /* :not(.priority) 뺌 231219*/
+.task_modal .content>.property>.add_box>div:nth-child(2) {
+	/* :not(.priority) 뺌 231219*/
 	/* 배치 */
 	/* 내부 */
-	background-color: var(--m-btn);
+	/* background-color: var(--m-btn); */
 	/* 크기 */
 }
 
@@ -528,7 +530,6 @@
 
 .task_modal .content>.property>.responsible>div:nth-child(3) {
 	/* 배치 */
-	margin-left: 17px;
 	/* 내부 */
 	/* 크기 */
 }
@@ -859,6 +860,74 @@
 /* display: none; */
 /* position: absolute; */
 /* } */
+
+.responsible, .priority {
+	position: relative;
+}
+
+.add_responsible_modal{
+	/* 배치 */
+	position: absolute;
+    top: 28px;
+    left: 35px;
+	/* 내부 */
+    background-color: var(--dropdown-bg);
+    overflow: scroll;
+	/* 크기 */
+    width: 77px;
+    min-height: 28px;
+    max-height: 100px;
+}
+
+.add_priority_modal {
+	/* 배치 */
+	position: absolute;
+    top: 28px;
+    left: 38px;
+	/* 내부 */
+    background-color: var(--dropdown-bg);
+    overflow: scroll;
+	/* 크기 */
+    width: 77px;
+    min-height: 28px;
+    max-height: 100px;
+}
+
+.add_responsible_modal_one, .add_priority_modal_one{
+	display: flex;
+	margin: 5px 0;
+}
+
+.priority_one, .responsible_one{
+	background-color: var(--m-btn);
+	display: flex;
+    padding: 1%;
+    border-radius: 7px;
+}
+
+.add_responsible_modal_one_icon {
+	background-image: url('/img/profile-img.png');
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+    height: 18px;
+    margin: 0px 5px;
+}
+
+.add_priority_modal_one_icon {
+	/* background-image: url('/img/profile-img.png'); */
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+    height: 18px;
+    margin: 0px 5px;
+}
+
+.add_responsible_modal_one_name, .add_priority_modal_one_name {
+	width: 100%;
+}
 
 /* 입력창 디자인 */
 .task_modal input {

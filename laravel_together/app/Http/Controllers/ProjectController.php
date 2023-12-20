@@ -181,6 +181,68 @@ class ProjectController extends Controller
         ->with('result',$result)
         ->with('data',$tkdata);
     }
+
+    // 프로젝트 데이터 + 컬러
+    public function project_select($id)
+    {
+        $responseData = [
+            "code" => "0",
+            "msg" => "",
+            "data" => ""
+        ];
+        $dataContent = DB::select(
+            "SELECT
+                pj.*
+                ,bd.data_content_name
+            FROM
+                projects pj
+                JOIN basedata bd
+                  ON bd.data_content_code = pj.color_code_pk
+                 AND bd.data_title_code = 3
+            WHERE
+                pj.id = ".$id
+        );
+        if (!$dataContent) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id.' is no where';
+        } else {
+            $responseData['code'] = 'D01';
+            $responseData['msg'] = 'project_color come';
+            $responseData['data'] = $dataContent;
+        }
+        return $responseData;
+    }
+
+    // 프로젝트 참여자 조회
+    public function project_user_select($id)
+    {
+        $responseData = [
+            "code" => "0",
+            "msg" => "",
+            "data" => ""
+        ];
+        $dataContent = DB::select(
+            "SELECT
+                pj.*
+                ,bd.data_content_name
+            FROM
+                projects pj
+                JOIN basedata bd
+                  ON bd.data_content_code = pj.color_code_pk
+                 AND bd.data_title_code = 3
+            WHERE
+                pj.id = ".$id
+        );
+        if (!$dataContent) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id.' is no where';
+        } else {
+            $responseData['code'] = 'D01';
+            $responseData['msg'] = 'project_color come';
+            $responseData['data'] = $dataContent;
+        }
+        return $responseData;
+    }
 }
 
 

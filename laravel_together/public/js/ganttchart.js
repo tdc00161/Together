@@ -68,10 +68,9 @@ function orderDropdown(category) {
    * 6. 
    */
 
-
 // ************* 하위 업무 추가
 function addSubTask(mainId) {
-  const doMGanttTask = document.getElementById('gantt-task-282'); // 원래 자리접근
+  const doMGanttTask = document.getElementById('gantt-task-283'); // 원래 자리접근
   // 새로운 gantt-task 요소 생성
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
   const newTask = document.createElement('div');
@@ -181,7 +180,7 @@ function addSubTask(mainId) {
   // --- 업무부분 생성 완
 
   // 차트 부분
-  const doMGanttChart = document.getElementById('gantt-chart-282'); // 원래 자리접근
+  const doMGanttChart = document.getElementById('gantt-chart-283'); // 원래 자리접근
   
   const newChart = document.createElement('div');
   newChart.classList.add('gantt-chart');
