@@ -38,8 +38,9 @@ Route::group(['middleware' => ['web']], function () { // web이라는 기본 미
     Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
 // 간트차트
-Route::get('/ganttchart', [GanttChartController::class,'index']);
-// Route::post()
+    Route::get('/ganttchart', [GanttChartController::class,'ganttindex'])->name('gantt.index'); // 간트 전체 출력
+    Route::get('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
+    Route::get('/ganttchart', [GanttChartController::class, 'ganttupdate'])->name('gantt.update'); // 간트 업무 수정
 
     // Friend 
     Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
