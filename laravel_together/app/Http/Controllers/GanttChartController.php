@@ -25,7 +25,8 @@ class GanttChartController extends Controller
                 ,tks.project_id
                 ,pj.project_title
                 ,tks.task_responsible_id
-                ,us.name                
+                ,us.name     
+                ,us.email           
                 ,tks.task_status_id
                 ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
                 ,tks.priority_id

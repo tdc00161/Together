@@ -1,3 +1,10 @@
+::-webkit-scrollbar {
+	height: 10px;
+	border-radius: 10px;
+	/* background: rgba(151, 87, 255, 0.5); */
+   }
+
+
 /* 피드 공통 헤더 */
 .first_menu {
     display: grid;
@@ -103,7 +110,6 @@
 }
 
 
-
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
@@ -112,16 +118,18 @@
 	height: auto;
 	margin: -40px -40px 0 -40px;
 	position: relative;
-	top: 42px;
+	top: 40px;
 }
 
 /* 검색, 드롭박스, 업무추가버튼 영역 */
 .gantt-btn-wrap {
 	border-bottom: 1px solid var(--inactive-color);
-	padding: 3px;
+	padding: 5px;
 	display: flex;
     justify-content: space-between;
 	/* height: 6%; */
+	background-color: rgba(23, 24, 29, 0.4);
+	margin: 0px -40px;
 }
 
 .gantt-search {
@@ -146,24 +154,24 @@
 	position: relative;
 	cursor: pointer;
 	display: inline-block;
-	padding: 5px 50px 5px 10px;
+	padding: 5px 22px 5px 22px;                    
 	border: 1px solid #ccc;
 }
 
-.gantt-dropdown-check-list .gantt-span:after {
+/* .gantt-dropdown-check-list .gantt-span:after {
 	position: absolute;
 	content: "";
 	border-left: 2px solid black;
 	border-top: 2px solid black;
 	padding: 5px;
-	right: 18px;
-	top: 20%;
+	right: 20px;
+	top: 16%;
 	-moz-transform: rotate(-135deg);
 	-ms-transform: rotate(-135deg);
 	-o-transform: rotate(-135deg);
 	-webkit-transform: rotate(-135deg);
 	transform: rotate(-135deg);
-}
+} */
 
 .gantt-dropdown-check-list .gantt-span:active:after {
 	right: 8px;
@@ -193,6 +201,7 @@
 	background-color: #fff;
     border-radius: inherit;
 	width: -webkit-fill-available;
+	z-index: 1;
 }
 
 .gantt-items li input{
@@ -230,7 +239,7 @@
 
 .gantt-rank {
 	width: 15px;
-    margin-right: 9px;
+    margin: 0 9px 3px 5px;
 }
 
 
@@ -256,7 +265,9 @@
 	text-align: center;
 	/* overflow-x: scroll; */
 }
+.gantt-task-container {
 
+}
 .gantt-task-header {
 	display: flex;
 	justify-content: space-around;
@@ -331,7 +342,8 @@
 }
 
 .editable:hover {
-	background-color: #9656FF;
+	background-color: rgba(151, 87, 255, 0.3);
+	border: 1px solid rgb(151, 87, 255);
 
 }
 
