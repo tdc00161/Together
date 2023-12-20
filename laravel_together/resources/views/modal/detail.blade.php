@@ -107,6 +107,6 @@
 			placeholder="댓글 작성란"
 		></textarea>
 		{{-- onchange="testareaHeight()" --}}
-		<div class="submit" onclick="addComment()">작성</div>
+		<div class="submit" onclick="addComment()">등록</div>
 	</div>
 </div>

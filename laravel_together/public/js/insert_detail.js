@@ -86,7 +86,7 @@ const BEHIND_MODAL = document.querySelector('.behind_insert_modal');
 const INSERT_TITLE = document.querySelector('.insert_title')
 const CHECKED_STATUS = document.querySelectorAll('#checked')[0]
 // 입력 버튼
-const SUBMIT = document.querySelector('.submit')
+const SUBMIT = document.querySelectorAll('.submit')
 
 
 // 담당자 모달용 클론
@@ -166,9 +166,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 	// 작성/수정 플래그별 등록버튼 기능
 	if (createUpdate === 1) {
-		SUBMIT.setAttribute('onclick', 'updateTask()')
+		SUBMIT[0].setAttribute('onclick', 'updateTask()')
 	} else {
-		SUBMIT.setAttribute('onclick', 'createTask()')
+		SUBMIT[0].setAttribute('onclick', 'createTask()')
 	}
 
 	// 상세 모달 띄우기
@@ -372,7 +372,7 @@ function updateComment(event, a) {
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
 	let thisCommentContent = event.target.parentElement.nextElementSibling
 
-	SUBMIT.setAttribute('onclick','commitUpdateComment()')
+	SUBMIT[1].setAttribute('onclick','commitUpdateComment()')
 	comment_input.value = thisCommentContent.textContent
 }
 
@@ -390,7 +390,7 @@ function commitUpdateComment() {
 		.catch(err => {
 			console.log(err.message);
 		})
-	SUBMIT.setAttribute('onclick','addComment()')
+	SUBMIT[1].setAttribute('onclick','addComment()')
 }
 
 // 댓글 삭제
