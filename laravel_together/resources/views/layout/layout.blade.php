@@ -14,11 +14,15 @@
   <title>@yield('title', 'Laravel Board')</title>
 </head>
 <body>
+ 
   {{-- 다크모드 --}}
   {{-- <div class="dark-light">
         <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
   </div> --}}
    <div class="app">
+    <div id="custom_cursor" class="custom-cursor">
+      <div class="custom-cursor-icon"></div>
+    </div>
 
     <div class="header">
       <a class="header-title">Together</a>
@@ -36,7 +40,7 @@
           <img class="profile-img" src="/img/profile-img.png" alt="">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item bg-op border-radius-top" href="#">내정보</a></li>
+          <li><a class="dropdown-item bg-op border-radius-top" style="color: #21D9AD; pointer-events : none;">{{$user->email}}</a></li>
           <li><a class="dropdown-item bg-op border-radius-bottom" href="{{route('user.logout.get')}}"> @auth
             로그아웃@endauth</a></li>
         </ul>
@@ -168,5 +172,6 @@
    <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
    {{-- js --}}
    <script src="/js/common.js"></script>
+   <script src="/js/custom-cursor.js"></script>
 </body>
 </html>

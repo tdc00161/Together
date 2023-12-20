@@ -103,7 +103,7 @@ function addSubTask(mainId) {
   const addDetailButton = document.createElement('button');
   addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
-  addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
+  // addDetailButton.setAttribute('onclick', 'openTaskModal(1,0,312)');
   
 
   // <div class="gantt-dropdown">{{$item->name}}</div>
