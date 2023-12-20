@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\BaseData;
 use App\Models\Friendlist;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -62,8 +63,8 @@ class ProjectController extends Controller
 
 
     public function mainshow(Request $request, $id) {
-        dump($id);
-        dump($request);
+        // dump($id);
+        // dump($request);
       // find -> pk 호출만 가능
         // $user_pk = project::where('user_pk', $user_pk)
         //         -> get();
@@ -81,7 +82,7 @@ class ProjectController extends Controller
         // } elseif ($user_data->flg == '1'){
         //   return view('team.get',['id' => $user_data['id']]);
         // }
-        dump($user_data);
+        // dump($user_data);
 
         $color_code = DB::table('basedata')
                         ->join('projects','color_code_pk','=','data_content_code')
@@ -89,7 +90,7 @@ class ProjectController extends Controller
                         ->where('data_title_code','=','3')
                         ->where('projects.user_pk','=',$user_id)
                         ->first();
-        dump($color_code);
+        // dump($color_code);
 
 
         // dday 호출
@@ -130,7 +131,7 @@ class ProjectController extends Controller
                       ->where('base2.data_title_code', '=', '2')
                       ->orderby('projects.id','desc')
                       -> get();
-        dump($tkdata);
+        // dump($tkdata);
 
         // 업무 시작/마감일자 d-day 설정
         foreach ($tkdata as $items) {
@@ -142,44 +143,49 @@ class ProjectController extends Controller
 
         // dd($tkdata);
         // dd($id);
-        $before = DB::table('tasks')
-                     ->selectRaw('count(project_id) as cnt')
-                     ->where('task_status_id',0)
-                     ->groupBy('project_id')
-                     ->having('project_id',$user_id)
-                     ->get();
 
-        $ing = DB::table('tasks')
-                  ->selectRaw('count(project_id) as cnt')
-                  ->where('task_status_id',1)
-                  ->groupBy('project_id')
-                  ->having('project_id',$user_id)
-                  ->get();
-
-        $feedback = DB::table('tasks')
-                       ->selectRaw('count(project_id) as cnt')
-                       ->where('task_status_id',2)
-                       ->groupBy('project_id')
-                       ->having('project_id',$user_id)
-                       ->first();
-        // dd($feedback);
-        $complete =  DB::table('tasks')
-                        ->selectRaw('count(project_id) as cnt')
-                        ->where('task_status_id',3)
-                        ->groupBy('project_id')
-                        ->having('project_id',$user_id)
-                        ->get();
-
-        // return view('project_individual',compact('before','ing','feedback','complete'))
-        // ->with('before',$before)
-        // ->with('ing',$ing)
-        // ->with('feedback',$feedback)
-        // ->with('complete',$complete)
         return view('project_individual')
         ->with('color_code',$color_code)
         ->with('user_data',$user_data)
         ->with('result',$result)
         ->with('data',$tkdata);
+    }
+
+    public function project_graph_data(Request $request, $id) {
+
+      $user = Auth::id();
+      return $user;
+
+      $before = DB::table('tasks')
+            ->selectRaw('count(project_id) as cnt')
+            ->where('task_status_id',0)
+            ->groupBy('project_id')
+            ->having('project_id',$user_id)
+            ->get();
+
+      $ing = DB::table('tasks')
+        ->selectRaw('count(project_id) as cnt')
+        ->where('task_status_id',1)
+        ->groupBy('project_id')
+        ->having('project_id',$user_id)
+        ->get();
+
+      $feedback = DB::table('tasks')
+              ->selectRaw('count(project_id) as cnt')
+              ->where('task_status_id',2)
+              ->groupBy('project_id')
+              ->having('project_id',$user_id)
+              ->first();
+      // dd($feedback);
+      $complete =  DB::table('tasks')
+              ->selectRaw('count(project_id) as cnt')
+              ->where('task_status_id',3)
+              ->groupBy('project_id')
+              ->having('project_id',$user_id)
+              ->get();
+
+      return [$before, $ing, $feedback, $complete];
+      // return '반환 테스트';
     }
 
     // 프로젝트 데이터 + 컬러

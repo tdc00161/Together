@@ -30,6 +30,7 @@ Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제
 
 Route::get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기
 Route::get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기
+Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 
 Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id
 Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id
