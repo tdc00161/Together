@@ -113,20 +113,29 @@ document.addEventListener('click', function (event) {
 // 모달 여닫기 (중복 열기 불가)
 function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터 id)
 	// 작성 모달 띄우기
-	if(a === 0){
+	if (a === 0) {
 		// 프로젝트 색 가져오기
 		axios.get('/api/project/' + thisProjectId)
 			.then(res => {
 				// 프로젝트 색 띄우기
-				PROJECT_COLOR[a].style = 'background-color: ' + res.data.data[0].data_content_name + ';'
+				PROJECT_COLOR[a + 1].style = 'background-color: ' + res.data.data[0].data_content_name + ';'
+				PROJECT_NAME[a].textContent = res.data.data[0].project_title
 			})
 			.catch(err => {
 				console.log(err.message);
 			})
 
+		// 작성모달 모서리 둥글게
+		TASK_MODAL[0].style = 'border-radius: 14px;'
+
+		// 프로젝트 명 뒤의 task 타입
+		if (b === 1) {			
+			const INSERT_TYPE = document.querySelector('.insert_type')
+			INSERT_TYPE.textContent = '공지'
+		}
 
 		// 입력창 플래그별로 길이조정
-		if(b === 0) {
+		if (b === 0) {
 			INSERT_CONTENT.value = ''
 		}
 	}
@@ -136,10 +145,10 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 
 	// 작성/수정 플래그별 등록버튼 기능
 	const SUBMIT = document.querySelector('.submit')
-	if(createUpdate === 1){
-		SUBMIT.setAttribute('onclick','updateTask()')
+	if (createUpdate === 1) {
+		SUBMIT.setAttribute('onclick', 'updateTask()')
 	} else {
-		SUBMIT.setAttribute('onclick','createTask()')
+		SUBMIT.setAttribute('onclick', 'createTask()')
 	}
 
 	// 상세 모달 띄우기
@@ -173,6 +182,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 			.catch(err => {
 				console.log(err.message);
 			})
+
+			// 작성모달 모서리 둥글게
+			TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 	}
 	// 모달 띄우기
 	openInsertDetailModal(a);
@@ -189,12 +201,12 @@ function closeTaskModal(a) {
 
 // 모달 작성
 function createTask() {
-	let postData = { 
+	let postData = {
 		"title": INSERT_TITLE.value,
 		"content": INSERT_CONTENT.value,
 		"project_id": thisProjectId
 	}
-	if(TaskNoticeFlg === 0){
+	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = CHECKED_STATUS.textContent
 		postData.task_responsible_id = RESPONSIBLE_USER[0].textContent
 		postData.start_date = START_DATE[0].placeholder
@@ -216,7 +228,7 @@ function createTask() {
 
 // 등록 버튼으로 작성/수정
 function updateTask() {
-	let data = { 
+	let data = {
 		'title': INSERT_TITLE.value,
 		'content': INSERT_CONTENT.value,
 		'task_status_id': CHECKED_STATUS.textContent,
@@ -326,7 +338,7 @@ function insertModalValue(data, a) {
 	}
 	PROJECT_NAME[a].textContent = data.task[0].project_title;
 	// 프로젝트 색 띄우기
-	PROJECT_COLOR[a].style = 'background-color: ' + data.task[0].project_color + ';'
+	PROJECT_COLOR[a + 1].style = 'background-color: ' + data.task[0].project_color + ';'
 	// 더보기에 쓸 id값 숨겨두기
 	now_task_id = data.task[0].id
 }
@@ -504,13 +516,11 @@ function TaskFlg(a, b) {
 		BOARD_TYPE[(a * 2) + 1].classList.remove('d-none');
 	}
 }
-let test = null;
 // 수정 모달 값 넣기
 function updateModalOpen() {
 	createUpdate = 1
 	axios.put('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
 		.then(res => {
-			test = res.data
 			// 값을 모달에 삽입
 			insertModalValue(res.data, 0);
 
@@ -565,6 +575,7 @@ function deleteTask() {
 	axios.delete('/api/task/' + now_task_id)
 		.then(res => {
 			console.log(res.data);
+			closeTaskModal(1)
 		})
 		.catch(err => {
 			console.log(err.message);

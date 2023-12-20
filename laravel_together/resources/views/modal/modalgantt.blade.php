@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/css/ganttchart.css">
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
-	<script src="{{ asset('/js/insert_detail.js') }}" defer async></script>
+	<script src="{{ asset('/js/insert_detail.js') }}" async></script>
 @endsection
 @section('title', '간트차트')
 @section('main')

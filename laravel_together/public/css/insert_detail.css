@@ -12,22 +12,24 @@
 }
 
 /* 모달 위치 테스트 ~ */
-.insert_modal{
+.insert_modal {
 	/* 배치 */
 	position: absolute;
 	top: 6.3%;
 	right: 30%;
 	/* 내부 */
-	border-radius: 7px;
+	border-radius: 14px;
 	/* 크기 */
 	height: 87%;
 }
-.detail_modal{
+
+.detail_modal {
 	/* 배치 */
 	position: absolute;
 	top: 0;
 	right: 0;
 	/* 내부 */
+	border-radius: 14px 0 0 14px;
 	/* 크기 */
 	height: 100%;
 }
@@ -37,10 +39,10 @@
 	position: absolute;
 	z-index: 1;
 	left: 0;
-    top: 0;
+	top: 0;
 	/* 내부 */
 	backdrop-filter: blur(100px);
-    background: var(--scrollbar-bg);
+	background: var(--scrollbar-bg);
 	/* 크기 */
 	width: 100%;
 	height: 100%;
@@ -59,18 +61,18 @@
 	align-items: center;
 	/* 크기 */
 	width: 460px;
-	border-radius: 14px 0 0 14px;
 	/* height: 645px; */
 }
 
- .task_modal>div:nth-child(1) {
+.task_modal>div:nth-child(1) {
 	/* 배치 */
 	/* 내부 */
 	/* 크기 */
 	width: 100%;
 	height: 8%;
 }
- .task_modal>div:nth-child(3) {
+
+.task_modal>div:nth-child(3) {
 	/* 배치 */
 	/* 내부 */
 	/* 크기 */
@@ -476,7 +478,8 @@
 	border-radius: 7px;
 }
 
-.task_modal .content>.property>.add_box>div:nth-child(2) { /* :not(.priority) 뺌 231219*/
+.task_modal .content>.property>.add_box>div:nth-child(2) {
+	/* :not(.priority) 뺌 231219*/
 	/* 배치 */
 	/* 내부 */
 	background-color: var(--m-btn);
