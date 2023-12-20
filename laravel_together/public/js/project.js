@@ -26,7 +26,8 @@ window.onload = function( ) {
 
    //  }).catch(error => console.log(error));
    let postData = {
-      "test": "test1"
+      "test": "test1",
+      "user_id": ""
 	}
 	let headers = {
 		'headers': { 'Content-Type': 'application/json', }

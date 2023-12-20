@@ -148,13 +148,14 @@ class ProjectController extends Controller
         ->with('color_code',$color_code)
         ->with('user_data',$user_data)
         ->with('result',$result)
-        ->with('data',$tkdata);
+        ->with('data',$tkdata)
+        ->with('user',Auth::id());
     }
 
     public function project_graph_data(Request $request, $id) {
 
-      $user = Auth::id();
-      return $user;
+      // $user = Auth::id();
+      // return $user;
 
       $before = DB::table('tasks')
             ->selectRaw('count(project_id) as cnt')
