@@ -85,6 +85,8 @@ const BEHIND_MODAL = document.querySelector('.behind_insert_modal');
 // 입력용
 const INSERT_TITLE = document.querySelector('.insert_title')
 const CHECKED_STATUS = document.querySelectorAll('#checked')[0]
+// 입력 버튼
+const SUBMIT = document.querySelectorAll('.submit')
 
 
 // 담당자 모달용 클론
@@ -108,6 +110,10 @@ let TaskNoticeFlg = 0;
 // 현재 프로젝트 확인
 let thisProjectId = 0;
 thisProjectId = 1; // 임시
+// 현재 업무번호 확인
+let thisTaskId = 0;
+// 현재 댓글id 확인
+let thisCommentId = 0;
 
 // 업무상태 기본값 설정
 STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
@@ -123,7 +129,10 @@ BEHIND_MODAL.addEventListener('click', function (event) {
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
-function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, 출력데이터 id)
+function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, task_id)
+	// 업무/공지 플래그
+	TaskNoticeFlg = b
+
 	// 작성 모달 띄우기
 	if (a === 0) {
 		// 프로젝트 색 가져오기
@@ -156,15 +165,18 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 	TaskNoticeFlg = b
 
 	// 작성/수정 플래그별 등록버튼 기능
-	const SUBMIT = document.querySelector('.submit')
 	if (createUpdate === 1) {
-		SUBMIT.setAttribute('onclick', 'updateTask()')
+		SUBMIT[0].setAttribute('onclick', 'updateTask()')
 	} else {
-		SUBMIT.setAttribute('onclick', 'createTask()')
+		SUBMIT[0].setAttribute('onclick', 'createTask()')
 	}
 
 	// 상세 모달 띄우기
 	if (a === 1) {
+		// 작성모달 모서리 둥글게
+		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
+
+		// 상세 정보 가져오기
 		axios.get('/api/task/' + c)
 			.then(res => {
 				// 값을 모달에 삽입
@@ -190,13 +202,13 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, �
 
 				// 상위업무 컨트롤
 				parentTaskControl(res.data, a);
+
+				// 현재 업무 id 저장
+				thisTaskId = res.data.task[0].id
 			})
 			.catch(err => {
 				console.log(err.message);
 			})
-
-		// 작성모달 모서리 둥글게
-		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 	}
 	// 모달 띄우기
 	openInsertDetailModal(a);
@@ -317,12 +329,12 @@ function changeStatus(event) {
 // 담당자 추가
 function addResponsible(a) {
 	axios.get('/api/project/' + thisProjectId)
-			.then(res => {
-				//
-			})
-			.catch(err => {
-				console.log(err.message);
-			})
+		.then(res => {
+			//
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
 
 	ADD_RESPONSIBLE_MODAL.classList.remove('d-none')
 	// RESPONSIBLE_ICON[a].after(cloneResponsible)
@@ -354,9 +366,51 @@ function removePriority(a) {
 	PRIORITY_ICON[a].nextSibling.remove()
 }
 
+// 댓글 수정
+function updateComment(event, a) {
+	var comment_input = document.querySelector('#comment_input')
+	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
+	let thisCommentContent = event.target.parentElement.nextElementSibling
+
+	SUBMIT[1].setAttribute('onclick','commitUpdateComment()')
+	comment_input.value = thisCommentContent.textContent
+}
+
+// 댓글 수정 적용 버튼
+function commitUpdateComment() {
+	let putData = {
+		"content": comment_input.textContent
+	}
+	let headers = {
+		headers: { 'Content-Type': 'application/json', }
+	}
+	axios.put('/api/comment/' + thisCommentId.value, putData, headers)
+		.then(res => {
+			console.log(res.data);
+			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
+		})
+		.then(() => {
+			let comment_box = document.querySelector('.comment')
+			comment_box.scrollIntoView(false)
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
+	SUBMIT[1].setAttribute('onclick','addComment()')
+}
+
 // 댓글 삭제
-function removeComment(a) {
-	COMMENT_ONE[a].remove()
+function removeComment(event, a) {
+	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
+	axios.delete('/api/comment/' + thisCommentId.value)
+		.then(res => {
+			console.log(res.data);
+			openTaskModal(1, TaskNoticeFlg, thisTaskId)
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
+	// COMMENT_ONE[a].remove()
 }
 
 // 댓글 작성
@@ -369,18 +423,40 @@ function addComment() {
 	const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
 	// 클론한 댓글 투명화 지우기
 	refresh_clone_comment.removeAttribute('style')
-	// 입력한 댓글 씌우기
-	DEFAULT_COMMENT_CONTENT.textContent = INPUT_COMMENT_CONTENT.value
 
-	// 댓글 달기
-	refresh_comment_parent.append(refresh_clone_comment)
+	// 댓글 내용을 ajax로 송신
+	let postData = {
+		"task_id": thisTaskId,
+		"content": INPUT_COMMENT_CONTENT.value
+	}
+	let headers = {
+		'headers': { 'Content-Type': 'application/json', }
+	}
+	axios.post('/api/comment/123' + thisTaskId, postData, headers)
+		.then(res => {
+			console.log(res.data);
+			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
+		})
+		.then(() => {
+			let comment_box = document.querySelector('.comment')
+			comment_box.scrollIntoView(false)
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
 
-	// 삭제버튼 값 넣기
-	const RE_COMMENT_ONE = document.querySelectorAll('.comment_one')
-	const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
-	LAST_REMOVE_BTN.addEventListener('click', () => {
-		return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
-	})
+	// // 입력한 댓글 씌우기
+	// DEFAULT_COMMENT_CONTENT.textContent = INPUT_COMMENT_CONTENT.value
+
+	// // 댓글 달기
+	// refresh_comment_parent.append(refresh_clone_comment)
+
+	// // 삭제버튼 값 넣기
+	// const RE_COMMENT_ONE = document.querySelectorAll('.comment_one')
+	// const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+	// LAST_REMOVE_BTN.addEventListener('click', () => {
+	// 	return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
+	// })
 	// 입력창 초기화
 	INPUT_COMMENT_CONTENT.value = ''
 }
@@ -506,21 +582,24 @@ function commentControl(data) {
 			const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
 			// 클론한 댓글 이름 선택
 			const DEFAULT_COMMENT_NAME = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.firstElementChild
+			// 클론한 댓글 id값 선택
+			const DEFAULT_COMMENT_ID = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
 			// 클론한 댓글 투명화 지우기
 			refresh_clone_comment.removeAttribute('style')
 			// 댓글에 값 씌우기
 			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
 			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
+			DEFAULT_COMMENT_ID.value = data.comment[i].id
 
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
 
-			// 삭제버튼 값 넣기
-			const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
-			const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
-			LAST_REMOVE_BTN.addEventListener('click', () => {
-				return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
-			})
+			// // 삭제버튼 값 넣기
+			// const RE_COMMENT_ONE = document.querySelectorAll('.comment_one') // 변경한 댓글들을 재확인
+			// const LAST_REMOVE_BTN = RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+			// LAST_REMOVE_BTN.addEventListener('click', () => {
+			// 	return RE_COMMENT_ONE[RE_COMMENT_ONE.length - 1].remove();
+			// })
 		}
 	}
 

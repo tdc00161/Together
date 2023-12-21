@@ -4,27 +4,34 @@
 
 .first_menu {
     display: grid;
-    grid-template-columns: 1.7fr 2.3fr;
+    grid-template-columns: 2.2fr 1.8fr;
 }
 
 .menu_title {
     display: grid;
-    grid-template-columns: 0.5fr 3.5fr;
+    grid-template-rows: 1.5fr 1.5fr;
+}
+
+.title_bar {
+    display: flex;
+    align-items: center
 }
 
 .project_color {
     display: inline-block;
-    width: 60px;
-    height: 60px;
-    background-color: beige;
+    width: 20px;
+    height: 20px;
+    /* background-color: beige; */
     border-radius: 5px;
     margin-right: 10px;
 }
 
 .title {
     display: inline-block;
-    width: 260px;
+    width: 100%;
     height: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
     border-radius: 5px;
     border: none;
     background-color: transparent;
@@ -32,11 +39,17 @@
 
 .content {
     display: inline-block;
-    width: 260px;
+    width: 100%;
     height: 40px;
+    font-size: 1rem;
     border-radius: 5px;
     border: none;
+    resize: none;
     background-color: transparent;
+}
+
+.dday {
+    font-size: 1.5rem;
 }
 
 .tabset {
@@ -69,9 +82,12 @@
 }
 
 .date_set {
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    justify-items: center;
+    align-items: end;
     color: black;
+    margin-bottom: 20px
 }
 
 .date {
@@ -83,8 +99,7 @@
     background-color: transparent;
 }
 
-label {
-    margin-right: 5px;
+.label {
     width: 200px;
     height: 30px;
     background-color: white;
@@ -96,11 +111,72 @@ label {
     font-size: 1em;
 }
 
-.hr {
+table {
     width: 100%;
-    height: 3px;
-    border: 1px solid white;
-    margin-bottom: 5px;
+    font-size: 0.8em;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+table::-webkit-scrollbar {
+    overflow: auto;
+}
+
+.div_text1 {
+    text-align: center;
+}
+
+.col1 {
+    width: 100%;
+}
+
+.div_text2 {
+    display: inline-block;
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+    text-align: center;
+}
+
+.col2 {
+    width: 25%;
+}
+
+.col3 {
+    width: 75%;
+}
+
+.div_text3 {
+    display: inline-block;
+    display: grid;
+    grid-template-columns: 0.1fr 0.5fr 2.5fr 1fr 1fr;
+    text-align: center;
+}
+
+.col4 {
+    width: 2%;
+}
+
+.col5 {
+    width: 10%;
+}
+
+.col6 {
+    width: 48%;
+}
+
+.col7 {
+    width: 20%;
+}
+
+.col8 {
+    width: 20%;
+}
+
+.div_hr {
+    width: 100%;
+    height: 2px;
+    border: 2px solid white;
+
 }
 
 .grid_div {
@@ -145,10 +221,37 @@ label {
     font-size: 1em;
 }
 
-.color_box {
+.color_box1 {
     width: 10px;
     height: 10px;
-    background-color: aqua;
+    background-color: #B1B1B1;
+    border: none;
+    border-radius: 1px;
+    display: inline-block;
+}
+
+.color_box2 {
+    width: 10px;
+    height: 10px;
+    background-color: #04A5FF;
+    border: none;
+    border-radius: 1px;
+    display: inline-block;
+}
+
+.color_box3 {
+    width: 10px;
+    height: 10px;
+    background-color: #F34747;
+    border: none;
+    border-radius: 1px;
+    display: inline-block;
+}
+
+.color_box4 {
+    width: 10px;
+    height: 10px;
+    background-color: #64C139;
     border: none;
     border-radius: 1px;
     display: inline-block;
@@ -173,6 +276,19 @@ label {
     display: flex;
     align-items: center;
     margin-top: 6px;
+}
+
+.invite_a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: black;
+    width: 100%;
+    height: 100%;
+}
+
+.invite_person {
+    width: 100%;
+    height: 100%;
 }
 
 .mini_box {
@@ -235,16 +351,16 @@ label {
 
 .point_button {
     border: none;
-    width: 20px;
-    height: 20px;
-    font-weight: 800;
-    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 25px;
+    /* background-image: url(/laravel_together/public/img/projectplus.png);
+    background-size: cover; */
+    font-weight: 600;
+    /* margin-right: 10px; */
 }
 
-.box_ul {
-    margin: 10px 0;
-    border-bottom:1px solid white;
-}
 
 /* .box_ul::-webkit-scrollbar {
     background-color: lightgray;
@@ -262,34 +378,12 @@ label {
     overflow: auto;
 }
 
-table {
-    width: 100%;
-    font-size: 0.8em;
-    text-align: center;
-    border-collapse: collapse;
-}
-
-.col1 {
-    width: 7%;
-}
-
-.col2 {
-    width: 50%;
-}
-
-.col3 {
-    width: 20%;
-}
-
-.col4 {
-    width: 20%;
-}
-
-.col5 {
-    width: 3%;
-}
-
 /* 클릭 가능 */
 .project_title {
     cursor: pointer;
+}
+
+.box_ul {
+    padding: 4px 0;
+    border-bottom:1px solid white;
 }

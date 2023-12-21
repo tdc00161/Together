@@ -9,6 +9,7 @@
   {{-- 부트스트랩 --}}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/project_individual.css">
   
   @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
   <title>@yield('title', 'Laravel Board')</title>
@@ -69,91 +70,24 @@
       <div class="side-wrapper">
        <div class="side-title">개인 프로젝트</div>
        <div class="side-menu">
-        <a href="#">
-         <div class="project-color-box"></div>
-         <span>프로젝트 명1</span>
-        </a>
-        <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명2</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명3</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명4</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명5</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명6</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명7</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명8</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명9</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>프로젝트 명10</span>
-         </a>
+        {{-- @foreach ($user_data as $item)
+          <a href="{{route('individual.get',['id' => $item->id])}}">
+            <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
+            <span>{{$item->project_title}}</span>
+          </a>
+        @endforeach --}}
        </div>
       </div>
       <div class="side-wrapper">
        <div class="side-title">팀 프로젝트</div>
        <div class="side-menu">
-        <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명1</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명2</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명3</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명4</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명5</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명6</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명7</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명8</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명9</span>
-         </a>
-         <a href="#">
-          <div class="project-color-box"></div>
-          <span>팀 프로젝트 명10</span>
-         </a>
+        {{-- @foreach ($user_data as $item)
+          <a href="{{route('team.get',['id' => $item->id])}}">
+            <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
+            <span>{{$item->project_title}}</span>
+          </a>
+        @endforeach --}}
+        {{-- {{dd($result)}}; --}}
        </div>
       </div>
      </div>

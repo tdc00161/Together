@@ -23,7 +23,7 @@ class TaskFactory extends Factory
         return [
             
             'project_id'=>$this->faker->randomNumber(1,10), // 프로젝트 pk
-            'task_responsible_id'=>$this->faker->randomNumber(1,15), // 담당자 pk
+            'task_responsible_id'=>$this->faker->randomNumber(1), // 담당자 pk
             'task_writer_id'=>$this->faker->randomNumber(1), // 작성자 pk
             'task_status_id'=>$this->faker->numberBetween(0,3), // 업무상태 pk
             'priority_id'=>$this->faker->numberBetween(0,4), // 우선순위 pk

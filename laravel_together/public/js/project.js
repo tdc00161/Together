@@ -1,17 +1,56 @@
 // 원형 그래프
 
-window.onload = function() {
+window.onload = function( ) {
+   let idget = document.getElementById('chart').value;
+
     var canvas = document.getElementById("chartcanvas");
     var context = canvas.getContext("2d");
     var sw = canvas.width;
     var sh = canvas.height;
     var PADDING=100;
-   
-    //데이터 입력
-    var data = [30.3, 24.6,19.3,16.3];
+   // console.log(id);
+    const formData = new FormData();
+    formData.append('id', idget);
+
+   //  fetch('/individual/'+idget, {
+   //       method: 'POST',
+   //       body: formData,
+   //  })
+   //  .then(response => {
+   //    // console.log(response);
+   //    return response.json();
+   //  })
+   //  .then(data => {
+   //       // console.log(data);
+
+
+   //  }).catch(error => console.log(error));
+   let postData = {
+      "test": "test1",
+      "user_id": ""
+	}
+	let headers = {
+		'headers': { 'Content-Type': 'application/json', }
+	}
+   axios.post('/individual/'+ idget, postData, headers) 
+      .then(res => {
+         console.log(res.data);
+      })
+      .catch(err => {
+         console.log(err.message);
+      })
+
+   // 데이터 입력
+    var data = ['before', '{ing}', '{feedback}', '{complete}'];
+   //  var data = [];
+
+   //  var before = '${before}';
+   //  var ing = '${ing}';
+   //  var feedback = {{$feedback}};
+   //  var complete = {{$complete}};
 
     //데이터별 색상
-    var colors = ["#7cfc00", "#0000ff", "#ff1493", "#66CDAA"];
+    var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
    
     var center_X=sw/2;  //원의 중심 x 좌표
     var center_Y=sh/2;  //원의 중심 y 좌표
@@ -32,7 +71,17 @@ window.onload = function() {
     }
   }
 
-// 상단바 d-day 계산
+// 카테고리 색상
+var categoryColor = document.getElementById('color');
+while(categoryColor = true){
+      if(category_name = '공지'){
+         categoryColor.style.color = 'red';
+      } else if(category_name = '업무'){
+         categoryColor.style.color = 'blue';
+      }
+}
+
+// 프로젝트 d-day 계산
 
 let dday = document.getElementById("dday");
 function total(){
@@ -47,7 +96,7 @@ function total(){
    // if(start_day!=null || end_day!=null) {
    //    dday.innerHTML = result;
    // }
-   dday.innerHTML = result;
+   dday.innerHTML = 'D-'+result;
 }
 
 // console.log(dday);

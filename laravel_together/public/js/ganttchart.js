@@ -59,16 +59,11 @@ function orderDropdown(category) {
 // ************* 스크롤 한번에
 
 
- /*******************
-   * 1. ajax로 백앤에 request
-   * 2. id를 이용해서 해당 프로젝트의 하위업무 갯수 획득
-   * 3. [2]에서 획득한 갯수+1해서 하위업무 생성
-   * 4. [3]에서 생성한 데이터 json으로 respone
-   * 5. [4]에서 받은 데이터를 기반으로 프론트 테이블 로우 요소 생성
-   * 6. 
-   */
+ 
+
 
 // ************* 하위 업무 추가
+// id 값은 임의로 넣은것
 function addSubTask(mainId) {
   const doMGanttTask = document.getElementById('gantt-task-283'); // 원래 자리접근
   // 새로운 gantt-task 요소 생성
@@ -373,7 +368,60 @@ function test(rowNum) {
 
 // ************* 업무추가 버튼클릭 시 상위업무 추가
 
+/*******************
+   * 1. ajax로 백앤에 request
+   * 2. id를 이용해서 해당 프로젝트의 하위업무 갯수 획득
+   * 3. [2]에서 획득한 갯수+1해서 하위업무 생성
+   * 4. [3]에서 생성한 데이터 json으로 respone
+   * 5. [4]에서 받은 데이터를 기반으로 프론트 테이블 로우 요소 생성
+   * 6. 
+   */
+
 // ************* ajax 수정
+const taskNameUp = document.querySelectorAll('.taskName')
+const responNameUp = document.querySelectorAll('.responName')
+const statusNameUp = document.querySelectorAll('.gantt-status-color')
+const startDateUp = document.querySelectorAll('.start-date')
+const endDateUp = document.querySelectorAll('.end-date')
+
+// 수정할 데이터
+const ganttChartUpdate = {
+  'title': taskNameUp.textContent,
+  'task_responsible_id': responNameUp[0].textContent,
+  'task_status_id': statusNameUp[0].textContent,
+  'start_date': startDateUp[0].placeholder,
+  'end_date': endDateUp[0].placeholder,
+}
+
+// Ajax 요청 보내기
+fetch('/ganttchart', {
+  method: "PATCH",
+  headers: {
+    'Content-Type': 'application/json', // 요청의 Content-Type을 JSON 으로 설정
+    
+  },
+  body: JSON.stringify(ganttChartUpdate) // 수정할 데이터를 JSON 문자열로 변환하여 전송
+})
+  .then(response => {
+    if (response.ok) {
+      return response.json(); // 성공적인 응답일 경우 JSON 데이터 반환
+    }
+    throw new Error('수정 실패'); // 응답이 오류인 경우 오류 처리
+  })
+  .then(data => {
+    // 성공 응답 받았을 때 작업 수행
+    console.log('수정된 데이터:', data);
+
+    
+  })
+  .catch(error => {
+    // 오류 발생 시 오류 메세지 출력, 처리
+    console.error('수정 오류:', error);
+  });
+    
+
+
+
 
 
 
