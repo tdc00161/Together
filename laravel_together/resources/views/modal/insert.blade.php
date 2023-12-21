@@ -33,8 +33,8 @@
 						<div class="cross_icon_b" onclick="removeResponsible(0)"></div>
 					</div>
 					<div class="add_box_mgin add_responsible" onclick="addResponsible(0)">담당자추가</div>
-					<div class="add_responsible_modal d-none">
-						<div class="add_responsible_modal_one">
+					<div class="add_responsible_modal add_property_modal d-none">
+						<div class="add_responsible_modal_one d-none">
 							<div class="add_responsible_modal_one_icon"></div>
 							<div class="add_responsible_modal_one_name">User</div>
 						</div>
@@ -67,7 +67,7 @@
 						<div class="cross_icon_b" onclick="removePriority(0)"></div>
 					</div>
 					<div class="add_box_mgin add_priority" onclick="addPriority(0)">우선순위추가</div>
-					<div class="add_priority_modal d-none">
+					<div class="add_priority_modal add_property_modal d-none">
 						<div class="add_priority_modal_one">
 							<div class="add_priority_modal_one_icon">ㅁ</div>
 							<div class="add_priority_modal_one_name">높음</div>

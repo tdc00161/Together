@@ -11,6 +11,7 @@ use App\Models\BaseData;
 use App\Models\Friendlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 use Carbon\Carbon;
@@ -229,25 +230,34 @@ class ProjectController extends Controller
             "data" => ""
         ];
         $dataContent = DB::select(
-            "SELECT
-                pj.*
-                ,bd.data_content_name
+          "SELECT
+                pj_usr.*
+                ,usr.name member_name
+                ,pj.project_title
+                ,bd.data_content_name authority_name
             FROM
-                projects pj
-                JOIN basedata bd
-                  ON bd.data_content_code = pj.color_code_pk
-                 AND bd.data_title_code = 3
+                project_users pj_usr
+              JOIN users usr
+                ON usr.id = pj_usr.member_id
+              JOIN projects pj
+                ON pj.id = pj_usr.project_id
+              JOIN basedata bd
+                ON bd.data_content_code = pj_usr.authority_id
+               AND bd.data_title_code = 4
             WHERE
-                pj.id = ".$id
+                pj_usr.project_id = ".$id
         );
+        Log::debug($dataContent);
+        Log::debug(!$dataContent);
         if (!$dataContent) {
-            $responseData['code'] = 'E01';
-            $responseData['msg'] = $id.' is no where';
+          $responseData['code'] = 'E01';
+          $responseData['msg'] = 'this '.$id.' project user is no where';
         } else {
-            $responseData['code'] = 'D01';
-            $responseData['msg'] = 'project_color come';
-            $responseData['data'] = $dataContent;
+          $responseData['code'] = 'D01';
+          $responseData['msg'] = 'project_user come';
+          $responseData['data'] = $dataContent;
         }
+        Log::debug('before return');
         return $responseData;
     }
 }
