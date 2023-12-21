@@ -205,7 +205,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 				parentTaskControl(res.data, a);
 
 				// 현재 업무 id 저장
-				thisTaskId = res.data.task[0].id
+				now_task_id = res.data.task[0].id
 			})
 			.catch(err => {
 				console.log(err.message);
@@ -251,6 +251,7 @@ function createTask() {
 	axios.post('/api/task', postData, headers)
 		.then(res => {
 			console.log(res.data);
+			closeTaskModal(0)
 		})
 		.catch(err => {
 			console.log(err.message)
@@ -378,9 +379,9 @@ function selectResponsible(event) {
 	let selectResponsibleValue = ''
 	if (event.target.textContent) {
 		selectResponsibleValue = event.target.textContent.trim()
-	} else if (event.target.nextElementSibling.textContent) {		
+	} else if (event.target.nextElementSibling.textContent) {
 		selectResponsibleValue = event.target.nextElementSibling.textContent.trim()
-	} else if (event.target.firstChild.nextElementSibling.textContent) {		
+	} else if (event.target.firstChild.nextElementSibling.textContent) {
 		selectResponsibleValue = event.target.firstChild.nextElementSibling.textContent.trim()
 	} else {
 		console.log('cant select');
@@ -392,7 +393,7 @@ function selectResponsible(event) {
 	// 삽입할 태그 선택
 	let nowFrontOfResponsible = document.querySelectorAll('.responsible_icon')[0]
 	// console.log(nowFrontOfResponsible);
-	
+
 	// d-none 삭제
 	cloneResponsible.classList.remove('d-none')
 
@@ -475,9 +476,9 @@ function selectPriority(event) {
 	let selectPriorityValue = ''
 	if (event.target.textContent) {
 		selectPriorityValue = event.target.textContent.trim()
-	} else if (event.target.nextElementSibling.textContent) {		
+	} else if (event.target.nextElementSibling.textContent) {
 		selectPriorityValue = event.target.nextElementSibling.textContent.trim()
-	} else if (event.target.firstChild.nextElementSibling.textContent) {		
+	} else if (event.target.firstChild.nextElementSibling.textContent) {
 		selectPriorityValue = event.target.firstChild.nextElementSibling.textContent.trim()
 	} else {
 		console.log('cant select');
@@ -506,7 +507,7 @@ function selectPriority(event) {
 	// 삽입할 태그 선택
 	let nowFrontOfPriority = document.querySelectorAll('.flag_icon')[0]
 	// console.log(nowFrontOfPriority);
-	
+
 	// d-none 삭제
 	clonePriority.classList.remove('d-none')
 
@@ -658,6 +659,9 @@ function responsibleName(data, a) {
 	if (data.task[0].res_name !== null) {
 		RESPONSIBLE_USER[a].textContent = data.task[0].res_name;
 		RESPONSIBLE_PERSON[a].style = 'display: flex;'
+		if(RESPONSIBLE_PERSON[a].classList.contains('d-none')){
+			RESPONSIBLE_PERSON[a].classList.remove('d-none')
+		}
 	} else {
 		RESPONSIBLE_PERSON[a].style = 'display: none;'
 	}
@@ -666,11 +670,14 @@ function responsibleName(data, a) {
 // 마감일자 값체크, 삽입
 function deadLineValue(data, a) {
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
-		DEAD_LINE[a].style = 'display: none;'
+		// DEAD_LINE[a].style = 'display: none;'
 	} else {
 		START_DATE[a].placeholder = data.task[0].start_date;
 		END_DATE[a].placeholder = data.task[0].end_date;
 		DEAD_LINE[a].style = 'display: flex;'
+		if(DEAD_LINE[a].classList.contains('d-none')){
+			DEAD_LINE[a].classList.remove('d-none')
+		}
 	}
 }
 
@@ -679,6 +686,9 @@ function priorityValue(data, a) {
 	if (data.task[0].priority_name !== null) {
 		PRIORITY_VAL[a].textContent = data.task[0].priority_name;
 		PRIORITY[a].style = 'display: flex;'
+		if(PRIORITY_ONE[a].classList.contains('d-none')){
+			PRIORITY_ONE[a].classList.remove('d-none')
+		}
 		// 우선순위 값별로 이미지 삽입
 		switch (PRIORITY_VAL[a].textContent) {
 			case '긴급':
@@ -786,6 +796,8 @@ function parentTaskControl(data, a) {
 	}
 }
 
+// 오픈모달 모듈 이후 코드-----------------------------------------
+
 // 모달 띄우기
 function openInsertDetailModal(a) {
 	TASK_MODAL[a].style = 'display: block;'
@@ -809,14 +821,22 @@ function TaskFlg(a, b) {
 }
 // 수정 모달 값 넣기
 function updateModalOpen() {
+	// 상태업무 체크 풀기
+	let disableStatusChecked = document.querySelectorAll('#checked')[0]
+	if(disableStatusChecked){
+		disableStatusChecked.removeAttribute('id')
+	}
+	disableStatusChecked.style = 'background-color: var(--m-btn);'
+
 	createUpdate = 1
-	axios.put('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
+	axios.get('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
 		.then(res => {
+			console.log(res.data);
 			// 값을 모달에 삽입
 			insertModalValue(res.data, 0);
 
 			// 업무상태 값과 색상 주기
-			statusColor(res.data);
+			updateStatusColor(res.data);
 
 			// 담당자 값체크, 삽입
 			responsibleName(res.data, 0);
@@ -829,7 +849,6 @@ function updateModalOpen() {
 
 			// 상세업무 내용 값체크, 삽입
 			modalContentValue(res.data, 0);
-
 
 			// 댓글창 없을 때 사라질 값 갱신선언
 			COMMENT_PARENT.style = 'padding: 20;'
@@ -871,4 +890,33 @@ function deleteTask() {
 		.catch(err => {
 			console.log(err.message);
 		})
+}
+
+function updateStatusColor(data) {
+	let status_val = document.querySelectorAll('.status_val')
+	let element_for_painting = null;
+	for (let index = 0; index < status_val.length; index++) {
+		const element = status_val[index];
+		if (element.textContent == data.task[0].status_name) {
+			element_for_painting = status_val[index]
+			element_for_painting.id = 'checked'
+		}
+	}
+	switch (data.task[0].status_name) {
+		case '시작전':
+			element_for_painting.style = 'background-color: #B1B1B1;';
+			break;
+		case '진행중':
+			element_for_painting.style = 'background-color: #04A5FF;';
+			break;
+		case '피드백':
+			element_for_painting.style = 'background-color: #F34747;';
+			break;
+		case '완료':
+			element_for_painting.style = 'background-color: #64C139;';
+			break;
+		default:
+			element_for_painting.style = 'background-color: #FFFFFF;';
+			break;
+	}
 }

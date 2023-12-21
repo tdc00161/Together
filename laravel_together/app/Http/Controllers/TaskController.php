@@ -122,6 +122,7 @@ class TaskController extends Controller
     public function view($id)
     {
         $result['task'] = Task::task_detail($id);
+        Log::debug($result);
         $result['children'] = Task::task_detail_children($id);
         $result['comment'] = Task::task_detail_comment($id);
 
@@ -251,23 +252,13 @@ class TaskController extends Controller
             "code" => "0",
             "msg" => ""
         ];
+        
+        $result = Task::where('id', $id)->delete();
 
-        // Log::debug('$id: '.$id);
-        // $record = DB::select(
-        //     "SELECT
-        //         *
-        //     FROM
-        //         tasks
-        //     WHERE
-        //         id = ". $id
-        // );
-        // Log::debug('DB: '.$record[0]->id);
-        $result = DB::table('tasks')->where('id', $id);
         if (!$result) {
             $responseData['code'] = 'E01';
             $responseData['msg'] = $id . ' is no where';
         } else {
-            $result->delete();
             $responseData['code'] = 'D01';
             $responseData['msg'] = 'task : ' . $id . '->deleted.';
         }
