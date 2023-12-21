@@ -30,15 +30,6 @@
     
 
     {{-- 친구 검색 bar --}}
-    {{-- <input type="text" id="searchInput" placeholder="Search..."> --}}
-
-  {{-- <ul id="itemList">
-    <li>Apple</li>
-    <li>Orange</li>
-    <li>Banana</li>
-    <li>Grapes</li>
-    <li>Strawberry</li>
-  </ul> --}}
     <div class="friend-searchbar-div">
     <div class="friend-searchbar">
         <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
