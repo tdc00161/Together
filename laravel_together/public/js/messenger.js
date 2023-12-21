@@ -544,7 +544,7 @@ var friendlistdiv = document.getElementById('friend-list-div');
 // 모달이 열릴때 실행 되는 함수
 function friendList() {
 
-    // AJAX를 통해 친구 요청 보낸 목록 가져오기
+    // AJAX를 통해 친구 목록 가져오기
     fetch('/myfriendlist')
         .then(response => {
             // 응답이 성공적인지 확인
@@ -572,10 +572,29 @@ function friendList() {
         });
 }
 
+const searchInput = document.getElementById('friendSearchInput');
+const searchResults = document.getElementById('friend-list-div');
+
+// 검색 결과를 출력하는 함수
+function displayResults(results) {
+    // 이전 결과 삭제
+    searchResults.innerHTML = '';
+
+    // 새로운 결과 출력
+    results.forEach(result => {
+        const listItem = document.createElement('div');
+        listItem.classList.add('messenger-user-div');
+        listItem.textContent = result.name;
+        searchResults.appendChild(listItem);
+    });
+}
+
+// 친구 목록 출력
 function displayFriendlist(friendList) {
     // 기존 내용 초기화
     friendlistdiv.innerHTML = '';
-
+    
+    // 친구 목록
     if (friendlistdiv) {
         for (var i = 0; i < friendList.length; i++) {
             var friendlistdata = friendList[i];
@@ -645,7 +664,7 @@ function displayFriendlist(friendList) {
                         clickDiv.style.left = '500px';
                         setTimeout(function() {
                             clickDiv.style.opacity = '0';
-                        }, 300);
+                        }, 500);
 
                         clickDiv.addEventListener('transitionend', function() {
                             if (clickDiv.style.opacity !== '1') {
@@ -670,9 +689,34 @@ function displayFriendlist(friendList) {
         console.error('Element with id "friend-request-div" not found.');
     }
 
+    // 검색어 입력에 반응하는 이벤트 리스너
+    searchInput.addEventListener('input', function() {
+        // 현재 입력된 검색어 가져오기
+        const searchTerm = searchInput.value.toLowerCase();
+
+        // 모든 친구 엘리먼트를 숨김
+        for (var i = 0; i < friendList.length; i++) {
+            var friendlistId = friendList[i].friend_id;
+            var userDiv = document.getElementById('user_pk' + friendlistId);
+            userDiv.style.display = 'none';
+        }
+
+        // 검색 결과에 해당하는 친구만 출력
+        const filteredData = friendList.filter(item =>
+            item.name.toLowerCase().includes(searchTerm) || 
+            item.email.toLowerCase().includes(searchTerm)
+        );
+
+        for (var i = 0; i < filteredData.length; i++) {
+            var friendlistId = filteredData[i].friend_id;
+            var userDiv = document.getElementById('user_pk' + friendlistId);
+            userDiv.style.display = 'block'; // 또는 'inline-block' 등으로 설정
+        }
+    });
 }
- // 토글 로직을 수행하는 함수
- function toggleDeletePanel(userDiv) {
+
+// 삭제 토글 로직을 수행하는 함수
+function toggleDeletePanel(userDiv) {
     var deleteBtn = userDiv.querySelector('.fdeletebtn');
 
     // 클래스를 토글
