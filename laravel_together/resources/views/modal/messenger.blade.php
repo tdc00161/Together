@@ -77,7 +77,7 @@
           <div class="friend-searchbar-div">
           <div class="friend-searchbar">
           <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
-          <button class="f-search-icon"><img class="f-search-img" src="/img/icon-search.png" alt=""></button>
+          <img class="f-search-img" src="/img/icon-search.png" alt="">
           </div>
           {{-- 친구 추가 버튼 --}}
           <button class="add-button" type="button" onclick="openModal()">+</button>

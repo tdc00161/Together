@@ -179,19 +179,12 @@ button {
     font-weight: bold;
     margin-right: 6px;
 }
-.f-search-icon {
-    float: right;
-    margin-right: 5px;
-    width: auto;
-    height: auto;
-    vertical-align: middle;
-    margin-top: 5px;
-}
 
 .f-search-img {
     width: 18px;
     height: auto;
     opacity: 70%;
+    margin-left: 6px;
 }
     
 .f-search {
