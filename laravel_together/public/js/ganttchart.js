@@ -394,63 +394,98 @@ function test(rowNum) {
 
 // ************* ajax 수정
 
-// const taskNameUp = document.querySelector('.taskName');
-// const responNameUp = document.querySelector('.responName');
-// const statusNameUp = document.querySelector('.statusName');
-// const startDateUp = document.querySelector('.start-date');
-// const endDateUp = document.querySelector('.end-date');
+const taskNameUp = document.querySelector('.taskName');
+const responNameUp = document.querySelector('.responName');
+const statusNameUp = document.querySelector('.statusName');
+const startDateUp = document.querySelector('.start-date');
+const endDateUp = document.querySelector('.end-date');
+
+function handleBlur() {
+  alert('수정이 완료되었습니다.');
+  let data = {
+    'title': taskNameUp.textContent,
+    'task_responsible_id': responNameUp.textContent,
+    'task_status_id': statusNameUp.textContent,
+    'start_date': startDateUp.value,
+    'end_date': endDateUp.value
+  };
+  
+  fetch('/ganttchartRequest', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => {
+    if(res.ok) {
+      console.log('테이터가 성공적으로 전송');
+    } else {
+      console.error('데이터 전송에 실패');
+    }
+  })
+  .catch(error => {
+    console.log('오류 발생:', error)
+  })
+}
+
+taskNameUp.addEventListener('blur', handleBlur);
+responNameUp.addEventListener('blur', handleBlur);
+statusNameUp.addEventListener('blur', handleBlur);
+startDateUp.addEventListener('blur', handleBlur);
+endDateUp.addEventListener('blur', handleBlur);
 
 // 예시: 수정 요청을 보내는 함수
-function sendUpdateRequest(id, updatedValue) {
-  // Axios를 사용하여 수정 요청을 보내는 로직
-  // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
-  // 아래는 가상의 코드입니다.
-  axios.put('/api/gantt', { value: updatedValue })
-      .then(res => {
-          // 성공적으로 요청을 보낸 후에 할 작업
-          console.log('수정 요청 성공:', res.data);
-      })
-      .catch(err => {
-          // 요청 실패 시 에러 처리
-          console.log('수정 요청 실패:', err);
-      });
-}
+// function sendUpdateRequest(id, updatedValue) {
+//   // Axios를 사용하여 수정 요청을 보내는 로직
+//   // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
+//   // 아래는 가상의 코드입니다.
+//   axios.put('/ganttchartRequest', { value: updatedValue })
+//       .then(res => {
+//           // 성공적으로 요청을 보낸 후에 할 작업
+//           console.log('수정 요청 성공:', res.data);
+//       })
+//       .catch(err => {
+//           // 요청 실패 시 에러 처리
+//           console.log('수정 요청 실패:', err);
+//       });
+// }
 
-// 수정 완료 팝업 창 보이기
-function showPopupMessage(message) {
-  const popupModal = document.getElementById('ganttPopupModal');
-  const popupMessage = document.getElementById('ganttPopupMessage');
+// // 수정 완료 팝업 창 보이기
+// function showPopupMessage(message) {
+//   const popupModal = document.getElementById('ganttPopupModal');
+//   const popupMessage = document.getElementById('ganttPopupMessage');
   
-  popupMessage.textContent = message;
-  popupModal.style.display = 'block';
+//   popupMessage.textContent = message;
+//   popupModal.style.display = 'block';
 
-  // 일정 시간(여기서는 3초) 후 팝업 창 닫기
-  setTimeout(() => {
-    popupModal.style.display = 'none';
-  }, 2000);
-}
+//   // 일정 시간(여기서는 3초) 후 팝업 창 닫기
+//   setTimeout(() => {
+//     popupModal.style.display = 'none';
+//   }, 2000);
+// }
 
-// 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
-document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
-    element.addEventListener('blur', function(event) {
-        const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
-        let updatedValue = '';
+// // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
+// document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
+//     element.addEventListener('blur', function(event) {
+//         const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
+//         let updatedValue = '';
 
-        // contenteditable 속성이 있는 div의 경우
-        if (this.hasAttribute('contenteditable')) {
-            updatedValue = this.innerText;
-        } else if (this.tagName === 'INPUT' || this.tagName === 'SPAN') {
-            // input 또는 span의 경우
-            updatedValue = this.textContent || this.value;
-        }
+//         // contenteditable 속성이 있는 div의 경우
+//         if (this.hasAttribute('contenteditable')) {
+//             updatedValue = this.innerText;
+//         } else if (this.tagName === 'INPUT' || this.tagName === 'SPAN') {
+//             // input 또는 span의 경우
+//             updatedValue = this.textContent || this.value;
+//         }
 
-        // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
-        sendUpdateRequest(id, updatedValue);
+//         // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
+//         sendUpdateRequest(id, updatedValue);
 
-        // 수정 완료 팝업 메시지 표시
-        showPopupMessage('수정 완료!');
-    });
-});
+//         // 수정 완료 팝업 메시지 표시
+//         showPopupMessage('수정 완료!');
+//     });
+// });
 
 
 

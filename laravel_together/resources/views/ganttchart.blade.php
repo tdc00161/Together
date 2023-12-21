@@ -160,7 +160,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="gantt-task-body">
                             @foreach ($data as $key => $item)
                                 <div class="gantt-task" id="gantt-task-{{$item->id}}">
@@ -173,9 +172,9 @@
                                             <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
                                         </div>
                                     </div>
-                                    <div class="responName gantt-dropdown" contenteditable="true">{{$item->name}}</div>
+                                    <div class="responName gantt-dropdown">{{$item->name}}</div>
                                     <div>
-                                        <div class="statusName gantt-status-color" contenteditable="true" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
+                                        <div class="statusName gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
                                     </div>
                                     <div><input class="start-date" type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
                                     <div><input class="end-date" type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
