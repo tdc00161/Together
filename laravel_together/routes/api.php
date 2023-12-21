@@ -41,4 +41,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 });
 
-Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+// Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+
+// Route::get('/gantt', [GanttChartController::class,'ganttindex']);
+Route::put('/gantt', [GanttChartController::class, 'ganttUpdate']); // 간트차트 수정
+// Route::put('/gantt', [TaskController::class, 'store']); // 간트차트 하위생성후 작성

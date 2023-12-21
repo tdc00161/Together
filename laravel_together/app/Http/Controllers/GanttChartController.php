@@ -42,64 +42,72 @@ class GanttChartController extends Controller
             
             
         ");
+
         // $result['count']=count($result);
         // dd($result);
-        return view('ganttchart')->with('data',$result)->with('user', Session::get('user'));
-    }
+
+        if(Auth::check()) {
+            return view('ganttchart')->with('data',$result)->with('user', Session::get('user'));
+        } else {
+            return redirect('/user/login');
+        }
+    }        
 
     // 간트차트 업무 작성
-    // public function ganttstore(Request $request)
-    // {
-    //     $responseData = [
-    //         "code" => "0",
-    //         "msg" => "",
-    //         "data" => []
-    //     ];
-    //     // Log::debug('cookie: '.$request->cookie('user'));
-    //     // Log::debug('Auth: '. Auth::id());
-    //     $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
-    //     $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
-    //     $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
-    //     // $eml = DB::table('users')->where('email', $request['email'])->first();
-    //     if($request['start_date'] === '시작일') {
-    //         $start = null;
-    //     } else {
-    //         $start = $request['start_date'];
-    //     }
-    //     if($request['end_date'] === '마감일') {
-    //         $end = null;
-    //     } else {
-    //         $end = $request['end_date'];
-    //     }
-    //     $tit = $request['title']; // TODO: 유효성 처리 추가
-    //     $con = $request['content']; // TODO: 유효성 처리 추가
-
-    //     $request['title'] = $tit;
-    //     $request['content'] = $con;
-    //     // $request['project_id'] = $con;
-    //     $request['task_status_id'] = $sta->data_content_code;
-    //     // $request['task_responsible_id'] = $res->id;
-    //     $request['start_date'] = $start;
-    //     $request['end_date'] = $end;
-    //     $request['priority_id'] = $pri->data_content_code;
-
-    //     // Log::debug($request);
-    //     $result = Task::create($request->data);
-    //     $responseData['msg'] = 'task created.';
-    //     $responseData['data'] = $result;
-
-    //     return $responseData;
-    // }
-
-    // 간트차트 업무 수정
-    public function ganttupdate(Request $request, $id)
+    public function ganttstore(Request $request)
     {
         $responseData = [
             "code" => "0",
             "msg" => "",
             "data" => []
         ];
-        $id = $request->id;
+        // Log::debug('cookie: '.$request->cookie('user'));
+        // Log::debug('Auth: '. Auth::id());
+        $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+        $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
+        $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
+        // $eml = DB::table('users')->where('email', $request['email'])->first();
+        if($request['start_date'] === '시작일') {
+            $start = null;
+        } else {
+            $start = $request['start_date'];
+        }
+        if($request['end_date'] === '마감일') {
+            $end = null;
+        } else {
+            $end = $request['end_date'];
+        }
+        $tit = $request['title']; // TODO: 유효성 처리 추가
+        $con = $request['content']; // TODO: 유효성 처리 추가
+
+        $request['title'] = $tit;
+        $request['content'] = $con;
+        // $request['project_id'] = $con;
+        $request['task_status_id'] = $sta->data_content_code;
+        // $request['task_responsible_id'] = $res->id;
+        $request['start_date'] = $start;
+        $request['end_date'] = $end;
+        $request['priority_id'] = $pri->data_content_code;
+
+        // Log::debug($request);
+        $result = Task::create($request->data);
+        $responseData['msg'] = 'task created.';
+        $responseData['data'] = $result;
+
+        return $responseData;
+        
+    }
+
+    // 간트차트 업무 수정
+    public function ganttUpdate(Request $request)
+    {
+        Log::debug("**** ganttupdate Start ****");
+        dd($request);
+        $responseData = [
+            "code" => "0",
+            "msg" => "",
+            "data" => []
+        ];
         $result = Task::find($id);
 
         if (!$result) {
@@ -138,7 +146,7 @@ class GanttChartController extends Controller
 
             $responseData['data'] = $result;
         }
-
+        Log::debug("**** ganttupdate End ****");
         return $responseData;
     }
 
