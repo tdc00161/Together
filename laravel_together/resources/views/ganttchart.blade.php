@@ -31,8 +31,6 @@
     </div>
     {{-- <div class="hr"></div> --}}
     {{-- 피드공통 헤더끝 --}}
-    <form id="ganttChartSave" action="{{ route('gantt.update') }}" method="patch">
-        @csrf
         <div class="gantt-btn-wrap">
             <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="   업무명, 업무번호 검색">
             <div>
@@ -102,6 +100,13 @@
                     </ul>
                 </div>
                 <button class="gantt-add-btn" onclick="openTaskModal(0)">업무추가</button>
+                <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button>
+            </div>
+        </div>
+        <!-- 팝업 모달 창 -->
+        <div id="ganttPopupModal" class="gantt-update-modal">
+            <div class="gantt-modal-content">
+                <p class="gantt-modal-content-p" id="ganttPopupMessage"></p>
             </div>
         </div>
         <div class="gantt-content-wrap">
@@ -155,6 +160,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="gantt-task-body">
                             @foreach ($data as $key => $item)
                                 <div class="gantt-task" id="gantt-task-{{$item->id}}">
@@ -167,9 +173,9 @@
                                             <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
                                         </div>
                                     </div>
-                                    <div class="responName gantt-dropdown">{{$item->name}}</div>
+                                    <div class="responName gantt-dropdown" contenteditable="true">{{$item->name}}</div>
                                     <div>
-                                        <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
+                                        <div class="statusName gantt-status-color" contenteditable="true" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
                                     </div>
                                     <div><input class="start-date" type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
                                     <div><input class="end-date" type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
@@ -203,7 +209,7 @@
                 </div>
             </section>
         </div>
-    </form>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/ganttchart.js"></script>
+    
 @endsection
