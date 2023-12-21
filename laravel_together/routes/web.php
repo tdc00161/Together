@@ -21,7 +21,7 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => ['web']], function () { // web이라는 기본 미들웨어, session 접근 가능
+
     Route::get('/', function () {
         return redirect("/user/login");
     });
@@ -75,6 +75,8 @@ Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get'
     Route::get('/messenger', function () {
         return view('modal/messenger');
     });
+
+Route::group(['middleware' => ['web']], function () { // web이라는 기본 미들웨어, session 접근 가능
 });
 
 

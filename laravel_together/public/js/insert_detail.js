@@ -89,11 +89,11 @@ const CHECKED_STATUS = document.querySelectorAll('#checked')[0]
 const SUBMIT = document.querySelectorAll('.submit')
 
 
-// 담당자 모달용 클론
+// 담당자 모달 초기화용 클론
 let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
 // 담당자 추가용 클론
 let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true)
-// 우선순위 모달용 클론
+// 우선순위 모달 초기화용 클론
 let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 // 우선순위 추가용 클론
 let clonePriority = PRIORITY_ONE[0].cloneNode(true)
@@ -328,9 +328,33 @@ function changeStatus(event) {
 
 // 담당자 추가
 function addResponsible(a) {
-	axios.get('/api/project/' + thisProjectId)
-		.then(res => {
-			//
+	// 담당자 초기화
+	while ( ADD_RESPONSIBLE_MODAL.hasChildNodes() ){
+		ADD_RESPONSIBLE_MODAL.removeChild( ADD_RESPONSIBLE_MODAL.firstChild );       
+	}
+	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
+	// responsibleModalClone.remove()
+	axios.get('/api/project/user/' + thisProjectId)
+	.then(res => {
+		for (let index = 0; index < res.data.data.length; index++) {
+				// 담당자 모달용 클론 (갱신)
+				let responsibleModalClone = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
+				// 클론->이름
+				let defalutMemberName = responsibleModalClone.firstChild.nextSibling.nextElementSibling
+				// respose받은 담당자 리스트 중 하나
+				const element = res.data.data[index];
+				// 담당자 이름 바꾸기
+				defalutMemberName.textContent = element.member_name
+				// d-none 해제
+				responsibleModalClone.classList.remove('d-none')
+
+				console.log(defalutMemberName.textContent);
+
+				// 현재 추가된/추가안된 담당자 모달에 수정된 클론을 추가
+				let nowResponsibleModal = document.querySelector('.add_responsible_modal')
+				nowResponsibleModal.append(responsibleModalClone)
+				// console.log(element.member_name);
+			}
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -353,6 +377,38 @@ function removeResponsible(a) {
 
 // 우선순위 추가/삭제
 function addPriority(a) {
+	// 우선순위 초기화
+	while ( ADD_PRIORITY_MODAL.hasChildNodes() ){
+		ADD_PRIORITY_MODAL.removeChild( ADD_PRIORITY_MODAL.firstChild );       
+	}
+	ADD_PRIORITY_MODAL.append(clonePriorityModal)
+	// responsibleModalClone.remove()
+	axios.get('/api/project/user/' + thisProjectId)
+	.then(res => {
+		for (let index = 0; index < res.data.data.length; index++) {
+				// 우선순위 모달용 클론 (갱신)
+				let priorityModalClone = ADD_PRIORITY_MODAL.cloneNode(true)
+				// 클론->이름
+				let defalutPriorityName = priorityModalClone.firstChild.nextSibling.nextElementSibling
+				// respose받은 우선순위 리스트 중 하나
+				const element = res.data.data[index];
+				// 우선순위 이름 바꾸기
+				defalutPriorityName.textContent = element.member_name
+				// d-none 해제
+				priorityModalClone.classList.remove('d-none')
+
+				console.log(defalutPriorityName.textContent);
+
+				// 현재 추가된/추가안된 우선순위 모달에 수정된 클론을 추가
+				let nowPriorityModal = document.querySelector('.add_responsible_modal')
+				nowPriorityModal.append(priorityModalClone)
+				// console.log(element.member_name);
+			}
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
+
 	ADD_PRIORITY_MODAL.classList.remove('d-none')
 	// PRIORITY_ICON[a].after(clonePriority)
 	// 우선순위 모달, 우선순위추가버튼 외 영역으로 끄기
@@ -368,9 +424,9 @@ function removePriority(a) {
 
 // 댓글 수정
 function updateComment(event, a) {
-	var comment_input = document.querySelector('#comment_input')
-	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
-	let thisCommentContent = event.target.parentElement.nextElementSibling
+	let comment_input = document.querySelector('#comment_input')
+	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
+	thisCommentContent = event.target.parentElement.nextElementSibling
 
 	SUBMIT[1].setAttribute('onclick','commitUpdateComment()')
 	comment_input.value = thisCommentContent.textContent
@@ -378,25 +434,24 @@ function updateComment(event, a) {
 
 // 댓글 수정 적용 버튼
 function commitUpdateComment() {
+	let comment_input = document.querySelector('#comment_input')
 	let putData = {
-		"content": comment_input.textContent
+		"content": comment_input.value,
+		"task_id": now_task_id
 	}
 	let headers = {
 		headers: { 'Content-Type': 'application/json', }
 	}
-	axios.put('/api/comment/' + thisCommentId.value, putData, headers)
+	axios.put('/api/comment/' + thisCommentId, putData, headers)
 		.then(res => {
 			console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
-		})
-		.then(() => {
-			let comment_box = document.querySelector('.comment')
-			comment_box.scrollIntoView(false)
 		})
 		.catch(err => {
 			console.log(err.message);
 		})
 	SUBMIT[1].setAttribute('onclick','addComment()')
+	INPUT_COMMENT_CONTENT.value = ''
 }
 
 // 댓글 삭제
@@ -432,7 +487,7 @@ function addComment() {
 	let headers = {
 		'headers': { 'Content-Type': 'application/json', }
 	}
-	axios.post('/api/comment/123' + thisTaskId, postData, headers)
+	axios.post('/api/comment/' + thisTaskId, postData, headers)
 		.then(res => {
 			console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)

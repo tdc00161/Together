@@ -295,7 +295,7 @@ button {
     width: 260px;
     overflow-x: scroll;
 }
-::-webkit-scrollbar { height: 3px; margin: 0; padding: 0;}
+::-webkit-scrollbar:not(.add_responsible_modal) { height: 3px; margin: 0; padding: 0;}
 
 /* 수락버튼 */
 .accept-btn {

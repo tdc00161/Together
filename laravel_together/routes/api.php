@@ -17,23 +17,23 @@ use App\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware' => ['web']], function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group(['middleware' => ['web']], function () {
 
-Route::get('/task', [TaskController::class, 'index']); // 전체 업무 조회
-Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함)
-Route::post('/task',[TaskController::class,'store']); // 업무 작성
-Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정
-Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제
+    Route::get('/task', [TaskController::class, 'index']); // 전체 업무 조회
+    Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함)
+    Route::post('/task',[TaskController::class,'store']); // 업무 작성
+    Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정
+    Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제
 
-Route::get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기
-Route::get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기
+    Route::get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기
+    Route::get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기
 
-Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id
-Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id
-Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id
+    Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id
+    Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id
+    Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id
+
+    Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 });
-
-Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
