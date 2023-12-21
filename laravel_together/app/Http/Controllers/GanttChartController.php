@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Models\Task;
-use App\Http\Models\User;
-use App\Http\Models\BaseData;
+use Illuminate\Support\Carbon;
+use App\Models\Task;
+use App\Models\User;
 
 class GanttChartController extends Controller
 {
@@ -95,7 +95,7 @@ class GanttChartController extends Controller
         $responseData['data'] = $result;
 
         return $responseData;
-        
+
     }
 
     // 간트차트 업무 수정
