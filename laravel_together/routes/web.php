@@ -41,8 +41,8 @@ use App\Models\User;
 
     // 간트차트
     Route::get('/ganttchart', [GanttChartController::class,'ganttindex'])->name('gantt.index'); // 간트 전체 출력
-    // Route::get('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
-    Route::patch('/ganttchart', [GanttChartController::class, 'ganttupdate'])->name('gantt.update'); // 간트 업무 수정
+    // Route::post('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
+    // Route::put('/ganttchart', [GanttChartController::class, 'ganttupdate'])->name('gantt.update'); // 간트 업무 수정
 
     // Friend
     Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
@@ -62,7 +62,6 @@ use App\Models\User;
     Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
     // Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
     Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
-    Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 
     // 모달
     Route::get('/modaltest', [TaskController::class,'index']);

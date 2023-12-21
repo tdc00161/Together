@@ -1,7 +1,8 @@
 // 원형 그래프
 
-window.onload = function( ) {
+window.onload = function() {
 
+   
    $.ajax({
       url: '/chart-data',
       type: 'GET',
@@ -9,6 +10,13 @@ window.onload = function( ) {
          console.log('***** Ajax Success *****');
          console.log(response);
 
+      
+         // var responseObject = JSON.parse(response);
+         // console.log(responseObject);
+         var dataArray = response.data;
+         console.log(dataArray);
+
+         // 차트 생성
          var canvas = document.getElementById("chartcanvas");
          var context = canvas.getContext("2d");
          var sw = canvas.width;
@@ -16,7 +24,8 @@ window.onload = function( ) {
          var PADDING=100;
 
          // 데이터 입력
-         var data = [response.data];
+         var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
+
          //데이터별 색상
          var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
          

@@ -377,47 +377,294 @@ function test(rowNum) {
    * 6. 
    */
 
-// ************* ajax 수정
-const taskNameUp = document.querySelectorAll('.taskName')
-const responNameUp = document.querySelectorAll('.responName')
-const statusNameUp = document.querySelectorAll('.gantt-status-color')
-const startDateUp = document.querySelectorAll('.start-date')
-const endDateUp = document.querySelectorAll('.end-date')
+// ajax get
+// const axios = require('axios').default;
+// axios.get('/api/gantt', {
+//   headers: {
+//     'Content-Type': 'application/json',
+//   }
+// })
+//     .then(res => {
+//       console.log(res);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       throw new Error(err);
+//     })
 
-// 수정할 데이터
-const ganttChartUpdate = {
-  'title': taskNameUp.textContent,
-  'task_responsible_id': responNameUp[0].textContent,
-  'task_status_id': statusNameUp[0].textContent,
-  'start_date': startDateUp[0].placeholder,
-  'end_date': endDateUp[0].placeholder,
+// ************* ajax 수정
+
+// const taskNameUp = document.querySelector('.taskName');
+// const responNameUp = document.querySelector('.responName');
+// const statusNameUp = document.querySelector('.statusName');
+// const startDateUp = document.querySelector('.start-date');
+// const endDateUp = document.querySelector('.end-date');
+
+// 예시: 수정 요청을 보내는 함수
+function sendUpdateRequest(id, updatedValue) {
+  // Axios를 사용하여 수정 요청을 보내는 로직
+  // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
+  // 아래는 가상의 코드입니다.
+  axios.put('/api/gantt', { value: updatedValue })
+      .then(res => {
+          // 성공적으로 요청을 보낸 후에 할 작업
+          console.log('수정 요청 성공:', res.data);
+      })
+      .catch(err => {
+          // 요청 실패 시 에러 처리
+          console.log('수정 요청 실패:', err);
+      });
 }
 
-// Ajax 요청 보내기
-fetch('/ganttchart', {
-  method: "PATCH",
-  headers: {
-    'Content-Type': 'application/json', // 요청의 Content-Type을 JSON 으로 설정
-    
-  },
-  body: JSON.stringify(ganttChartUpdate) // 수정할 데이터를 JSON 문자열로 변환하여 전송
-})
-  .then(response => {
-    if (response.ok) {
-      return response.json(); // 성공적인 응답일 경우 JSON 데이터 반환
-    }
-    throw new Error('수정 실패'); // 응답이 오류인 경우 오류 처리
-  })
-  .then(data => {
-    // 성공 응답 받았을 때 작업 수행
-    console.log('수정된 데이터:', data);
+// 수정 완료 팝업 창 보이기
+function showPopupMessage(message) {
+  const popupModal = document.getElementById('ganttPopupModal');
+  const popupMessage = document.getElementById('ganttPopupMessage');
+  
+  popupMessage.textContent = message;
+  popupModal.style.display = 'block';
 
-    
-  })
-  .catch(error => {
-    // 오류 발생 시 오류 메세지 출력, 처리
-    console.error('수정 오류:', error);
-  });
+  // 일정 시간(여기서는 3초) 후 팝업 창 닫기
+  setTimeout(() => {
+    popupModal.style.display = 'none';
+  }, 2000);
+}
+
+// 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
+document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
+    element.addEventListener('blur', function(event) {
+        const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
+        let updatedValue = '';
+
+        // contenteditable 속성이 있는 div의 경우
+        if (this.hasAttribute('contenteditable')) {
+            updatedValue = this.innerText;
+        } else if (this.tagName === 'INPUT' || this.tagName === 'SPAN') {
+            // input 또는 span의 경우
+            updatedValue = this.textContent || this.value;
+        }
+
+        // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
+        sendUpdateRequest(id, updatedValue);
+
+        // 수정 완료 팝업 메시지 표시
+        showPopupMessage('수정 완료!');
+    });
+});
+
+
+
+// // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
+// document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
+//   element.addEventListener('blur', function(event) {
+//       const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
+//       let updatedValue = '';
+
+//       // contenteditable 속성이 있는 div의 경우
+//       if (this.hasAttribute('contenteditable')) {
+//           updatedValue = this.innerText;
+//       } else if (this.tagName === 'INPUT' || this.tagName === 'SPAN') {
+//           // input 또는 span의 경우
+//           updatedValue = this.textContent || this.value;
+//       }
+
+//       // 수정 요청 보내기
+//       sendUpdateRequest(id, updatedValue);
+//   });
+// });
+
+
+
+
+
+
+// const axios = require('axios').default;
+
+// const taskNameUp = document.querySelector('.taskName');
+// const responNameUp = document.querySelector('.responName');
+// const statusNameUp = document.querySelector('.statusName');
+// const startDateUp = document.querySelector('.start-date');
+// const endDateUp = document.querySelector('.end-date');
+
+// const data = {
+//   'title': taskNameUp.textContent,
+//   'name': responNameUp.textContent,
+//   'task_status_name': statusNameUp.textContent,
+//   'start_date': startDateUp.value,
+//   'end_date': endDateUp.value,
+// }
+// const headers = {
+//   'Content-Type': 'application/json', // Content-Type 헤더 추가
+// };
+
+// axios.put('/api/gantt', data, { headers })
+//   .then(res => {
+//     console.log(res);
+//     console.log(res.data)
+//     // PUT 요청 성공 시 수행할 작업을 이곳에 추가합니다.
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     throw new Error(err);
+//   });
+
+
+
+// sendDataToServer 함수 수정하여 매개변수로 필드와 값을 받도록 변경
+// function sendDataToServer(Id, updatedFields) {
+//   let data = {
+//     'Id': Id,
+//     'updatedFields': updatedFields // 여러 필드와 값을 포함하는 객체
+//   };
+
+//   axios.put('/api/gantt', data, {
+//     headers: {
+//       'Content-Type': 'application/json',
+//     }
+//   })
+//   .then(res => {
+//     console.log('데이터가 성공적으로 업데이트되었습니다.');
+//     console.log(res.data);
+//     // 필요한 경우 추가 작업 수행
+//   })
+//   .catch(err => {
+//     console.log(err);
+//     throw new Error(err);
+//     // 오류 처리
+//   });
+// }
+
+// // 이벤트 리스너 수정하여 여러 필드 업데이트 처리
+// document.querySelectorAll('.editable-title').forEach(element => {
+//   element.addEventListener('blur', function() {
+//     const taskId = this.parentNode.parentNode.id.split('-')[2]; // 부모 div의 ID에서 작업 ID 추출
+
+//     // 수정된 데이터를 저장할 객체 생성
+//     let updatedFields = {};
+
+//     // 예시: 여러 필드 업데이트를 위해 필드 이름과 값을 객체에 추가
+//     updatedFields['title'] = document.querySelector('.taskName').textContent; // 'title' 필드 업데이트
+//     updatedFields['task_responsible_id'] = document.querySelector('.responName').textContent;
+//     updatedFields['task_status_id'] = document.querySelector('.gantt-status-color').textContent;
+//     updatedFields['start_date'] = document.querySelector('.start-date').value;
+//     updatedFields['end_date'] = document.querySelector('.end-date').value;
+
+//     // 새 데이터로 서버 업데이트
+//     sendDataToServer(taskId, updatedFields);
+//   });
+// });
+
+  // Axios 요청 보내기
+// Ajax를 사용하여 수정된 데이터를 서버로 전송하는 함수
+// 수정 가능한 필드를 변경했을 때 발생하는 이벤트
+
+
+// function sendDataToServer(taskNameUp, responNameUp, statusNameUp, startDateUp, endDateUp) {
+//   let data = {
+//     'title': taskNameUp,
+//     'task_responsible_id': responNameUp,
+//     'task_status_id': statusNameUp,
+//     'start_date': startDateUp,
+//     'end_date': endDateUp
+//   }
+//   let headers = {
+//       headers: { 'Content-Type': 'application/json' } 
+//   }
+//   // Ajax를 사용하여 서버로 데이터 전송
+//   axios.put('/api/gantt/', data, headers)
+//       .then(res => {
+//           console.log('데이터가 성공적으로 업데이트되었습니다.');
+//           console.log(res.data);
+//           // 필요한 경우 추가 작업 수행
+//       })
+//       .catch(error => {
+//           console.log(error);
+//           throw new Error(error);
+//           // 오류 처리
+//       });
+// }
+
+// document.querySelectorAll('.editable-title').forEach(element => {
+//   element.addEventListener('blur', function() {
+//     const taskNameUp = document.querySelector('.taskName').textContent;
+//     const responNameUp = document.querySelector('.responName').textContent;
+//     const statusNameUp = document.querySelector('.statusName').textContent;
+//     const startDateUp = document.querySelector('.start-date').value;
+//     const endDateUp = document.querySelector('.end-date').value;
+
+//       // 수정된 데이터를 서버로 전송
+//       sendDataToServer(taskNameUp, responNameUp, statusNameUp, startDateUp, endDateUp);
+//   });
+// });
+
+
+
+
+//   function sendDataToServer(itemId) {
+//     var title = document.querySelector('.taskName' + itemId).innerText; // 수정된 title 가져오기
+//     var name = document.querySelector('.responName' + itemId).innerText; // 수정된 name 가져오기
+//     var status = document.querySelector('.gantt-status-color').getAttribute('data-status'); // 수정된 task_status_name 가져오기
+//     var startDate = document.getElementById('start-row' + itemId).value; // 수정된 start_date 가져오기
+//     var endDate = document.getElementById('end-row' + itemId).value; // 수정된 end_date 가져오기
+
+
+//     var data = {
+//         id: itemId,
+//         title: title,
+//         name: name,
+//         status: status,
+//         start_date: startDate,
+//         end_date: endDate
+//     };
+
+//     fetch('/ganttchart', {
+//         method: 'PUT',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(data),
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         // 서버 응답 처리
+//         console.log('데이터가 성공적으로 전송되었습니다.', data);
+//     })
+//     .catch(error => {
+//         // 오류 처리
+//         console.error('데이터 전송 중 오류가 발생했습니다:', error);
+//     });
+// }
+
+// ********* 수정했을 때 팝업창 뜨게
+// function showPopup() {
+//   // 여기에 팝업을 표시하는 코드를 작성하세요
+//   alert('내용이 변경되었습니다!');
+// }
+
+// const targetNode = document.querySelectorAll('.editable-title'); // 감지할 대상 요소 선택
+
+// // Observer 인스턴스 생성
+// const observer = new MutationObserver(function(mutationsList) {
+//   for (let mutation of mutationsList) {
+//     if (mutation.type === 'childList' || mutation.type === 'characterData') {
+//       // 내용이 변경되면 팝업을 표시하는 함수 호출
+//       showPopup();
+//     }
+//   }
+// });
+
+// // Observer 구성
+// const config = { attributes: true, childList: true, subtree: true, characterData: true };
+
+// // 설정된 변화를 관찰하기 시작
+// observer.observe(targetNode, config);
+
+
     
 
 
