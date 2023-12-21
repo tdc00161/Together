@@ -247,12 +247,15 @@ button {
 .messenger-user-div {
     display: inline-block;
     position: relative;
+    left: 0;
     height: 65px;
     width: 100%;
     margin-top: 3px;
     margin-bottom: 3px;
     padding: 0px 0px 0px 7px;
     background-color: rgba(48, 48, 48, 0.144);
+    transition: left 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
 }
 
 #friend-list-div .messenger-user-div {
