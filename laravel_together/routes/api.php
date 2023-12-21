@@ -40,3 +40,5 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 });
+
+// Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출

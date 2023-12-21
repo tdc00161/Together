@@ -1,16 +1,16 @@
 @extends('layout.layout')
 
 @section('link')
-<link rel="stylesheet" href="/css/project_individual.css">
 <script src="/js/project.js" defer></script>
 <script src="/js/insert_detile.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endsection
 
 @section('title', '개인프로젝트')
 
 @section('main')
     <input type="hidden" id="user" value="{{$user}}">
-    <input type="hidden" id="chart" value="{{$result->id}}">
+    {{-- <input type="hidden" id="chart" value="{{$user_data->id}}"> --}}
     {{-- 상단바 --}}
     <div class="first_menu">
         <div class="menu_title">
@@ -78,22 +78,26 @@
             <div class="right_box1">
                 {{-- 공지/업데이트 항목 --}}
                 <div class="point_box">
-                    <div class="point_box_title">
-                        <div class="point_text">공지</div>
-                        <button class="point_button" onclick="openTaskModal(0,1)">+</button>
+                    <div class="point_title">
+                        <div class="point_box_title">
+                            <div class="point_text">공지</div>
+                            <button class="point_button" onclick="openTaskModal(0,1)">+</button>
+                        </div>
+                        <div class="div_text1">제목</div>
+                        <hr id="titleline">
                     </div>
-                    <div class="div_text1">제목</div>
-                    <hr class="div_hr">
-                    <table>
-                        <colgroup>
-                            <col class="col1">
-                        </colgroup>
-                        @foreach ($data as $item)
-                            <tr id="box_ul">
-                                <td class="project_title" onclick="openTaskModal(1,1)">{{$item->title}}</td>
-                            </tr>
-                        @endforeach
-                    </table>
+                    <div class="listscroll">
+                        <table class="listtable">
+                            <colgroup>
+                                <col class="col1">
+                            </colgroup>
+                            @foreach ($data as $item)
+                                <tr class="box_ul">
+                                    <td class="project_title td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,50,'...')}}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
                 <div class="point_box">
                     <div class="point_text">업데이트 목록</div>
@@ -101,20 +105,22 @@
                         <div>카테고리</div>
                         <div>제목</div>
                     </div>
-                    <hr class="div_hr">
-                    <table>
-                        <colgroup>
-                            <col class="col2">
-                            <col class="col3">
-                        </colgroup>
-                        @foreach ($data as $item)
-                            <tr class="box_ul">
-                                <td class="project_title" onclick="openTaskModal(1,0)">{{$item->category_id}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
-                                <td>{{$item->title}}</td>
-                                {{-- <td>{{$item->user_id}}</td> --}}
-                            </tr>
-                        @endforeach
-                    </table>
+                    <hr id="titleline">
+                    <div class="listscroll">
+                        <table class="listtable">
+                            <colgroup>
+                                <col class="col2">
+                                <col class="col3">
+                            </colgroup>
+                            @foreach ($data as $item)
+                                <tr class="box_ul">
+                                    <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{$item->category_id}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+                                    <td class="td_pd">{{Str::limit($item->title,40,'...')}}</td>
+                                    {{-- <td>{{$item->user_id}}</td> --}}
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
             </div>
             {{-- 마감순 업무 목록 --}}
@@ -127,25 +133,27 @@
                     <div>담당자</div>
                     <div>진행상태</div>
                 </div>
-                <hr class="div_hr">
-                <table>
-                    <colgroup>
-                        <col class="col4">
-                        <col class="col5">
-                        <col class="col6">
-                        <col class="col7">
-                        <col class="col8">
-                    </colgroup>
-                    @foreach ($data as $item)
-                        <tr class="box_ul">
-                            <td></td>
-                            <td>{{$item->dday}}</td>
-                            <td class="project_title" onclick="openTaskModal(1,0)">{{$item->title}}</td>
-                            <td>{{$item->task_responsible_id}}</td>
-                            <td>{{$item->status_name}}</td>
-                        </tr>
-                    @endforeach
-                </table>
+                <hr id="titleline">
+                <div class="listscroll">
+                    <table class="listtable">
+                        <colgroup>
+                            <col class="col4">
+                            <col class="col5">
+                            <col class="col6">
+                            <col class="col7">
+                            <col class="col8">
+                        </colgroup>
+                        @foreach ($data as $item)
+                            <tr class="box_ul">
+                                <td class="td_pd"></td>
+                                <td class="td_pd">{{$item->dday}}</td>
+                                <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,53,'...')}}</td>
+                                <td class="td_pd">{{$item->task_responsible_id}}</td>
+                                <td class="td_pd">{{$item->status_name}}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -155,4 +163,8 @@
         </div>
 </div>
 
+@endsection
+
+@section('project_css')
+<link rel="stylesheet" href="/css/project_individual.css" defer>
 @endsection

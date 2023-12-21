@@ -151,22 +151,22 @@ class Task extends Model // 업무/공지
             ,tsk.created_at
             ,tsk.updated_at
         FROM tasks tsk
-          JOIN projects pj
+          LEFT JOIN projects pj
             ON tsk.project_id = pj.id
-          JOIN users res
+          LEFT JOIN users res
             ON tsk.task_responsible_id = res.id
-          JOIN users wri
+          LEFT JOIN users wri
             ON tsk.task_writer_id = wri.id
-          JOIN basedata base 
+          LEFT JOIN basedata base 
             ON tsk.task_status_id = base.data_content_code
             AND base.data_title_code = '0'
-          JOIN basedata base2 
+          LEFT JOIN basedata base2 
             ON tsk.priority_id = base2.data_content_code
             AND base2.data_title_code = '1'
-          JOIN basedata base3 
+          LEFT JOIN basedata base3 
             ON tsk.category_id = base3.data_content_code
             AND base3.data_title_code = '2'
-          JOIN basedata pj_clr 
+          LEFT JOIN basedata pj_clr 
             ON pj.color_code_pk = pj_clr.data_content_code
             AND pj_clr.data_title_code = '3'
         WHERE tsk.id = " . $id

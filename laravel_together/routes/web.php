@@ -58,11 +58,11 @@ use App\Models\User;
     Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
     Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post');
 
-// 프로젝트 개인/팀 화면
-Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
-// Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
-Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
-
+    // 프로젝트 개인/팀 화면
+    Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
+    // Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
+    Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
+    Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 
     // 모달
     Route::get('/modaltest', [TaskController::class,'index']);
