@@ -130,6 +130,12 @@ submitBtn.addEventListener('click', function (event) {
             console.error('Error:', error);
         });
 });
+// 엔터 키 입력 방지
+inputdiv.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+        event.preventDefault();
+    }
+});
 // -------------------------- 친구 요청 ----------------------------
 
 // ------------------------ 친구 요청 목록 -------------------------
