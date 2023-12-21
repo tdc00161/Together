@@ -17,17 +17,35 @@ class FriendlistController extends Controller
     {
         $userId = Auth::id();
 
+        $useUserId = // 특정 조건에 따라 true 또는 false를 설정
+
         $myfriendList = DB::table('friendlists as f')
-        ->join('users as u', 'u.id','=', 'f.friend_id')
-        ->select('f.friend_id', 'u.name', 'u.email')
-        ->where('f.user_id', '=', $userId)
-        ->where('deleted_at', '=', NULL)
+        ->join('users as u', function ($join) use ($userId) {
+            $join->on(function ($query) use ($userId) {
+                    $query->on('u.id', '=', 'f.friend_id')
+                        ->where('f.user_id', '=', $userId);
+                })
+                ->orOn(function ($query) use ($userId) {
+                    $query->on('u.id', '=', 'f.user_id')
+                        ->where('f.friend_id', '=', $userId);
+                });
+        })
+        ->select([
+            'f.friend_id',
+            'u.id as user_id',
+            'u.name',
+            DB::raw("CASE WHEN f.user_id = {$userId} THEN u.name ELSE NULL END AS friend_name"),
+            'u.email',
+        ])
+        ->whereNull('f.deleted_at')
         ->orderBy('u.name', 'asc')
+        ->distinct()
         ->get();
 
          // dd($friendList);
         return response()->json([
             'myfriendList' => $myfriendList,
+            'useUserId' => $useUserId
         ]);
     }
 
