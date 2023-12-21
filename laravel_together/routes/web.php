@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GanttChartController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\FriendlistController;
 use App\Models\User;
 
 
@@ -20,7 +21,7 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => ['web']], function () { // web이라는 기본 미들웨어, session 접근 가능
+
     Route::get('/', function () {
         return redirect("/user/login");
     });
@@ -38,21 +39,21 @@ Route::group(['middleware' => ['web']], function () { // web이라는 기본 미
     // 대시보드
     Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
-// 간트차트
+    // 간트차트
     Route::get('/ganttchart', [GanttChartController::class,'ganttindex'])->name('gantt.index'); // 간트 전체 출력
     // Route::get('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
     Route::patch('/ganttchart', [GanttChartController::class, 'ganttupdate'])->name('gantt.update'); // 간트 업무 수정
 
-// Friend 
-Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
-Route::get('/friendSendlist', [FriendRequestController::class, 'friendSendlist']); // 친구요청 보낸 목록
-Route::get('/myfriendlist', [FriendRequestController::class, 'myfriendList']); // 친구 목록
-Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest'); // 친구요청
-Route::middleware('auth')->patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
-Route::middleware('auth')->patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
-Route::middleware('auth')->patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
-Route::middleware('auth')->delete('/frienddelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
-
+    // Friend
+    Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
+    Route::get('/friendSendlist', [FriendRequestController::class, 'friendSendlist']); // 친구요청 보낸 목록
+    Route::middleware('auth')->post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest'); // 친구요청
+    Route::middleware('auth')->patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
+    Route::middleware('auth')->patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
+    Route::middleware('auth')->patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
+    Route::get('/myfriendlist', [FriendlistController::class, 'myfriendList']); // 친구 목록
+    Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
+    Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
     // 프로젝트 생성
     Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
     Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post');
@@ -74,6 +75,8 @@ Route::middleware('auth')->delete('/frienddelete', [FriendlistController::class,
     Route::get('/messenger', function () {
         return view('modal/messenger');
     });
+
+Route::group(['middleware' => ['web']], function () { // web이라는 기본 미들웨어, session 접근 가능
 });
 
 

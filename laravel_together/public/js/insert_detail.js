@@ -82,18 +82,19 @@ const COMMENT_ONE = document.querySelectorAll('.comment_one')
 const INPUT_COMMENT_CONTENT = document.querySelector('#comment_input')
 // 모달 배경 블러처리
 const BEHIND_MODAL = document.querySelector('.behind_insert_modal');
+
 // 입력용
-const INSERT_TITLE = document.querySelector('.insert_title')
-const CHECKED_STATUS = document.querySelectorAll('#checked')[0]
+let INSERT_TITLE = document.querySelector('.insert_title')
+let CHECKED_STATUS = document.querySelectorAll('#checked')[0]
 // 입력 버튼
-const SUBMIT = document.querySelectorAll('.submit')
+let SUBMIT = document.querySelectorAll('.submit')
 
 
-// 담당자 모달용 클론
+// 담당자 모달 초기화용 클론
 let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
 // 담당자 추가용 클론
 let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true)
-// 우선순위 모달용 클론
+// 우선순위 모달 초기화용 클론
 let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 // 우선순위 추가용 클론
 let clonePriority = PRIORITY_ONE[0].cloneNode(true)
@@ -204,7 +205,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 				parentTaskControl(res.data, a);
 
 				// 현재 업무 id 저장
-				thisTaskId = res.data.task[0].id
+				now_task_id = res.data.task[0].id
 			})
 			.catch(err => {
 				console.log(err.message);
@@ -237,11 +238,12 @@ function createTask() {
 		"project_id": thisProjectId
 	}
 	if (TaskNoticeFlg === 0) {
-		postData.task_status_id = CHECKED_STATUS.textContent
-		postData.task_responsible_id = RESPONSIBLE_USER[0].textContent
-		postData.start_date = START_DATE[0].placeholder
-		postData.end_date = END_DATE[0].placeholder
-		postData.priority_id = PRIORITY_VAL[0].textContent
+		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
+		postData.task_responsible_id = document.querySelectorAll('.responsible_user')[0].textContent
+		postData.start_date = document.querySelectorAll('.start_date')[0].value
+		postData.end_date = document.querySelectorAll('.end_date')[0].value
+		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
+		postData.category_id = 0
 	}
 	let headers = {
 		'headers': { 'Content-Type': 'application/json', }
@@ -249,6 +251,7 @@ function createTask() {
 	axios.post('/api/task', postData, headers)
 		.then(res => {
 			console.log(res.data);
+			closeTaskModal(0)
 		})
 		.catch(err => {
 			console.log(err.message)
@@ -328,9 +331,33 @@ function changeStatus(event) {
 
 // 담당자 추가
 function addResponsible(a) {
-	axios.get('/api/project/' + thisProjectId)
+	// 담당자 초기화
+	while (ADD_RESPONSIBLE_MODAL.hasChildNodes()) {
+		ADD_RESPONSIBLE_MODAL.removeChild(ADD_RESPONSIBLE_MODAL.firstChild);
+	}
+	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
+	// responsibleModalClone.remove()
+	axios.get('/api/project/user/' + thisProjectId)
 		.then(res => {
-			//
+			for (let index = 0; index < res.data.data.length; index++) {
+				// 담당자 모달용 클론 (갱신)
+				let responsibleModalClone = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
+				// 클론->이름
+				let defalutMemberName = responsibleModalClone.firstChild.nextSibling.nextElementSibling
+				// respose받은 담당자 리스트 중 하나
+				const element = res.data.data[index];
+				// 담당자 이름 바꾸기
+				defalutMemberName.textContent = element.member_name
+				// d-none 해제
+				responsibleModalClone.classList.remove('d-none')
+
+				// console.log(defalutMemberName.textContent);
+
+				// 현재 추가된/추가안된 담당자 모달에 수정된 클론을 추가
+				let nowResponsibleModal = document.querySelector('.add_responsible_modal')
+				nowResponsibleModal.append(responsibleModalClone)
+				// console.log(element.member_name);
+			}
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -346,6 +373,34 @@ function addResponsible(a) {
 	});
 }
 
+// 담당자 선택
+function selectResponsible(event) {
+	// 클릭한 엘리먼트의 값 가져오기
+	let selectResponsibleValue = ''
+	if (event.target.textContent) {
+		selectResponsibleValue = event.target.textContent.trim()
+	} else if (event.target.nextElementSibling.textContent) {
+		selectResponsibleValue = event.target.nextElementSibling.textContent.trim()
+	} else if (event.target.firstChild.nextElementSibling.textContent) {
+		selectResponsibleValue = event.target.firstChild.nextElementSibling.textContent.trim()
+	} else {
+		console.log('cant select');
+	}
+
+	// 기존에 클론한 엘리먼트에 값을 넣기
+	cloneResponsible.firstChild.nextElementSibling.nextElementSibling.textContent = selectResponsibleValue
+
+	// 삽입할 태그 선택
+	let nowFrontOfResponsible = document.querySelectorAll('.responsible_icon')[0]
+	// console.log(nowFrontOfResponsible);
+
+	// d-none 삭제
+	cloneResponsible.classList.remove('d-none')
+
+	// 태그에 넣기
+	nowFrontOfResponsible.after(cloneResponsible)
+}
+
 // 담당자 삭제
 function removeResponsible(a) {
 	RESPONSIBLE_ICON[a].nextSibling.remove()
@@ -353,6 +408,58 @@ function removeResponsible(a) {
 
 // 우선순위 추가/삭제
 function addPriority(a) {
+	// 우선순위 초기화
+	while (ADD_PRIORITY_MODAL.hasChildNodes()) {
+		ADD_PRIORITY_MODAL.removeChild(ADD_PRIORITY_MODAL.firstChild);
+	}
+	ADD_PRIORITY_MODAL.append(clonePriorityModal)
+	// responsibleModalClone.remove()
+	axios.get('/api/basedata/' + 1)
+		.then(res => {
+			for (let index = 0; index < res.data.data.length; index++) {
+				// console.log(res.data.data[index].data_content_name);
+				// 우선순위 모달용 클론 (갱신)
+				let priorityModalClone = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
+				// 클론->아이콘
+				let defalutPriorityIcon = priorityModalClone.firstChild.nextSibling
+				// 클론->이름
+				let defalutPriorityName = priorityModalClone.firstChild.nextSibling.nextSibling.nextSibling
+				// // respose받은 우선순위 리스트 중 하나
+				const element = res.data.data[index];
+
+				// // 우선순위 이름 바꾸기
+				defalutPriorityName.textContent = element.data_content_name
+
+				// 우선순위 값별로 이미지 삽입
+				switch (defalutPriorityName.textContent) {
+					case '긴급':
+						defalutPriorityIcon.style = 'background-image: url(/img/gantt-bisang.png);'
+						break;
+					case '높음':
+						defalutPriorityIcon.style = 'background-image: url(/img/gantt-up.png);'
+						break;
+					case '보통':
+						defalutPriorityIcon.style = 'background-image: url(/img/free-icon-long-horizontal-25426-nomal.png);'
+						break;
+					case '낮음':
+						defalutPriorityIcon.style = 'background-image: url(/img/gantt-down.png);'
+						break;
+					case '없음':
+						break;
+				}
+
+				// d-none 해제
+				priorityModalClone.classList.remove('d-none')
+
+				// 현재 추가된/추가안된 우선순위 모달에 수정된 클론을 추가
+				let nowPriorityModal = document.querySelector('.add_priority_modal')
+				nowPriorityModal.prepend(priorityModalClone)
+			}
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
+
 	ADD_PRIORITY_MODAL.classList.remove('d-none')
 	// PRIORITY_ICON[a].after(clonePriority)
 	// 우선순위 모달, 우선순위추가버튼 외 영역으로 끄기
@@ -362,41 +469,87 @@ function addPriority(a) {
 		}
 	});
 }
+
+// 우선순위 선택
+function selectPriority(event) {
+	// 클릭한 엘리먼트의 값 가져오기
+	let selectPriorityValue = ''
+	if (event.target.textContent) {
+		selectPriorityValue = event.target.textContent.trim()
+	} else if (event.target.nextElementSibling.textContent) {
+		selectPriorityValue = event.target.nextElementSibling.textContent.trim()
+	} else if (event.target.firstChild.nextElementSibling.textContent) {
+		selectPriorityValue = event.target.firstChild.nextElementSibling.textContent.trim()
+	} else {
+		console.log('cant select');
+	}
+
+	// 기존에 클론한 엘리먼트에 값을 넣기
+	clonePriority.firstChild.nextElementSibling.nextElementSibling.textContent = selectPriorityValue
+	switch (selectPriorityValue) {
+		case '긴급':
+			clonePriority.firstChild.nextElementSibling.style = 'background-image: url(/img/gantt-bisang.png);'
+			break;
+		case '높음':
+			clonePriority.firstChild.nextElementSibling.style = 'background-image: url(/img/gantt-up.png);'
+			break;
+		case '보통':
+			clonePriority.firstChild.nextElementSibling.style = 'background-image: url(/img/free-icon-long-horizontal-25426-nomal.png);'
+			break;
+		case '낮음':
+			clonePriority.firstChild.nextElementSibling.style = 'background-image: url(/img/gantt-down.png);'
+			break;
+		case '없음':
+			clonePriority.firstChild.nextElementSibling.style = 'background-image: none;'
+			break;
+	}
+
+	// 삽입할 태그 선택
+	let nowFrontOfPriority = document.querySelectorAll('.flag_icon')[0]
+	// console.log(nowFrontOfPriority);
+
+	// d-none 삭제
+	clonePriority.classList.remove('d-none')
+
+	// 태그에 넣기
+	nowFrontOfPriority.after(clonePriority)
+}
+
+// 우선순위 삭제
 function removePriority(a) {
 	PRIORITY_ICON[a].nextSibling.remove()
 }
 
 // 댓글 수정
 function updateComment(event, a) {
-	var comment_input = document.querySelector('#comment_input')
-	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
-	let thisCommentContent = event.target.parentElement.nextElementSibling
+	let comment_input = document.querySelector('#comment_input')
+	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
+	thisCommentContent = event.target.parentElement.nextElementSibling
 
-	SUBMIT[1].setAttribute('onclick','commitUpdateComment()')
+	SUBMIT[1].setAttribute('onclick', 'commitUpdateComment()')
 	comment_input.value = thisCommentContent.textContent
 }
 
 // 댓글 수정 적용 버튼
 function commitUpdateComment() {
+	let comment_input = document.querySelector('#comment_input')
 	let putData = {
-		"content": comment_input.textContent
+		"content": comment_input.value,
+		"task_id": now_task_id
 	}
 	let headers = {
 		headers: { 'Content-Type': 'application/json', }
 	}
-	axios.put('/api/comment/' + thisCommentId.value, putData, headers)
+	axios.put('/api/comment/' + thisCommentId, putData, headers)
 		.then(res => {
 			console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
-		.then(() => {
-			let comment_box = document.querySelector('.comment')
-			comment_box.scrollIntoView(false)
-		})
 		.catch(err => {
 			console.log(err.message);
 		})
-	SUBMIT[1].setAttribute('onclick','addComment()')
+	SUBMIT[1].setAttribute('onclick', 'addComment()')
+	INPUT_COMMENT_CONTENT.value = ''
 }
 
 // 댓글 삭제
@@ -432,7 +585,7 @@ function addComment() {
 	let headers = {
 		'headers': { 'Content-Type': 'application/json', }
 	}
-	axios.post('/api/comment/123' + thisTaskId, postData, headers)
+	axios.post('/api/comment/' + thisTaskId, postData, headers)
 		.then(res => {
 			console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
@@ -506,6 +659,9 @@ function responsibleName(data, a) {
 	if (data.task[0].res_name !== null) {
 		RESPONSIBLE_USER[a].textContent = data.task[0].res_name;
 		RESPONSIBLE_PERSON[a].style = 'display: flex;'
+		if(RESPONSIBLE_PERSON[a].classList.contains('d-none')){
+			RESPONSIBLE_PERSON[a].classList.remove('d-none')
+		}
 	} else {
 		RESPONSIBLE_PERSON[a].style = 'display: none;'
 	}
@@ -514,11 +670,14 @@ function responsibleName(data, a) {
 // 마감일자 값체크, 삽입
 function deadLineValue(data, a) {
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
-		DEAD_LINE[a].style = 'display: none;'
+		// DEAD_LINE[a].style = 'display: none;'
 	} else {
 		START_DATE[a].placeholder = data.task[0].start_date;
 		END_DATE[a].placeholder = data.task[0].end_date;
 		DEAD_LINE[a].style = 'display: flex;'
+		if(DEAD_LINE[a].classList.contains('d-none')){
+			DEAD_LINE[a].classList.remove('d-none')
+		}
 	}
 }
 
@@ -527,6 +686,9 @@ function priorityValue(data, a) {
 	if (data.task[0].priority_name !== null) {
 		PRIORITY_VAL[a].textContent = data.task[0].priority_name;
 		PRIORITY[a].style = 'display: flex;'
+		if(PRIORITY_ONE[a].classList.contains('d-none')){
+			PRIORITY_ONE[a].classList.remove('d-none')
+		}
 		// 우선순위 값별로 이미지 삽입
 		switch (PRIORITY_VAL[a].textContent) {
 			case '긴급':
@@ -634,6 +796,8 @@ function parentTaskControl(data, a) {
 	}
 }
 
+// 오픈모달 모듈 이후 코드-----------------------------------------
+
 // 모달 띄우기
 function openInsertDetailModal(a) {
 	TASK_MODAL[a].style = 'display: block;'
@@ -657,14 +821,22 @@ function TaskFlg(a, b) {
 }
 // 수정 모달 값 넣기
 function updateModalOpen() {
+	// 상태업무 체크 풀기
+	let disableStatusChecked = document.querySelectorAll('#checked')[0]
+	if(disableStatusChecked){
+		disableStatusChecked.removeAttribute('id')
+	}
+	disableStatusChecked.style = 'background-color: var(--m-btn);'
+
 	createUpdate = 1
-	axios.put('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
+	axios.get('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
 		.then(res => {
+			console.log(res.data);
 			// 값을 모달에 삽입
 			insertModalValue(res.data, 0);
 
 			// 업무상태 값과 색상 주기
-			statusColor(res.data);
+			updateStatusColor(res.data);
 
 			// 담당자 값체크, 삽입
 			responsibleName(res.data, 0);
@@ -677,7 +849,6 @@ function updateModalOpen() {
 
 			// 상세업무 내용 값체크, 삽입
 			modalContentValue(res.data, 0);
-
 
 			// 댓글창 없을 때 사라질 값 갱신선언
 			COMMENT_PARENT.style = 'padding: 20;'
@@ -719,4 +890,33 @@ function deleteTask() {
 		.catch(err => {
 			console.log(err.message);
 		})
+}
+
+function updateStatusColor(data) {
+	let status_val = document.querySelectorAll('.status_val')
+	let element_for_painting = null;
+	for (let index = 0; index < status_val.length; index++) {
+		const element = status_val[index];
+		if (element.textContent == data.task[0].status_name) {
+			element_for_painting = status_val[index]
+			element_for_painting.id = 'checked'
+		}
+	}
+	switch (data.task[0].status_name) {
+		case '시작전':
+			element_for_painting.style = 'background-color: #B1B1B1;';
+			break;
+		case '진행중':
+			element_for_painting.style = 'background-color: #04A5FF;';
+			break;
+		case '피드백':
+			element_for_painting.style = 'background-color: #F34747;';
+			break;
+		case '완료':
+			element_for_painting.style = 'background-color: #64C139;';
+			break;
+		default:
+			element_for_painting.style = 'background-color: #FFFFFF;';
+			break;
+	}
 }

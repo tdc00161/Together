@@ -145,24 +145,6 @@ class FriendRequestController extends Controller
         ]);
     }
 
-    // 친구 목록
-    public function myfriendList()
-    {
-        $userId = Auth::id();
-
-        $myfriendList = DB::table('friendlists as f')
-        ->join('users as u', 'u.id','=', 'f.friend_id')
-        ->select('f.friend_id', 'u.name', 'u.email')
-        ->where('f.user_id', '=', $userId)
-        ->orderBy('u.name', 'asc')
-        ->get();
-
-        // dd($friendList);
-        return response()->json([
-            'myfriendList' => $myfriendList,
-        ]);
-    }
-
     // 친구 on/off 
     public function loginUser()
     {

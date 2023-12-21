@@ -806,6 +806,18 @@
 	/* 크기 */
 }
 
+.add_property_modal::-webkit-scrollbar{
+	height: 0;
+}
+
+.add_property_modal::-webkit-scrollbar-track{
+	background-color: var(--popup-bg);
+}
+
+.add_responsible_modal {
+	opacity: 100%;
+}
+
 /* .task_modal .footer>textarea:focus { */
 /* 배치 */
 /* 내부 */
@@ -877,13 +889,15 @@
 .add_responsible_modal{
 	/* 배치 */
 	position: absolute;
-    top: 28px;
-    left: 35px;
+    top: 32px;
+    left: 39px;
+	z-index: 5;
 	/* 내부 */
-    background-color: var(--dropdown-bg);
+    background-color: var(--dropdown-hover);
     overflow: scroll;
+    border-radius: 5px;
 	/* 크기 */
-    width: 77px;
+    width: 140px;
     min-height: 28px;
     max-height: 100px;
 }
@@ -891,20 +905,26 @@
 .add_priority_modal {
 	/* 배치 */
 	position: absolute;
-    top: 28px;
-    left: 38px;
+    top: 31px;
+    left: 39px;
+	z-index: 5;
 	/* 내부 */
-    background-color: var(--dropdown-bg);
+    background-color: var(--dropdown-hover);
     overflow: scroll;
+	border-radius: 5px;
 	/* 크기 */
-    width: 77px;
+    width: 86px;
     min-height: 28px;
     max-height: 100px;
 }
 
 .add_responsible_modal_one, .add_priority_modal_one{
 	display: flex;
-	margin: 5px 0;
+	padding: 5px 0;
+}
+
+.add_responsible_modal_one:hover, .add_priority_modal_one:hover{
+	background-color: rgba(12, 12, 12, 0.829);
 }
 
 .priority_one, .responsible_one{
@@ -930,12 +950,8 @@
 	background-size: cover;
 
 	width: 18px;
-    height: 18px;
+    height: 20px;
     margin: 0px 5px;
-}
-
-.add_responsible_modal_one_name, .add_priority_modal_one_name {
-	width: 100%;
 }
 
 /* 입력창 디자인 */
@@ -966,6 +982,8 @@
 .task_modal .start_date,
 .task_modal .end_date,
 .task_modal .submit,
+.task_modal .add_responsible_modal_one,
+.task_modal .add_priority_modal_one,
 span.task_detail,
 span.project_detail {
 	cursor: pointer;
