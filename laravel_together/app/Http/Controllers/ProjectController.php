@@ -72,7 +72,7 @@ class ProjectController extends Controller
         // dd($user_pk);
 
         $result = project::find($id);
-        // dd($result);
+        // dump($result);
 
 
         $user_id = Session::get('user')->only('id');
@@ -87,10 +87,11 @@ class ProjectController extends Controller
                             ,'start_date'
                             ,'end_date'
                             ,'created_at'
+                            ,'flg'
                             )
                     ->get();
 
-        // dd($user_data);
+        // 대표 레이아웃 사이드바 생성
         $userflg0=[];
         $userflg1=[];
         foreach ($user_data as $items) {
@@ -101,7 +102,11 @@ class ProjectController extends Controller
           }
         }
 
-        // dd($user_data);
+        // 탭명과 해당 프로젝트 연동
+        
+
+        // dd($userflg1);
+
         // dd($user_data);
         // if ($user_data->flg == '0'){
         //   return view('individual.get',['id' => $user_data['id']]);
@@ -131,7 +136,9 @@ class ProjectController extends Controller
 
         $tkdata = DB::table('projects')
                       -> select('projects.id',
+                                'users.id',
                                 'tasks.id',
+                                'users.name',
                                 'projects.user_pk',
                                 'tasks.project_id',
                                 'tasks.task_responsible_id',
@@ -143,6 +150,9 @@ class ProjectController extends Controller
                                 'base1.data_content_name as status_name',
                                 'base2.data_content_name as category_name',
                                 )
+                      ->join('users', function($join) {
+                        $join->on('users.id','=','projects.user_pk');
+                      })  
                       ->join('tasks', function($join) {
                         $join->on('tasks.project_id','=','projects.user_pk');
                       })
@@ -186,78 +196,78 @@ class ProjectController extends Controller
       // return $user;
       // $user_id = Session::get('user')->only('id');
       $user_id = Auth::id();
-      Log::debug("user_id : ".$user_id);
+      // Log::debug("user_id : ".$user_id);
 
       $before=DB::table('tasks')
                   ->selectRaw('count(project_id) as cnt')
                   ->where('task_status_id',0)
                   ->groupBy('project_id')
                   ->having('project_id',$user_id)
-                  ->first();
-      Log::debug("before : ", $before->all());
+                  ->get();
+      // Log::debug("before : ", $before->all());
 
       $ing=DB::table('tasks')
               ->selectRaw('count(project_id) as cnt')
               ->where('task_status_id',1)
               ->groupBy('project_id')
               ->having('project_id',$user_id)
-              ->first();
-      Log::debug("ing : ", $before->all());
+              ->get();
+      // Log::debug("ing : ", $before->all());
 
       $feedback=DB::table('tasks')
                     ->selectRaw('count(project_id) as cnt')
                     ->where('task_status_id',2)
                     ->groupBy('project_id')
                     ->having('project_id',$user_id)
-                    ->first();
-      Log::debug("feedback : ", $before->all());
+                    ->get();
+      // Log::debug("feedback : ", $before->all());
       // dd($feedback);
       $complete=DB::table('tasks')
                     ->selectRaw('count(project_id) as cnt')
                     ->where('task_status_id',3)
                     ->groupBy('project_id')
                     ->having('project_id',$user_id)
-                    ->first();
-      Log::debug("complete : ", $before->all());
+                    ->get();
+      // Log::debug("complete : ", $before->all());
 
       $statuslist = ['before'=> $before,'ing'=> $ing,'feedback'=> $feedback,'complete'=> $complete];
 
-      Log::debug("Response : ", $statuslist);
-      Log::debug("***** project_graph_data End *****");
+      // Log::debug("Response : ", $statuslist);
+      // Log::debug("***** project_graph_data End *****");
       return response()->json($statuslist);
       // return '반환 테스트';
     }
 
-    // // 프로젝트 데이터 + 컬러
-    // public function project_select($id)
-    // {
-    //     $responseData = [
-    //         "code" => "0",
-    //         "msg" => "",
-    //         "data" => ""
-    //     ];
-    //     $dataContent = DB::select(
-    //         "SELECT
-    //             pj.*
-    //             ,bd.data_content_name
-    //         FROM
-    //             projects pj
-    //             JOIN basedata bd
-    //               ON bd.data_content_code = pj.color_code_pk
-    //              AND bd.data_title_code = 3
-    //         WHERE
-    //             pj.id = ".$id
-    //     );
-    //     if (!$dataContent) {
-    //         $responseData['code'] = 'E01';
-    //         $responseData['msg'] = $id.' is no where';
-    //     } else {
-    //         $responseData['code'] = 'D01';
-    //         $responseData['msg'] = 'project_color come';
-    //         $responseData['data'] = $dataContent;
-    //     }
-    //     return $responseData;
-    // }
+    // 프로젝트 데이터 + 컬러
+    public function project_select($id)
+    {
+        $responseData = [
+            "code" => "0",
+            "msg" => "",
+            "data" => ""
+        ];
+        $dataContent = DB::select(
+            "SELECT
+                pj.*
+                ,bd.data_content_name
+            FROM
+                projects pj
+                JOIN basedata bd
+                  ON bd.data_content_code = pj.color_code_pk
+                 AND bd.data_title_code = 3
+            WHERE
+                pj.id = ".$id
+        );
+        if (!$dataContent) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id.' is no where';
+        } else {
+            $responseData['code'] = 'D01';
+            $responseData['msg'] = 'project_color come';
+            $responseData['data'] = $dataContent;
+        }
+        return $responseData;
+    }
 
     // 프로젝트 참여자 조회
     public function project_user_select($id)

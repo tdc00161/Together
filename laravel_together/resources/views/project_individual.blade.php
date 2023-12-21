@@ -114,7 +114,7 @@
                             </colgroup>
                             @foreach ($data as $item)
                                 <tr class="box_ul">
-                                    <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{$item->category_id}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+                                    <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
                                     <td class="td_pd">{{Str::limit($item->title,40,'...')}}</td>
                                     {{-- <td>{{$item->user_id}}</td> --}}
                                 </tr>
@@ -148,7 +148,7 @@
                                 <td class="td_pd"></td>
                                 <td class="td_pd">{{$item->dday}}</td>
                                 <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,53,'...')}}</td>
-                                <td class="td_pd">{{$item->task_responsible_id}}</td>
+                                <td class="td_pd">{{$item->name}}</td>
                                 <td class="td_pd">{{$item->status_name}}</td>
                             </tr>
                         @endforeach
