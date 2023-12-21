@@ -889,8 +889,8 @@
 .add_responsible_modal{
 	/* 배치 */
 	position: absolute;
-    top: 28px;
-    left: 35px;
+    top: 32px;
+    left: 39px;
 	z-index: 5;
 	/* 내부 */
     background-color: var(--dropdown-hover);
@@ -905,15 +905,15 @@
 .add_priority_modal {
 	/* 배치 */
 	position: absolute;
-    top: 28px;
-    left: 38px;
+    top: 31px;
+    left: 39px;
 	z-index: 5;
 	/* 내부 */
-    background-color: var(--dropdown-bg);
+    background-color: var(--dropdown-hover);
     overflow: scroll;
 	border-radius: 5px;
 	/* 크기 */
-    width: 77px;
+    width: 86px;
     min-height: 28px;
     max-height: 100px;
 }
@@ -950,7 +950,7 @@
 	background-size: cover;
 
 	width: 18px;
-    height: 18px;
+    height: 20px;
     margin: 0px 5px;
 }
 
@@ -982,6 +982,8 @@
 .task_modal .start_date,
 .task_modal .end_date,
 .task_modal .submit,
+.task_modal .add_responsible_modal_one,
+.task_modal .add_priority_modal_one,
 span.task_detail,
 span.project_detail {
 	cursor: pointer;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BaseDataController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/task',[TaskController::class,'store']); // 업무 작성
     Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정
     Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제
-
+    
+    Route::get('/basedata/{id}', [BaseDataController::class, 'get_priority_list']); // 우선순위 리스트 조회
+    
     Route::get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기
     Route::get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기
 
