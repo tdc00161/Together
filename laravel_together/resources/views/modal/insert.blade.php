@@ -27,12 +27,12 @@
 				</div>
 				<div class="responsible add_box">
 					<div class="responsible_icon"></div>
-					<div class="responsible_one d-none">
+					<div class="responsible_one insert_responsible_one d-none">
 						<div class="user_profile"></div>
-						<div class="responsible_user">User</div>
+						<div class="responsible_user"></div>
 						<div class="cross_icon_b" onclick="removeResponsible(0)"></div>
 					</div>
-					<div class="add_box_mgin add_responsible" onclick="addResponsible(0)">담당자추가</div>
+					<div class="add_box_mgin add_responsible" onclick="addResponsible(0)">담당자추가/변경</div>
 					<div class="add_responsible_modal add_property_modal d-none">
 						<div class="add_responsible_modal_one d-none" onclick="selectResponsible(event)">
 							<div class="add_responsible_modal_one_icon"></div>
@@ -61,12 +61,12 @@
 				</div>
 				<div class="priority add_box">
 					<div class="flag_icon"></div>
-					<div class="priority_one d-none">
-						<div class="priority_icon"></div>
-						<div class="priority_val"></div>
+					<div class="priority_one insert_priority_one d-none">
+						<div class="priority_icon insert_priority_icon"></div>
+						<div class="priority_val insert_priority_val"></div>
 						<div class="cross_icon_b" onclick="removePriority(0)"></div>
 					</div>
-					<div class="add_box_mgin add_priority" onclick="addPriority(0)">우선순위추가</div>
+					<div class="add_box_mgin add_priority" onclick="addPriority(0)">우선순위추가/변경</div>
 					<div class="add_priority_modal add_property_modal d-none">
 						<div class="add_priority_modal_one d-none" onclick="selectPriority(event)">
 							<div class="add_priority_modal_one_icon"></div>

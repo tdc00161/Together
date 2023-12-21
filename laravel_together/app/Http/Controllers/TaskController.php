@@ -122,7 +122,7 @@ class TaskController extends Controller
     public function view($id)
     {
         $result['task'] = Task::task_detail($id);
-        Log::debug($result);
+        // Log::debug($result);
         $result['children'] = Task::task_detail_children($id);
         $result['comment'] = Task::task_detail_comment($id);
 
@@ -210,18 +210,21 @@ class TaskController extends Controller
         ];
 
         $result = Task::find($id);
+        Log::debug('$request :' . $request);
+        Log::debug($result->data);
 
         if (!$result) {
             $responseData["code"] = "E01";
             $responseData["msg"] = "No Data.";
         } else {
             $res = User::where('name', $request['task_responsible_id'])->first();
-            $sta = DB::table('basedata')->where('data_content_name', $request['task_status_id'])->first();
-            $pri = DB::table('basedata')->where('data_content_name', $request['priority_id'])->first();
+            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+            $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
             Log::debug('$request :' . $request);
-            Log::debug('$res :' . $res->id);
-            $result->task_responsible_id = $res->id;
-            $result->task_status_id = $sta->id;
+            Log::debug('$res :' . $res->data_content_code);
+            Log::debug('$sta :' . $sta->data_content_code);
+            $result->task_responsible_id = $res->data_content_code;
+            $result->task_status_id = $sta->data_content_code;
             $result->priority_id = $pri->id;
             Log::debug('$request->title :' . $request->title);
             $result->title = $request->title;
@@ -239,6 +242,8 @@ class TaskController extends Controller
             }
             $result->save();
 
+            $responseData["code"] = "U01";
+            $responseData["msg"] = $id." updated";
             $responseData['data'] = $result;
         }
 

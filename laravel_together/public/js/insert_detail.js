@@ -119,7 +119,7 @@ let thisCommentId = 0;
 // 업무상태 기본값 설정
 STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
 
-// TODO: 바깥영역 클릭시 인서트모달 닫기
+// 바깥영역 클릭시 인서트모달 닫기
 BEHIND_MODAL.addEventListener('click', function (event) {
 	if (BEHIND_MODAL.contains(event.target)) {
 		if (!TASK_MODAL[0].contains(event.target)) {
@@ -250,7 +250,7 @@ function createTask() {
 	}
 	axios.post('/api/task', postData, headers)
 		.then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			closeTaskModal(0)
 		})
 		.catch(err => {
@@ -261,21 +261,21 @@ function createTask() {
 // 등록 버튼으로 작성/수정
 function updateTask() {
 	let data = {
-		'title': INSERT_TITLE.value,
-		'content': INSERT_CONTENT.value,
-		'task_status_id': CHECKED_STATUS.textContent,
-		'task_responsible_id': RESPONSIBLE_USER[0].textContent,
-		'start_date': START_DATE[0].placeholder,
-		'end_date': END_DATE[0].placeholder,
-		'priority_id': PRIORITY_VAL[0].textContent
+		'title': document.querySelector('.insert_title').value,
+		'content': document.querySelector('.insert_content').value,
+		'task_status_id': document.querySelectorAll('#checked')[0].textContent,
+		'task_responsible_id': document.querySelectorAll('.responsible_user')[0].textContent,
+		'start_date': document.querySelectorAll('.start_date')[0].value,
+		'end_date': document.querySelectorAll('.end_date')[0].value,
+		'priority_id': document.querySelector('.insert_priority_val').textContent
 	}
 	let headers = {
 		headers: { 'Content-Type': 'application/json', }
 	}
 	axios.put('/api/task/' + now_task_id, data, headers)
 		.then(res => {
-			console.log('수정되었습니다.');
 			console.log(res.data);
+			closeTaskModal(0)
 		})
 		.catch(err => {
 			console.log(err.message)
@@ -399,6 +399,9 @@ function selectResponsible(event) {
 
 	// 태그에 넣기
 	nowFrontOfResponsible.after(cloneResponsible)
+
+	// 담당자 모달 닫기
+	ADD_RESPONSIBLE_MODAL.classList.add('d-none')
 }
 
 // 담당자 삭제
@@ -513,6 +516,9 @@ function selectPriority(event) {
 
 	// 태그에 넣기
 	nowFrontOfPriority.after(clonePriority)
+
+	// 담당자 모달 닫기
+	ADD_PRIORITY_MODAL.classList.add('d-none')
 }
 
 // 우선순위 삭제
@@ -542,7 +548,7 @@ function commitUpdateComment() {
 	}
 	axios.put('/api/comment/' + thisCommentId, putData, headers)
 		.then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.catch(err => {
@@ -557,7 +563,7 @@ function removeComment(event, a) {
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
 	axios.delete('/api/comment/' + thisCommentId.value)
 		.then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.catch(err => {
@@ -587,7 +593,7 @@ function addComment() {
 	}
 	axios.post('/api/comment/' + thisTaskId, postData, headers)
 		.then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.then(() => {
@@ -669,11 +675,19 @@ function responsibleName(data, a) {
 
 // 마감일자 값체크, 삽입
 function deadLineValue(data, a) {
+	//초기화
+	START_DATE[a].placeholder = '시작일';
+	END_DATE[a].placeholder = '마감일';
+	START_DATE[a].value = null
+	END_DATE[a].value = null
+	//삽입
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
 		// DEAD_LINE[a].style = 'display: none;'
 	} else {
 		START_DATE[a].placeholder = data.task[0].start_date;
 		END_DATE[a].placeholder = data.task[0].end_date;
+		START_DATE[a].value = data.task[0].start_date;
+		END_DATE[a].value = data.task[0].end_date;
 		DEAD_LINE[a].style = 'display: flex;'
 		if(DEAD_LINE[a].classList.contains('d-none')){
 			DEAD_LINE[a].classList.remove('d-none')
@@ -800,6 +814,12 @@ function parentTaskControl(data, a) {
 
 // 모달 띄우기
 function openInsertDetailModal(a) {
+	if (createUpdate === 1) {
+		SUBMIT[0].setAttribute('onclick', 'updateTask()')
+	} else {
+		SUBMIT[0].setAttribute('onclick', 'createTask()')
+	}
+
 	TASK_MODAL[a].style = 'display: block;'
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: block;'
@@ -821,17 +841,10 @@ function TaskFlg(a, b) {
 }
 // 수정 모달 값 넣기
 function updateModalOpen() {
-	// 상태업무 체크 풀기
-	let disableStatusChecked = document.querySelectorAll('#checked')[0]
-	if(disableStatusChecked){
-		disableStatusChecked.removeAttribute('id')
-	}
-	disableStatusChecked.style = 'background-color: var(--m-btn);'
-
 	createUpdate = 1
 	axios.get('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
 		.then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			// 값을 모달에 삽입
 			insertModalValue(res.data, 0);
 
@@ -839,13 +852,13 @@ function updateModalOpen() {
 			updateStatusColor(res.data);
 
 			// 담당자 값체크, 삽입
-			responsibleName(res.data, 0);
+			updateResponsibleName(res.data, 0);
 
 			// 마감일자 값체크, 삽입
 			deadLineValue(res.data, 0);
 
 			// 우선순위 값체크, 삽입
-			priorityValue(res.data, 0);
+			updatePriorityValue(res.data, 0);
 
 			// 상세업무 내용 값체크, 삽입
 			modalContentValue(res.data, 0);
@@ -862,6 +875,7 @@ function updateModalOpen() {
 		.catch(err => {
 			console.log(err.message);
 		})
+
 	PROPERTY_VAL = document.querySelectorAll('.property')[1].classList
 	if (PROPERTY_VAL.contains('d-none')) {
 		// 모달 띄우기
@@ -876,15 +890,13 @@ function updateModalOpen() {
 		// 글/업무 플래그
 		TaskFlg(0, 0);
 	}
-
-	createUpdate = 0
 }
 
 // 모달 삭제
 function deleteTask() {
 	axios.delete('/api/task/' + now_task_id)
 		.then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			closeTaskModal(1)
 		})
 		.catch(err => {
@@ -897,6 +909,7 @@ function updateStatusColor(data) {
 	let element_for_painting = null;
 	for (let index = 0; index < status_val.length; index++) {
 		const element = status_val[index];
+		element.style = 'background-color: var(--m-btn);'
 		if (element.textContent == data.task[0].status_name) {
 			element_for_painting = status_val[index]
 			element_for_painting.id = 'checked'
@@ -916,7 +929,75 @@ function updateStatusColor(data) {
 			element_for_painting.style = 'background-color: #64C139;';
 			break;
 		default:
-			element_for_painting.style = 'background-color: #FFFFFF;';
+			element_for_painting.style = 'background-color: var(--m-btn);';
 			break;
 	}
+}
+
+function updateResponsibleName(data, a) {
+	// 기존에 클론한 엘리먼트에 값을 넣기
+	if(data.task[0].res_name){
+		cloneResponsible.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].res_name
+	}
+
+	// 삽입할 태그 선택
+	let nowFrontOfResponsible = document.querySelectorAll('.responsible_icon')[0]
+	// console.log(nowFrontOfResponsible);
+
+	// d-none 삭제
+	cloneResponsible.classList.remove('d-none')
+
+	// 투명화 되어있는 기본 담당자 삭제
+	RESPONSIBLE_PERSON[0].remove()
+
+	// 태그에 넣기
+	nowFrontOfResponsible.after(cloneResponsible)
+}
+
+function updatePriorityValue(data, a) {
+	// 기존에 클론한 엘리먼트에 값을 넣기
+	if(data.task[0].priority_name){
+		clonePriority.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].priority_name
+	}
+
+	// 삽입할 태그 선택
+	let nowFrontOfPriority = document.querySelectorAll('.flag_icon')[0]
+	// console.log(nowFrontOfResponsible);
+
+	// 태그에 넣기
+	nowFrontOfPriority.after(clonePriority)
+
+	// 우선순위 값별로 이미지 삽입
+	// 갱신된 우선순위 가져오기
+	let insert_priority_val = document.querySelectorAll('.insert_priority_val')
+	let insert_priority_icon = document.querySelectorAll('.insert_priority_icon')
+	for (let index = 0; index < insert_priority_val.length; index++) {
+		const element = insert_priority_val[index];
+		// console.log(element.textContent !== null);
+		// console.log(data.task[0].priority_name);
+		if(element.textContent !== null){
+			switch (data.task[0].priority_name) {
+				case '긴급':
+					insert_priority_icon[index].style = 'background-image: url(/img/gantt-bisang.png);'
+					break;
+				case '높음':
+					insert_priority_icon[index].style = 'background-image: url(/img/gantt-up.png);'
+					break;
+				case '보통':
+					insert_priority_icon[index].style = 'background-image: url(/img/free-icon-long-horizontal-25426-nomal.png);'
+					break;
+				case '낮음':
+					insert_priority_icon[index].style = 'background-image: url(/img/gantt-down.png);'
+					break;
+				default:				
+					break;
+			}
+		}
+	}
+
+	// 투명화 되어있는 기본 우선순위 삭제
+	PRIORITY_ONE[0].remove()
+	
+	// d-none 삭제
+	clonePriority.classList.remove('d-none')
 }

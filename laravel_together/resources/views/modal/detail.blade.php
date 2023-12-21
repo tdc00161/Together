@@ -23,13 +23,13 @@
 				<div class="more" onclick="openMoreModal()">
 					<!-- 더보기 모달 -->
 					<div class="more_modal" style='display: none;'>
-						<div>
-							<div class="update_icon detail_update" onclick="updateModalOpen()"></div>
-							<div class="detail_update" onclick="updateModalOpen()">수정</div>
+						<div onclick="updateModalOpen()">
+							<div class="update_icon detail_update"></div>
+							<div class="detail_update">수정</div>
 						</div>
-						<div>
-							<div class="delete_icon detail_delete" onclick="deleteTask()"></div>
-							<div class="detail_delete" onclick="deleteTask()">삭제</div>
+						<div onclick="deleteTask()">
+							<div class="delete_icon detail_delete"></div>
+							<div class="detail_delete">삭제</div>
 						</div>
 					</div>
 				</div>
@@ -46,7 +46,7 @@
 						<div class="user_profile"></div>
 						<div class="responsible_user">User</div>						
 					</div>
-					{{-- <div class="add_box_mgin add_responsible">담당자변경</div> --}}
+					{{-- <div class="add_box_mgin add_responsible">담당자추가/변경</div> --}}
 				</div>
 				<div class="dead_line">
 					<div></div>
@@ -69,9 +69,9 @@
 					<div class="flag_icon"></div>
 					<div class="priority_one">
 						<div class="priority_icon"></div>
-						<div class="priority_val">보통</div>
+						<div class="priority_val"></div>
 					</div>
-					{{-- <div class="add_box_mgin">우선순위변경</div> --}}
+					{{-- <div class="add_box_mgin">우선순위추가/변경</div> --}}
 				</div>
 			</div>
 			<div class="content">
