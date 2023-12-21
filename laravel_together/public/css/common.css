@@ -1011,7 +1011,7 @@ box-sizing: border-box;
  }
 }
 
-::-webkit-scrollbar:not(.point_box) {
+::-webkit-scrollbar:not(.point_box ) {
  width: 6px;
  border-radius: 10px;
 }
