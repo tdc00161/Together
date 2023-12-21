@@ -727,7 +727,7 @@ function displayFriendlist(friendList, useUserId) {
         for (var i = 0; i < filteredData.length; i++) {
             var friendlistId = useUserId ? filteredData[i].user_id : filteredData[i].friend_id;
             var userDiv = document.getElementById('user_pk' + friendlistId);
-            userDiv.style.display = 'block'; // 또는 'inline-block' 등으로 설정
+            userDiv.style.display = 'inline-block';
         }
     });
 }

@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
  outline: none;
@@ -54,12 +55,43 @@ a {
     display: inline-block;
     float: right;
 }
+
+.main-side-menu-div {
+    display: flex;
+    width: 100%;
+    height: 88px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.project-create-btn {
+    width: 100%;
+    height: 47px;
+    background-color: #29c29e;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.project-create-btn:hover {
+    background-color: #21D9AD;
+}
+
+.project-box {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(248, 238, 100);
+    border-radius: 3px;
+    margin-right: 7px;
+    content: '';
+}
+
 :root {
  --theme-bg-color: rgba(23, 24, 29, 0.4);
  --border-color: rgba(113 119 144 / 25%);
  --theme-color: #f9fafb;
  --inactive-color: white;
- --body-font: "Poppins", sans-serif;
+ --body-font: "Nanum Gothic", sans-serif;
  --hover-menu-bg: rgba(12 15 25 / 30%);
  --content-title-color: #999ba5;
  --content-bg: rgb(146 151 179 / 13%);
@@ -284,8 +316,6 @@ body.light-mode .video-bg:before {
  }
 }
 
-
-
 .header-profile {
  display: flex;
  align-items: center;
@@ -334,7 +364,7 @@ vertical-align: middle;
 .left-side {
  flex-basis: 240px;
  border-right: 1px solid var(--border-color);
- padding: 26px;
+ padding: 17px;
  overflow: auto;
  flex-shrink: 0;
  @media screen and (max-width: 945px) {
@@ -343,14 +373,15 @@ vertical-align: middle;
 }
 
 .side-wrapper + .side-wrapper {
- margin-top: 20px;
+ margin-top: 8px;
 }
 
 .side-title {
  color: var(--inactive-color);
- margin-bottom: 14px;
+ margin-bottom: 2px;
+ font-weight: 400;
+ margin-left: 7px;
 
- font-weight: bold;
 }
 
 .side-menu {
@@ -363,8 +394,8 @@ vertical-align: middle;
   display: flex;
   align-items: center;
   font-weight: 400;
-  padding: 10px;
-  font-size: 14px;
+  padding: 7px;
+  font-size: 13px;
   border-radius: 6px;
   transition: 0.3s;
   &:hover {
