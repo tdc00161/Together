@@ -1011,12 +1011,12 @@ box-sizing: border-box;
  }
 }
 
-::-webkit-scrollbar {
+::-webkit-scrollbar:not(.point_box) {
  width: 6px;
  border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb(.point_box) {
  background: var(--scrollbar-bg);
  border-radius: 10px;
 }
