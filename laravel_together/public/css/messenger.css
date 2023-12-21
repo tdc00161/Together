@@ -8,7 +8,7 @@
 
     /* color */
 .red {
-    color: rgb(204, 7, 7);
+    color: #e93434;
 }
     .padding-0 {
         padding: 0;
@@ -223,7 +223,7 @@ button {
     display: inline-block;
     font-size: small;
     margin-left: 10px;
-    line-height: 30px;
+    line-height: 35px;
     color: var(--inactive-color);
 }
 .notice-count {
@@ -279,7 +279,7 @@ button {
 .user-email {
     display: inline-block;
     /* line-height: 70px; */
-    margin: -7px 3px;
+    margin: -21px 3px;
     color: rgb(160, 160, 160);
     font-weight: 400;
     width: 210px;
@@ -289,7 +289,7 @@ button {
 .user-email-friend {
     display: inline-block;
     /* line-height: 70px; */
-    margin: -7px 3px;
+    margin: -21px 3px;
     color: rgb(160, 160, 160);
     font-weight: 400;
     width: 260px;

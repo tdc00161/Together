@@ -1,7 +1,6 @@
 //  0일때 msg 표시
 var emptydiv = document.getElementById('emptydiv');
 var emptyRequestMsg = document.createElement('p');
-var emptysenddiv = document.getElementById('emptysenddiv');
 
 // 초기 탭 설정
 document.getElementById('tab1').style.display = 'block';
@@ -92,7 +91,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
 
 submitBtn.addEventListener('click', function (event) {
     event.preventDefault(); // submit 버튼 기본 동작 방지
-
+    friendSendList()
     const receiverEmail = document.getElementById('receiver_email').value;
 
     if (!receiverEmail.trim()) {
@@ -396,6 +395,8 @@ function displayFriendRequests(friendRequests) {
 // ------------------------ 친구 요청 목록 끝 -----------------------
 
 // ---------------------- 친구 요청 보낸 목록 -----------------------
+var emptysenddiv = document.getElementById('emptysenddiv');
+var emptysendMsg = document.createElement('p');
 // friend-send-div
 var friendsenddiv = document.getElementById('friend-send-div');
 
@@ -417,13 +418,15 @@ function friendSendList() {
             var friendSendlist = data.friendSendlist;
 
             // 0 :
-            if (friendSendlist === 0) {
-                emptyRequestMsg.classList.add('empty-msg-css');
-                emptyRequestMsg.innerHTML = '요청 없음';
-                emptydiv.appendChild(emptyRequestMsg);
+            if (friendSendlist.length === 0) {
+                emptysendMsg.classList.add('empty-msg-css');
+                emptysendMsg.innerHTML = '요청 없음';
+                emptysenddiv.appendChild(emptysendMsg);
             // !0 :
             } else {
                 // 친구 요청 보낸 목록 함수 실행
+                // 메세지 출력 none
+                emptysenddiv.style.display = 'none'; 
                 displayFriendsends(friendSendlist);
             }
         })
@@ -487,14 +490,17 @@ function displayFriendsends(friendSendlist) {
 
             requestcanclebtn.addEventListener('click', function () {
                 
-                var sendId = this.value;
+            var sendId = this.value;
+            friendSendList()
+            if(friendSendlist.length===0){
+            // emptysenddiv.style.display = 'none';
+            var emptysenddiv = document.getElementById('emptysenddiv');
+            var emptysendMsg = document.createElement('p');
 
-                if(noticecount.innerHTML==='0'){
-                    emptydiv.style.display = 'block';
-                    emptyRequestMsg.classList.add('empty-msg-css');
-                    emptyRequestMsg.innerHTML = '요청 없음';
-                    emptydiv.appendChild(emptyRequestMsg);
-                }
+            emptysendMsg.classList.add('empty-msg-css');
+            emptysendMsg.innerHTML = '요청 없음';
+            emptysenddiv.appendChild(emptysendMsg);   
+            }
 
                 // AJAX 요청 수행
                 fetch('/cancleFriendRequest', {
@@ -557,13 +563,13 @@ function friendList() {
         .then(data => {
 
             var friendList = data.myfriendList;
-
+            var useUserId = data.useUserId;
             // 0 :
             if (friendList === 0) {
             // !0 :
             } else {
                 // 친구 목록 표시 함수 실행
-                displayFriendlist(friendList);
+                displayFriendlist(friendList,useUserId);
             }
         })
         .catch(error => {
@@ -590,7 +596,7 @@ function displayResults(results) {
 }
 
 // 친구 목록 출력
-function displayFriendlist(friendList) {
+function displayFriendlist(friendList, useUserId) {
     // 기존 내용 초기화
     friendlistdiv.innerHTML = '';
     
@@ -600,7 +606,10 @@ function displayFriendlist(friendList) {
             var friendlistdata = friendList[i];
 
             var userDiv = document.createElement('div');
-            var friendlistId = friendlistdata.friend_id;
+
+            // 동적으로 friendlistId를 설정
+            var friendlistId = useUserId ? friendlistdata.user_id : friendlistdata.friend_id;
+
             userDiv.classList.add('messenger-user-div');
             userDiv.setAttribute('id', 'user_pk' + friendlistId);
 
@@ -696,9 +705,11 @@ function displayFriendlist(friendList) {
 
         // 모든 친구 엘리먼트를 숨김
         for (var i = 0; i < friendList.length; i++) {
-            var friendlistId = friendList[i].friend_id;
+            var friendlistId = useUserId ? friendList[i].user_id : friendList[i].friend_id;
             var userDiv = document.getElementById('user_pk' + friendlistId);
-            userDiv.style.display = 'none';
+            if (userDiv) {
+                userDiv.style.display = 'none';
+            }
         }
 
         // 검색 결과에 해당하는 친구만 출력
@@ -708,7 +719,7 @@ function displayFriendlist(friendList) {
         );
 
         for (var i = 0; i < filteredData.length; i++) {
-            var friendlistId = filteredData[i].friend_id;
+            var friendlistId = useUserId ? filteredData[i].user_id : filteredData[i].friend_id;
             var userDiv = document.getElementById('user_pk' + friendlistId);
             userDiv.style.display = 'block'; // 또는 'inline-block' 등으로 설정
         }

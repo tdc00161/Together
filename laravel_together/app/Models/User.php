@@ -19,15 +19,9 @@ class User extends Authenticatable // 유저
  
 
      //belongsToMany를 사용하여 사용자 간의 다대다 관계를 정의
-     public function friends()
-     {
-         return $this->belongsToMany(User::class, 'friendlists', 'user_id', 'friend_id');
-     }
-
-        // 특정 사용자와 이미 친구인지 확인
-    public function isFriendWith(User $user)
+    public function friends()
     {
-        return $this->friends()->where('friend_id', $user->id)->exists();
+        return $this->belongsToMany(User::class, 'friendlists', 'user_id', 'friend_id');
     }
 
     // 특정 사용자에게 보낸 친구 요청이 있는지 확인
@@ -42,6 +36,18 @@ class User extends Authenticatable // 유저
         return $this->friendRequestsfrom()->where('to_user_id', $user->id)->exists();
     }
 
+    // 특정 사용자와 이미 친구인지 확인
+    public function isFriendWith(User $user)
+    {
+        // 이미 친구이면서 삭제되지 않았다면
+        if ($this->friends()->where('friend_id', $user->id)->exists()) {
+            return !$this->friends()->where('friend_id', $user->id)->whereNotNull('deleted_at')->exists();
+        }
+
+        // 친구 관계가 아니거나 삭제된 경우
+        return false;
+    }
+
     // 유저에게 보낸 친구요청
     public function friendRequeststo()
     {
@@ -49,10 +55,10 @@ class User extends Authenticatable // 유저
     }
 
      // 유저로 부터 받은 친구요청
-     public function friendRequestsfrom()
-     {
-         return $this->hasMany(FriendRequest::class, 'from_user_id');
-     }
+    public function friendRequestsfrom()
+    {
+        return $this->hasMany(FriendRequest::class, 'from_user_id');
+    }
 
     protected $fillable = [
         'name',
