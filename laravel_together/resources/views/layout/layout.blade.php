@@ -70,7 +70,7 @@
       <div class="side-wrapper">
        <div class="side-title">개인 프로젝트</div>
        <div class="side-menu">
-        {{-- @foreach ($user_data as $item)
+        {{-- @foreach ($userflg0 as $item)
           <a href="{{route('individual.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
             <span>{{$item->project_title}}</span>
@@ -81,7 +81,7 @@
       <div class="side-wrapper">
        <div class="side-title">팀 프로젝트</div>
        <div class="side-menu">
-        {{-- @foreach ($user_data as $item)
+        {{-- @foreach ($userflg1 as $item)
           <a href="{{route('team.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
             <span>{{$item->project_title}}</span>
@@ -107,5 +107,6 @@
    {{-- js --}}
    <script src="/js/common.js"></script>
    <script src="/js/custom-cursor.js"></script>
+   @yield('project_css','')
 </body>
 </html>

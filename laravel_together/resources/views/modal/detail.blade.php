@@ -91,7 +91,7 @@
 							<div class="comment_date">2023-12-13 14:34</div>
 						</div>
 						<div class="update_comment" onclick="updateComment(event, 0)">편집</div>
-						<div class="delete_comment" onclick="removeComment(event, 0)">삭제</div>
+						<div class="delete_comment" onclick="removeComment(event, 0);">삭제</div>
 					</div>
 					<div class="comment_line">기본 댓글</div>
 					<input type="hidden" name="id" value="">

@@ -28,27 +28,6 @@
 </div>
 <div id="tab2" class="tab-content">
     
-
-    {{-- 친구 검색 bar --}}
-    {{-- <input type="text" id="searchInput" placeholder="Search..."> --}}
-
-  {{-- <ul id="itemList">
-    <li>Apple</li>
-    <li>Orange</li>
-    <li>Banana</li>
-    <li>Grapes</li>
-    <li>Strawberry</li>
-  </ul> --}}
-    <div class="friend-searchbar-div">
-    <div class="friend-searchbar">
-        <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
-    <button class="search-icon"><img src="/img/icon-search.png" alt=""></button>
-    </div>
-    {{-- 친구 추가 버튼 --}}
-    <button class="add-button" type="button" onclick="openModal()">+</button>
-    
-  </div>
-
   <div class="accordion" id="accordionPanelsStayOpenExample">
 
     <div class="accordion-item bg-op100">
@@ -94,11 +73,20 @@
       </h2>
       <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree">
         <div class="accordion-body padding-0">
-            <!-- 0 -->
-            <div id="emptyfrienddiv"></div>
-            <!-- 친구 목록 div -->
-            <div id="friend-list-div"> 
-            </div> 
+          {{-- 친구 검색 bar --}}
+          <div class="friend-searchbar-div">
+          <div class="friend-searchbar">
+          <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
+          <img class="f-search-img" src="/img/icon-search.png" alt="">
+          </div>
+          {{-- 친구 추가 버튼 --}}
+          <button class="add-button" type="button" onclick="openModal()">+</button>
+          </div>
+          <!-- 0 -->
+          <div id="emptyfrienddiv"></div>
+          <!-- 친구 목록 div -->
+          <div id="friend-list-div"> 
+          </div> 
         </div>
       </div>
     </div>

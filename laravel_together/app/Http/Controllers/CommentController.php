@@ -14,44 +14,71 @@ class CommentController extends Controller
     // 댓글 작성
     public function store(Request $request, $id) // 업무 id
     {
-        // $responseData = [
-        //     "code" => "0",
-        //     "msg" => "",
-        //     "data" => []
-        // ];
-        // // Log::debug('cookie: '.$request->cookie('user'));
-        // // Log::debug('Auth: '. Auth::id());
+        $responseData = [
+            "code" => "0",
+            "msg" => "",
+            "data" => []
+        ];
+        // Log::debug('cookie: '.$request->cookie('user'));
+        // Log::debug('Auth: '. Auth::id());
+        
+        $usr = Auth::id();
+        $con = $request['content']; // TODO: 유효성 처리 추가
+        
+        $request['task_id'] = $id;
+        $request['user_id'] = $usr;
+        $request['content'] = $con;
 
-        // $usr = Auth::id();
-        // $con = $request['content']; // TODO: 유효성 처리 추가
-
-        // $request['task_id'] = $id;
-        // $request['user_id'] = $usr;
-        // $request['content'] = $con;
-
-        Log::debug([$request,$id]);
-        // $result = Comment::create($request->toArray());
-        // $responseData['msg'] = 'comment created.';
-        // $responseData['data'] = $result;
-
-
-        // return $responseData;
+        // Log::debug([$request,$id]);
+        $result = Comment::create($request->toArray());
+        $responseData['msg'] = 'comment created.';
+        $responseData['data'] = $result;
+        
+        
+        return $responseData;
     }
 
     // 댓글 수정
-    public function update($id)
+    public function update(Request $request,$id)
     {
-        // $result['task'] = Task::task_detail($id);
-        // $result['children'] = Task::task_detail_children($id);
-        // $result['comment'] = Task::task_detail_comment($id);
+        $responseData = [
+            "code" => "E01",
+            "msg" => "댓글을 찾을 수 없습니다",
+            "data" => []
+        ];
+        // Log::debug('cookie: '.$request->cookie('user'));
+        // Log::debug('Auth: '. Auth::id());
+        
+        // Log::debug($request);
+        $usr = Auth::id();
+        $con = $request['content']; // TODO: 유효성 처리 추가
+        $tsk = $request['task_id']; 
+        
+        // $this_comment = DB::table('comments')->where('id',$id)->get();
+        $this_comment = Comment::where('id',$id)->get();
+        // Log::debug($this_comment);
+        // Log::debug(gettype($this_comment[0]->user_id).' : '.gettype($usr));
+        // Log::debug(gettype($this_comment[0]->id).' : '.gettype($id));
+        // Log::debug($this_comment[0]->id === $id);
+        // Log::debug($this_comment[0]->user_id === (int)$usr);
+        
+        if(empty($this_comment)) {
+            return $responseData;
+        } else if($this_comment[0]->id != $id || $this_comment[0]->user_id != (int)$usr || $this_comment[0]->task_id != $tsk) {
+            $responseData['msg'] = '자신의 댓글이 아닙니다.';
+            return $responseData;
+        }
 
-        // // task->depth 값을 보고 부모를 데려올지 결정
-        // return $result;
-        // if ($result['task'][0]->task_depth !== '0') {
-        //     $result['parents'] = Task::task_detail_parents($result['task'][0]->task_depth, $id);
-        // }
+        $this_comment[0]->content = $con;
+        
+        // Log::debug($this_comment[0]->content);
 
-        // return $result;
+        $this_comment[0]->save();
+        $responseData['code'] = '0';
+        $responseData['msg'] = 'comment updated.';
+        $responseData['data'] = $this_comment;
+        
+        return $responseData;
     }
 
     // 댓글 삭제

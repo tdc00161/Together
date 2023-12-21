@@ -11,6 +11,7 @@ use App\Models\BaseData;
 use App\Models\Friendlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 use Carbon\Carbon;
@@ -68,13 +69,38 @@ class ProjectController extends Controller
       // find -> pk 호출만 가능
         // $user_pk = project::where('user_pk', $user_pk)
         //         -> get();
+        // dd($user_pk);
 
         $result = project::find($id);
+        // dd($result);
+
 
         $user_id = Session::get('user')->only('id');
+        // dd($user_id);
 
         $user_data = project::where('user_pk',$user_id)
+                    ->select('id'
+                            ,'user_pk'
+                            ,'color_code_pk'
+                            ,'project_title'
+                            ,'project_content'
+                            ,'start_date'
+                            ,'end_date'
+                            ,'created_at'
+                            )
                     ->get();
+
+        // dd($user_data);
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+            if ($items->flg == '0'){
+              array_push($userflg0,$items);
+          } elseif ($items->flg == '1'){
+            array_push($userflg1,$items);
+          }
+        }
+
         // dd($user_data);
         // dd($user_data);
         // if ($user_data->flg == '0'){
@@ -101,7 +127,7 @@ class ProjectController extends Controller
           $result['dday'] = $start->diffInDays($end); // data에 dday 추가
         }
 
-        // dd($result);
+        // dd($user_data);
 
         $tkdata = DB::table('projects')
                       -> select('projects.id',
@@ -142,83 +168,96 @@ class ProjectController extends Controller
         }
 
         // dd($tkdata);
-        // dd($id);
 
         return view('project_individual')
         ->with('color_code',$color_code)
         ->with('user_data',$user_data)
         ->with('result',$result)
         ->with('data',$tkdata)
-        ->with('user',Auth::id());
+        ->with('user',Auth::id())
+        ->with('userflg0',$userflg0)
+        ->with('userflg1',$userflg1);
     }
 
-    public function project_graph_data(Request $request, $id) {
 
+    public function project_graph_data(Request $request) {
+      Log::debug("***** project_graph_data Start *****");
       // $user = Auth::id();
       // return $user;
+      // $user_id = Session::get('user')->only('id');
+      $user_id = Auth::id();
+      Log::debug("user_id : ".$user_id);
 
-      $before = DB::table('tasks')
-            ->selectRaw('count(project_id) as cnt')
-            ->where('task_status_id',0)
-            ->groupBy('project_id')
-            ->having('project_id',$user_id)
-            ->get();
+      $before=DB::table('tasks')
+                  ->selectRaw('count(project_id) as cnt')
+                  ->where('task_status_id',0)
+                  ->groupBy('project_id')
+                  ->having('project_id',$user_id)
+                  ->first();
+      Log::debug("before : ", $before->all());
 
-      $ing = DB::table('tasks')
-        ->selectRaw('count(project_id) as cnt')
-        ->where('task_status_id',1)
-        ->groupBy('project_id')
-        ->having('project_id',$user_id)
-        ->get();
-
-      $feedback = DB::table('tasks')
+      $ing=DB::table('tasks')
               ->selectRaw('count(project_id) as cnt')
-              ->where('task_status_id',2)
+              ->where('task_status_id',1)
               ->groupBy('project_id')
               ->having('project_id',$user_id)
               ->first();
-      // dd($feedback);
-      $complete =  DB::table('tasks')
-              ->selectRaw('count(project_id) as cnt')
-              ->where('task_status_id',3)
-              ->groupBy('project_id')
-              ->having('project_id',$user_id)
-              ->get();
+      Log::debug("ing : ", $before->all());
 
-      return [$before, $ing, $feedback, $complete];
+      $feedback=DB::table('tasks')
+                    ->selectRaw('count(project_id) as cnt')
+                    ->where('task_status_id',2)
+                    ->groupBy('project_id')
+                    ->having('project_id',$user_id)
+                    ->first();
+      Log::debug("feedback : ", $before->all());
+      // dd($feedback);
+      $complete=DB::table('tasks')
+                    ->selectRaw('count(project_id) as cnt')
+                    ->where('task_status_id',3)
+                    ->groupBy('project_id')
+                    ->having('project_id',$user_id)
+                    ->first();
+      Log::debug("complete : ", $before->all());
+
+      $statuslist = ['before'=> $before,'ing'=> $ing,'feedback'=> $feedback,'complete'=> $complete];
+
+      Log::debug("Response : ", $statuslist);
+      Log::debug("***** project_graph_data End *****");
+      return response()->json($statuslist);
       // return '반환 테스트';
     }
 
-    // 프로젝트 데이터 + 컬러
-    public function project_select($id)
-    {
-        $responseData = [
-            "code" => "0",
-            "msg" => "",
-            "data" => ""
-        ];
-        $dataContent = DB::select(
-            "SELECT
-                pj.*
-                ,bd.data_content_name
-            FROM
-                projects pj
-                JOIN basedata bd
-                  ON bd.data_content_code = pj.color_code_pk
-                 AND bd.data_title_code = 3
-            WHERE
-                pj.id = ".$id
-        );
-        if (!$dataContent) {
-            $responseData['code'] = 'E01';
-            $responseData['msg'] = $id.' is no where';
-        } else {
-            $responseData['code'] = 'D01';
-            $responseData['msg'] = 'project_color come';
-            $responseData['data'] = $dataContent;
-        }
-        return $responseData;
-    }
+    // // 프로젝트 데이터 + 컬러
+    // public function project_select($id)
+    // {
+    //     $responseData = [
+    //         "code" => "0",
+    //         "msg" => "",
+    //         "data" => ""
+    //     ];
+    //     $dataContent = DB::select(
+    //         "SELECT
+    //             pj.*
+    //             ,bd.data_content_name
+    //         FROM
+    //             projects pj
+    //             JOIN basedata bd
+    //               ON bd.data_content_code = pj.color_code_pk
+    //              AND bd.data_title_code = 3
+    //         WHERE
+    //             pj.id = ".$id
+    //     );
+    //     if (!$dataContent) {
+    //         $responseData['code'] = 'E01';
+    //         $responseData['msg'] = $id.' is no where';
+    //     } else {
+    //         $responseData['code'] = 'D01';
+    //         $responseData['msg'] = 'project_color come';
+    //         $responseData['data'] = $dataContent;
+    //     }
+    //     return $responseData;
+    // }
 
     // 프로젝트 참여자 조회
     public function project_user_select($id)
@@ -229,25 +268,34 @@ class ProjectController extends Controller
             "data" => ""
         ];
         $dataContent = DB::select(
-            "SELECT
-                pj.*
-                ,bd.data_content_name
+          "SELECT
+                pj_usr.*
+                ,usr.name member_name
+                ,pj.project_title
+                ,bd.data_content_name authority_name
             FROM
-                projects pj
-                JOIN basedata bd
-                  ON bd.data_content_code = pj.color_code_pk
-                 AND bd.data_title_code = 3
+                project_users pj_usr
+              JOIN users usr
+                ON usr.id = pj_usr.member_id
+              JOIN projects pj
+                ON pj.id = pj_usr.project_id
+              JOIN basedata bd
+                ON bd.data_content_code = pj_usr.authority_id
+               AND bd.data_title_code = 4
             WHERE
-                pj.id = ".$id
+                pj_usr.project_id = ".$id
         );
+        Log::debug($dataContent);
+        Log::debug(!$dataContent);
         if (!$dataContent) {
-            $responseData['code'] = 'E01';
-            $responseData['msg'] = $id.' is no where';
+          $responseData['code'] = 'E01';
+          $responseData['msg'] = 'this '.$id.' project user is no where';
         } else {
-            $responseData['code'] = 'D01';
-            $responseData['msg'] = 'project_color come';
-            $responseData['data'] = $dataContent;
+          $responseData['code'] = 'D01';
+          $responseData['msg'] = 'project_user come';
+          $responseData['data'] = $dataContent;
         }
+        Log::debug('before return');
         return $responseData;
     }
 }

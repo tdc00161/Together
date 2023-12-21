@@ -13,16 +13,17 @@ use App\Models\User;
 
 class TaskController extends Controller
 {
-    public function showdashboard() {
+    public function showdashboard()
+    {
 
         $user = Auth::user();
         $now = Carbon::now();
         $koreanDayOfWeek = $now->isoFormat('dddd');
-   
+
         $formatDate1 = $now->format('Y년 n월 j일');
         // $formatDate2 = $now->format('G시 i분');
 
-        if(Auth::check()) {
+        if (Auth::check()) {
             return view('dashboard', [
                 'user' => $user,
                 'formatDate1' => $formatDate1,
@@ -34,11 +35,12 @@ class TaskController extends Controller
         }
     }
 
-    public function showheader() {
+    public function showheader()
+    {
 
         $user = Auth::user();
 
-        if(Auth::check()) {
+        if (Auth::check()) {
             return view('layout', [
                 'user' => $user,
             ]);
@@ -120,6 +122,7 @@ class TaskController extends Controller
     public function view($id)
     {
         $result['task'] = Task::task_detail($id);
+        Log::debug($result);
         $result['children'] = Task::task_detail_children($id);
         $result['comment'] = Task::task_detail_comment($id);
 
@@ -142,36 +145,57 @@ class TaskController extends Controller
         ];
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
-        $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
-        $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
-        $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
+        $sta = DB::table('basedata as status')
+            ->where('data_title_code', 0)
+            ->where('data_content_name', $request['task_status_id'])
+            ->select('data_content_code')
+            ->get();
+        Log::debug('상태: ' . $sta);
+        $pri = DB::table('basedata')
+            ->where('data_title_code', 1)
+            ->where('data_content_name', $request['priority_id'])
+            ->select('data_content_code')
+            ->get();
+        Log::debug('순위: ' . $pri);
+        $res = DB::table('users')
+            ->where('name', $request['task_responsible_id'])
+            ->select('id')
+            ->get();
+        Log::debug('user_id: ' . $res);
+        $tsk_num = DB::table('tasks')
+            ->where('project_id', $request['project_id'])
+            ->count();
+        Log::debug('$tsk_num: ' . $tsk_num);
         // $eml = DB::table('users')->where('email', $request['email'])->first();
-        if($request['start_date'] === '시작일') {
-            $start = null;
-        } else {
-            $start = $request['start_date'];
-        }
-        if($request['end_date'] === '마감일') {
-            $end = null;
-        } else {
-            $end = $request['end_date'];
-        }
-        $tit = $request['title']; // TODO: 유효성 처리 추가
-        $con = $request['content']; // TODO: 유효성 처리 추가
 
-        $request['title'] = $tit;
-        $request['content'] = $con;
+        // $tit = $request['title']; // TODO: 유효성 처리 추가
+        // $con = $request['content']; // TODO: 유효성 처리 추가
+
+
+        // $request['title'] = $tit;
+        // $request['content'] = $con;
         // $request['project_id'] = $con;
-        $request['task_status_id'] = $sta->data_content_code;
-        // $request['task_responsible_id'] = $res->id;
-        $request['start_date'] = $start;
-        $request['end_date'] = $end;
-        $request['priority_id'] = $pri->data_content_code;
+        $request['task_status_id'] = $sta[0]->data_content_code;
+        $request['task_responsible_id'] = $res[0]->id;
+        $nowUser = Auth::id();
+        Log::debug('$nowUser: ' . $nowUser);
+        $request['task_writer_id'] = $nowUser;
+        $request['category_id'] = $nowUser;
+        $request['task_number'] = $tsk_num + 1;
 
+        // $request['start_date'] = $start;
+        // $request['end_date'] = $end;
+        $request['priority_id'] = $pri[0]->data_content_code;
         // Log::debug($request);
-        $result = Task::create($request->data);
-        $responseData['msg'] = 'task created.';
-        $responseData['data'] = $result;
+
+        $result = Task::create($request->toArray());
+        if (!$result) {
+            $responseData['msg'] = 'task not created.';
+            $responseData['data'] = $result;
+        } else {
+            $responseData['msg'] = 'task created.';
+            $responseData['data'] = $result;
+        }
 
         return $responseData;
     }
@@ -194,24 +218,24 @@ class TaskController extends Controller
             $res = User::where('name', $request['task_responsible_id'])->first();
             $sta = DB::table('basedata')->where('data_content_name', $request['task_status_id'])->first();
             $pri = DB::table('basedata')->where('data_content_name', $request['priority_id'])->first();
-            Log::debug('$request :'.$request);
-            Log::debug('$res :'.$res->id);
+            Log::debug('$request :' . $request);
+            Log::debug('$res :' . $res->id);
             $result->task_responsible_id = $res->id;
             $result->task_status_id = $sta->id;
             $result->priority_id = $pri->id;
-            Log::debug('$request->title :'.$request->title);
+            Log::debug('$request->title :' . $request->title);
             $result->title = $request->title;
-            Log::debug('$request->content :'.$request->content);
+            Log::debug('$request->content :' . $request->content);
             $result->content = $request->content;
-            Log::debug('$request->start_date :'.$request->start_date);
-            if($request->start_date !== '시작일'){
+            Log::debug('$request->start_date :' . $request->start_date);
+            if ($request->start_date !== '시작일') {
                 $result->start_date = $request->start_date;
-                Log::debug('$result->start_date :'.$result->start_date);
+                Log::debug('$result->start_date :' . $result->start_date);
             }
             Log::debug($request->end_date);
-            if($request->end_date !== '마감일'){
+            if ($request->end_date !== '마감일') {
                 $result->end_date = $request->end_date;
-                Log::debug('$result->end_date :'.$result->end_date);
+                Log::debug('$result->end_date :' . $result->end_date);
             }
             $result->save();
 
@@ -228,25 +252,15 @@ class TaskController extends Controller
             "code" => "0",
             "msg" => ""
         ];
+        
+        $result = Task::where('id', $id)->delete();
 
-        // Log::debug('$id: '.$id);
-        // $record = DB::select(
-        //     "SELECT
-        //         *
-        //     FROM
-        //         tasks
-        //     WHERE
-        //         id = ". $id
-        // );
-        // Log::debug('DB: '.$record[0]->id);
-        $result = DB::table('tasks')->where('id',$id);
         if (!$result) {
             $responseData['code'] = 'E01';
-            $responseData['msg'] = $id.' is no where';
+            $responseData['msg'] = $id . ' is no where';
         } else {
-            $result->delete();
             $responseData['code'] = 'D01';
-            $responseData['msg'] = 'task : '.$id.'->deleted.';
+            $responseData['msg'] = 'task : ' . $id . '->deleted.';
         }
 
         return $responseData;
