@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="gantt-task-body">
-                    @foreach ($data as $key => $item)
+                    @forelse ($data as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
                                 <span class="taskKey">{{$item->id}}</span>
@@ -156,7 +156,25 @@
                             <div><input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
                             <div><input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="gantt-task" id="gantt-task-0">
+                            <div class="gantt-editable-div editable" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
+                                <span class="taskKey"></span>
+                                <span class="taskName editable-title"></span>
+                                <div class="gantt-detail">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0)">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="addSubTask()">하위업무 추가</button>
+                                </div>
+                            </div>
+                            <div class="gantt-dropdown"></div>
+                            <div>
+                                <div class="gantt-status-color" data-status=""></div>
+                            </div>
+                            <div><input type="date" name="start" id="start-row" onchange="test();" value=""></div>
+                            <div><input type="date" name="end" id="end-row" onchange="test();" value=""></div>
+                        </div>
+                    @endforelse
                 </div>
             </div>
             <div class="gantt-chart-wrap">
