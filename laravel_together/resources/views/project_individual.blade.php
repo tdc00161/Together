@@ -10,13 +10,13 @@
 
 @section('main')
     <input type="hidden" id="user" value="{{$user}}">
-    {{-- <input type="hidden" id="chart" value="{{$user_data->id}}"> --}}
     {{-- 상단바 --}}
     <div class="first_menu">
         <div class="menu_title">
             <div class="title_bar">
                 <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
                 <input class="title" type="text" name="project_title" placeholder="프로젝트명" value="{{$result->project_title}}">
+                <div class="title_img"><button id=delete onclick="Delete({{$result->id}})"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
                 {{-- <br> --}}
             </div>
             <textarea class="content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>

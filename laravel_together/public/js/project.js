@@ -35,16 +35,16 @@ window.onload = function() {
          var radius = Math.min(sw-(PADDING*2), sh-(PADDING*2)) / 2;
          var angle = 0;
          var total = 0;
-         for(var i in data) { total += data[i]; } //데이터(data)의 총합 계산
+         for(var i in data) { total += data[i].cnt; } //데이터(data)의 총합 계산
 
          for (var i = 0; i < data.length; i++) {
             context.fillStyle = colors[i];  //생성되는 부분의 채울 색 설정
             context.beginPath();
                context.moveTo(center_X, center_Y); //원의 중심으로 이동
-               context.arc(center_X, center_Y, radius, angle, angle +(Math.PI*2*(data[i]/total)));
+               context.arc(center_X, center_Y, radius, angle, angle +(Math.PI*2*(data[i].cnt/total)));
             context.lineTo(center_X,center_Y);
                context.fill();
-               angle += Math.PI*2*(data[i]/total);
+               angle += Math.PI*2*(data[i].cnt/total);
          }
       },
       error : function(request, status, error) {
@@ -84,6 +84,32 @@ function total(){
 }
 
 // console.log(dday);
+
+//삭제 기능
+const Delete = function (project_pk){
+   console.log()
+
+   // 전달할 데이터 정보(메모 정보)
+//    let Id = {
+//       user_pk : user_pk
+//   }
+   console.log(document.querySelector('.csrf_token'));
+  // 삭제 ajax
+  fetch('/delete/'+project_pk,{
+      method : 'DELETE',
+      // body : JSON.stringify(Id),
+      headers: {
+          "Content-Type": "application/json",
+
+      },
+  }).then((response) => response.json())
+  .then(()=>{
+      window.location.href = '/dashboard'; // 새로고침
+  });
+}
+
+
+
 
 // tab 기능
 

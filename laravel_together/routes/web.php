@@ -62,6 +62,9 @@ use App\Models\User;
     Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
     // Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
     Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
+    // Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+    Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+    Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 그래프 데이터 추출
 
     // 모달
     Route::get('/modaltest', [TaskController::class,'index']);
