@@ -49,14 +49,14 @@ class CommentController extends Controller
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
         
-        // Log::debug($request);
+        Log::debug($request);
         $usr = Auth::id();
         $con = $request['content']; // TODO: 유효성 처리 추가
         $tsk = $request['task_id']; 
         
         // $this_comment = DB::table('comments')->where('id',$id)->get();
         $this_comment = Comment::where('id',$id)->get();
-        // Log::debug($this_comment);
+        Log::debug($this_comment);
         // Log::debug(gettype($this_comment[0]->user_id).' : '.gettype($usr));
         // Log::debug(gettype($this_comment[0]->id).' : '.gettype($id));
         // Log::debug($this_comment[0]->id === $id);

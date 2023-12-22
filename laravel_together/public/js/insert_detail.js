@@ -116,6 +116,9 @@ let thisTaskId = 0;
 // 현재 댓글id 확인
 let thisCommentId = 0;
 
+// csrf
+const csrfToken_insert_detail = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 // 업무상태 기본값 설정
 STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
 
@@ -129,28 +132,6 @@ BEHIND_MODAL.addEventListener('click', function (event) {
 })
 
 
-const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-fetch('/friendsend', {
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/json',
-		'X-CSRF-TOKEN': csrfToken,
-	},
-	body: JSON.stringify({
-		receiver_email: receiverEmail,
-	}),
-})
-	.then(response => response.json())
-	.then(data => {
-		if (data.success) {
-			messageContainer.innerHTML = data.message;
-		} else {
-			messageContainer.innerHTML = data.message;
-		}
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
@@ -161,15 +142,25 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	// 작성 모달 띄우기
 	if (a === 0) {
 		// 프로젝트 색 가져오기
-		axios.get('/api/project/' + thisProjectId)
-			.then(res => {
+		fetch('/api/project/' + thisProjectId, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': csrfToken_insert_detail,
+			},
+			// body: JSON.stringify({
+			// 	receiver_email: receiverEmail,
+			// }),
+		})
+			.then(response => response.json())
+			.then(data => {
 				// 프로젝트 색 띄우기
-				PROJECT_COLOR[a + 1].style = 'background-color: ' + res.data.data[0].data_content_name + ';'
-				PROJECT_NAME[a].textContent = res.data.data[0].project_title
+				PROJECT_COLOR[a + 1].style = 'background-color: ' + data[0].data_content_name + ';'
+				PROJECT_NAME[a].textContent = data[0].project_title
 			})
-			.catch(err => {
-				console.log(err.message);
-			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
 
 		// 작성모달 모서리 둥글게
 		TASK_MODAL[0].style = 'border-radius: 14px;'
@@ -202,38 +193,45 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 
 		// 상세 정보 가져오기
-		axios.get('/api/task/' + c)
-			.then(res => {
+		fetch('/api/task/' + c, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': csrfToken_insert_detail,
+			},
+		})
+			.then(response => response.json())
+			.then(data => {
 				// 값을 모달에 삽입
-				insertModalValue(res.data, a);
+				insertModalValue(data, a);
 
 				// 업무상태 값과 색상 주기
-				statusColor(res.data);
+				statusColor(data);
 
 				// 담당자 값체크, 삽입
-				responsibleName(res.data, a);
+				responsibleName(data, a);
 
 				// 마감일자 값체크, 삽입
-				deadLineValue(res.data, a);
+				deadLineValue(data, a);
 
 				// 우선순위 값체크, 삽입
-				priorityValue(res.data, a);
+				priorityValue(data, a);
 
 				// 상세업무 내용 값체크, 삽입
-				modalContentValue(res.data, a);
+				modalContentValue(data, a);
 
 				// 댓글 컨트롤
-				commentControl(res.data);
+				commentControl(data);
 
 				// 상위업무 컨트롤
-				parentTaskControl(res.data, a);
+				parentTaskControl(data, a);
 
 				// 현재 업무 id 저장
-				now_task_id = res.data.task[0].id
+				now_task_id = data.task[0].id
 			})
-			.catch(err => {
-				console.log(err.message);
-			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
 	}
 	// 모달 띄우기
 	openInsertDetailModal(a);
@@ -269,12 +267,17 @@ function createTask() {
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.category_id = 0
 	}
-	let headers = {
-		'headers': { 'Content-Type': 'application/json', }
-	}
-	axios.post('/api/task', postData, headers)
-		.then(res => {
-			// console.log(res.data);
+	fetch('/api/task', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+		body: JSON.stringify(postData),
+	})
+		.then(response => response.json())
+		.then(data => {
+			// console.log(data);
 			closeTaskModal(0)
 		})
 		.catch(err => {
@@ -284,7 +287,7 @@ function createTask() {
 
 // 등록 버튼으로 작성/수정
 function updateTask() {
-	let data = {
+	let updateData = {
 		'title': document.querySelector('.insert_title').value,
 		'content': document.querySelector('.insert_content').value,
 		'task_status_id': document.querySelectorAll('#checked')[0].textContent,
@@ -293,12 +296,17 @@ function updateTask() {
 		'end_date': document.querySelectorAll('.end_date')[0].value,
 		'priority_id': document.querySelector('.insert_priority_val').textContent
 	}
-	let headers = {
-		headers: { 'Content-Type': 'application/json', }
-	}
-	axios.put('/api/task/' + now_task_id, data, headers)
-		.then(res => {
-			console.log(res.data);
+	fetch('/api/task/' + now_task_id, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+		body: JSON.stringify(updateData),
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
 			closeTaskModal(0)
 		})
 		.catch(err => {
@@ -361,15 +369,23 @@ function addResponsible(a) {
 	}
 	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
 	// responsibleModalClone.remove()
-	axios.get('/api/project/user/' + thisProjectId)
-		.then(res => {
-			for (let index = 0; index < res.data.data.length; index++) {
+	
+	fetch('/api/project/user/' + thisProjectId, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+	})
+		.then(response => response.json())
+		.then(data => {
+			for (let index = 0; index < data.length; index++) {
 				// 담당자 모달용 클론 (갱신)
 				let responsibleModalClone = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
 				// 클론->이름
 				let defalutMemberName = responsibleModalClone.firstChild.nextSibling.nextElementSibling
 				// respose받은 담당자 리스트 중 하나
-				const element = res.data.data[index];
+				const element = data[index];
 				// 담당자 이름 바꾸기
 				defalutMemberName.textContent = element.member_name
 				// d-none 해제
@@ -441,10 +457,17 @@ function addPriority(a) {
 	}
 	ADD_PRIORITY_MODAL.append(clonePriorityModal)
 	// responsibleModalClone.remove()
-	axios.get('/api/basedata/' + 1)
-		.then(res => {
-			for (let index = 0; index < res.data.data.length; index++) {
-				// console.log(res.data.data[index].data_content_name);
+	fetch('/api/basedata/' + 1, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+	})
+		.then(response => response.json())
+		.then(data => {
+			for (let index = 0; index < data.length; index++) {
+				// console.log(data[index].data_content_name);
 				// 우선순위 모달용 클론 (갱신)
 				let priorityModalClone = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 				// 클론->아이콘
@@ -452,7 +475,7 @@ function addPriority(a) {
 				// 클론->이름
 				let defalutPriorityName = priorityModalClone.firstChild.nextSibling.nextSibling.nextSibling
 				// // respose받은 우선순위 리스트 중 하나
-				const element = res.data.data[index];
+				const element = data[index];
 
 				// // 우선순위 이름 바꾸기
 				defalutPriorityName.textContent = element.data_content_name
@@ -552,11 +575,10 @@ function removePriority(a) {
 
 // 댓글 수정
 function updateComment(event, a) {
+	document.querySelectorAll('.submit')[1].setAttribute('onclick', 'commitUpdateComment()')
 	let comment_input = document.querySelector('#comment_input')
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
 	thisCommentContent = event.target.parentElement.nextElementSibling
-
-	SUBMIT[1].setAttribute('onclick', 'commitUpdateComment()')
 	comment_input.value = thisCommentContent.textContent
 }
 
@@ -567,12 +589,17 @@ function commitUpdateComment() {
 		"content": comment_input.value,
 		"task_id": now_task_id
 	}
-	let headers = {
-		headers: { 'Content-Type': 'application/json', }
-	}
-	axios.put('/api/comment/' + thisCommentId, putData, headers)
-		.then(res => {
-			// console.log(res.data);
+	fetch('/api/comment/' + thisCommentId, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+		body: JSON.stringify(putData),
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.catch(err => {
@@ -585,9 +612,16 @@ function commitUpdateComment() {
 // 댓글 삭제
 function removeComment(event, a) {
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
-	axios.delete('/api/comment/' + thisCommentId.value)
-		.then(res => {
-			// console.log(res.data);
+	fetch('/api/comment/' + thisCommentId.value, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+	})
+		.then(response => response.json())
+		.then(data => {
+			// console.log(data);
 			openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.catch(err => {
@@ -612,12 +646,17 @@ function addComment() {
 		"task_id": thisTaskId,
 		"content": INPUT_COMMENT_CONTENT.value
 	}
-	let headers = {
-		'headers': { 'Content-Type': 'application/json', }
-	}
-	axios.post('/api/comment/' + thisTaskId, postData, headers)
-		.then(res => {
-			// console.log(res.data);
+	fetch('/api/comment/' + thisTaskId, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+		body: JSON.stringify(postData),
+	})
+		.then(response => response.json())
+		.then(data => {
+			// console.log(data);
 			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
 		})
 		.then(() => {
@@ -866,35 +905,42 @@ function TaskFlg(a, b) {
 // 수정 모달 값 넣기
 function updateModalOpen() {
 	createUpdate = 1
-	axios.get('/api/task/' + now_task_id) // insertModalValue() 모달창 띄울때 담았던 변수
-		.then(res => {
-			// console.log(res.data);
+	fetch('/api/task/' + now_task_id, { // // insertModalValue() 모달창 띄울때 담았던 변수
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+	})
+		.then(response => response.json())
+		.then(data => {
+			// console.log(data);
 			// 값을 모달에 삽입
-			insertModalValue(res.data, 0);
+			insertModalValue(data, 0);
 
 			// 업무상태 값과 색상 주기
-			updateStatusColor(res.data);
+			updateStatusColor(data);
 
 			// 담당자 값체크, 삽입
-			updateResponsibleName(res.data, 0);
+			updateResponsibleName(data, 0);
 
 			// 마감일자 값체크, 삽입
-			deadLineValue(res.data, 0);
+			deadLineValue(data, 0);
 
 			// 우선순위 값체크, 삽입
-			updatePriorityValue(res.data, 0);
+			updatePriorityValue(data, 0);
 
 			// 상세업무 내용 값체크, 삽입
-			modalContentValue(res.data, 0);
+			modalContentValue(data, 0);
 
 			// 댓글창 없을 때 사라질 값 갱신선언
 			COMMENT_PARENT.style = 'padding: 20;'
 
 			// 댓글 컨트롤
-			commentControl(res.data);
+			commentControl(data);
 
 			// 상위업무 컨트롤
-			parentTaskControl(res.data, 0);
+			parentTaskControl(data, 0);
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -920,7 +966,7 @@ function updateModalOpen() {
 function deleteTask() {
 	axios.delete('/api/task/' + now_task_id)
 		.then(res => {
-			// console.log(res.data);
+			// console.log(data);
 			closeTaskModal(1)
 		})
 		.catch(err => {

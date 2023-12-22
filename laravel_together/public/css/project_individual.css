@@ -26,7 +26,7 @@
     margin-right: 10px;
 }
 
-.title {
+.title:not(.detail_title) {
     display: inline-block;
     width: 70%;
     height: 20px;
