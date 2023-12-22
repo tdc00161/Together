@@ -128,6 +128,30 @@ BEHIND_MODAL.addEventListener('click', function (event) {
 	}
 })
 
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+fetch('/friendsend', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json',
+		'X-CSRF-TOKEN': csrfToken,
+	},
+	body: JSON.stringify({
+		receiver_email: receiverEmail,
+	}),
+})
+	.then(response => response.json())
+	.then(data => {
+		if (data.success) {
+			messageContainer.innerHTML = data.message;
+		} else {
+			messageContainer.innerHTML = data.message;
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
 function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, task_id)
