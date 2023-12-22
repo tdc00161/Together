@@ -34,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="title">신라호텔에서 회식</div>
+			<div class="title detail_title">신라호텔에서 회식</div>
 			<div class="property type_task">
 				<div class="status">
 					<div></div>

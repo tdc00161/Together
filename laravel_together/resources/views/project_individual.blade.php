@@ -1,6 +1,8 @@
 @extends('layout.layout')
 
+
 @section('link')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="/js/project.js" defer></script>
 <script src="/js/insert_detile.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
@@ -16,7 +18,7 @@
             <div class="title_bar">
                 <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
                 <input class="title" type="text" name="project_title" placeholder="프로젝트명" value="{{$result->project_title}}">
-                <div class="title_img"><button id=delete onclick="Delete({{$result->id}})"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
+                <div class="title_img"><button id=delete onclick="deleteProject({{$result->id}})"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
                 {{-- <br> --}}
             </div>
             <textarea class="content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
@@ -69,8 +71,8 @@
 
             {{-- 구성원 --}}
             <div class="invite_box">
-                <div class="mini_box"><a class="invite_a" href="">+</a></div>
-                <div class="mini_box"><img class="invite_person" src="/img/projectperson.png" alt=""></div>
+                <button class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
+                <div class="invite-member-div"><img class="invite-img" src="/img/Group 114.png" alt=""></div>
             </div>
         </div>
 

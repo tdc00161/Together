@@ -8,11 +8,11 @@ window.onload = function() {
    $.ajax({
       url: '/chart-data/'+parseInt(pathname.match(/\d+/)[0]),
       type: 'GET',
-      success: function(response){
+      success: function (response) {
          console.log('***** Ajax Success *****');
          console.log(response);
 
-      
+
          // var responseObject = JSON.parse(response);
          // console.log(responseObject);
          var dataArray = response.data;
@@ -23,7 +23,7 @@ window.onload = function() {
          var context = canvas.getContext("2d");
          var sw = canvas.width;
          var sh = canvas.height;
-         var PADDING=100;
+         var PADDING = 100;
 
          // 데이터 입력(기본값 0이 될 수 있도록 데이터 설정해줘야함)
          var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
@@ -31,26 +31,26 @@ window.onload = function() {
 
          //데이터별 색상
          var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
-         
-         var center_X=sw/2;  //원의 중심 x 좌표
-         var center_Y=sh/2;  //원의 중심 y 좌표
+
+         var center_X = sw / 2;  //원의 중심 x 좌표
+         var center_Y = sh / 2;  //원의 중심 y 좌표
          // 두 계산값 중 작은 값은 값을 원의 반지름으로 설정
-         var radius = Math.min(sw-(PADDING*2), sh-(PADDING*2)) / 2;
+         var radius = Math.min(sw - (PADDING * 2), sh - (PADDING * 2)) / 2;
          var angle = 0;
          var total = 0;
-         for(var i in data) { total += data[i].cnt; } //데이터(data)의 총합 계산
+         for (var i in data) { total += data[i].cnt; } //데이터(data)의 총합 계산
 
          for (var i = 0; i < data.length; i++) {
             context.fillStyle = colors[i];  //생성되는 부분의 채울 색 설정
             context.beginPath();
-               context.moveTo(center_X, center_Y); //원의 중심으로 이동
-               context.arc(center_X, center_Y, radius, angle, angle +(Math.PI*2*(data[i].cnt/total)));
-            context.lineTo(center_X,center_Y);
-               context.fill();
-               angle += Math.PI*2*(data[i].cnt/total);
+            context.moveTo(center_X, center_Y); //원의 중심으로 이동
+            context.arc(center_X, center_Y, radius, angle, angle + (Math.PI * 2 * (data[i].cnt / total)));
+            context.lineTo(center_X, center_Y);
+            context.fill();
+            angle += Math.PI * 2 * (data[i].cnt / total);
          }
       },
-      error : function(request, status, error) {
+      error: function (request, status, error) {
          console.log('***** Ajax Error *****');
          // 결과 에러 콜백함수
          console.log(error)
@@ -71,7 +71,7 @@ var categoryColor = document.getElementById('color');
 // 프로젝트 d-day 계산
 
 let dday = document.getElementById("dday");
-function total(){
+function total() {
    start_day = new Date(document.getElementById("start_date").value) // 시작일자 가져오기
    console.log(start_day);
    end_day = new Date(document.getElementById("end_date").value) // 디데이(마감일자)
@@ -83,32 +83,31 @@ function total(){
    // if(start_day!=null || end_day!=null) {
    //    dday.innerHTML = result;
    // }
-   dday.innerHTML = 'D-'+result;
+   dday.innerHTML = 'D-' + result;
 }
 
 // console.log(dday);
 
 //삭제 기능
-const Delete = function (project_pk){
-   console.log()
-
+const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+function deleteProject(project_pk) {
    // 전달할 데이터 정보(메모 정보)
-//    let Id = {
-//       user_pk : user_pk
-//   }
+   //    let Id = {
+   //       user_pk : user_pk
+   //   }
    console.log(document.querySelector('.csrf_token'));
-  // 삭제 ajax
-  fetch('/delete/'+project_pk,{
-      method : 'DELETE',
+   // 삭제 ajax
+   fetch('/delete/' + project_pk, {
+      method: 'DELETE',
       // body : JSON.stringify(Id),
       headers: {
-          "Content-Type": "application/json",
-
+         "Content-Type": "application/json",
+         'X-CSRF-TOKEN': csrfToken_project
       },
-  }).then((response) => response.json())
-  .then(()=>{
-      window.location.href = '/dashboard'; // 새로고침
-  });
+   }).then((response) => console.log(response)) // response.json()
+      .then(() => {
+         window.location.href = '/dashboard'; // 새로고침
+      });
 }
 
 
@@ -116,18 +115,18 @@ const Delete = function (project_pk){
 
 // tab 기능
 
-function openTab(evt, tabName) {
-   var i, tabcontent, tabmenu;
-   tabcontent = document.getElementsByClassName("tabcontent");
-   for (i = 0; i < tabcontent.length; i++) {
-     tabcontent[i].style.display = "none";
-   }
-   console.log(tabcontent);
-   tabmenu = document.getElementsByClassName("tabmenu");
-   for (i = 0; i < tabmenu.length; i++) {
-      tabmenu[i].className = tabmenu[i].className.replace(" active", "");
-   }
-   console.log(tabmenu);
-   document.getElementById(tabName).style.display = "block";
-   evt.currentTarget.className += " active";
-}
+// function openTab(evt, tabName) {
+//    var i, tabcontent, tabmenu;
+//    tabcontent = document.getElementsByClassName("tabcontent");
+//    for (i = 0; i < tabcontent.length; i++) {
+//       tabcontent[i].style.display = "none";
+//    }
+//    console.log(tabcontent);
+//    tabmenu = document.getElementsByClassName("tabmenu");
+//    for (i = 0; i < tabmenu.length; i++) {
+//       tabmenu[i].className = tabmenu[i].className.replace(" active", "");
+//    }
+//    console.log(tabmenu);
+//    document.getElementById(tabName).style.display = "block";
+//    evt.currentTarget.className += " active";
+// }

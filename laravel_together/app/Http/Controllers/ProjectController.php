@@ -74,7 +74,7 @@ class ProjectController extends Controller
         $result = project::find($id);
         // dd($result);
 
-        $user_id = Session::get('user')->only('id');
+        $user_id = Auth::id();
         // dd($user_id);
 
         $user_data = project::where('user_pk',$user_id)

@@ -86,7 +86,7 @@ function addSubTask(mainId) {
 
   // <span class="taskName editable-title">{{$item->title}}</span>
   const addTaskName = document.createElement('span');
-  addTaskName.classList.add('taskName', 'editable-title');
+  addTaskName.classList.add('taskName', 'editable-title', 'updateable');
   addTaskName.textContent = '업무명'; 
 
   // <div class="gantt-detail"></div>
@@ -102,7 +102,7 @@ function addSubTask(mainId) {
 
   // <div class="gantt-dropdown">{{$item->name}}</div>
   const addUserName = document.createElement('div');
-  addUserName.classList.add('gantt-dropdown');
+  addUserName.classList.add('responName', 'gantt-dropdown', 'updateable');
   addUserName.textContent = '담당자';
 
   //  <div>
@@ -112,7 +112,7 @@ function addSubTask(mainId) {
 
   //  <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
   const addStatusColor = document.createElement('div');
-  addStatusColor.classList.add('gantt-status-color');
+  addStatusColor.classList.add('statusName', 'gantt-status-color', 'updateable');
   addStatusColor.setAttribute('data-status', '시작전');
   // addStatusColor.dataset.status = '시작전';
   addStatusColor.textContent = '시작전';
@@ -128,7 +128,7 @@ function addSubTask(mainId) {
   addTaskStartDate.name = 'start';  
   addTaskStartDate.id = 'start-row800';
   // addTaskStartDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
-  addTaskStartDate.value = '20231201';
+  // addTaskStartDate.value = '2023-12-01';
 
   // <div>
   //    <input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end}}">
@@ -141,7 +141,7 @@ function addSubTask(mainId) {
   addTaskEndDate.name = 'end';  
   addTaskEndDate.id = 'end-row800';
   // addTaskEndDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
-  addTaskEndDate.value = '20231205';
+  // addTaskEndDate.value = '2023-12-05';
 
 
   // gantt-task 안에 edit
@@ -324,7 +324,7 @@ addDatesToHeader();
 // ************* 차트생성
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
 function test(rowNum) {
-  console.log('***** test() Start *****');
+  // console.log('***** test() Start *****');
   // 해당 시작일, 종료일 요소 습득
   const start = document.getElementById('start-row' + rowNum).value;
   const end = document.getElementById('end-row' + rowNum).value;
@@ -340,7 +340,7 @@ function test(rowNum) {
     // 기존 bk-row div 삭제
     const existingBkRowList = document.querySelectorAll('.bk-row[data-row-num="' + rowNum + '"]');
     
-  console.log(existingBkRowList);
+  // console.log(existingBkRowList);
     existingBkRowList.forEach(function (item) {
       item.parentNode.removeChild(item);
     });
@@ -394,64 +394,66 @@ function test(rowNum) {
 
 // ************* ajax 수정
 
-const taskNameUp = document.querySelector('.taskName');
-const responNameUp = document.querySelector('.responName');
-const statusNameUp = document.querySelector('.statusName');
-const startDateUp = document.querySelector('.start-date');
-const endDateUp = document.querySelector('.end-date');
+// const taskNameUp = document.querySelector('.taskName');
+// const responNameUp = document.querySelector('.responName');
+// const statusNameUp = document.querySelector('.statusName');
+// const startDateUp = document.querySelector('.start-date');
+// const endDateUp = document.querySelector('.end-date');
 
-function handleBlur() {
-  alert('수정이 완료되었습니다.');
-  let data = {
-    'title': taskNameUp.textContent,
-    'task_responsible_id': responNameUp.textContent,
-    'task_status_id': statusNameUp.textContent,
-    'start_date': startDateUp.value,
-    'end_date': endDateUp.value
-  };
+// function handleBlur() {
+//   alert('수정이 완료되었습니다.');
+//   let data = {
+//     'title': taskNameUp.textContent,
+//     'task_responsible_id': responNameUp.textContent,
+//     'task_status_id': statusNameUp.textContent,
+//     'start_date': startDateUp.value,
+//     'end_date': endDateUp.value
+//   };
   
-  fetch('/ganttchartRequest', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-  .then(res => {
-    if(res.ok) {
-      console.log('테이터가 성공적으로 전송');
-    } else {
-      console.error('데이터 전송에 실패');
-    }
-  })
-  .catch(error => {
-    console.log('오류 발생:', error)
-  })
-}
-
-taskNameUp.addEventListener('blur', handleBlur);
-responNameUp.addEventListener('blur', handleBlur);
-statusNameUp.addEventListener('blur', handleBlur);
-startDateUp.addEventListener('blur', handleBlur);
-endDateUp.addEventListener('blur', handleBlur);
-
-// 예시: 수정 요청을 보내는 함수
-// function sendUpdateRequest(id, updatedValue) {
-//   // Axios를 사용하여 수정 요청을 보내는 로직
-//   // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
-//   // 아래는 가상의 코드입니다.
-//   axios.put('/ganttchartRequest', { value: updatedValue })
-//       .then(res => {
-//           // 성공적으로 요청을 보낸 후에 할 작업
-//           console.log('수정 요청 성공:', res.data);
-//       })
-//       .catch(err => {
-//           // 요청 실패 시 에러 처리
-//           console.log('수정 요청 실패:', err);
-//       });
+//   fetch('/ganttchartRequest', {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(data)
+//   })
+//   .then(res => {
+//     if(res.ok) {
+//       console.log('테이터가 성공적으로 전송');
+//     } else {
+//       console.error('데이터 전송에 실패');
+//     }
+//   })
+//   .catch(error => {
+//     console.log('오류 발생:', error)
+//   })
 // }
 
-// // 수정 완료 팝업 창 보이기
+// taskNameUp.addEventListener('blur', handleBlur);
+// responNameUp.addEventListener('blur', handleBlur);
+// statusNameUp.addEventListener('blur', handleBlur);
+// startDateUp.addEventListener('blur', handleBlur);
+// endDateUp.addEventListener('blur', handleBlur);
+
+// 예시: 수정 요청을 보내는 함수
+function sendUpdateRequest(id, updatedValue , numbersOnly) {
+  // Axios를 사용하여 수정 요청을 보내는 로직
+  // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
+  // 아래는 가상의 코드입니다.
+  let url = '/api/ganttchartRequest/' + numbersOnly
+console.log(url);
+  axios.put(url, { 'value': updatedValue})
+      .then(res => {
+          // 성공적으로 요청을 보낸 후에 할 작업
+          console.log('수정 요청 성공:', res.data);
+      })
+      .catch(err => {
+          // 요청 실패 시 에러 처리
+          console.log('수정 요청 실패:', err);
+      });
+}
+
+// 수정 완료 팝업 창 보이기
 // function showPopupMessage(message) {
 //   const popupModal = document.getElementById('ganttPopupModal');
 //   const popupMessage = document.getElementById('ganttPopupMessage');
@@ -465,27 +467,65 @@ endDateUp.addEventListener('blur', handleBlur);
 //   }, 2000);
 // }
 
-// // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
-// document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
-//     element.addEventListener('blur', function(event) {
-//         const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
-//         let updatedValue = '';
+// 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
+document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
+    element.addEventListener('blur', function(event) {
+      event.target.parentNode.parentNode.getAttribute('id') //var result4 = str.slice(-4);
+      // 간트 수정 시 타겟 추정 및 아이디 반환
+      let originalString = 0;
+      console.log('변경값 확인용1: '+event.target.parentNode.getAttribute('id')); // responName
+      console.log('변경값 확인용1: '+event.target.parentNode.parentNode.getAttribute('id')); // title
+      console.log('변경값 확인용1: '+event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
+      console.log('변경값 확인용1: '+event.target.getAttribute('id')); // start, end
+        if(event.target.parentNode.getAttribute('id')){
+          originalString = event.target.parentNode.getAttribute('id')
+        } else if(event.target.parentNode.parentNode.getAttribute('id')){
+          originalString = event.target.parentNode.parentNode.getAttribute('id')
+        } else if(event.target.parentNode.parentNode.parentNode.getAttribute('id')){
+          originalString = event.target.parentNode.parentNode.parentNode.getAttribute('id')
+        } else if(event.target.getAttribute('id')){
+          originalString = event.target.getAttribute('id')
+        }
+      const parts = originalString.split('-');
+      const numbersOnly = parts[parts.length - 1];
+      console.log('id: '+numbersOnly); // 출력 결과: 1243
+        const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
+        let updatedValue = {
+          'responName': '',
+          'status': '',
+          'start_date': '',
+          'end_date': '',
+          'title': ''
+        };
 
-//         // contenteditable 속성이 있는 div의 경우
-//         if (this.hasAttribute('contenteditable')) {
-//             updatedValue = this.innerText;
-//         } else if (this.tagName === 'INPUT' || this.tagName === 'SPAN') {
-//             // input 또는 span의 경우
-//             updatedValue = this.textContent || this.value;
-//         }
+        // contenteditable 속성이 있는 div의 경우
+        console.log('this: '+ this.textContent);
+        console.log('this: '+ this.value);
+        if (this.classList.contains('gantt-dropdow')) {
+            if(this.classList.contains('gantt-status-color')){
+              updatedValue.status = this.textContent;
+            } else {
+              updatedValue.responName = this.textContent;
+            }
+        } else if ( this.tagName === 'INPUT') {
+            // input
+            // updatedValue = this.textContent 
+            if(this.getAttribute('id').includes('start')){
+              updatedValue.start_date = this.textContent;   
+            } else {
+              updatedValue.end_date = this.textContent;           
+            }
+        } else if( this.tagName === 'SPAN'){
+            updatedValue.title = this.textContent;
+        }
 
-//         // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
-//         sendUpdateRequest(id, updatedValue);
+        // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
+        sendUpdateRequest(id, updatedValue, numbersOnly);
 
-//         // 수정 완료 팝업 메시지 표시
-//         showPopupMessage('수정 완료!');
-//     });
-// });
+        // 수정 완료 팝업 메시지 표시
+        // showPopupMessage('수정 완료!');
+    });
+});
 
 
 

@@ -137,7 +137,7 @@
 .task_modal>div:nth-child(2)>.content:not(.noline) {
 	/* 배치 */
 	/* 내부 */
-	border-bottom: 1px solid var(--border-color);
+	/* border-bottom: 1px solid var(--border-color); */
 	padding-top: 10px;
 	/* 크기 */
 }
