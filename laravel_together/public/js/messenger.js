@@ -296,6 +296,7 @@ function displayFriendRequests(friendRequests) {
             acceptbtn.classList.add('accept-btn');
             acceptbtn.setAttribute('value', friendRequestId);
             acceptbtn.textContent = '수락'
+
             acceptbtn.addEventListener('click', function () {
 
                 var requestId = this.value;
@@ -353,10 +354,57 @@ function displayFriendRequests(friendRequests) {
 
                     addfriendlistdiv.addEventListener('click', function() {
                         toggleDeletePanel(this);
-                        });
+                    });
+                
+                    // 추가된 삭제버튼 클릭 시
+                    addfdeletebtn.addEventListener('click', function() {
+                        var deletefriendId = this.value;
+                        console.log(deletefriendId);
+
+                        // AJAX 요청 수행
+                        fetch('/friendDelete', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            body: JSON.stringify({ deletefriendId: deletefriendId }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Unable to delete friend.');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // 성공 응답 받았을 때 처리
+        
+                            var clickDivId = 'add_user_pk' + deletefriendId; 
+                            var clickDiv = document.getElementById(clickDivId);
+        
+                            if (clickDiv) {
+                                clickDiv.style.left = '500px';
+                                setTimeout(function() {
+                                    clickDiv.style.opacity = '0';
+                                }, 500);
+        
+                                clickDiv.addEventListener('transitionend', function() {
+                                    if (clickDiv.style.opacity !== '1') {
+                                        clickDiv.style.display = 'none';
+                                    }
+                                }, { once: true });
+                            }
+
+                            console.log('Success: Friend delete.', data);
+                        })
+                        .catch(error => {
+                            // 실패 응답 또는 네트워크 오류 발생 시 처리
+                            console.error('Error:', error.message);
+                        })
+                    }); // 추가된 삭제 버튼 끝
                     }
                     else {
-                        console.log('error')
+                            console.log('error')
                     }
                 }
 
@@ -640,13 +688,11 @@ function displayFriendlist(friendList, useUserId) {
             useremail.textContent = friendlistdata.email;
             userDiv.appendChild(useremail);
 
-            var friendId = friendlistdata.friend_id;
-
             // 삭제 버튼 추가
             var fdeletebtn = document.createElement('button');
             fdeletebtn.classList.add('fdeletebtn');
             fdeletebtn.innerHTML = '삭제';
-            fdeletebtn.value = friendId;
+            fdeletebtn.value = useUserId ? friendlistdata.user_id : friendlistdata.friend_id;
             userDiv.appendChild(fdeletebtn);
 
             // 삭제 버튼 클릭시

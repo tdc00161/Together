@@ -2,9 +2,10 @@
 
 
 @section('link')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+{{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 <script src="/js/project.js" defer></script>
 <script src="/js/insert_detile.js" defer></script>
+<script src="/js/project_member.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endsection
 
@@ -71,11 +72,26 @@
 
             {{-- 구성원 --}}
             <div class="invite_box">
-                <button class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
-                <div class="invite-member-div"><img class="invite-img" src="/img/Group 114.png" alt=""></div>
+                {{-- 프로젝트 구성원 초대 --}}
+                <button onclick="projectMemberAddOpenModal()" id="projectmemberadd" class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
+                @forelse ($projectmemberdata as $item)
+                    <div id="{{'project_num'.$item->project_id.'_user'.$item->member_id}}" class="invite-member-div"><img class="invite-img" src="/img/Group 114.png" alt=""><div class="member_name">{{$item->name}}</div></div>
+                @empty
+                    
+                @endforelse 
+                </div>
             </div>
-        </div>
 
+            {{-- 프로젝트 구성원 초대 모달 --}}
+            <div id="projectMemberaddModal" class="projectMemberaddModalcss">
+                <div class="projectMemberaddModalContent">
+                    <span class="memberaddclosebtn" onclick="projectMemberAddCloseModal()">&times;</span>
+                    <div>이메일로 추가</div>
+                    <div>친구에서 추가</div>
+                    <div>초대 링크로 추가</div>
+                </div>
+            </div>
+            
         <div class="gird_row2">
             <div class="right_box1">
                 {{-- 공지/업데이트 항목 --}}

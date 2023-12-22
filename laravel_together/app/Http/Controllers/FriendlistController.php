@@ -55,9 +55,15 @@ class FriendlistController extends Controller
             $userId = Auth::id();
             $deletefriendId = $request->json('deletefriendId');
 
-            $deleted = Friendlist::where('user_id', $userId)
-                ->where('friend_id', $deletefriendId)
-                ->delete();
+            $deleted = Friendlist::where(function ($query) use ($userId, $deletefriendId) {
+                $query->where('user_id', $userId)
+                      ->where('friend_id', $deletefriendId);
+            })
+            ->orWhere(function ($query) use ($userId, $deletefriendId) {
+                $query->where('user_id', $deletefriendId)
+                      ->where('friend_id', $userId);
+            })
+            ->delete();
 
             if (!$deleted) {
                 return response()->json(['status' => 'error', 'message' => '친구를 찾을 수 없습니다.'], 404);
