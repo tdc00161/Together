@@ -40,7 +40,7 @@ use App\Models\User;
     Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
     // 간트차트
-    Route::get('/ganttchart', [TaskController::class, 'index'])->name('gantt.index'); // 간트 전체 출력
+    Route::get('/ganttchart', [GanttChartController::class, 'ganttindex'])->name('gantt.index'); // 간트 전체 출력
     // Route::post('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
     // Route::put('/ganttchartRequest', [TaskController::class, 'update'])->name('gantt.update'); // 간트 업무 수정
 

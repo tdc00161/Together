@@ -95,7 +95,7 @@ class TaskController extends Controller
                 ON tks.task_responsible_id = us.id
                 LEFT JOIN projects pj
                 ON tks.project_id = pj.id
-            where tks.deleted_at IS NULL
+            WHERE tks.deleted_at IS NULL
             
             
         ");

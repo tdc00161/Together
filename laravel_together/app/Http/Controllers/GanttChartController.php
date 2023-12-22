@@ -39,6 +39,7 @@ class GanttChartController extends Controller
                 ON tks.task_responsible_id = us.id
                 LEFT JOIN projects pj
                 ON tks.project_id = pj.id
+            WHERE tks.deleted_at IS NULL    
             
             
         ");

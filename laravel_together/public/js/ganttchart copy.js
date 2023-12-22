@@ -52,71 +52,23 @@ function orderDropdown(category) {
 }
 
 // ************* 상태값 드롭다운 선택
-// 드롭박스 클릭 후 선택 수정
-function ganttUpdateSelect() {
-  var dropdown = document.getElementById("ganttDropdownStatus");
-  if (dropdown.style.display === "none" || dropdown.style.display === "") {
-      dropdown.style.display = "block";
+// JavaScript로 해당 드롭다운을 감지하고 변경을 처리하는 코드
+// JavaScript로 클릭 시 드롭다운 보이게 처리하는 코드
+function statusSelectDropdown() {
+  const statusDropdown = document.querySelector('.statusDropdown');
+
+  if (statusDropdown.style.display === 'none' || statusDropdown.style.display === '') {
+      statusDropdown.style.display = 'block'; // 클릭 시 드롭다운 보이기
   } else {
-      dropdown.style.display = "none";
+      statusDropdown.style.display = 'none'; // 다시 클릭 시 드롭다운 숨기기
   }
+
+  statusDropdown.addEventListener('change', function() {
+      const selectedValue = statusDropdown.value;
+      console.log('선택된 값:', selectedValue);
+      // 선택한 값을 처리하기 위한 추가 작업 수행
+  });
 }
-
-function ganttUpdateStatus(status) {
-  var statusSpan = document.getElementById("ganttStatusSpan");
-  statusSpan.textContent = status;
-  // 여기에 추가적인 처리 로직을 넣기
-  
-  var dropdown = document.getElementById("ganttDropdownStatus");
-  dropdown.style.display = "none"; // 드롭다운 숨기기
-}
-
-
-// function ganttUpdateSelect() {
-//   var statusDropdown = document.getElementById('ganttSelectStatus');
-//   if (statusDropdown.style.display === 'none' || statusDropdown.style.display === '') {
-//       statusDropdown.style.display = 'block';
-//   } else {
-//       statusDropdown.style.display = 'none';
-//   }
-// }
-
-// function ganttUpdateStatus(newStatus) {
-//   document.getElementById('ganttStatusSpan').innerText = newStatus;
-//   document.getElementById('ganttSelectStatus').style.display = 'none'; // 선택 후 드롭다운 숨김
-// }
-
-// // Document 클릭 시 드롭다운 닫기
-// document.addEventListener('click', function(event) {
-//   var statusDropdown = document.getElementById('ganttSelectStatus');
-//   var ganttStatusDiv = document.getElementById('ganttStatusDiv');
-//   var ganttStatusSpan = document.getElementById('ganttStatusSpan');
-//   if (event.target !== ganttStatusDiv && event.target !== ganttStatusSpan) {
-//     statusDropdown.style.display = 'none';
-// }
-// });
-/////////
-
-
-// 드롭박스 클릭 후 선택 수정
-
-  
-
-// function statusSelectDropdown() {
-//   const statusDropdown = document.querySelector('.statusDropdown');
-
-//   if (statusDropdown.style.display === 'none' || statusDropdown.style.display === '') {
-//       statusDropdown.style.display = 'block'; // 클릭 시 드롭다운 보이기
-//   } else {
-//       statusDropdown.style.display = 'none'; // 다시 클릭 시 드롭다운 숨기기
-//   }
-
-//   statusDropdown.addEventListener('change', function() {
-//       const selectedValue = statusDropdown.value;
-//       console.log('선택된 값:', selectedValue);
-//       // 선택한 값을 처리하기 위한 추가 작업 수행
-//   });
-// }
 
 
 // ************* 체크박스 필터링
