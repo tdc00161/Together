@@ -2,7 +2,7 @@
 
 
 @section('link')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+{{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 <script src="/js/project.js" defer></script>
 <script src="/js/insert_detile.js" defer></script>
 <script src="/js/project_member.js" defer></script>

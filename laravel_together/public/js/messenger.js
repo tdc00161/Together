@@ -646,7 +646,7 @@ function displayFriendlist(friendList, useUserId) {
             var fdeletebtn = document.createElement('button');
             fdeletebtn.classList.add('fdeletebtn');
             fdeletebtn.innerHTML = '삭제';
-            fdeletebtn.value = friendId;
+            fdeletebtn.value = useUserId ? friendlistdata.user_id : friendlistdata.friend_id;
             userDiv.appendChild(fdeletebtn);
 
             // 삭제 버튼 클릭시
