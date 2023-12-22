@@ -289,6 +289,8 @@ function createTask() {
 		.then(response => response.json())
 		.then(data => {
 			// console.log(data);
+			document.querySelector('gantt-task-body')
+			cloneLeftGanttChart
 			closeTaskModal(0)
 			document.querySelector('.gantt-content-wrap').scrollIntoView(false)
 		})
