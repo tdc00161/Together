@@ -43,5 +43,5 @@ Route::group(['middleware' => ['web']], function () {
 
 // Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 
-// Route::put('/gantt', [TaskController::class, 'update']); // 간트차트 수정
+Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정
 // Route::put('/gantt', [TaskController::class, 'store']); // 간트차트 하위생성후 작성

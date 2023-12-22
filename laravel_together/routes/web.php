@@ -42,7 +42,7 @@ use App\Models\User;
     // 간트차트
     Route::get('/ganttchart', [TaskController::class, 'index'])->name('gantt.index'); // 간트 전체 출력
     // Route::post('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
-    Route::put('/ganttchartRequest', [TaskController::class, 'update'])->name('gantt.update'); // 간트 업무 수정
+    // Route::put('/ganttchartRequest', [TaskController::class, 'update'])->name('gantt.update'); // 간트 업무 수정
 
     // Friend
     Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록

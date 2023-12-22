@@ -397,6 +397,8 @@
 .gantt-dropdown {
 	position: relative;
 	display: inline-block;
+	/* -webkit-user-select: none; body에 적용된 스타일 */
+    user-select: auto; /* contenteditable 속성을 가진 요소에 대한 스타일 재정의 */
 }
 /* .gantt-status-color {
 	background-color: #000000c5;
