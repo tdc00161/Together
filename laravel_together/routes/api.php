@@ -38,10 +38,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id
     Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id
 
-    Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+
 });
 
-// Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 
 // Route::put('/gantt', [TaskController::class, 'update']); // 간트차트 수정
 // Route::put('/gantt', [TaskController::class, 'store']); // 간트차트 하위생성후 작성
