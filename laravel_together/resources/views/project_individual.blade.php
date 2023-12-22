@@ -71,8 +71,8 @@
 
             {{-- 구성원 --}}
             <div class="invite_box">
-                <div class="mini_box"><a class="invite_a" href="">+</a></div>
-                <div class="mini_box"><img class="invite_person" src="/img/projectperson.png" alt=""></div>
+                <button class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
+                <div class="invite-member-div"><img class="invite-img" src="/img/Group 114.png" alt=""></div>
             </div>
         </div>
 
