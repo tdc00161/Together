@@ -281,7 +281,6 @@ button {
     color: rgb(160, 160, 160);
     font-weight: 400;
     width: 210px;
-    overflow-x: scroll;
 }
 
 .user-email-friend {
@@ -291,7 +290,6 @@ button {
     color: rgb(160, 160, 160);
     font-weight: 400;
     width: 260px;
-    overflow-x: scroll;
 }
 ::-webkit-scrollbar:not(.add_responsible_modal) { height: 3px; margin: 0; padding: 0;}
 
