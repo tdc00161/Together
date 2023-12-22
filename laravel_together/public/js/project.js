@@ -1,10 +1,12 @@
 // 원형 그래프
 
 window.onload = function() {
-
-   
+   // 경로만 가져오기
+   var pathname = window.location.pathname;
+   console.log(pathname);
+   // debug("***** project_graph_data End *****");
    $.ajax({
-      url: '/chart-data',
+      url: '/chart-data/'+parseInt(pathname.match(/\d+/)[0]),
       type: 'GET',
       success: function(response){
          console.log('***** Ajax Success *****');
@@ -23,8 +25,9 @@ window.onload = function() {
          var sh = canvas.height;
          var PADDING=100;
 
-         // 데이터 입력
+         // 데이터 입력(기본값 0이 될 수 있도록 데이터 설정해줘야함)
          var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
+         console.log(data);
 
          //데이터별 색상
          var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];

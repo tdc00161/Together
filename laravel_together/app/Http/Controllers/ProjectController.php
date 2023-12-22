@@ -29,7 +29,7 @@ class ProjectController extends Controller
                 ->only('user_pk','color_code_pk','project_title', 'project_content', 'flg', 'start_date', 'end_date');
         
         // user_id (session 에 저장된 값 호출)
-        $user_id = Session::get('user')->only('id');
+        $user_id = Auth::id();
         // $user_id = 171;
         // dd($user_id);
         
@@ -72,8 +72,7 @@ class ProjectController extends Controller
         // dd($user_pk);
 
         $result = project::find($id);
-        // dump($result);
-
+        // dd($result);
 
         $user_id = Session::get('user')->only('id');
         // dd($user_id);
@@ -132,12 +131,12 @@ class ProjectController extends Controller
           $result['dday'] = $start->diffInDays($end); // data에 dday 추가
         }
 
-        // dd($user_data);
+        // dd($result);
 
         $tkdata = DB::table('projects')
                       -> select('projects.id',
-                                'users.id',
-                                'tasks.id',
+                                // 'users.id',
+                                // 'tasks.id',
                                 'users.name',
                                 'projects.user_pk',
                                 'tasks.project_id',
@@ -154,7 +153,7 @@ class ProjectController extends Controller
                         $join->on('users.id','=','projects.user_pk');
                       })  
                       ->join('tasks', function($join) {
-                        $join->on('tasks.project_id','=','projects.user_pk');
+                        $join->on('tasks.project_id','=','projects.id');
                       })
                       ->join('basedata as base1', function($base1){
                         $base1->on('base1.data_content_code','=','tasks.task_status_id');
@@ -162,7 +161,7 @@ class ProjectController extends Controller
                       ->join('basedata as base2', function($base2){
                         $base2->on('base2.data_content_code','=','tasks.category_id');
                       })
-                      ->where('projects.id', '=', $id)
+                      ->where('projects.id', '=', $result->id)
                       ->where('base1.data_title_code', '=', '0')
                       ->where('base2.data_title_code', '=', '2')
                       ->orderby('projects.id','desc')
@@ -190,47 +189,92 @@ class ProjectController extends Controller
     }
 
 
-    public function project_graph_data(Request $request) {
-      Log::debug("***** project_graph_data Start *****");
+    public function project_graph_data(Request $request, $id) {
+
+      // Log::debug("***** project_graph_data Start *****".$request);
       // $user = Auth::id();
       // return $user;
       // $user_id = Session::get('user')->only('id');
       $user_id = Auth::id();
+      // dump($user_id);
       // Log::debug("user_id : ".$user_id);
+      // $project_id = project::find($id);
+      // dd($project_id);
 
-      $before=DB::table('tasks')
-                  ->selectRaw('count(project_id) as cnt')
+      $before =DB::table('tasks')
+                  ->selectRaw('count(task_status_id) as cnt')
+                  ->where('project_id',$id)
                   ->where('task_status_id',0)
-                  ->groupBy('project_id')
-                  ->having('project_id',$user_id)
+                  ->groupBy('task_status_id')
                   ->get();
-      // Log::debug("before : ", $before->all());
+      // dd($before);
+      // $before=DB::table('tasks')
+      //             ->selectRaw('count(project_id) as cnt')
+      //             ->where('task_status_id',0)
+      //             ->groupBy('project_id')
+      //             ->having('project_id',$result[0]->id)
+      //             ->get();
+      // Log::debug("before : ", $before->all())
+      // dd($before);
 
-      $ing=DB::table('tasks')
-              ->selectRaw('count(project_id) as cnt')
+      $ing =DB::table('tasks')
+              ->selectRaw('count(task_status_id) as cnt')
               ->where('task_status_id',1)
-              ->groupBy('project_id')
-              ->having('project_id',$user_id)
+              ->where('project_id',$id)
+              ->groupBy('tasks.task_status_id')
               ->get();
-      // Log::debug("ing : ", $before->all());
+      // dump($ing);
+      // $ing=DB::table('tasks')
+      //         ->selectRaw('count(task_status_id) as cnt')
+      //         ->where('task_status_id',1)
+      //         ->groupBy('tasks.task_status_id')
+      //         ->having('project_id',$result[0]->project_id) //프로젝트 pk
+      //         ->get();
+      // // Log::debug("ing : ", $before->all());
 
-      $feedback=DB::table('tasks')
-                    ->selectRaw('count(project_id) as cnt')
+      $feedback =DB::table('tasks')
+                    ->selectRaw('count(task_status_id) as cnt')
                     ->where('task_status_id',2)
-                    ->groupBy('project_id')
-                    ->having('project_id',$user_id)
+                    ->where('project_id',$id)
+                    ->groupBy('tasks.task_status_id')
                     ->get();
-      // Log::debug("feedback : ", $before->all());
-      // dd($feedback);
-      $complete=DB::table('tasks')
-                    ->selectRaw('count(project_id) as cnt')
-                    ->where('task_status_id',3)
-                    ->groupBy('project_id')
-                    ->having('project_id',$user_id)
-                    ->get();
-      // Log::debug("complete : ", $before->all());
 
-      $statuslist = ['before'=> $before,'ing'=> $ing,'feedback'=> $feedback,'complete'=> $complete];
+      // $feedback=DB::table('tasks')
+      //               ->selectRaw('count(task_status_id) as cnt')
+      //               ->where('task_status_id',2)
+      //               ->groupBy('tasks.task_status_id')
+      //               ->having('project_id',$result[0]->project_id)
+      //               ->get();
+      // Log::debug("feedback : ", $before->all());
+      // dump($feedback);
+      // dd($feedback);
+
+      $complete =DB::table('tasks')
+                  ->selectRaw('count(task_status_id) as cnt')
+                  ->where('task_status_id',3)
+                  ->where('project_id',$id)
+                  ->groupBy('tasks.task_status_id')
+                  ->get();
+
+      // $complete=DB::table('tasks')
+      //               ->selectRaw('count(task_status_id) as cnt')
+      //               ->where('task_status_id',3)
+      //               ->groupBy('tasks.task_status_id')
+      //               ->having('project_id',$result[0]->project_id)
+      //               ->get();
+      // Log::debug("complete : ", $before->all());
+      // dd($complete);
+
+      //데이터 담을 빈 객체 생성
+      $baseObj = new \stdClass();
+      $baseObj->cnt = 0;
+      $statuslist = [
+        'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
+        'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
+        'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
+        'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
+      ];
+      // dd($statuslist);
 
       // Log::debug("Response : ", $statuslist);
       // Log::debug("***** project_graph_data End *****");
