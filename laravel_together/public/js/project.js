@@ -112,18 +112,18 @@ function deleteProject(project_pk) {
 
 // tab 기능
 
-function openTab(evt, tabName) {
-   var i, tabcontent, tabmenu;
-   tabcontent = document.getElementsByClassName("tabcontent");
-   for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-   }
-   console.log(tabcontent);
-   tabmenu = document.getElementsByClassName("tabmenu");
-   for (i = 0; i < tabmenu.length; i++) {
-      tabmenu[i].className = tabmenu[i].className.replace(" active", "");
-   }
-   console.log(tabmenu);
-   document.getElementById(tabName).style.display = "block";
-   evt.currentTarget.className += " active";
-}
+// function openTab(evt, tabName) {
+//    var i, tabcontent, tabmenu;
+//    tabcontent = document.getElementsByClassName("tabcontent");
+//    for (i = 0; i < tabcontent.length; i++) {
+//       tabcontent[i].style.display = "none";
+//    }
+//    console.log(tabcontent);
+//    tabmenu = document.getElementsByClassName("tabmenu");
+//    for (i = 0; i < tabmenu.length; i++) {
+//       tabmenu[i].className = tabmenu[i].className.replace(" active", "");
+//    }
+//    console.log(tabmenu);
+//    document.getElementById(tabName).style.display = "block";
+//    evt.currentTarget.className += " active";
+// }
