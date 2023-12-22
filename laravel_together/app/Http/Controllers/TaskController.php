@@ -168,25 +168,30 @@ class TaskController extends Controller
             ->count();
         Log::debug('$tsk_num: ' . $tsk_num);
         // $eml = DB::table('users')->where('email', $request['email'])->first();
-
+        
         // $tit = $request['title']; // TODO: 유효성 처리 추가
         // $con = $request['content']; // TODO: 유효성 처리 추가
-
-
+        
+        
         // $request['title'] = $tit;
         // $request['content'] = $con;
         // $request['project_id'] = $con;
-        $request['task_status_id'] = $sta[0]->data_content_code;
-        $request['task_responsible_id'] = $res[0]->id;
+        if(!empty($sta[0])){
+            $request['task_status_id'] = $sta[0]->data_content_code;
+        }
+        if(!empty($res[0])){
+            $request['task_responsible_id'] = $res[0]->id;
+        }
         $nowUser = Auth::id();
-        Log::debug('$nowUser: ' . $nowUser);
         $request['task_writer_id'] = $nowUser;
         $request['category_id'] = $nowUser;
         $request['task_number'] = $tsk_num + 1;
-
+        
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
-        $request['priority_id'] = $pri[0]->data_content_code;
+        if(!empty($pri[0])){
+            $request['priority_id'] = $pri[0]->data_content_code;
+        }
         // Log::debug($request);
 
         $result = Task::create($request->toArray());

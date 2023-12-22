@@ -1,6 +1,10 @@
 // 변수 선언 ---------------------------------
 // body 전체
 const BODY = document.querySelector('body')
+// 간트 업무 좌측 영역
+const GANTT_LEFT = document.querySelectorAll('.gantt-task')
+// 간트 업무 우측 영역
+const GANTT_RIGHT = document.querySelectorAll('.gantt-chart')
 // 모달 전체
 const TASK_MODAL = document.querySelectorAll('.task_modal')
 // 작성 모달
@@ -100,6 +104,10 @@ let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 let clonePriority = PRIORITY_ONE[0].cloneNode(true)
 // 댓글 초기화용 클론
 let cloneResetComments = COMMENT_PARENT.cloneNode(true)
+// 좌측 간트 추가용 클론
+let cloneLeftGanttChart = GANTT_LEFT.cloneNode(true)
+// 우측 간트 추가용 클론
+let cloneRightGanttChart = GANTT_RIGHT.cloneNode(true)
 // 모달 내용 저장소
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
@@ -112,7 +120,7 @@ let TaskNoticeFlg = 0;
 let thisProjectId = 0;
 thisProjectId = 1; // 임시
 // 현재 업무번호 확인
-let thisTaskId = 0;
+let now_task_id = 0;
 // 현재 댓글id 확인
 let thisCommentId = 0;
 
@@ -139,6 +147,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	// 업무/공지 플래그
 	TaskNoticeFlg = b
 
+	// 더보기 모달 닫기
+	closeMoreModal()
+
 	// 작성 모달 띄우기
 	if (a === 0) {
 		// 프로젝트 색 가져오기
@@ -155,8 +166,8 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 			.then(response => response.json())
 			.then(data => {
 				// 프로젝트 색 띄우기
-				PROJECT_COLOR[a + 1].style = 'background-color: ' + data[0].data_content_name + ';'
-				PROJECT_NAME[a].textContent = data[0].project_title
+				PROJECT_COLOR[a + 1].style = 'background-color: ' + data.data[0].data_content_name + ';'
+				PROJECT_NAME[a].textContent = data.data[0].project_title
 			})
 			.catch(error => {
 				console.error('Error:', error);
@@ -279,6 +290,7 @@ function createTask() {
 		.then(data => {
 			// console.log(data);
 			closeTaskModal(0)
+			document.querySelector('.gantt-content-wrap').scrollIntoView(false)
 		})
 		.catch(err => {
 			console.log(err.message)
@@ -306,7 +318,7 @@ function updateTask() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
+			console.log(data.data);
 			closeTaskModal(0)
 		})
 		.catch(err => {
@@ -369,7 +381,7 @@ function addResponsible(a) {
 	}
 	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
 	// responsibleModalClone.remove()
-	
+
 	fetch('/api/project/user/' + thisProjectId, {
 		method: 'GET',
 		headers: {
@@ -379,13 +391,13 @@ function addResponsible(a) {
 	})
 		.then(response => response.json())
 		.then(data => {
-			for (let index = 0; index < data.length; index++) {
+			for (let index = 0; index < data.data.length; index++) {
 				// 담당자 모달용 클론 (갱신)
 				let responsibleModalClone = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
 				// 클론->이름
 				let defalutMemberName = responsibleModalClone.firstChild.nextSibling.nextElementSibling
 				// respose받은 담당자 리스트 중 하나
-				const element = data[index];
+				const element = data.data[index];
 				// 담당자 이름 바꾸기
 				defalutMemberName.textContent = element.member_name
 				// d-none 해제
@@ -466,8 +478,8 @@ function addPriority(a) {
 	})
 		.then(response => response.json())
 		.then(data => {
-			for (let index = 0; index < data.length; index++) {
-				// console.log(data[index].data_content_name);
+			for (let index = 0; index < data.data.length; index++) {
+				// console.log(data.data[index].data_content_name);
 				// 우선순위 모달용 클론 (갱신)
 				let priorityModalClone = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 				// 클론->아이콘
@@ -475,7 +487,7 @@ function addPriority(a) {
 				// 클론->이름
 				let defalutPriorityName = priorityModalClone.firstChild.nextSibling.nextSibling.nextSibling
 				// // respose받은 우선순위 리스트 중 하나
-				const element = data[index];
+				const element = data.data[index];
 
 				// // 우선순위 이름 바꾸기
 				defalutPriorityName.textContent = element.data_content_name
@@ -494,7 +506,8 @@ function addPriority(a) {
 					case '낮음':
 						defalutPriorityIcon.style = 'background-image: url(/img/gantt-down.png);'
 						break;
-					case '없음':
+					default:
+						defalutPriorityIcon.style = 'display: none;'
 						break;
 				}
 
@@ -549,8 +562,8 @@ function selectPriority(event) {
 		case '낮음':
 			clonePriority.firstChild.nextElementSibling.style = 'background-image: url(/img/gantt-down.png);'
 			break;
-		case '없음':
-			clonePriority.firstChild.nextElementSibling.style = 'background-image: none;'
+		default:
+			clonePriority.firstChild.nextElementSibling.style = 'display: none;'
 			break;
 	}
 
@@ -599,8 +612,8 @@ function commitUpdateComment() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
-			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
+			console.log(data.data);
+			openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -622,7 +635,7 @@ function removeComment(event, a) {
 		.then(response => response.json())
 		.then(data => {
 			// console.log(data);
-			openTaskModal(1, TaskNoticeFlg, thisTaskId)
+			openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -643,10 +656,10 @@ function addComment() {
 
 	// 댓글 내용을 ajax로 송신
 	let postData = {
-		"task_id": thisTaskId,
+		"task_id": now_task_id,
 		"content": INPUT_COMMENT_CONTENT.value
 	}
-	fetch('/api/comment/' + thisTaskId, {
+	fetch('/api/comment/' + now_task_id, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -657,7 +670,7 @@ function addComment() {
 		.then(response => response.json())
 		.then(data => {
 			// console.log(data);
-			return openTaskModal(1, TaskNoticeFlg, thisTaskId)
+			return openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
 		.then(() => {
 			let comment_box = document.querySelector('.comment')
@@ -727,12 +740,12 @@ function statusColor(data) {
 function responsibleName(data, a) {
 	if (data.task[0].res_name !== null) {
 		RESPONSIBLE_USER[a].textContent = data.task[0].res_name;
-		RESPONSIBLE_PERSON[a].style = 'display: flex;'
-		if(RESPONSIBLE_PERSON[a].classList.contains('d-none')){
+		RESPONSIBLE[a].style = 'display: flex;'
+		if (RESPONSIBLE_PERSON[a].classList.contains('d-none')) {
 			RESPONSIBLE_PERSON[a].classList.remove('d-none')
 		}
 	} else {
-		RESPONSIBLE_PERSON[a].style = 'display: none;'
+		RESPONSIBLE[a].style = 'display: none;'
 	}
 }
 
@@ -745,14 +758,14 @@ function deadLineValue(data, a) {
 	END_DATE[a].value = null
 	//삽입
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
-		// DEAD_LINE[a].style = 'display: none;'
+		DEAD_LINE[a].style = 'display: none;'
 	} else {
 		START_DATE[a].placeholder = data.task[0].start_date;
 		END_DATE[a].placeholder = data.task[0].end_date;
 		START_DATE[a].value = data.task[0].start_date;
 		END_DATE[a].value = data.task[0].end_date;
 		DEAD_LINE[a].style = 'display: flex;'
-		if(DEAD_LINE[a].classList.contains('d-none')){
+		if (DEAD_LINE[a].classList.contains('d-none')) {
 			DEAD_LINE[a].classList.remove('d-none')
 		}
 	}
@@ -763,7 +776,7 @@ function priorityValue(data, a) {
 	if (data.task[0].priority_name !== null) {
 		PRIORITY_VAL[a].textContent = data.task[0].priority_name;
 		PRIORITY[a].style = 'display: flex;'
-		if(PRIORITY_ONE[a].classList.contains('d-none')){
+		if (PRIORITY_ONE[a].classList.contains('d-none')) {
 			PRIORITY_ONE[a].classList.remove('d-none')
 		}
 		// 우선순위 값별로 이미지 삽입
@@ -779,6 +792,9 @@ function priorityValue(data, a) {
 				break;
 			case '낮음':
 				PRIORITY_ICON_VALUE[a].style = 'background-image: url(/img/gantt-down.png);'
+				break;
+			default:
+				PRIORITY_ICON_VALUE[a].style = 'display: none;'
 				break;
 		}
 	} else {
@@ -916,31 +932,31 @@ function updateModalOpen() {
 		.then(data => {
 			// console.log(data);
 			// 값을 모달에 삽입
-			insertModalValue(data, 0);
+			insertModalValue(data.data, 0);
 
 			// 업무상태 값과 색상 주기
-			updateStatusColor(data);
+			updateStatusColor(data.data);
 
 			// 담당자 값체크, 삽입
-			updateResponsibleName(data, 0);
+			updateResponsibleName(data.data, 0);
 
 			// 마감일자 값체크, 삽입
-			deadLineValue(data, 0);
+			deadLineValue(data.data, 0);
 
 			// 우선순위 값체크, 삽입
-			updatePriorityValue(data, 0);
+			updatePriorityValue(data.data, 0);
 
 			// 상세업무 내용 값체크, 삽입
-			modalContentValue(data, 0);
+			modalContentValue(data.data, 0);
 
 			// 댓글창 없을 때 사라질 값 갱신선언
 			COMMENT_PARENT.style = 'padding: 20;'
 
 			// 댓글 컨트롤
-			commentControl(data);
+			commentControl(data.data);
 
 			// 상위업무 컨트롤
-			parentTaskControl(data, 0);
+			parentTaskControl(data.data, 0);
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -1006,7 +1022,7 @@ function updateStatusColor(data) {
 
 function updateResponsibleName(data, a) {
 	// 기존에 클론한 엘리먼트에 값을 넣기
-	if(data.task[0].res_name){
+	if (data.task[0].res_name) {
 		cloneResponsible.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].res_name
 	}
 
@@ -1026,7 +1042,7 @@ function updateResponsibleName(data, a) {
 
 function updatePriorityValue(data, a) {
 	// 기존에 클론한 엘리먼트에 값을 넣기
-	if(data.task[0].priority_name){
+	if (data.task[0].priority_name) {
 		clonePriority.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].priority_name
 	}
 
@@ -1045,7 +1061,7 @@ function updatePriorityValue(data, a) {
 		const element = insert_priority_val[index];
 		// console.log(element.textContent !== null);
 		// console.log(data.task[0].priority_name);
-		if(element.textContent !== null){
+		if (element.textContent !== null) {
 			switch (data.task[0].priority_name) {
 				case '긴급':
 					insert_priority_icon[index].style = 'background-image: url(/img/gantt-bisang.png);'
@@ -1059,7 +1075,8 @@ function updatePriorityValue(data, a) {
 				case '낮음':
 					insert_priority_icon[index].style = 'background-image: url(/img/gantt-down.png);'
 					break;
-				default:				
+				default:
+					insert_priority_icon[index].style = 'display: none;'
 					break;
 			}
 		}
@@ -1067,7 +1084,7 @@ function updatePriorityValue(data, a) {
 
 	// 투명화 되어있는 기본 우선순위 삭제
 	PRIORITY_ONE[0].remove()
-	
+
 	// d-none 삭제
 	clonePriority.classList.remove('d-none')
 }
