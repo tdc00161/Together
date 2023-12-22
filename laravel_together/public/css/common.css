@@ -1063,7 +1063,7 @@ box-sizing: border-box;
 /* 프로젝트 : 멤버 초대 버튼 */
 .invite-btn {
     background-color: rgba(0, 0, 0, 0.38);
-    width: 50px;
+    width: 56px;
     height: 50px;
     border-radius: 10px;
     margin-right: 10px;
@@ -1073,11 +1073,14 @@ box-sizing: border-box;
 }
 /* 프로젝트 : 멤버 구성원 div */
 .invite-member-div {
+    display: flex;
     background-color: rgba(0, 0, 0, 0.38);
     width: 50px;
     height: 50px;
     border-radius: 10px;
     margin-right: 10px;
+    flex-wrap: nowrap;
+    flex-direction: column;
 }
 .invite-member-div:hover {
     background-color: rgba(0, 0, 0, 0.5);
@@ -1092,3 +1095,41 @@ box-sizing: border-box;
     opacity: 100%;
 }
 
+#projectmemberdiv {
+    display: flex;
+    width: 100%;
+    height: 70px;
+}
+
+.projectMemberaddModalcss {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.projectMemberaddModalContent {
+    position: absolute;
+    background-color: #111111;
+    width: 400px;
+    height: 230px;
+    left: 40%;
+    top: 35%;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+/* 프로젝트 구성원 초대 모달 닫기 버튼 */
+.memberaddclosebtn {
+    cursor: pointer;
+}
+
+.member_name {
+    width: 50px;
+    text-align: center;
+}
