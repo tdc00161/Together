@@ -33,7 +33,7 @@ class ProjectController extends Controller
         // $user_id = 171;
         // dd($user_id);
         
-        $data['user_pk'] = $user_id['id'];
+        $data['user_pk'] = $user_id;
 
          // color_code 랜덤 호출   
         $data['color_code_pk'] = (string)rand(0,4);
@@ -178,6 +178,14 @@ class ProjectController extends Controller
 
         // dd($result);
 
+        // (jueunyang08) 프로젝트 구성원 출력
+        $projectmemberdata = DB::table('project_users as p')
+        ->join('users as u', 'u.id', '=', 'p.member_id')
+        ->select('p.project_id', 'u.name', 'p.member_id')
+        ->where('p.project_id', '=', $id)
+        ->orderBy('p.created_at','asc')
+        ->get();
+
         return view('project_individual')
         ->with('color_code',$color_code)
         ->with('user_data',$user_data)
@@ -185,7 +193,8 @@ class ProjectController extends Controller
         ->with('data',$tkdata)
         ->with('user',Auth::id())
         ->with('userflg0',$userflg0)
-        ->with('userflg1',$userflg1);
+        ->with('userflg1',$userflg1)
+        ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
     }
 
 

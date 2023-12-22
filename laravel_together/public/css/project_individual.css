@@ -195,7 +195,7 @@
 
 .status_box {
     width: 98%;
-    height: 475px;
+    height: 455px;
     border: 1px solid var(--theme-bg-color);
     background-color: var(--content-bg);
     border-radius: 8px;
@@ -273,13 +273,13 @@
 
 .invite_box {
     width: 98%;
-    height: 70px;
+    height: 87px;
     border: 1px solid var(--theme-bg-color);
     background-color: var(--content-bg);
     border-radius: 8px;
     padding: 10px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
 }
 
 .invite_a {
