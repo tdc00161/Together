@@ -1060,3 +1060,35 @@ box-sizing: border-box;
     cursor: pointer;
     margin: 7px;
 }
+/* 프로젝트 : 멤버 초대 버튼 */
+.invite-btn {
+    background-color: rgba(0, 0, 0, 0.38);
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.invite-btn:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+/* 프로젝트 : 멤버 구성원 div */
+.invite-member-div {
+    background-color: rgba(0, 0, 0, 0.38);
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.invite-member-div:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.invite-img {
+    width: 20px;
+    display: block;
+    margin: 11px auto;
+    opacity: 70%;
+}
+.invite-img:hover {
+    opacity: 100%;
+}
+

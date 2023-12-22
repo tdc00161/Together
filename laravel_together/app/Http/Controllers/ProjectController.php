@@ -75,7 +75,7 @@ class ProjectController extends Controller
         // dump($result);
 
 
-        $user_id = Session::get('user')->only('id');
+        $user_id = Auth::id();
         // dd($user_id);
 
         $user_data = project::where('user_pk',$user_id)
@@ -177,7 +177,7 @@ class ProjectController extends Controller
           $items->dday = $start->diffInDays($end); // tkdata에 dday 추가
         }
 
-        // dd($tkdata);
+        // dd($result);
 
         return view('project_individual')
         ->with('color_code',$color_code)
@@ -307,6 +307,31 @@ class ProjectController extends Controller
         }
         Log::debug('before return');
         return $responseData;
+    }
+
+    // 프로젝트 삭제
+    public function delete_project(Request $request, $id)
+    {
+      Log::debug($request);
+        // $responseData = [
+        //     "code" => "0",
+        //     "msg" => "",
+        //     "data" => ""
+        // ];
+        // $dataContent = Project::find(1);
+        // // Log::debug($dataContent);
+        // // Log::debug(!$dataContent);
+        // // if (!$dataContent) {
+        // //   $responseData['code'] = 'E01';
+        // //   $responseData['msg'] = 'this '.$id.' project user is no where';
+        // // } else {
+        // //   $responseData['code'] = 'D01';
+        // //   $responseData['msg'] = 'project_user come';
+        // //   $responseData['data'] = $dataContent;
+        // // }
+        // Log::debug($dataContent);
+        // // return $responseData;
+        return $id.'연결확인';
     }
 }
 
