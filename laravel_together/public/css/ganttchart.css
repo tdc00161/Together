@@ -154,7 +154,7 @@
     justify-content: space-between;
 	/* height: 6%; */
 	background-color: rgba(23, 24, 29, 0.4);
-	/* margin: 0px -40px; */
+	margin: 0px -40px;
 }
 
 .gantt-search {
@@ -389,11 +389,26 @@
 	padding: 5px;
 	cursor: pointer;
 }
+/*  */
+.gantt-editable-div {
+	display: flex;
+}
+.gantt-task-detail-click {
+	flex: 0 0 10%;
+}
+.taskKey {
+	flex: 0 0 20%;
+}
+.taskName {
+	flex: 1;
+}
 
-.taskName:hover {
+.gantt-editable-div:hover .gantt-task-detail-click {
+	color: rgb(151, 87, 255);
+}
+.gantt-editable-div:hover .taskName {
 	background-color: rgba(151, 87, 255, 0.3);
 	border: 1px solid rgb(151, 87, 255);
-
 }
 
 /* .editable > img {

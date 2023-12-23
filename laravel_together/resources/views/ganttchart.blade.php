@@ -1,7 +1,7 @@
 @extends('layout.layout')
 @section('gantt_link')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/css/ganttchart.css">
+    <script src="/js/ganttchart.js" defer></script>
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="{{ asset('/js/insert_detail.js') }}" async></script>
@@ -104,7 +104,7 @@
                 </ul>
             </div>
             <button class="gantt-add-btn" onclick="openTaskModal(0)">업무추가</button>
-            <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button>
+            {{-- <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button> --}}
         </div>
     </div>
     <!-- 팝업 모달 창 -->
@@ -151,31 +151,26 @@
                 <div class="gantt-task-body">
                     @foreach ($data as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
-                            <div class="gantt-editable-div editable" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
-                                <button class="gantt-task-detail-click" style="width: 10%">●</button>
-                                {{-- <div class="gantt-task-detail-click" style="width: 10%">:</div> --}}
-                                <div class="taskKey" style="width: 20%">{{$item->id}}</div>
-                                <div class="taskName editable-title" spellcheck="false" style="width: 70%">{{$item->title}}</div>
-                                {{-- <div class="gantt-detail">
-                                    <button class="gantt-detail-btn" spellcheck="false" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
+                            <div class="gantt-editable-div editable">
+                                <button class="gantt-task-detail-click">●</button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
                                     <br>
-                                    <button class="gantt-detail-btn" spellcheck="false" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
-                                </div> --}}
+                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
+                                </div>     
+                                <div class="taskKey">{{$item->id}}</div>
+                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
                             <div class="responName gantt-update-dropdown"><span>{{$item->name}}</span></div>
                             <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" id="ganttSelectStatus" data-status="{{$item->task_status_name}}">
-                                    <span id="ganttStatusSpan" onclick="ganttUpdateSelect()">{{$item->task_status_name}}</span>
-                                    <ul class="statusDropdown" id="ganttSelectStatus">
-                                        <li><a href="#" onclick="ganttUpdateStatus('시작전')">시작전</a></li>
-                                        <li><a href="#" onclick="ganttUpdateStatus('진행중')">진행중</a></li>
-                                        <li><a href="#" onclick="ganttUpdateStatus('피드백')">피드백</a></li>
-                                        <li><a href="#" onclick="ganttUpdateStatus('완료')">완료</a></li>
-                                    </ul>
-                                </div>
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"><span>{{$item->task_status_name}}</span></div>
                             </div>
-                            <div class="gantt-task-4"><input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}"></div>
-                            <div class="gantt-task-5"><input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}"></div>
+                            <div class="gantt-task-4">
+                                <input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
+                            </div>
+                            <div class="gantt-task-5">
+                                <input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -201,15 +196,13 @@
                             </div>
                         @endforeach
                     </div>
-                    {{-- <div id="row{{$item->id}}-231201"></div>
-                    <div id="row{{$item->id}}-231231"></div> --}}
                 </div>
             </div>
         </section>
     </div>
 
-    @include('modal.insert') {{-- include 순서 중요: 작성/상세 --}}
-    @include('modal.detail')
+    {{-- @include('modal.insert') include 순서 중요: 작성/상세
+    @include('modal.detail') --}}
 
-    <script src="/js/ganttchart.js"></script>
+   
 @endsection

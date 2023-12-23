@@ -53,70 +53,10 @@ function orderDropdown(category) {
 
 // ************* 상태값 드롭다운 선택
 // 드롭박스 클릭 후 선택 수정
-function ganttUpdateSelect() {
-  var dropdown = document.getElementById("ganttDropdownStatus");
-  if (dropdown.style.display === "none" || dropdown.style.display === "") {
-      dropdown.style.display = "block";
-  } else {
-      dropdown.style.display = "none";
-  }
-}
-
-function ganttUpdateStatus(status) {
-  var statusSpan = document.getElementById("ganttStatusSpan");
-  statusSpan.textContent = status;
-  // 여기에 추가적인 처리 로직을 넣기
-  
-  var dropdown = document.getElementById("ganttDropdownStatus");
-  dropdown.style.display = "none"; // 드롭다운 숨기기
-}
-
-
-// function ganttUpdateSelect() {
-//   var statusDropdown = document.getElementById('ganttSelectStatus');
-//   if (statusDropdown.style.display === 'none' || statusDropdown.style.display === '') {
-//       statusDropdown.style.display = 'block';
-//   } else {
-//       statusDropdown.style.display = 'none';
-//   }
-// }
-
-// function ganttUpdateStatus(newStatus) {
-//   document.getElementById('ganttStatusSpan').innerText = newStatus;
-//   document.getElementById('ganttSelectStatus').style.display = 'none'; // 선택 후 드롭다운 숨김
-// }
-
-// // Document 클릭 시 드롭다운 닫기
-// document.addEventListener('click', function(event) {
-//   var statusDropdown = document.getElementById('ganttSelectStatus');
-//   var ganttStatusDiv = document.getElementById('ganttStatusDiv');
-//   var ganttStatusSpan = document.getElementById('ganttStatusSpan');
-//   if (event.target !== ganttStatusDiv && event.target !== ganttStatusSpan) {
-//     statusDropdown.style.display = 'none';
-// }
-// });
-/////////
 
 
 // 드롭박스 클릭 후 선택 수정
 
-  
-
-// function statusSelectDropdown() {
-//   const statusDropdown = document.querySelector('.statusDropdown');
-
-//   if (statusDropdown.style.display === 'none' || statusDropdown.style.display === '') {
-//       statusDropdown.style.display = 'block'; // 클릭 시 드롭다운 보이기
-//   } else {
-//       statusDropdown.style.display = 'none'; // 다시 클릭 시 드롭다운 숨기기
-//   }
-
-//   statusDropdown.addEventListener('change', function() {
-//       const selectedValue = statusDropdown.value;
-//       console.log('선택된 값:', selectedValue);
-//       // 선택한 값을 처리하기 위한 추가 작업 수행
-//   });
-// }
 
 
 // ************* 체크박스 필터링
@@ -132,76 +72,102 @@ function ganttUpdateStatus(status) {
 // id 값은 임의로 넣은것
 function addSubTask(mainId) {
   const doMGanttTask = document.getElementById('gantt-task-283'); // 원래 자리접근
-  // 새로운 gantt-task 요소 생성
+  // 새로운 gantt-task 요소 생성(최상위)
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
   const newTask = document.createElement('div');
   newTask.classList.add('gantt-task');
   newTask.id = 'gantt-task-800';
   
   // gantt-task 안에 5개 div 생성
+
+  // gantt-task 안 첫번째 div
   // <div class="gantt-editable-div editable"></div>
   const addGanttEditableDiv = document.createElement('div');
   addGanttEditableDiv.classList.add('gantt-editable-div', 'editable');
-  addGanttEditableDiv.setAttribute('onmouseover', 'showDropdown(this)');
-  addGanttEditableDiv.setAttribute('onmouseout', 'hideDropdown(this)');
 
-  // <span class="taskKey">{{$item->id}}</span>
-  const addTaskKey = document.createElement('span');
-  addTaskKey.classList.add('taskKey');
-  addTaskKey.textContent = '800'; 
+  // gantt-task 안 첫번째 div 안 첫번째 btn 
+  // <button class="gantt-task-detail-click">●</button>
+  const addGanttDetailClick = document.createElement('button');
+  addGanttDetailClick.classList.add('gantt-task-detail-click');
+  addGanttDetailClick.textContent = '●';
 
-  // <span class="taskName editable-title">{{$item->title}}</span>
-  const addTaskName = document.createElement('span');
-  addTaskName.classList.add('taskName', 'editable-title', 'updateable');
-  addTaskName.textContent = '업무명'; 
-
-  // <div class="gantt-detail"></div>
+  // gantt-task 안 첫번째 div 안 두번째 div 
+  // <div class="gantt-detail" style="display: none">
   const addGanttDetail = document.createElement('div');
   addGanttDetail.classList.add('gantt-detail');
+  addGanttDetail.style.display = 'none';
 
-  // <button class="gantt-detail-btn" onclick="openTaskModal(1)">자세히보기</button>
+  // gantt-task 안 첫번째 div 안 두번째 div 안 btn
+  // <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
   const addDetailButton = document.createElement('button');
   addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
-  addDetailButton.setAttribute('onclick', 'openTaskModal(1)');
+  addDetailButton.setAttribute('onclick', 'openTaskModal(1,0,800)');
+
+  // gantt-task 안 첫번째 div 안 세번째 div 
+  // <div class="taskKey">{{$item->id}}</div>
+  const addTaskKey = document.createElement('div');
+  addTaskKey.classList.add('taskKey');
+  addTaskKey.textContent = '800'; 
+
+  // gantt-task 안 첫번째 div 안 네번째 div
+  // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
+  const addTaskName = document.createElement('div');
+  addTaskName.classList.add('taskName', 'editable-title');
+  addTaskName.setAttribute("spellcheck", "false");
+  addTaskName.setAttribute("contenteditable", "true");
+  addTaskName.textContent = '업무명'; 
   
 
-  // <div class="gantt-dropdown">{{$item->name}}</div>
+  // gantt-task 안 두번째 div
+  // <div class="responName gantt-update-dropdown"></div>
   const addUserName = document.createElement('div');
-  addUserName.classList.add('responName', 'gantt-dropdown', 'updateable');
-  addUserName.textContent = '담당자';
+  addUserName.classList.add('responName', 'gantt-update-dropdown');
 
-  //  <div>
-  //    <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
-  //  </div> 여기서 부모 div 생성
+  // gantt-task 안 두번째 div 안 span
+  // <span>{{$item->name}}</span>
+  const addUserNamespan = document.createElement('span');
+  addUserNamespan.textContent = '담당자';
+
+  // gantt-task 안 세번째 div
+  // <div class="gantt-status-name"></div>
   const addStatusColorDiv = document.createElement('div');
+  addStatusColorDiv.classList.add('gantt-status-name');
 
-  //  <div class="gantt-status-color" data-status="{{$item->task_status_name}}">{{$item->task_status_name}}</div>
+  // gantt-task 안 세번째 div 안 div
+  // <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"></div>
   const addStatusColor = document.createElement('div');
-  addStatusColor.classList.add('statusName', 'gantt-status-color', 'updateable');
+  addStatusColor.classList.add('statusName', 'gantt-status-color', 'gantt-update-dropdown');
   addStatusColor.setAttribute('data-status', '시작전');
   // addStatusColor.dataset.status = '시작전';
-  addStatusColor.textContent = '시작전';
 
-  // <div>
-  //    <input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}">
-  // </div> 여기서 부모 div 생성
+  // gantt-task 안 세번째 div 안 div 안 span
+  // <span>{{$item->task_status_name}}</span>
+  const addStatusColorSpan =  document.createElement('span');
+  addStatusColorSpan.textContent = '시작전'
+
+
+  // gantt-task 안 네번째 div
+  // <div class="gantt-task-4"></div>
   const addTaskStartDateDiv = document.createElement('div');
-  
-  // <input type="date" name="start" id="start-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->start_date}}">
+  addTaskStartDateDiv.classList.add('gantt-task-4');
+
+  // gantt-task 안 네번째 div 안 input
+  //  <input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
   const addTaskStartDate = document.createElement('input');
   addTaskStartDate.type = 'date';  
   addTaskStartDate.name = 'start';  
   addTaskStartDate.id = 'start-row800';
   // addTaskStartDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
-  // addTaskStartDate.value = '2023-12-01';
+  // addTaskEndDate.value = '2023-12-01';
 
-  // <div>
-  //    <input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end}}">
-  // </div> 여기서 부모 div 생성 
+  // gantt-task 안 다섯번째 div
+  // <div class="gantt-task-5"></div>
   const addTaskEndDateDiv = document.createElement('div');
+  addTaskEndDateDiv.classList.add('gantt-task-5');
 
-  // <input type="date" name="end" id="end-row{{$item->id}}" onchange="test('{{$item->id}}');" value="{{$item->end_date}}">
+  // gantt-task 안 다섯번째 div 안 input
+  // <input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
   const addTaskEndDate = document.createElement('input');
   addTaskEndDate.type = 'date';  
   addTaskEndDate.name = 'end';  
@@ -210,30 +176,29 @@ function addSubTask(mainId) {
   // addTaskEndDate.value = '2023-12-05';
 
 
-  // gantt-task 안에 edit
+  // gantt-task 안에 첫번째
   newTask.appendChild(addGanttEditableDiv);
-  // edit안에 taskkey, taskname, detail(detail-btn)
+  addGanttEditableDiv.appendChild(addGanttDetailClick);
+  addGanttEditableDiv.appendChild(addGanttDetail);
+  addGanttDetail.appendChild(addDetailButton);
   addGanttEditableDiv.appendChild(addTaskKey);
   addGanttEditableDiv.appendChild(addTaskName);
-  addGanttEditableDiv.appendChild(addGanttDetail);
-  // 자세히보기 버튼을 gantt-detail에 추가
-  addGanttDetail.appendChild(addDetailButton);
-
-  // gantt-task 안에 name
+ 
+  // gantt-task 안에 두번째
   newTask.appendChild(addUserName);
-  // gantt-task 안에 statusdiv
-  newTask.appendChild(addStatusColorDiv);
-  // statusdiv 안에 statuscolor
-  addStatusColorDiv.appendChild(addStatusColor);
+  addUserName.appendChild(addUserNamespan)
 
-  // gantt-task 안에 startdatediv
+  // gantt-task 안에 세번째
+  newTask.appendChild(addStatusColorDiv);
+  addStatusColorDiv.appendChild(addStatusColor);
+  addStatusColor.appendChild(addStatusColorSpan);
+
+  // gantt-task 안에 네번째
   newTask.appendChild(addTaskStartDateDiv);
-  // startdiv 안에 startdate
   addTaskStartDateDiv.appendChild(addTaskStartDate);
 
-  // gantt-task 안에 enddatediv
+  // gantt-task 안에 다섯번째
   newTask.appendChild(addTaskEndDateDiv);
-  // startdiv 안에 enddate
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
   // 원래 자리 다음에 생성
@@ -320,45 +285,41 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+// ************* 버튼에 클릭 시 gantt-detail 요소 드롭다운 보이기
+// 모든 gantt-task-detail-click 버튼을 선택합니다.
+const taskDetailClickBtns = document.querySelectorAll('.gantt-task-detail-click');
 
-// ************* 업무명 클릭하여 바로 수정
-// 요소를 클릭하여 편집 가능하게 만드는 함수
-function makeEditable(element) {
-  element.contentEditable = true;
-  element.focus();
-}
-// 요소를 클릭하여 편집 상태로 전환
-const editableDivs = document.querySelectorAll('.gantt-editable-div');
-editableDivs.forEach(function(element) {
-  element.addEventListener('click', function(event) {
-    const targetElement = event.target;
-    makeEditable(targetElement);
-  });
-});
+// 각 버튼에 대해 반복하여 이벤트 리스너를 추가합니다.
+taskDetailClickBtns.forEach(function(button) {
+    button.addEventListener('click', function() {
+        // 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
+        const parentEditableDiv = button.closest('.gantt-editable-div');
 
+        // 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
+        const ganttDetail = parentEditableDiv.querySelector('.gantt-detail');
 
-
-// ************* 업무명에 마우스 올렸을 때 자세히 보기 버튼 보이기
-function showDropdown(element) {
-  var detailDropdown = element.querySelector('.gantt-detail');
-  if (detailDropdown) {
-    detailDropdown.style.display = 'block';
-  }
-}
-
-function hideDropdown(element) {
-  var detailDropdown = element.querySelector('.gantt-detail');
-  if (detailDropdown) {
-    detailDropdown.style.display = 'none';
-  }
-}
-// 자세히 보기 편집 이벤트 막기
-var detailButtons = document.querySelectorAll('.gantt-detail-btn');
-detailButtons.forEach(function(button) {
-    button.addEventListener('click', function(event) {
-        event.stopPropagation(); // 부모 요소로 이벤트 전파 방지
+        // gantt-detail 요소의 표시 여부를 토글합니다.
+        if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
+          ganttDetail.style.display = 'block';
+          // gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+          button.style.color = 'rgb(151, 87, 255)'; // 여기서 원하는 색상으로 변경 가능합니다.
+      } else {
+          ganttDetail.style.display = 'none';
+          // gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화합니다.
+          button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정합니다.
+      }
+        // 문서에 전체 이벤트 리스너 추가
+        document.addEventListener('click', function closeGanttDetail(e) {
+          // 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
+          if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
+              ganttDetail.style.display = 'none';
+              button.style.color = ''; // 버튼 색상 초기화
+              document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
+            }
+        });
     });
 });
+
 
 
 
@@ -443,57 +404,6 @@ function test(rowNum) {
    * 6. 
    */
 
-// ajax get
-// const axios = require('axios').default;
-// axios.get('/api/gantt', {
-//   headers: {
-//     'Content-Type': 'application/json',
-//   }
-// })
-//     .then(res => {
-//       console.log(res);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       throw new Error(err);
-//     })
-
-// ************* ajax 수정
-
-// const taskNameUp = document.querySelector('.taskName');
-// const responNameUp = document.querySelector('.responName');
-// const statusNameUp = document.querySelector('.statusName');
-// const startDateUp = document.querySelector('.start-date');
-// const endDateUp = document.querySelector('.end-date');
-
-// function handleBlur() {
-//   alert('수정이 완료되었습니다.');
-//   let data = {
-//     'title': taskNameUp.textContent,
-//     'task_responsible_id': responNameUp.textContent,
-//     'task_status_id': statusNameUp.textContent,
-//     'start_date': startDateUp.value,
-//     'end_date': endDateUp.value
-//   };
-  
-//   fetch('/ganttchartRequest', {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(data)
-//   })
-//   .then(res => {
-//     if(res.ok) {
-//       console.log('테이터가 성공적으로 전송');
-//     } else {
-//       console.error('데이터 전송에 실패');
-//     }
-//   })
-//   .catch(error => {
-//     console.log('오류 발생:', error)
-//   })
-// }
 
 // taskNameUp.addEventListener('blur', handleBlur);
 // responNameUp.addEventListener('blur', handleBlur);
@@ -520,18 +430,18 @@ console.log(url);
 }
 
 // 수정 완료 팝업 창 보이기
-// function showPopupMessage(message) {
-//   const popupModal = document.getElementById('ganttPopupModal');
-//   const popupMessage = document.getElementById('ganttPopupMessage');
+function showPopupMessage(message) {
+  const popupModal = document.getElementById('ganttPopupModal');
+  const popupMessage = document.getElementById('ganttPopupMessage');
   
-//   popupMessage.textContent = message;
-//   popupModal.style.display = 'block';
+  popupMessage.textContent = message;
+  popupModal.style.display = 'block';
 
-//   // 일정 시간(여기서는 3초) 후 팝업 창 닫기
-//   setTimeout(() => {
-//     popupModal.style.display = 'none';
-//   }, 2000);
-// }
+// 일정 시간(여기서는 3초) 후 팝업 창 닫기
+  setTimeout(() => {
+    popupModal.style.display = 'none';
+  }, 2000);
+}
 
 // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
 document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
@@ -589,7 +499,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
         sendUpdateRequest(id, updatedValue, numbersOnly);
 
         // 수정 완료 팝업 메시지 표시
-        // showPopupMessage('수정 완료!');
+        showPopupMessage('수정 완료!');
     });
 });
 
@@ -696,114 +606,11 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
 // });
 
   // Axios 요청 보내기
-// Ajax를 사용하여 수정된 데이터를 서버로 전송하는 함수
-// 수정 가능한 필드를 변경했을 때 발생하는 이벤트
 
 
-// function sendDataToServer(taskNameUp, responNameUp, statusNameUp, startDateUp, endDateUp) {
-//   let data = {
-//     'title': taskNameUp,
-//     'task_responsible_id': responNameUp,
-//     'task_status_id': statusNameUp,
-//     'start_date': startDateUp,
-//     'end_date': endDateUp
-//   }
-//   let headers = {
-//       headers: { 'Content-Type': 'application/json' } 
-//   }
-//   // Ajax를 사용하여 서버로 데이터 전송
-//   axios.put('/api/gantt/', data, headers)
-//       .then(res => {
-//           console.log('데이터가 성공적으로 업데이트되었습니다.');
-//           console.log(res.data);
-//           // 필요한 경우 추가 작업 수행
-//       })
-//       .catch(error => {
-//           console.log(error);
-//           throw new Error(error);
-//           // 오류 처리
-//       });
-// }
-
-// document.querySelectorAll('.editable-title').forEach(element => {
-//   element.addEventListener('blur', function() {
-//     const taskNameUp = document.querySelector('.taskName').textContent;
-//     const responNameUp = document.querySelector('.responName').textContent;
-//     const statusNameUp = document.querySelector('.statusName').textContent;
-//     const startDateUp = document.querySelector('.start-date').value;
-//     const endDateUp = document.querySelector('.end-date').value;
-
-//       // 수정된 데이터를 서버로 전송
-//       sendDataToServer(taskNameUp, responNameUp, statusNameUp, startDateUp, endDateUp);
-//   });
-// });
-
-
-
-
-//   function sendDataToServer(itemId) {
-//     var title = document.querySelector('.taskName' + itemId).innerText; // 수정된 title 가져오기
-//     var name = document.querySelector('.responName' + itemId).innerText; // 수정된 name 가져오기
-//     var status = document.querySelector('.gantt-status-color').getAttribute('data-status'); // 수정된 task_status_name 가져오기
-//     var startDate = document.getElementById('start-row' + itemId).value; // 수정된 start_date 가져오기
-//     var endDate = document.getElementById('end-row' + itemId).value; // 수정된 end_date 가져오기
-
-
-//     var data = {
-//         id: itemId,
-//         title: title,
-//         name: name,
-//         status: status,
-//         start_date: startDate,
-//         end_date: endDate
-//     };
-
-//     fetch('/ganttchart', {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(data),
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         // 서버 응답 처리
-//         console.log('데이터가 성공적으로 전송되었습니다.', data);
-//     })
-//     .catch(error => {
-//         // 오류 처리
-//         console.error('데이터 전송 중 오류가 발생했습니다:', error);
-//     });
-// }
 
 // ********* 수정했을 때 팝업창 뜨게
-// function showPopup() {
-//   // 여기에 팝업을 표시하는 코드를 작성하세요
-//   alert('내용이 변경되었습니다!');
-// }
 
-// const targetNode = document.querySelectorAll('.editable-title'); // 감지할 대상 요소 선택
-
-// // Observer 인스턴스 생성
-// const observer = new MutationObserver(function(mutationsList) {
-//   for (let mutation of mutationsList) {
-//     if (mutation.type === 'childList' || mutation.type === 'characterData') {
-//       // 내용이 변경되면 팝업을 표시하는 함수 호출
-//       showPopup();
-//     }
-//   }
-// });
-
-// // Observer 구성
-// const config = { attributes: true, childList: true, subtree: true, characterData: true };
-
-// // 설정된 변화를 관찰하기 시작
-// observer.observe(targetNode, config);
 
 
     
