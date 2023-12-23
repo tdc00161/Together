@@ -96,6 +96,8 @@ let SUBMIT = document.querySelectorAll('.submit')
 
 // 담당자 모달 초기화용 클론
 let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
+// 담당자 초기화용 클론
+let cloneResponsibleReset = RESPONSIBLE[0].cloneNode(true)
 // 담당자 추가용 클론
 let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true)
 // 우선순위 모달 초기화용 클론
@@ -104,10 +106,10 @@ let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
 let clonePriority = PRIORITY_ONE[0].cloneNode(true)
 // 댓글 초기화용 클론
 let cloneResetComments = COMMENT_PARENT.cloneNode(true)
-// 좌측 간트 추가용 클론
-let cloneLeftGanttChart = GANTT_LEFT.cloneNode(true)
-// 우측 간트 추가용 클론
-let cloneRightGanttChart = GANTT_RIGHT.cloneNode(true)
+// 좌측 간트 초기화용 클론
+let cloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
+// 우측 간트 초기화용 클론
+let cloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
 // 모달 내용 저장소
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
@@ -152,6 +154,18 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 	// 작성 모달 띄우기
 	if (a === 0) {
+		// 작성 전 초기화
+		document.querySelector('.insert_title').value = ''
+		document.querySelectorAll('.status_val')[0].id = 'checked'
+		if(!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')){
+			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
+		}
+		DEAD_LINE[0].classList.remove('d-none')
+		if(!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')){
+			PRIORITY[0].removeChild(document.querySelectorAll('.insert_priority_one')[0])
+		}
+		
+
 		// 프로젝트 색 가져오기
 		fetch('/api/project/' + thisProjectId, {
 			method: 'GET',
@@ -272,10 +286,13 @@ function createTask() {
 	}
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
+		postData.task_status_name = ''
 		postData.task_responsible_id = document.querySelectorAll('.responsible_user')[0].textContent
+		postData.task_responsible_name = ''
 		postData.start_date = document.querySelectorAll('.start_date')[0].value
 		postData.end_date = document.querySelectorAll('.end_date')[0].value
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
+		postData.priority_name = ''
 		postData.category_id = 0
 	}
 	fetch('/api/task', {
@@ -289,8 +306,33 @@ function createTask() {
 		.then(response => response.json())
 		.then(data => {
 			// console.log(data);
-			document.querySelector('gantt-task-body')
-			cloneLeftGanttChart
+			let refreshCloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
+			let refreshCloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
+
+			let gantt_task_element = refreshCloneLeftGanttChart
+			let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+			let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+			let taskKey_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling
+			let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling
+			let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
+			let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
+			gantt_task_element.id = 'gantt-task-' + data.data.id
+			start_element.value = data.data.start_date
+			start_element.id = 'start-row' + data.data.id
+			start_element.onchange = (event) => {
+				test(data.data.id);
+			}
+			end_element.value = data.data.end_date
+			end_element.id = 'end-row' + data.data.id
+			end_element.onchange = (event) => {
+				test(data.data.id);
+			}
+			taskKey_element.textContent = data.data.task_number
+			taskName_element.textContent = data.data.title
+			responsibleName_element.textContent = data.names.task_responsible_name
+			statusName_element.textContent = data.names.task_status_name
+			document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
+			document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
 			closeTaskModal(0)
 			document.querySelector('.gantt-content-wrap').scrollIntoView(false)
 		})
@@ -320,7 +362,7 @@ function updateTask() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data.data);
+			// console.log(data.data);
 			closeTaskModal(0)
 		})
 		.catch(err => {
@@ -346,6 +388,27 @@ function closeMoreModal() {
 	MORE_MODAL.style = 'display: none;'
 }
 
+// 업무상태 색삽입 모듈
+function statusColorAutoPainting(switching, paintTo) {
+	switch (switching) {
+		case '시작전':
+			paintTo.style = 'background-color: #B1B1B1;';
+			break;
+		case '진행중':
+			paintTo.style = 'background-color: #04A5FF;';
+			break;
+		case '피드백':
+			paintTo.style = 'background-color: #F34747;';
+			break;
+		case '완료':
+			paintTo.style = 'background-color: #64C139;';
+			break;
+		default:
+			paintTo.style = 'background-color: var(--m-btn);';
+			break;
+	}
+}
+
 // 업무상태 선택
 function changeStatus(event) {
 	// 체크인 애들 다 없애기
@@ -359,20 +422,24 @@ function changeStatus(event) {
 	// 체크된 상태 갱신하여 받아오기
 	const NOW_CHECKED = document.querySelector('#checked')
 	// 색 삽입
-	switch (NOW_CHECKED.textContent) {
-		case '시작전':
-			NOW_CHECKED.style = 'background-color: #B1B1B1;';
-			break;
-		case '진행중':
-			NOW_CHECKED.style = 'background-color: #04A5FF;';
-			break;
-		case '피드백':
-			NOW_CHECKED.style = 'background-color: #F34747;';
-			break;
-		case '완료':
-			NOW_CHECKED.style = 'background-color: #64C139;';
-			break;
-	}
+	statusColorAutoPainting(NOW_CHECKED.textContent, NOW_CHECKED)
+	// switch (NOW_CHECKED.textContent) {
+	// 	case '시작전':
+	// 		NOW_CHECKED.style = 'background-color: #B1B1B1;';
+	// 		break;
+	// 	case '진행중':
+	// 		NOW_CHECKED.style = 'background-color: #04A5FF;';
+	// 		break;
+	// 	case '피드백':
+	// 		NOW_CHECKED.style = 'background-color: #F34747;';
+	// 		break;
+	// 	case '완료':
+	// 		NOW_CHECKED.style = 'background-color: #64C139;';
+	// 		break;
+	// 	default:
+	// 		NOW_CHECKED.style = 'background-color: var(--m-btn);';
+	// 		break;
+	// }
 }
 
 // 담당자 추가
@@ -382,7 +449,6 @@ function addResponsible(a) {
 		ADD_RESPONSIBLE_MODAL.removeChild(ADD_RESPONSIBLE_MODAL.firstChild);
 	}
 	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
-	// responsibleModalClone.remove()
 
 	fetch('/api/project/user/' + thisProjectId, {
 		method: 'GET',
@@ -614,7 +680,7 @@ function commitUpdateComment() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data.data);
+			console.log(data);
 			openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
 		.catch(err => {
@@ -702,6 +768,7 @@ function addComment() {
 
 // 값을 모달에 삽입
 function insertModalValue(data, a) {
+	// console.log(data);
 	if (a === 1) { // 상세
 		WRITER_NAME.textContent = data.task[0].wri_name;
 		TASK_CREATED_AT.textContent = data.task[0].created_at;
@@ -719,23 +786,24 @@ function insertModalValue(data, a) {
 // 업무상태 값과 색상 주기
 function statusColor(data) {
 	DET_STATUS_VAL.textContent = data.task[0].status_name;
-	switch (DET_STATUS_VAL.textContent) {
-		case '시작전':
-			DET_STATUS_VAL.style = 'background-color: #B1B1B1;';
-			break;
-		case '진행중':
-			DET_STATUS_VAL.style = 'background-color: #04A5FF;';
-			break;
-		case '피드백':
-			DET_STATUS_VAL.style = 'background-color: #F34747;';
-			break;
-		case '완료':
-			DET_STATUS_VAL.style = 'background-color: #64C139;';
-			break;
-		default:
-			DET_STATUS_VAL.style = 'background-color: #FFFFFF;';
-			break;
-	}
+	statusColorAutoPainting(DET_STATUS_VAL.textContent, DET_STATUS_VAL)
+	// switch (DET_STATUS_VAL.textContent) {
+	// 	case '시작전':
+	// 		DET_STATUS_VAL.style = 'background-color: #B1B1B1;';
+	// 		break;
+	// 	case '진행중':
+	// 		DET_STATUS_VAL.style = 'background-color: #04A5FF;';
+	// 		break;
+	// 	case '피드백':
+	// 		DET_STATUS_VAL.style = 'background-color: #F34747;';
+	// 		break;
+	// 	case '완료':
+	// 		DET_STATUS_VAL.style = 'background-color: #64C139;';
+	// 		break;
+	// 	default:
+	// 		DET_STATUS_VAL.style = 'background-color: var(--m-btn);';
+	// 		break;
+	// }
 }
 
 // 담당자 값체크, 삽입
@@ -753,6 +821,7 @@ function responsibleName(data, a) {
 
 // 마감일자 값체크, 삽입
 function deadLineValue(data, a) {
+	// console.log(data);
 	//초기화
 	START_DATE[a].placeholder = '시작일';
 	END_DATE[a].placeholder = '마감일';
@@ -760,13 +829,13 @@ function deadLineValue(data, a) {
 	END_DATE[a].value = null
 	//삽입
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
-		DEAD_LINE[a].style = 'display: none;'
+		DEAD_LINE[a].classList.add('d-none')
 	} else {
 		START_DATE[a].placeholder = data.task[0].start_date;
 		END_DATE[a].placeholder = data.task[0].end_date;
 		START_DATE[a].value = data.task[0].start_date;
 		END_DATE[a].value = data.task[0].end_date;
-		DEAD_LINE[a].style = 'display: flex;'
+		DEAD_LINE[a].classList.add('d-none')
 		if (DEAD_LINE[a].classList.contains('d-none')) {
 			DEAD_LINE[a].classList.remove('d-none')
 		}
@@ -806,6 +875,7 @@ function priorityValue(data, a) {
 
 // 상세업무 내용 값체크, 삽입
 function modalContentValue(data, a) {
+	// console.log(data);
 	if (a === 1) {
 		if (data.task[0].content === null) {
 			DETAIL_CONTENT.textContent = '';
@@ -868,6 +938,7 @@ function commentControl(data) {
 
 // 상위업무 컨트롤
 function parentTaskControl(data, a) {
+	// console.log(data);
 	// 상위업무 초기화
 	OVERHEADER[a].style = 'display: none;'
 	OVERHEADER_PARENT[a].style = 'display: none;'
@@ -910,7 +981,7 @@ function openInsertDetailModal(a) {
 		TASK_MODAL[0].style = 'display: none;'
 	}
 }
-// 글/업무 플래그
+// 공지/업무 플래그 : 공지면 업무속성 미출력
 function TaskFlg(a, b) {
 	if (b === 1) {
 		BOARD_TYPE[a * 2].classList.add('d-none');
@@ -934,31 +1005,31 @@ function updateModalOpen() {
 		.then(data => {
 			// console.log(data);
 			// 값을 모달에 삽입
-			insertModalValue(data.data, 0);
+			insertModalValue(data, 0);
 
 			// 업무상태 값과 색상 주기
-			updateStatusColor(data.data);
+			updateStatusColor(data);
 
 			// 담당자 값체크, 삽입
-			updateResponsibleName(data.data, 0);
+			updateResponsibleName(data, 0);
 
 			// 마감일자 값체크, 삽입
-			deadLineValue(data.data, 0);
+			deadLineValue(data, 0);
 
 			// 우선순위 값체크, 삽입
-			updatePriorityValue(data.data, 0);
+			updatePriorityValue(data, 0);
 
 			// 상세업무 내용 값체크, 삽입
-			modalContentValue(data.data, 0);
+			modalContentValue(data, 0);
 
-			// 댓글창 없을 때 사라질 값 갱신선언
-			COMMENT_PARENT.style = 'padding: 20;'
+			// // 댓글창 없을 때 사라질 값 갱신선언
+			// COMMENT_PARENT.style = 'padding: 20;'
 
-			// 댓글 컨트롤
-			commentControl(data.data);
+			// // 댓글 컨트롤
+			// commentControl(data);
 
 			// 상위업무 컨트롤
-			parentTaskControl(data.data, 0);
+			parentTaskControl(data, 0);
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -993,6 +1064,7 @@ function deleteTask() {
 }
 
 function updateStatusColor(data) {
+	// console.log(data);
 	let status_val = document.querySelectorAll('.status_val')
 	let element_for_painting = null;
 	for (let index = 0; index < status_val.length; index++) {
@@ -1003,26 +1075,28 @@ function updateStatusColor(data) {
 			element_for_painting.id = 'checked'
 		}
 	}
-	switch (data.task[0].status_name) {
-		case '시작전':
-			element_for_painting.style = 'background-color: #B1B1B1;';
-			break;
-		case '진행중':
-			element_for_painting.style = 'background-color: #04A5FF;';
-			break;
-		case '피드백':
-			element_for_painting.style = 'background-color: #F34747;';
-			break;
-		case '완료':
-			element_for_painting.style = 'background-color: #64C139;';
-			break;
-		default:
-			element_for_painting.style = 'background-color: var(--m-btn);';
-			break;
-	}
+	statusColorAutoPainting(data.task[0].status_name, element_for_painting)
+	// switch (data.task[0].status_name) {
+	// 	case '시작전':
+	// 		element_for_painting.style = 'background-color: #B1B1B1;';
+	// 		break;
+	// 	case '진행중':
+	// 		element_for_painting.style = 'background-color: #04A5FF;';
+	// 		break;
+	// 	case '피드백':
+	// 		element_for_painting.style = 'background-color: #F34747;';
+	// 		break;
+	// 	case '완료':
+	// 		element_for_painting.style = 'background-color: #64C139;';
+	// 		break;
+	// 	default:
+	// 		element_for_painting.style = 'background-color: var(--m-btn);';
+	// 		break;
+	// }
 }
 
 function updateResponsibleName(data, a) {
+	// console.log(data);
 	// 기존에 클론한 엘리먼트에 값을 넣기
 	if (data.task[0].res_name) {
 		cloneResponsible.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].res_name
@@ -1043,6 +1117,7 @@ function updateResponsibleName(data, a) {
 }
 
 function updatePriorityValue(data, a) {
+	// console.log(data);
 	// 기존에 클론한 엘리먼트에 값을 넣기
 	if (data.task[0].priority_name) {
 		clonePriority.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].priority_name

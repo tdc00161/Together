@@ -139,61 +139,79 @@ class TaskController extends Controller
     // 업무 작성
     public function store(Request $request)
     {
+        // 반환 틀
         $responseData = [
             "code" => "0",
             "msg" => "",
             "data" => []
         ];
+
+        // 입력받은 데이터로 pk(id) 추출
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
         $sta = DB::table('basedata as status')
             ->where('data_title_code', 0)
             ->where('data_content_name', $request['task_status_id'])
-            ->select('data_content_code')
+            ->select('data_content_code','data_content_name')
             ->get();
         Log::debug('상태: ' . $sta);
         $pri = DB::table('basedata')
             ->where('data_title_code', 1)
             ->where('data_content_name', $request['priority_id'])
-            ->select('data_content_code')
+            ->select('data_content_code','data_content_name')
             ->get();
         Log::debug('순위: ' . $pri);
         $res = DB::table('users')
             ->where('name', $request['task_responsible_id'])
-            ->select('id')
+            ->select('id','name')
             ->get();
         Log::debug('user_id: ' . $res);
         $tsk_num = DB::table('tasks')
             ->where('project_id', $request['project_id'])
             ->count();
         Log::debug('$tsk_num: ' . $tsk_num);
+
+        // 이메일 추가 시 대비
         // $eml = DB::table('users')->where('email', $request['email'])->first();
         
+        // 입력 컨텐츠 유효성 검사
         // $tit = $request['title']; // TODO: 유효성 처리 추가
         // $con = $request['content']; // TODO: 유효성 처리 추가
-        
-        
         // $request['title'] = $tit;
         // $request['content'] = $con;
-        // $request['project_id'] = $con;
+
+        // nullable
         if(!empty($sta[0])){
             $request['task_status_id'] = $sta[0]->data_content_code;
+            $responseData['names']['task_status_name'] = $sta[0]->data_content_name;
+        } else {
+            $request['task_status_name'] = null;
         }
         if(!empty($res[0])){
             $request['task_responsible_id'] = $res[0]->id;
+            $responseData['names']['task_responsible_name'] = $res[0]->name;
+        } else {
+            $request['task_responsible_name'] = null;
         }
+        if(!empty($pri[0])){
+            $request['priority_id'] = $pri[0]->data_content_code;
+            $responseData['names']['priority_name'] = $pri[0]->data_content_name;
+        } else {
+            $request['priority_name'] = null;
+        }
+
+        // not null
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
         $request['category_id'] = $nowUser;
         $request['task_number'] = $tsk_num + 1;
+        $request['test'] = '갱신 체크 1319';
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
-        if(!empty($pri[0])){
-            $request['priority_id'] = $pri[0]->data_content_code;
-        }
-        // Log::debug($request);
+        Log::debug($request);
 
+        // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
         if (!$result) {
             $responseData['msg'] = 'task not created.';
