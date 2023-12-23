@@ -154,7 +154,7 @@
     justify-content: space-between;
 	/* height: 6%; */
 	background-color: rgba(23, 24, 29, 0.4);
-	/* margin: 0px -40px; */
+	margin: 0px -40px;
 }
 
 .gantt-search {
@@ -258,8 +258,9 @@
 	background-color: #64C139;
 }
 .gantt-status-color {
-	padding: 4px 0px;
+	padding: 0px 15px;
     border-radius: 15px;
+    height: 25px;
 }
 
 .gantt-rank {
@@ -295,7 +296,7 @@
 }
 .gantt-task-header {
 	display: flex;
-	justify-content: space-around;
+	justify-content: flex-start;
 	border-bottom: 1px solid var(--inactive-color);
 	text-align: center;
 	height: 30px;
@@ -336,40 +337,78 @@
 	text-align: center;
 	background: none;
 }
+/* .gantt-task:nth-child(1) {
+	background-color: #04A5FF;
+}
+.gantt-task:nth-child(2) {
+	background-color: #64C139;
+}
+.gantt-task:nth-child(3) {
+	background-color: #9656FF;
+}
+.gantt-task:nth-child(4) {
+	background-color: #F34747;
+}
+.gantt-task:nth-child(5) {
+	background-color: chocolate;
+} */
+
+.gantt-task-detail-click, .taskKey, .taskName {
+	display: inline-block;
+}
 
 .gantt-task>div {
-	width: 20%;
 	border-right: 1px solid var(--inactive-color);
 	border-bottom: 1px solid var(--inactive-color);
 	padding: 10px 5px;
 	height: 43.5px;
-	text-overflow: ellipsis;
+	/* text-overflow: ellipsis; */
   	overflow: hidden;
   	white-space: nowrap;
 }
 
-/* .gantt-task div {
-	padding: 10px 0px;
-	height: 43.5px;
-} */
-
-/* .gantt-task div input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-    pointer-events: none;
-} */
-
+/*  업무 부분 너비 조절 */
+.gantt-task .gantt-editable-div {
+	width: 30%;
+}
+.gantt-task .responName {
+	width: 16%;
+}
+.gantt-task .gantt-status-name {
+	width: 18%;
+}
+.gantt-task .gantt-task-4 {
+	width: 18%;
+}
+.gantt-task .gantt-task-5 {
+	width: 18%;
+}
 /* 업무명 수정 가능 */
 .editable {
 	/* border: 1px solid #ccc; */
 	padding: 5px;
 	cursor: pointer;
 }
+/*  */
+.gantt-editable-div {
+	display: flex;
+}
+.gantt-task-detail-click {
+	flex: 0 0 10%;
+}
+.taskKey {
+	flex: 0 0 20%;
+}
+.taskName {
+	flex: 1;
+}
 
-.editable:hover {
+.gantt-editable-div:hover .gantt-task-detail-click {
+	color: rgb(151, 87, 255);
+}
+.gantt-editable-div:hover .taskName {
 	background-color: rgba(151, 87, 255, 0.3);
 	border: 1px solid rgb(151, 87, 255);
-
 }
 
 /* .editable > img {
@@ -394,15 +433,22 @@
 }
 
 /* 드롭박스 선택 수정 */
-.gantt-dropdown {
+.gantt-update-dropdown {
 	position: relative;
 	display: inline-block;
-	/* -webkit-user-select: none; body에 적용된 스타일 */
-    user-select: auto; /* contenteditable 속성을 가진 요소에 대한 스타일 재정의 */
+	width: 90%;
 }
-/* .gantt-status-color {
-	background-color: #000000c5;
-} */
+.statusDropdown {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	width: 100%; /* 드롭다운이 부모 요소에 가득 차도록 설정 */
+	padding: 5px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+}
 
 /* .gantt-dropdown-content {
 	display: none;

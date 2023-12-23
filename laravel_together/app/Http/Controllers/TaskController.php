@@ -95,7 +95,7 @@ class TaskController extends Controller
                 ON tks.task_responsible_id = us.id
                 LEFT JOIN projects pj
                 ON tks.project_id = pj.id
-            where tks.deleted_at IS NULL
+            WHERE tks.deleted_at IS NULL
             
             
         ");
@@ -289,8 +289,8 @@ class TaskController extends Controller
             if($updatedData != ''){
                 Log::debug($updatedData.": 들어온 ".$key."값입니다");
                 Log::debug($result->$key.'안에 값이 있습니다');
-                // $result->$key = $updatedData;
-                // $result->save();
+                $result->$key = $updatedData;
+                $result->save();
 
                 $responseData["code"] = "U01";
                 $responseData["msg"] = $id." updated";
