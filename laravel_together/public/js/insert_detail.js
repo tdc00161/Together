@@ -141,8 +141,6 @@ BEHIND_MODAL.addEventListener('click', function (event) {
 	}
 })
 
-
-
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
 function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, task_id)
@@ -152,19 +150,22 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	// 더보기 모달 닫기
 	closeMoreModal()
 
+	// 창 틀 우선 띄우기
+	// TASK_MODAL[a].classList.remove('d-none')
+
 	// 작성 모달 띄우기
 	if (a === 0) {
 		// 작성 전 초기화
 		document.querySelector('.insert_title').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
-		if(!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')){
+		if (!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
 		}
 		DEAD_LINE[0].classList.remove('d-none')
-		if(!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')){
+		if (!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')) {
 			PRIORITY[0].removeChild(document.querySelectorAll('.insert_priority_one')[0])
 		}
-		
+
 
 		// 프로젝트 색 가져오기
 		fetch('/api/project/' + thisProjectId, {
@@ -227,32 +228,42 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
+				console.log(1);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
 
+				console.log(1);
 				// 업무상태 값과 색상 주기
 				statusColor(data);
 
+				console.log(1);
 				// 담당자 값체크, 삽입
 				responsibleName(data, a);
 
+				console.log(1);
 				// 마감일자 값체크, 삽입
 				deadLineValue(data, a);
 
+				console.log(1);
 				// 우선순위 값체크, 삽입
 				priorityValue(data, a);
 
+				console.log(1);
 				// 상세업무 내용 값체크, 삽입
 				modalContentValue(data, a);
 
+				console.log(1);
 				// 댓글 컨트롤
 				commentControl(data);
 
+				console.log(1);
 				// 상위업무 컨트롤
 				parentTaskControl(data, a);
 
 				// 현재 업무 id 저장
 				now_task_id = data.task[0].id
+
+				TASK_MODAL[a].classList.remove('d-none')
 			})
 			.catch(error => {
 				console.error('Error:', error);
