@@ -117,35 +117,25 @@
         <section class="gantt-all-task">
             <div class="gantt-task-wrap">
                 <div class="gantt-task-header">
-                    <div class="gantt-task-header-div" onclick="orderDropdown('orderTask')" style="width: 30%">
+                    <div class="gantt-task-header-div" style="width: 30%">
                         <span class="gantt-order">업무명</span>
-                        <img src="/img/table.png" alt="">
-                        <img src="/img/table2.png" alt="" style="display: none">
+                        <button type="button"><img src="/img/table3.png" alt=""></button>
                     </div>
-                    <div class="gantt-task-header-div" onclick="orderDropdown('orderUser')" style="width: 16%">
+                    <div class="gantt-task-header-div" style="width: 16%">
                         <span class="gantt-order">담당자</span>
-                        <img src="/img/table.png" alt="">
-                        <img src="/img/table2.png" alt="" style="display: none">
+                        <button type="button"><img src="/img/table3.png" alt=""></button>
                     </div>
-                    <div class="gantt-task-header-div" onclick="orderDropdown('orderStatus')" style="width: 18%">
+                    <div class="gantt-task-header-div" style="width: 18%">
                         <span class="gantt-order">상태</span>
-                        <img src="/img/table.png" alt="">
-                        <img src="/img/table2.png" alt="" style="display: none">
+                        <button type="button"><img src="/img/table3.png" alt=""></button>
                     </div>
-                    <div class="gantt-task-header-div" onclick="orderDropdown('orderStart')" style="width: 18%">
+                    <div class="gantt-task-header-div" style="width: 18%">
                         <span class="gantt-order">시작일</span>
-                        <img src="/img/table.png" alt="">
-                        <img src="/img/table2.png" alt="" style="display: none">
+                        <button type="button"><img src="/img/table3.png" alt=""></button>
                     </div>
-                    <div class="gantt-task-header-div" onclick="orderDropdown('orderEnd')" style="width: 18%">
+                    <div class="gantt-task-header-div" style="width: 18%">
                         <span class="gantt-order">마감일</span>
-                        <img src="/img/table.png" alt="">
-                        <img src="/img/table2.png" alt="" style="display: none">
-                        <div class="gantt-order-div" id="orderEndDropdown">
-                            <button class="gantt-order-task">오름차순</button>
-                            <br>
-                            <button class="gantt-order-task">내림차순</button>
-                        </div>
+                        <button type="button"><img src="/img/table3.png" alt=""></button>
                     </div>
                 </div>
                 <div class="gantt-task-body">
@@ -161,9 +151,9 @@
                                 <div class="taskKey">{{$item->id}}</div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName gantt-update-dropdown"><span>{{$item->name}}</span></div>
+                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->name}}</span></div>
                             <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"><span>{{$item->task_status_name}}</span></div>
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"><span id="statusNameSpan">{{$item->task_status_name}}</span></div>
                             </div>
                             <div class="gantt-task-4">
                                 <input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">

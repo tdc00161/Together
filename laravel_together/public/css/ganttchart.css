@@ -144,6 +144,7 @@
 	margin: -40px -40px 0 -40px;
 	position: relative;
 	top: 40px;
+	overflow: auto;
 }
 
 /* 검색, 드롭박스, 업무추가버튼 영역 */
