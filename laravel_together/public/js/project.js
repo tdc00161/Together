@@ -68,8 +68,8 @@ var categoryColor = document.getElementById('color');
 //       }
 // }
 
-// 프로젝트 d-day 계산
 
+// 프로젝트 d-day 계산
 let dday = document.getElementById("dday");
 function total() {
    start_day = new Date(document.getElementById("start_date").value) // 시작일자 가져오기
@@ -79,12 +79,24 @@ function total() {
    gap = end_day - start_day
    console.log(gap)
    result = Math.floor(gap / (1000 * 60 * 60 * 24))
+
    // // 시작일 or 마감일 1개만 수정되었을 때도 변경ㅇ 설정?
    // if(start_day!=null || end_day!=null) {
    //    dday.innerHTML = result;
    // }
    dday.innerHTML = 'D-' + result;
 }
+
+
+// 프로젝트 날짜 업데이트
+function updateDate() {
+   const StartD = document.getElementById("start_date").value;
+   const EndD = document.getElementById("end_date").value;
+
+   const updateSD = StartD.toISOString().split('T')[0];
+   
+}
+
 
 // console.log(dday);
 

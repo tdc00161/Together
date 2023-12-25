@@ -44,7 +44,7 @@
                 <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}">
             </label>
             <label class="label" for="end_date"> 마감일
-                <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}">
+                <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}">
             </label>
         </div>
     </div>
@@ -142,15 +142,19 @@
                                 <col class="col3">
                             </colgroup>
                             @foreach ($data as $item)
+
                                 <tr class="box_ul">
-                                    <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
-                                    {{-- @if ($item->category_name == '공지')
-                                        {{$item->category_name.color='red'}};
-                                        
-                                    @else ($item->category_name == '업무')
-                                        color:blue;
-                                    @endif --}}
-                                    <td class="td_pd">{{Str::limit($item->title,40,'...')}}</td>
+                                    {{-- <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}
+                                        @if ($item->category_name == "공지")
+                                            <div style="color:red"></div>;
+                                        @elseif ($item->category_name == "업무")
+                                            <div style="color:blue"></div>;
+                                        @endif
+                                    </td>  --}}
+                                    <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td>
+                                    {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+
+                                    <td class="td_pd">{{Str::limit($item->title,37,'...')}}</td>
                                     {{-- <td>{{$item->user_id}}</td> --}}
                                 </tr>
                             @endforeach

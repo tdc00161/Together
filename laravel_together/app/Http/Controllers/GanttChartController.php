@@ -10,12 +10,48 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\BaseData;
 
 class GanttChartController extends Controller
 {
     // 간트차트 전체화면 출력
     public function ganttindex()
 {
+        $user = Auth::user();
+
+        $user_data = project::where('user_pk',$user->id)
+        ->select('id'
+                ,'user_pk'
+                ,'color_code_pk'
+                ,'project_title'
+                ,'project_content'
+                ,'start_date'
+                ,'end_date'
+                ,'created_at'
+                ,'flg'
+                )
+        ->get();
+
+        // 대표 레이아웃 사이드바 생성
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+        if ($items->flg == '0'){
+        array_push($userflg0,$items);
+        } elseif ($items->flg == '1'){
+        array_push($userflg1,$items);
+        }
+        }
+        // dd($userflg0);
+        
+        $color_code = DB::table('basedata')
+        ->join('projects','color_code_pk','=','data_content_code')
+        ->select('data_content_name')
+        ->where('data_title_code','=','3')
+        ->where('projects.user_pk','=',$user->id)
+        ->first();
+
         $result = DB::select("
             SELECT
                 tks.id
@@ -48,7 +84,13 @@ class GanttChartController extends Controller
         // dd($result);
 
         if(Auth::check()) {
-            return view('ganttchart')->with('data',$result)->with('user', Session::get('user'));
+            return view('ganttchart')
+            ->with('data',$result)
+            ->with('user', Session::get('user'))
+            ->with('color_code',$color_code)
+            ->with('user_data',$user_data)
+            ->with('userflg0',$userflg0)
+            ->with('userflg1',$userflg1);
         } else {
             return redirect('/user/login');
         }

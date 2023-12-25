@@ -19,7 +19,7 @@ class TaskController extends Controller
     {
 
         $user = Auth::user();
-        // dd($user);
+        // dump($user);
         $now = Carbon::now();
         $koreanDayOfWeek = $now->isoFormat('dddd');
 
@@ -27,7 +27,7 @@ class TaskController extends Controller
         // $formatDate2 = $now->format('G시 i분');
 
 
-        $user_data = project::where('user_pk',$user)
+        $user_data = project::where('user_pk',$user->id)
         ->select('id'
                 ,'user_pk'
                 ,'color_code_pk'
@@ -39,6 +39,8 @@ class TaskController extends Controller
                 ,'flg'
                 )
         ->get();
+
+        // dd($user_data);
 
         // 대표 레이아웃 사이드바 생성
         $userflg0=[];
@@ -56,7 +58,7 @@ class TaskController extends Controller
         ->join('projects','color_code_pk','=','data_content_code')
         ->select('data_content_name')
         ->where('data_title_code','=','3')
-        ->where('projects.user_pk','=',$user)
+        ->where('projects.user_pk','=',$user->id)
         ->first();
 
         if (Auth::check()) {
