@@ -97,3 +97,21 @@ window.onclick = function (event) {
         modal.style.display = 'none';
     }
 }
+
+//
+    function toggleActive(className) {
+        // 해당 클래스의 액티브 상태를 토글
+        var element = document.querySelector(`.${className}`);
+        if (element.classList.contains('active')) {
+            element.classList.remove('active');
+        } else {
+            element.classList.add('active');
+        }
+    }
+    // 문서의 다른 부분을 클릭했을 때 액티브 상태 해제
+    document.addEventListener('click', function (event) {
+        var activeElement = document.querySelector('.active');
+        if (activeElement && !activeElement.contains(event.target)) {
+            activeElement.classList.remove('active');
+        }
+    });

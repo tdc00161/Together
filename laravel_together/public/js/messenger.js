@@ -26,37 +26,52 @@ function openTab(tabId) {
 
 // <Messenger> 모달 토글
 function toggleModal() {
+
     var modal = document.getElementById('m-myModal');
 
-    // 저장된 액티브 상태를 가져옴
-    const lastActiveElement = sessionStorage.getItem('lastActiveElement');
-
-    if (modal.style.display === 'none' || modal.style.display === '') {
-
-        modal.style.display = 'block';
-
-        // 모달이 열릴 때 기본으로 활성화할 요소에 active 클래스 추가
-        if (lastActiveElement) {
-            document.getElementById(lastActiveElement).classList.add('tab-active');
-        }
-        friendRequestList();
-        friendSendList();
-        friendList()
+    if (modal.style.display === 'block') {
+        document.removeEventListener('click', closeModalOutside);
     } else {
-        // 현재 액티브 상태를 저장
-        const activeElement = document.querySelector('.tab-active');
-        if (activeElement) {
-            sessionStorage.setItem('lastActiveElement', activeElement.id); // 세션 스토리지에 저장
-        }
-        modal.style.display = 'none';
+        document.addEventListener('click', closeModalOutside);
     }
+
+    modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+
+    const lastActiveElementId = sessionStorage.getItem('lastActiveElementId');
+    if (lastActiveElementId) {
+        const lastActiveElement = document.getElementById(lastActiveElementId);
+        if (lastActiveElement) {
+            lastActiveElement.classList.add('tab-active');
+        }
+    }
+
+    friendRequestList();
+    friendSendList();
+    friendList();
 }
 
-// 모달 외부 클릭 시 닫기
+function closeModalOutside(event) {
+    var modal = document.getElementById('m-myModal');
+    var activeElements = document.querySelectorAll('.active');
+
+    for (var i = 0; i < activeElements.length; i++) {
+        if (activeElements[i].contains(event.target) || modal.contains(event.target)) {
+            return;
+        }
+    }
+
+    for (var i = 0; i < activeElements.length; i++) {
+        activeElements[i].classList.remove('active');
+    }
+
+    modal.style.display = 'none';
+    document.removeEventListener('click', closeModalOutside);
+}
+
 window.onclick = function (event) {
     var modal = document.getElementById('m-myModal');
     if (event.target == modal) {
-        modal.style.display = 'none';
+        closeModalOutside(event);
     }
 }
 

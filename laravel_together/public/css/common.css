@@ -18,6 +18,11 @@ body {
     height: auto;
 }
 
+ /* 활성화된 버튼에 대한 스타일 */
+ .active {
+    filter: invert(100%);
+}
+
 a {
     text-decoration: none;
     color: var(--inactive-color);
