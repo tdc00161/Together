@@ -88,7 +88,17 @@ function total() {
 
 // console.log(dday);
 
-//삭제 기능
+//삭제 모달창 open
+function openDeleteModal() {
+   document.getElementById('deleteModal').style.display = 'block';
+}
+
+//삭제 모달창 close
+function closeDeleteModal() {
+   document.getElementById('deleteModal').style.display = 'none';
+}
+
+//삭제버튼시 삭제
 const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function deleteProject(project_pk) {
    // 전달할 데이터 정보(메모 정보)
@@ -104,12 +114,54 @@ function deleteProject(project_pk) {
          "Content-Type": "application/json",
          'X-CSRF-TOKEN': csrfToken_project
       },
-   }).then((response) => console.log(response)) // response.json()
+   }).then((response) => 
+      console.log(response)) // response.json()
       .then(() => {
-         window.location.href = '/dashboard'; // 새로고침
+         window.location.href = '/dashboard'; // 메인화면으로 이동
       });
 }
 
+
+// 프로젝트 명, 컨텐츠 업데이트
+const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+function titleupdate(project_pk) {
+
+   console.log(document.querySelector('.csrf_token'));
+
+   const UpdateValue = document.getElementById('project_title').value;
+   console.log(UpdateValue)
+
+   // 서버로 보낼 데이터
+   // const PutData = {
+   //    UpdateValue: UpdateValue
+   // };
+
+    // Fetch를 사용하여 서버에 put 요청 보내기
+    fetch('/update/' + project_pk, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken_project,
+            // 필요에 따라 다른 헤더들 추가 가능
+         },
+         body: JSON.stringify({UpdateValue: UpdateValue})
+   })
+   .then(response => {
+      if(!response.ok) {
+         throw new Error('서버 응답이 성공적이지 않습니다.');
+      } else {
+         return response.json();
+      }
+   })
+   .then(data => {
+         document.getElementsByClassId('project_title').value = data.UpdateValue;
+   })
+   .catch(error => {
+         // 오류 처리
+         console.error('error', error);
+   });
+
+}
 
 
 

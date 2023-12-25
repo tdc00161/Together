@@ -53,7 +53,8 @@
 
     <div class="wrapper">
      <div class="left-side">
-      <button onclick="location.href='create'" class="project-create-btn">새 프로젝트 생성</button>
+      {{-- <button onclick="location.href='create'" class="project-create-btn">새 프로젝트 생성</button> --}}
+      <a href="/create" class="project-create-btn">새 프로젝트 생성</a>
       <div class="side-wrapper">
        {{-- <div class="side-title">메뉴</div> --}}
        <div class="side-menu">
@@ -73,25 +74,25 @@
       <div class="side-wrapper">
        <div class="side-title">개인 프로젝트</div>
        <div class="side-menu">
-        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 1</a>
-        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 2</a>
-        {{-- @foreach ($userflg0 as $item)
+        {{-- <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 1</a>
+        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 2</a> --}}
+        @foreach ($userflg0 as $item)
           <a href="{{route('individual.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
             <span>{{$item->project_title}}</span>
           </a>
-        @endforeach --}}
+        @endforeach
        </div>
       </div>
       <div class="side-wrapper">
        <div class="side-title">팀 프로젝트</div>
        <div class="side-menu">
-        {{-- @foreach ($userflg1 as $item)
+        @foreach ($userflg1 as $item)
           <a href="{{route('team.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
             <span>{{$item->project_title}}</span>
           </a>
-        @endforeach --}}
+        @endforeach
         {{-- {{dd($result)}}; --}}
        </div>
       </div>

@@ -17,6 +17,8 @@
     align-items: center
 }
 
+
+
 .project_color {
     display: inline-block;
     width: 20px;
@@ -47,17 +49,29 @@
     height: 25px;
 }
 
+.project_title {
+    width: 100%;
+    border: none;
+    resize: none;
+    background-color: transparent;
+}
 
+.project_title:hover {
+    border: 1px solid white;
+}
 
-.content {
+.project_content {
     display: inline-block;
     width: 100%;
     height: 40px;
     font-size: 1rem;
-    border-radius: 5px;
     border: none;
     resize: none;
     background-color: transparent;
+}
+
+.project_content:hover {
+    border: 1px solid white;
 }
 
 .dday {
@@ -66,30 +80,31 @@
 
 .tabset {
     width: 100%;
-    height: 30px;
+    height: 50px;
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
-    justify-items: center;
+    grid-template-columns: 0.8fr 0.8fr 2.4fr;
+    align-items: center;
     color: white;
     font-weight: 800;
 }
 
 .tabmenu {
     display: inline-block;
-    width: 50%;
+    width: 100%;
+    /* margin: 0 5px 0 0; */
+    padding: 0;
     font-weight: 800;
     border: none;
-    background-color: transparent;
+    background-color: rgba(255, 255, 255,50%);
     text-align: center;
 }
 
 .tabmenu.active {
     width: 100%;
-    color: white;
+    color: black;
     font-weight: 800;
-    border-bottom: 2px solid white;
     display: inline-block;
-    background-color: transparent;
+    background-color: white;
     /* border-bottom: 2pax solid #6b6b6b; */
 }
 
@@ -396,6 +411,9 @@
 
 .td_pd {
     padding: 4px;
+    border: none;
+    resize: none;
+    background-color: transparent;
 }
 
 .right_box2 {
@@ -416,3 +434,68 @@
     padding: 4px 0;
     border-bottom:1px solid rgba(255, 255, 255, 50%);
 }
+
+
+
+/* 모달창 */
+
+#deleteModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+.deletemodal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 20%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+}
+
+.deletespan {
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+}
+
+.deletebutton {
+    color: white;
+    width: 62px;
+    height: 27px;
+    margin-right: 10px;
+    background-color: #04A5FF;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.closebutton {
+    color: white;
+    width: 62px;
+    height: 27px;
+    margin-right: 10px;
+    background-color: #919191;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+/* 
+.deletebutton:hover,
+.deletebutton:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+} */

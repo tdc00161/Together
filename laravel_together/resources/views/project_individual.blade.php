@@ -18,11 +18,22 @@
         <div class="menu_title">
             <div class="title_bar">
                 <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-                <input class="title" type="text" name="project_title" placeholder="프로젝트명" value="{{$result->project_title}}">
-                <div class="title_img"><button id=delete onclick="deleteProject({{$result->id}})"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
+                <input class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
+                <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
+                {{-- <div class="title_img"><button id=delete onclick="deleteProject({{$result->id}})"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
+                {{-- 삭제 모달창 --}}
+                <div id="deleteModal">
+                    <div class="deletemodal-content">
+                        <p class="deletespan">정말로 삭제하시겠습니까?</p>
+                        <div class="gridbutton">
+                            <button class="deletebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                            <button class="closebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                        </div>
+                    </div>
+                </div>
                 {{-- <br> --}}
             </div>
-            <textarea class="content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
+            <textarea class="project_content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
         </div>    
         <div class="date_set">
             {{-- <div class="dday">D-{{$result->dday}}</div> --}}
@@ -111,7 +122,7 @@
                             </colgroup>
                             @foreach ($data as $item)
                                 <tr class="box_ul">
-                                    <td class="project_title td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,50,'...')}}</td>
+                                    <td class="td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,50,'...')}}</td>
                                 </tr>
                             @endforeach
                         </table>
@@ -132,7 +143,13 @@
                             </colgroup>
                             @foreach ($data as $item)
                                 <tr class="box_ul">
-                                    <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+                                    <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+                                    {{-- @if ($item->category_name == '공지')
+                                        {{$item->category_name.color='red'}};
+                                        
+                                    @else ($item->category_name == '업무')
+                                        color:blue;
+                                    @endif --}}
                                     <td class="td_pd">{{Str::limit($item->title,40,'...')}}</td>
                                     {{-- <td>{{$item->user_id}}</td> --}}
                                 </tr>
@@ -165,7 +182,7 @@
                             <tr class="box_ul">
                                 <td class="td_pd"></td>
                                 <td class="td_pd">{{$item->dday}}</td>
-                                <td class="project_title td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,53,'...')}}</td>
+                                <td class="td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,53,'...')}}</td>
                                 <td class="td_pd">{{$item->name}}</td>
                                 <td class="td_pd">{{$item->status_name}}</td>
                             </tr>
@@ -176,9 +193,9 @@
         </div>
     </div>
         <!-- {{-- 다크모드 --}} -->
-        <div class="dark-light">
+        {{-- <div class="dark-light">
             <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
-        </div>
+        </div> --}}
 </div>
 
 @endsection

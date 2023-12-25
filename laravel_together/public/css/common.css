@@ -65,12 +65,15 @@ a {
 }
 
 .project-create-btn {
+    display: inline-block;
     width: 100%;
     height: 47px;
     background-color: #29c29e;
     font-weight: bold;
     border-radius: 10px;
     margin-bottom: 8px;
+    text-align: center;
+    line-height: 47px;
 }
 
 .project-create-btn:hover {
