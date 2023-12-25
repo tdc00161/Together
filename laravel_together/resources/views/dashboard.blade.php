@@ -26,8 +26,24 @@
     <span class="app-card-title">
      공지
     </span>
-    <div class="app-card__subtext"></div>
-    <div class="app-card-buttons"></div>
+    {{-- <div class="carousel-container">
+      <button class="prev d-notice-button" onclick="changeSlide(-1)">&#10094;</button>
+      <div class="slides">
+
+        <div class="app-card__subtext">
+          @forelse ($dashboardNotice as $item)
+          <div class="slide">
+             <p class="notice-title">{{$item->title}}</p>
+          </div>
+          @empty
+              
+          @endforelse
+          
+        </div>
+      </div>
+      <button class="next d-notice-button" onclick="changeSlide(1)">&#10095;</button>
+    </div>
+    <div class="page-indicator"></div> --}}
    </div>
     {{-- 2섹션 --}}
     <div class="content-section-2">

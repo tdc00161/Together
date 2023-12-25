@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="{{asset('js/app.js')}}" defer></script>
+  <!-- <script src="{{asset('js/app.js')}}" defer></script> -->
   @yield('gantt_link', '') {{-- 12/12 민주 gantt css 개별 링크용--}}
   {{-- 부트스트랩 --}}
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
@@ -29,17 +29,14 @@
     <div class="header">
       <a class="header-title">Together</a>
     
-     <div class="header-menu">
-     
-     </div>
      <div class="header-profile">
       
-      <button class="icon-Sub"><img class="header-btn" src="/img/icon-notice.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
-      <button class="icon-Sub" onclick="toggleModal()"><img class="header-btn" src="/img/icon-messenger.png" alt=""></button>
+      <button class="icon-Sub" onclick="toggleActive('icon-notice')"><img class="header-btn icon-notice" src="/img/icon-notice.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
+      <button class="icon-Sub" onclick="toggleModal(); toggleActive('icon-messenger')"><img class="header-btn icon-messenger" src="/img/icon-messenger.png" alt=""></button>
 
       <div class="dropdown">
-        <button class="dropdown-toggle icon-Sub" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img class="header-btn" src="/img/profile-img.png" alt="">
+        <button class="dropdown-toggle icon-Sub" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleActive('myprofilebtn')">
+          <img class="header-btn myprofilebtn" src="/img/profile-img.png" alt="">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           {{-- <li><a class="dropdown-item bg-op border-radius-top" style="color: #21D9AD; pointer-events : none;">{{$user->email}}</a></li> --}}
@@ -53,7 +50,8 @@
 
     <div class="wrapper">
      <div class="left-side">
-      <button onclick="location.href='create'" class="project-create-btn">새 프로젝트 생성</button>
+      {{-- <button onclick="location.href='create'" class="project-create-btn">새 프로젝트 생성</button> --}}
+      <a href="/create" class="project-create-btn">새 프로젝트 생성</a>
       <div class="side-wrapper">
        {{-- <div class="side-title">메뉴</div> --}}
        <div class="side-menu">
@@ -73,25 +71,25 @@
       <div class="side-wrapper">
        <div class="side-title">개인 프로젝트</div>
        <div class="side-menu">
-        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 1</a>
-        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 2</a>
-        {{-- @foreach ($userflg0 as $item)
+        {{-- <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 1</a>
+        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 2</a> --}}
+        @foreach ($userflg0 as $item)
           <a href="{{route('individual.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
             <span>{{$item->project_title}}</span>
           </a>
-        @endforeach --}}
+        @endforeach
        </div>
       </div>
       <div class="side-wrapper">
        <div class="side-title">팀 프로젝트</div>
        <div class="side-menu">
-        {{-- @foreach ($userflg1 as $item)
+        @foreach ($userflg1 as $item)
           <a href="{{route('team.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
             <span>{{$item->project_title}}</span>
           </a>
-        @endforeach --}}
+        @endforeach
         {{-- {{dd($result)}}; --}}
        </div>
       </div>

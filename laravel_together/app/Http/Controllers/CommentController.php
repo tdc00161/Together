@@ -31,8 +31,15 @@ class CommentController extends Controller
 
         // Log::debug([$request,$id]);
         $result = Comment::create($request->toArray());
-        $responseData['msg'] = 'comment created.';
-        $responseData['data'] = $result;
+
+        if (!$result) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id.' is no where';
+        } else {
+            $responseData['code'] = 'C01';
+            $responseData['msg'] = 'comment created.';
+            $responseData['data'] = $result;
+        }
         
         
         return $responseData;
@@ -73,10 +80,16 @@ class CommentController extends Controller
         
         // Log::debug($this_comment[0]->content);
 
-        $this_comment[0]->save();
-        $responseData['code'] = '0';
-        $responseData['msg'] = 'comment updated.';
-        $responseData['data'] = $this_comment;
+        $result = $this_comment[0]->save();
+
+        if (!$result) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id.' is no where';
+        } else {
+            $responseData['code'] = 'U01';
+            $responseData['msg'] = 'comment updated.';
+            $responseData['data'] = $this_comment;
+        }        
         
         return $responseData;
     }

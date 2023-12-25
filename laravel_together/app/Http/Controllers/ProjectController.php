@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\style;
 
 use Carbon\Carbon;
 
@@ -74,10 +75,13 @@ class ProjectController extends Controller
         $result = project::find($id);
         // dd($result);
 
-        $user_id = Auth::id();
+        $user = Auth::user();
+        // dump($user);
+
+        // $user_id = Auth::id();
         // dd($user_id);
 
-        $user_data = project::where('user_pk',$user_id)
+        $user_data = project::where('user_pk',$user->id)
                     ->select('id'
                             ,'user_pk'
                             ,'color_code_pk'
@@ -118,7 +122,7 @@ class ProjectController extends Controller
                         ->join('projects','color_code_pk','=','data_content_code')
                         ->select('data_content_name')
                         ->where('data_title_code','=','3')
-                        ->where('projects.user_pk','=',$user_id)
+                        ->where('projects.user_pk','=',$user->id)
                         ->first();
         // dump($color_code);
 
@@ -148,6 +152,7 @@ class ProjectController extends Controller
                                 'tasks.end_date',
                                 'base1.data_content_name as status_name',
                                 'base2.data_content_name as category_name',
+                                'tasks.updated_at'
                                 )
                       ->join('users', function($join) {
                         $join->on('users.id','=','projects.user_pk');
@@ -164,8 +169,19 @@ class ProjectController extends Controller
                       ->where('projects.id', '=', $result->id)
                       ->where('base1.data_title_code', '=', '0')
                       ->where('base2.data_title_code', '=', '2')
-                      ->orderby('projects.id','desc')
+                      ->orderby('tasks.updated_at','desc')
+                      // ->orderby('projects.id','desc')
                       -> get();
+
+        // foreach ($tkdata as $items) {
+        //   if($items->category_name == '공지') {
+        //     color:red;
+        //   } else if($items->category_name == '업무') {
+        //     color:black;
+        //   } else {
+        //     return 'error';
+        //   }
+        // }
         // dump($tkdata);
 
         // 업무 시작/마감일자 d-day 설정
@@ -361,6 +377,18 @@ class ProjectController extends Controller
         Log::debug('before return');
         return $responseData;
     }
+
+    // 프로젝트 수정
+    public function update_project(Request $request)
+    {
+      dd($id);
+
+      $newValue = $request->input('UpdateValue');
+
+      // return response()->json(['update_project' => $UpdateValue]);
+      return response()->json(['update_project' => $newValue]);
+    }
+
 
     // 프로젝트 삭제
     public function delete_project(Request $request, $id)

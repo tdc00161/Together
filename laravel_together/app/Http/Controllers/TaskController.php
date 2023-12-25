@@ -10,18 +10,65 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\BaseData;
 
 class TaskController extends Controller
 {
     public function showdashboard()
     {
 
+        // --- 유저 정보
         $user = Auth::user();
+        // --- 현재 날짜 출력
         $now = Carbon::now();
-        $koreanDayOfWeek = $now->isoFormat('dddd');
-
         $formatDate1 = $now->format('Y년 n월 j일');
         // $formatDate2 = $now->format('G시 i분');
+
+        // --- 현재 요일 출력
+        $koreanDayOfWeek = $now->isoFormat('dddd');
+
+        $user_data = project::where('user_pk',$user->id)
+        ->select('id'
+                ,'user_pk'
+                ,'color_code_pk'
+                ,'project_title'
+                ,'project_content'
+                ,'start_date'
+                ,'end_date'
+                ,'created_at'
+                ,'flg'
+                )
+        ->get();
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
+        ->get();
+
+        // 대표 레이아웃 사이드바 생성
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+        if ($items->flg == '0'){
+        array_push($userflg0,$items);
+        } elseif ($items->flg == '1'){
+        array_push($userflg1,$items);
+        }
+        }
+        // dd($userflg0);
+        
+        $color_code = DB::table('basedata')
+        ->join('projects','color_code_pk','=','data_content_code')
+        ->select('data_content_name')
+        ->where('data_title_code','=','3')
+        ->where('projects.user_pk','=',$user->id)
+        ->first();
 
         if (Auth::check()) {
             return view('dashboard', [
@@ -29,10 +76,16 @@ class TaskController extends Controller
                 'formatDate1' => $formatDate1,
                 // 'formatDate2' => $formatDate2,
                 'koreanDayOfWeek' => $koreanDayOfWeek,
-            ]);
+                'dashboardNotice' => $dashboardNotice,
+            ])
+            ->with('color_code',$color_code)
+            ->with('user_data',$user_data)
+            ->with('userflg0',$userflg0)
+            ->with('userflg1',$userflg1);
         } else {
             return redirect('/user/login');
         }
+
     }
 
     public function showheader()
@@ -139,61 +192,79 @@ class TaskController extends Controller
     // 업무 작성
     public function store(Request $request)
     {
+        // 반환 틀
         $responseData = [
             "code" => "0",
             "msg" => "",
             "data" => []
         ];
+
+        // 입력받은 데이터로 pk(id) 추출
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
         $sta = DB::table('basedata as status')
             ->where('data_title_code', 0)
             ->where('data_content_name', $request['task_status_id'])
-            ->select('data_content_code')
+            ->select('data_content_code','data_content_name')
             ->get();
         Log::debug('상태: ' . $sta);
         $pri = DB::table('basedata')
             ->where('data_title_code', 1)
             ->where('data_content_name', $request['priority_id'])
-            ->select('data_content_code')
+            ->select('data_content_code','data_content_name')
             ->get();
         Log::debug('순위: ' . $pri);
         $res = DB::table('users')
             ->where('name', $request['task_responsible_id'])
-            ->select('id')
+            ->select('id','name')
             ->get();
         Log::debug('user_id: ' . $res);
         $tsk_num = DB::table('tasks')
             ->where('project_id', $request['project_id'])
             ->count();
         Log::debug('$tsk_num: ' . $tsk_num);
+
+        // 이메일 추가 시 대비
         // $eml = DB::table('users')->where('email', $request['email'])->first();
         
+        // 입력 컨텐츠 유효성 검사
         // $tit = $request['title']; // TODO: 유효성 처리 추가
         // $con = $request['content']; // TODO: 유효성 처리 추가
-        
-        
         // $request['title'] = $tit;
         // $request['content'] = $con;
-        // $request['project_id'] = $con;
+
+        // nullable
         if(!empty($sta[0])){
             $request['task_status_id'] = $sta[0]->data_content_code;
+            $responseData['names']['task_status_name'] = $sta[0]->data_content_name;
+        } else {
+            $request['task_status_name'] = null;
         }
         if(!empty($res[0])){
             $request['task_responsible_id'] = $res[0]->id;
+            $responseData['names']['task_responsible_name'] = $res[0]->name;
+        } else {
+            $request['task_responsible_name'] = null;
         }
+        if(!empty($pri[0])){
+            $request['priority_id'] = $pri[0]->data_content_code;
+            $responseData['names']['priority_name'] = $pri[0]->data_content_name;
+        } else {
+            $request['priority_name'] = null;
+        }
+
+        // not null
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
         $request['category_id'] = $nowUser;
         $request['task_number'] = $tsk_num + 1;
+        $request['test'] = '갱신 체크 1319';
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
-        if(!empty($pri[0])){
-            $request['priority_id'] = $pri[0]->data_content_code;
-        }
-        // Log::debug($request);
+        Log::debug($request);
 
+        // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
         if (!$result) {
             $responseData['msg'] = 'task not created.';

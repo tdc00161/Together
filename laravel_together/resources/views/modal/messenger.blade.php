@@ -4,7 +4,7 @@
 </head>
 <body>
     <div id="m-myModal" class="m-modal">
-    <div class="m-modal-content">
+    <div class="m-modal-content" onclick="event.stopPropagation();">
         <span class="m-modal-close" onclick="mcloseModal()"></span>
        <!-- 탭 목록 -->
 <ul class="tabs">
@@ -97,7 +97,7 @@
 </div>
 
 {{-- 친구추가 모달 --}}
-<div id="friend-Modal">
+<div id="friend-Modal" onclick="event.stopPropagation();">
     <form id="friendRequestForm" action="{{ route('friend.sendFriendRequest') }}" method="post">
     @csrf
     <div class="friend-Modal-content">
