@@ -18,14 +18,15 @@ class TaskController extends Controller
     public function showdashboard()
     {
 
+        // --- 유저 정보
         $user = Auth::user();
-        // dump($user);
+        // --- 현재 날짜 출력
         $now = Carbon::now();
-        $koreanDayOfWeek = $now->isoFormat('dddd');
-
         $formatDate1 = $now->format('Y년 n월 j일');
         // $formatDate2 = $now->format('G시 i분');
 
+        // --- 현재 요일 출력
+        $koreanDayOfWeek = $now->isoFormat('dddd');
 
         $user_data = project::where('user_pk',$user->id)
         ->select('id'
@@ -40,7 +41,15 @@ class TaskController extends Controller
                 )
         ->get();
 
-        // dd($user_data);
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
+        ->get();
 
         // 대표 레이아웃 사이드바 생성
         $userflg0=[];
@@ -67,6 +76,7 @@ class TaskController extends Controller
                 'formatDate1' => $formatDate1,
                 // 'formatDate2' => $formatDate2,
                 'koreanDayOfWeek' => $koreanDayOfWeek,
+                'dashboardNotice' => $dashboardNotice,
             ])
             ->with('color_code',$color_code)
             ->with('user_data',$user_data)

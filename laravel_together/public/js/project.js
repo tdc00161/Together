@@ -117,7 +117,7 @@ function deleteProject(project_pk) {
    //    let Id = {
    //       user_pk : user_pk
    //   }
-   console.log(document.querySelector('.csrf_token'));
+   // console.log(document.querySelector('.csrf_token'));
    // 삭제 ajax
    fetch('/delete/' + project_pk, {
       method: 'DELETE',
@@ -137,9 +137,7 @@ function deleteProject(project_pk) {
 // 프로젝트 명, 컨텐츠 업데이트
 const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function titleupdate(project_pk) {
-
-   console.log(document.querySelector('.csrf_token'));
-
+   
    const UpdateValue = document.getElementById('project_title').value;
    console.log(UpdateValue)
 
