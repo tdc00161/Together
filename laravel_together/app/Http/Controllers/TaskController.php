@@ -128,6 +128,53 @@ class TaskController extends Controller
         //         }
         //     }
         // }
+
+        // --- 유저 정보
+        $user = Auth::user();
+
+        $user_data = project::where('user_pk',$user->id)
+        ->select('id'
+                ,'user_pk'
+                ,'color_code_pk'
+                ,'project_title'
+                ,'project_content'
+                ,'start_date'
+                ,'end_date'
+                ,'created_at'
+                ,'flg'
+                )
+        ->get();
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
+        ->get();
+
+        // 대표 레이아웃 사이드바 생성
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+        if ($items->flg == '0'){
+        array_push($userflg0,$items);
+        } elseif ($items->flg == '1'){
+        array_push($userflg1,$items);
+        }
+        }
+        // dd($userflg0);
+        
+        $color_code = DB::table('basedata')
+        ->join('projects','color_code_pk','=','data_content_code')
+        ->select('data_content_name')
+        ->where('data_title_code','=','3')
+        ->where('projects.user_pk','=',$user->id)
+        ->first();
+
+
         // dd($data);
         $result = DB::select("
             SELECT
@@ -171,7 +218,13 @@ class TaskController extends Controller
         // foreach ($sort as $key => $item) {
         //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
         // }
-        return view('modal.modalgantt')->with('data', $result)->with('user', Session::get('user'));
+        return view('modal.modalgantt')
+        ->with('data', $result)
+        ->with('user', Session::get('user'))
+        ->with('color_code',$color_code)
+        ->with('user_data',$user_data)
+        ->with('userflg0',$userflg0)
+        ->with('userflg1',$userflg1);;
     }
 
     public function index_one($id)

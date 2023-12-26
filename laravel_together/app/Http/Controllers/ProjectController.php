@@ -379,14 +379,20 @@ class ProjectController extends Controller
     }
 
     // 프로젝트 수정
-    public function update_project(Request $request)
+    public function update_project(Request $request, $id)
     {
-      dd($id);
-
+      // dd($id);
+      // Log::debug($id);
       $newValue = $request->input('UpdateValue');
+      Log::debug($newValue);
+      // Log::debug($request);
 
+      $project_id = 
       // return response()->json(['update_project' => $UpdateValue]);
-      return response()->json(['update_project' => $newValue]);
+      // return response()->json(['update_project' => $newValue]);
+
+
+
     }
 
 

@@ -157,14 +157,18 @@ function titleupdate(project_pk) {
          body: JSON.stringify({UpdateValue: UpdateValue})
    })
    .then(response => {
-      if(!response.ok) {
-         throw new Error('서버 응답이 성공적이지 않습니다.');
-      } else {
-         return response.json();
-      }
+      // console.log(!response.ok);
+      // console.log(response.data);
+      // if(!response.ok) {
+      //    throw new Error('서버 응답이 성공적이지 않습니다.');
+      // } else {
+      //    return response.json();
+      // }
+      response.json()
    })
    .then(data => {
-         document.getElementsByClassId('project_title').value = data.UpdateValue;
+      console.log(data.data);
+         // document.getElementsByClassId('project_title').value = data.UpdateValue;
    })
    .catch(error => {
          // 오류 처리
