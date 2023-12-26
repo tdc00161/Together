@@ -191,7 +191,9 @@ class GanttChartController extends Controller
         $data['task'] = $depth_0;
         // dd($data);
         // dd($data['task'][0]->id);
-        return view('ganttchart')->with('data', $data)->with('user', Session::get('user'))->with('color_code',$color_code)
+        return view('ganttchart')->with('data', $data)
+        ->with('user', Session::get('user'))
+        ->with('color_code',$color_code)
         ->with('user_data',$user_data)
         ->with('userflg0',$userflg0)
         ->with('userflg1',$userflg1);

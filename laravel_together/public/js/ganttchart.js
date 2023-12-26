@@ -665,11 +665,11 @@ taskDetailClickBtns.forEach(function(button) {
         if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
           ganttDetail.style.display = 'block';
           // gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
-          button.style.color = 'rgb(151, 87, 255)'; // 여기서 원하는 색상으로 변경 가능합니다.
+          button.style.color = 'rgb(151, 87, 255)';
       } else {
           ganttDetail.style.display = 'none';
-          // gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화합니다.
-          button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정합니다.
+          // gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+          button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
       }
         // 문서에 전체 이벤트 리스너 추가
         document.addEventListener('click', function closeGanttDetail(e) {
@@ -789,13 +789,6 @@ function test(rowNum) {
    * 6. 
    */
 
-
-// taskNameUp.addEventListener('blur', handleBlur);
-// responNameUp.addEventListener('blur', handleBlur);
-// statusNameUp.addEventListener('blur', handleBlur);
-// startDateUp.addEventListener('blur', handleBlur);
-// endDateUp.addEventListener('blur', handleBlur);
-
 // 예시: 수정 요청을 보내는 함수
 function sendUpdateRequest(id, updatedValue , numbersOnly) {
   // Axios를 사용하여 수정 요청을 보내는 로직
@@ -879,25 +872,10 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
           }
           
         }
-        // if (this.classList.contains('gantt-dropdow')) {
-        //     if(this.classList.contains('gantt-status-color')){
-        //       updatedValue.status = this.textContent;
-        //     } else {
-        //       updatedValue.responName = this.textContent;
-        //     }
-        // } else if ( this.tagName === 'INPUT') {
-        //     // input
-        //     // updatedValue = this.textContent 
-        //     if(this.getAttribute('id').includes('start')){
-        //       updatedValue.start_date = this.textContent;   
-        //     } else {
-        //       updatedValue.end_date = this.textContent;           
-        //     }
-        // } else if( this.tagName === 'DIV'){
-        //     updatedValue.title = this.textContent;
-        // }
+  
 
-        // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
+        // 수정 요청 보내기
+        console.log('수정 신청');
         sendUpdateRequest(id, updatedValue, numbersOnly);
 
         // 수정 완료 팝업 메시지 표시
