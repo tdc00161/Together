@@ -229,22 +229,13 @@ class TaskController extends Controller
 
     public function index_one($id)
     {
-        // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
-        $value_pj = Project::find($id);
-        $depth_0 = Task::depth(0); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
-        $depth_1 = Task::depth(1);
         $data = [];
-        foreach ($depth_0 as $value_0) { // 위에꺼랑 속도 테스트 필요
-            if ($value_pj->id === $value_0->project_id) {
-                $depth_0[] = $value_0;
-                foreach ($depth_1 as $value_1) {
-                    if ($value_0->id === $value_1->task_parent) {
-                        $value_0->depth_1[] = $value_1;
-                    }
-                    $data[$value_pj->id] = $value_pj;
-                }
-                $data[$value_pj->id] = $value_pj;
-            }
+        // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
+        $data['project'] = Project::find($id);
+        $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+        // $data = $depth_0;
+        foreach ($depth_0 as $key => $value) {            
+            $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
         }
         dd($data);
         return view('modal.modalgantt')->with('data', $data)->with('user', Session::get('user'));

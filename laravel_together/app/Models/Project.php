@@ -27,6 +27,7 @@ class Project extends Model // 프로젝트
         'flg',
         'start_date',
         'end_date',
+        'depth_0',
     ];
 
 
@@ -84,6 +85,32 @@ class Project extends Model // 프로젝트
                 ON pj.color_code_pk = base3.id
                 AND data_title_code = 3
             "
+        );
+        return $result;
+    }
+
+    public static function project_depth_one($id){
+        $result = DB::select(
+            "SELECT
+                pj.id
+                ,pj.user_pk
+                ,us.name user_name
+                ,pj.color_code_pk
+                ,base3.data_content_name project_color
+                ,pj.project_title
+                ,pj.project_content
+                ,pj.flg
+                ,pj.start_date
+                ,pj.end_date
+                ,pj.created_at
+                ,pj.updated_at
+            FROM projects pj
+            LEFT JOIN users us
+                ON pj.user_pk = us.id
+            LEFT JOIN basedata base3
+                ON pj.color_code_pk = base3.id
+                AND data_title_code = 3
+            WHERE pj.id = " . $id
         );
         return $result;
     }
