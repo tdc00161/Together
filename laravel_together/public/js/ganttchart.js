@@ -84,6 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
           icon_title.src = '/img/table.png';
       }
+
+      // 자식 정렬
+      const ganttChildrenSort = document.querySelectorAll('.gantt-child-task');
+      for (let index = 0; index < ganttChildrenSort.length; index++) {
+        const element = ganttChildrenSort[index];
+        let ganttParentValue = element.getAttribute('parent')
+        const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
+        ganttParentElement.after(element)
+      }
   });
 });
 

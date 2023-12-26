@@ -135,17 +135,66 @@ class GanttChartController extends Controller
 
     public function ganttIndex_one($id)
     {
+        $user = Auth::user();
+
+        $user_data = project::where('user_pk',$user->id)
+        ->select('id'
+                ,'user_pk'
+                ,'color_code_pk'
+                ,'project_title'
+                ,'project_content'
+                ,'start_date'
+                ,'end_date'
+                ,'created_at'
+                ,'flg'
+                )
+        ->get();
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
+        ->get();
+
+        // 대표 레이아웃 사이드바 생성
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+        if ($items->flg == '0'){
+        array_push($userflg0,$items);
+        } elseif ($items->flg == '1'){
+        array_push($userflg1,$items);
+        }
+        }
+        // dd($userflg0);
+        
+        $color_code = DB::table('basedata')
+        ->join('projects','color_code_pk','=','data_content_code')
+        ->select('data_content_name')
+        ->where('data_title_code','=','3')
+        ->where('projects.user_pk','=',$user->id)
+        ->first();
+
+
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
         $data['project'] = Project::find($id);
         $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
         // $data = $depth_0;
         foreach ($depth_0 as $key => $value) {            
-            $value->depth_1 = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
+            $value->depth_1 = Task::depth_tsk(1,$value->id);
         }
         $data['task'] = $depth_0;
-        dd($data);
-        return view('modal.modalgantt')->with('data', $data)->with('user', Session::get('user'));
+        // dd($data);
+        // dd($data['task'][0]->id);
+        return view('ganttchart')->with('data', $data)->with('user', Session::get('user'))->with('color_code',$color_code)
+        ->with('user_data',$user_data)
+        ->with('userflg0',$userflg0)
+        ->with('userflg1',$userflg1);
     }
 
     // 상세 업무/공지 조회

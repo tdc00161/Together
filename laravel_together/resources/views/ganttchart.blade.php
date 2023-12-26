@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="gantt-task-body">
-                    @foreach ($data as $key => $item)
+                    @forelse ($data['task'] as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable">
                                 <button class="gantt-task-detail-click">●</button>
@@ -148,12 +148,12 @@
                                     <br>
                                     <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
                                 </div>     
-                                <div class="taskKey">{{$item->id}}</div>
+                                <div class="taskKey">{{$item->task_number}}</div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->name}}</span></div>
+                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->res_name}}</span></div>
                             <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"><span id="statusNameSpan">{{$item->task_status_name}}</span></div>
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->status_name}}"><span id="statusNameSpan">{{$item->status_name}}</span></div>
                             </div>
                             <div class="gantt-task-4">
                                 <input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
@@ -162,7 +162,34 @@
                                 <input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
                             </div>
                         </div>
-                    @endforeach
+                        @forelse ($item->depth_1 as $item2)
+                        <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
+                            <div class="gantt-editable-div editable">
+                                <button class="gantt-task-detail-click">●</button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item2->id}})">하위업무 추가</button>
+                                </div>     
+                                <div class="taskKey">{{$item2->task_number}}</div>
+                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">┖{{$item2->title}}</div>
+                            </div>
+                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item2->res_name}}</span></div>
+                            <div class="gantt-status-name">
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item2->status_name}}"><span id="statusNameSpan">{{$item2->status_name}}</span></div>
+                            </div>
+                            <div class="gantt-task-4">
+                                <input type="date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
+                            </div>
+                            <div class="gantt-task-5">
+                                <input type="date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
+                            </div>
+                        </div>
+                        @empty
+                            
+                        @endforelse
+                    @empty
+                    @endforelse
                 </div>
             </div>
             <div class="gantt-chart-wrap">
@@ -173,7 +200,7 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body">
-                        @foreach ($data as $key => $item)
+                        @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
                                     $startDate = new DateTime('2023-12-01');
@@ -184,15 +211,31 @@
                                     }
                                 @endphp
                             </div>
-                        @endforeach
+                            @forelse ($item->depth_1 as $item2)
+                                <div class="gantt-chart" id="gantt-chart-{{$item2->id}}">
+                                    @php
+                                        $startDate = new DateTime('2023-12-01');
+                                        $endDate = new DateTime('2023-12-31');
+
+                                        for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+                                            echo "<div id='row" . ($item2->id) . "-" . $date->format('Ymd') . "'></div>";
+                                        }
+                                    @endphp
+                                </div>
+                            @empty
+                                
+                            @endforelse
+                        @empty
+                        @endforelse
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    {{-- @include('modal.insert') include 순서 중요: 작성/상세
-    @include('modal.detail') --}}
+    @include('modal.insert') 
+    {{-- include 순서 중요: 작성/상세 --}}
+    @include('modal.detail')
 
-   
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 @endsection
