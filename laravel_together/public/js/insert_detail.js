@@ -180,7 +180,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
+				// console.log(data);
 				// 프로젝트 색 띄우기
 				PROJECT_COLOR[a].style = 'background-color: ' + data.data[0].data_content_name + ';'
 				PROJECT_NAME[a].textContent = data.data[0].project_title
@@ -316,33 +316,59 @@ function createTask() {
 			let gantt_task_element = refreshCloneLeftGanttChart
 			let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 			let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
-			let taskKey_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling
-			let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling
+			let taskKey_element = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
+			let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
 			let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
 			let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
+			let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
 			gantt_task_element.id = 'gantt-task-' + data.data.id
 			start_element.value = data.data.start_date
-			start_element.id = 'start-row' + data.data.id
-			start_element.onchange = (event) => {
-				test(data.data.id);
-			}
+			start_element.setAttribute('id','start-row' + data.data.id)
+			start_element.setAttribute('onclick', 'test('+data.data.id+');')
 			end_element.value = data.data.end_date
-			end_element.id = 'end-row' + data.data.id
-			end_element.onchange = (event) => {
-				test(data.data.id);
-			}
+			end_element.setAttribute('id','end-row' + data.data.id)
+			end_element.setAttribute('onclick', 'test('+data.data.id+');')
 			taskKey_element.textContent = data.data.task_number
 			taskName_element.textContent = data.data.title
 			responsibleName_element.textContent = data.names.task_responsible_name
 			statusName_element.textContent = data.names.task_status_name
+			statusColorAutoPainting(statusName_element_textContent.textContent,statusName_element)
 			document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
 			document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
 			closeTaskModal(0)
-			document.querySelector('.gantt-content-wrap').scrollIntoView(false)
+			document.querySelector('.gantt-all-task').scrollIntoView(false)
 		})
 		.catch(err => {
 			console.log(err.message)
 		});
+
+		function gantt_task_modal() {
+			// 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
+			const parentEditableDiv = button.closest('.gantt-editable-div');
+	
+			// 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
+			const ganttDetail = parentEditableDiv.querySelector('.gantt-detail');
+	
+			// gantt-detail 요소의 표시 여부를 토글합니다.
+			if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
+			  ganttDetail.style.display = 'block';
+			  // gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+			  button.style.color = 'rgb(151, 87, 255)';
+		  } else {
+			  ganttDetail.style.display = 'none';
+			  // gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+			  button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+		  }
+			// 문서에 전체 이벤트 리스너 추가
+			document.addEventListener('click', function closeGanttDetail(e) {
+			  // 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
+			  if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
+				  ganttDetail.style.display = 'none';
+				  button.style.color = ''; // 버튼 색상 초기화
+				  document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
+				}
+			});
+		}
 }
 
 // 등록 버튼으로 작성/수정
@@ -1059,7 +1085,7 @@ function updateModalOpen() {
 function deleteTask() {
 	axios.delete('/api/task/' + now_task_id)
 		.then(res => {
-			// console.log(data);
+			console.log(res);
 			closeTaskModal(1)
 		})
 		.catch(err => {

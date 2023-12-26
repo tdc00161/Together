@@ -187,7 +187,7 @@ class TaskController extends Controller
         }
         // // $data = $depth_0;
         // $data['task'] = $depth_0;
-        dd($data);
+        // dd($data);
 
         // --- 유저 정보
         $user = Auth::user();
@@ -351,8 +351,9 @@ class TaskController extends Controller
         Log::debug('user_id: ' . $res);
         $tsk_num = DB::table('tasks')
             ->where('project_id', $request['project_id'])
-            ->count();
-        Log::debug('$tsk_num: ' . $tsk_num);
+            ->orderBy('task_number', 'desc')
+            ->first();
+        Log::debug('$tsk_num: ' . $tsk_num->task_number);
 
         // 이메일 추가 시 대비
         // $eml = DB::table('users')->where('email', $request['email'])->first();
@@ -387,8 +388,7 @@ class TaskController extends Controller
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
         $request['category_id'] = $nowUser;
-        $request['task_number'] = $tsk_num + 1;
-        $request['test'] = '갱신 체크 1319';
+        $request['task_number'] = $tsk_num->task_number + 1;
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
@@ -493,17 +493,18 @@ class TaskController extends Controller
             "msg" => ""
         ];
         
-        $result = Task::where('id', $id)->delete();
+        // $result = Task::where('id', $id)->delete();
 
-        if (!$result) {
-            $responseData['code'] = 'E01';
-            $responseData['msg'] = $id . ' is no where';
-        } else {
-            $responseData['code'] = 'D01';
-            $responseData['msg'] = 'task : ' . $id . '->deleted.';
-        }
+        // if (!$result) {
+        //     $responseData['code'] = 'E01';
+        //     $responseData['msg'] = $id . ' is no where';
+        // } else {
+        //     $responseData['code'] = 'D01';
+        //     $responseData['msg'] = 'task : ' . $id . '->deleted.';
+        // }
 
-        return $responseData;
+        // return $responseData;
+        return [$request, $id];
     }
 }
 

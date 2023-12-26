@@ -118,6 +118,7 @@ class Task extends Model // 업무/공지
             WHERE tsk.task_depth = " . $task_depth
             ." AND tsk.project_id = " . $project_id
             ." AND tsk.deleted_at IS NULL "
+            ." ORDER BY tsk.created_at "
     );
 
     return $result;
@@ -169,6 +170,7 @@ class Task extends Model // 업무/공지
             WHERE tsk.task_depth = " . $task_depth
             ." AND tsk.task_parent = " . $task_parent
             ." AND tsk.deleted_at IS NULL "
+            ." ORDER BY tsk.created_at "
     );
 
     return $result;
