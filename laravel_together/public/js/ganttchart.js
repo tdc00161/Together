@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // 모든 gantt-task-detail-click 버튼을 선택합니다.
 const taskDetailClickBtns = document.querySelectorAll('.gantt-task-detail-click');
 
-// 각 버튼에 대해 반복하여 이벤트 리스너를 추가합니다.
+// 각 버튼에 대해 반복하여 이벤트 리스너를 추가
 taskDetailClickBtns.forEach(function(button) {
     button.addEventListener('click', function() {
         // 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
@@ -575,6 +575,28 @@ addDatesToHeader();
 
 
 // ************* 차트생성
+// 페이지 로드 후 실행되는 부분
+window.onload = function() {
+  // 모든 시작일(start)과 종료일(end) 입력 요소 선택
+  const dataElements = document.querySelectorAll('[id^=start-row], [id^=end-row]');
+  
+  dataElements.forEach(function(element) {
+      const rowNum = element.id.split('row')[1]; // ID에서 행 번호 추출
+      
+      // 해당 rowNum에 대한 시작일(start)과 종료일(end) 값 획득
+      const start = document.getElementById('start-row' + rowNum).value;
+      const end = document.getElementById('end-row' + rowNum).value;
+      
+      // test 함수 초기 호출
+      test(rowNum);
+      
+      // 'change' 이벤트에 대한 리스너 추가하여 값 변경 시 test 함수 호출
+      element.addEventListener('change', function() {
+          test(rowNum);
+      });
+  });
+};
+
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
 function test(rowNum) {
   // console.log('***** test() Start *****');
