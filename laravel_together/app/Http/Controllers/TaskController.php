@@ -105,29 +105,18 @@ class TaskController extends Controller
     // 태스크 전체 조회 (수정이전)
     public function index()
     {
+        $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
-        // $project = Project::project_depth();
-        // $depth_0 = Task::depth(0); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
-        // $depth_1 = Task::depth(1);
-        // 변수에 프로젝트와 하위 업무들을 다차원으로 합친다
-        // $data = [];
-        // foreach ($project as $key => $value_pj) {
-        //     $depth
-        // }
-        // foreach ($project as $value_pj) {
-        //     foreach ($depth_0 as $value_0) { // 위에꺼랑 속도 테스트 필요
-        //         if ($value_pj->id === $value_0->project_id) {
-        //             $value_pj->depth_0[] = $value_0;
-        //             foreach ($depth_1 as $value_1) {
-        //                 if ($value_0->id === $value_1->task_parent) {
-        //                     $value_0->depth_1[] = $value_1;
-        //                 }
-        //                 $data[$value_pj->id] = $value_pj;
-        //             }
-        //             $data[$value_pj->id] = $value_pj;
-        //         }
-        //     }
-        // }
+        $data['project'] = Project::project_depth();
+        foreach ($data['project'] as $key => $value) {
+            
+        }
+        $depth_0 = Task::depth_pj(0,); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+        // $data = $depth_0;
+        foreach ($depth_0 as $key => $value) {            
+            $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
+        }
+        dd($data);
 
         // --- 유저 정보
         $user = Auth::user();
@@ -176,31 +165,31 @@ class TaskController extends Controller
 
 
         // dd($data);
-        $result = DB::select("
-            SELECT
-                tks.id
-                ,tks.project_id
-                ,pj.project_title
-                ,tks.task_responsible_id
-                ,us.name                
-                ,tks.task_status_id
-                ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
-                ,tks.priority_id
-                ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
-                ,tks.category_id
-                ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
-                ,tks.task_parent
-                ,tks.task_depth
-                ,tks.title
-                ,tks.start_date
-                ,tks.end_date
-            FROM tasks tks
-                LEFT JOIN users us
-                ON tks.task_responsible_id = us.id
-                LEFT JOIN projects pj
-                ON tks.project_id = pj.id
-            WHERE tks.deleted_at IS NULL
-        ");
+        // $result = DB::select("
+        //     SELECT
+        //         tks.id
+        //         ,tks.project_id
+        //         ,pj.project_title
+        //         ,tks.task_responsible_id
+        //         ,us.name                
+        //         ,tks.task_status_id
+        //         ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
+        //         ,tks.priority_id
+        //         ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
+        //         ,tks.category_id
+        //         ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
+        //         ,tks.task_parent
+        //         ,tks.task_depth
+        //         ,tks.title
+        //         ,tks.start_date
+        //         ,tks.end_date
+        //     FROM tasks tks
+        //         LEFT JOIN users us
+        //         ON tks.task_responsible_id = us.id
+        //         LEFT JOIN projects pj
+        //         ON tks.project_id = pj.id
+        //     WHERE tks.deleted_at IS NULL
+        // ");
         // return $depth_1;
         // dd($data);  
         // 정렬 (data배열의 값에 상응하는 key값을 따로 변수로 선언해, (0 => title_6, 1 => title_9 ...)
@@ -219,7 +208,7 @@ class TaskController extends Controller
         //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
         // }
         return view('modal.modalgantt')
-        ->with('data', $result)
+        ->with('data', $data)
         ->with('user', Session::get('user'))
         ->with('color_code',$color_code)
         ->with('user_data',$user_data)
@@ -235,8 +224,9 @@ class TaskController extends Controller
         $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
         // $data = $depth_0;
         foreach ($depth_0 as $key => $value) {            
-            $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
+            $value->depth_1 = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
         }
+        $data['task'] = $depth_0;
         dd($data);
         return view('modal.modalgantt')->with('data', $data)->with('user', Session::get('user'));
     }
