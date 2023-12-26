@@ -12,13 +12,9 @@
 </head>
 <body>
   <div class="grid2">
+    <div class="login-title">Together</div>
 
     <form action="{{route('user.registration.post')}}" method="POST" class="form login">
-      {{-- @include('layout.errorlayout') --}}
-      @forelse ($errors->all() as $val)
-      <div id="errorMsg" class="form-text text-danger"> {{$val}}</div>
-      @empty
-      @endforelse
       <br>
       @csrf
       <div class="form__field">
@@ -27,6 +23,11 @@
           </svg><span class="hidden">email</span></label>
         <input autocomplete="off" id="email" type="text" name="email" class="form__input" placeholder="email">
       </div>
+      @if ($errors->has('email'))
+      <div id="errorMsg" class="form-text text-danger">
+          <p>* {{ $errors->first('email') }}</p>
+      </div>
+      @endif
 
       <div class="form__field">
         <label for="password"><svg class="icon">
@@ -34,6 +35,11 @@
           </svg><span class="hidden">Password</span></label>
         <input id="password" type="password" name="password" class="form__input" placeholder="Password">
       </div>
+      @if ($errors->has('password'))
+      <div id="errorMsg" class="form-text text-danger">
+          <p>* {{ $errors->first('password') }}</p>
+      </div>
+      @endif
 
       <div class="form__field">
           <label for="passwordchk"><svg class="icon">
@@ -41,6 +47,11 @@
             </svg><span class="hidden">Password chk</span></label>
           <input id="passwordchk" type="password" name="passwordchk" class="form__input" placeholder="Password chk">
         </div>
+        @if ($errors->has('passwordchk'))
+        <div id="errorMsg" class="form-text text-danger">
+            <p>* {{ $errors->first('passwordchk') }}</p>
+        </div>
+        @endif
 
         <div class="form__field">
           <label for="name"><svg class="icon">
@@ -48,7 +59,12 @@
             </svg><span class="hidden">email</span></label>
           <input autocomplete="name" id="name" type="text" name="name" class="form__input" placeholder="username">
         </div>
-
+        @if ($errors->has('name'))
+        <div id="errorMsg" class="form-text text-danger">
+            <p>* {{ $errors->first('name') }}</p>
+        </div>
+        @endif
+       
       <div class="form__field">
         <input type="submit" class="button_line_none" value="Sign Up">
       </div>

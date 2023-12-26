@@ -1,5 +1,7 @@
 <head>
     <link rel="stylesheet" href="/css/login.css">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 
@@ -15,18 +17,27 @@
         @csrf
         @include('layout.errorlayout')
         <br>
+        {{-- @if ($errors->any())
+        <div id="errorMsg" class="form-text text-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
         <div class="form__field">
           <label for="login__username"><svg class="icon">
               <use xlink:href="#icon-user"></use>
-            </svg><span class="hidden">Username</span></label>
-          <input autocomplete="off" id="login__username" type="text" name="email" class="form__input" placeholder="email" required>
+            </svg><span class="hidden">Useremail</span></label>
+          <input autocomplete="off" id="login__username" type="text" name="email" class="form__input" placeholder="email">
         </div>
   
         <div class="form__field">
           <label for="login__password"><svg class="icon">
               <use xlink:href="#icon-lock"></use>
             </svg><span class="hidden">Password</span></label>
-          <input id="login__password" type="password" name="password" class="form__input" placeholder="Password" required>
+          <input id="login__password" type="password" name="password" class="form__input" placeholder="Password">
         </div>
   
         <div class="form__field">

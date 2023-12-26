@@ -41,7 +41,7 @@ class UserController extends Controller
             $errorMsg = "인증 에러가 발생 했습니다.";
             return view('login')->withErrors($errorMsg);
         }
-        return redirect('/dashboard')->cookie($cookie);
+        return redirect('/dashboard');
     }
 
    

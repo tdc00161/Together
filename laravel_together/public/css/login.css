@@ -11,7 +11,18 @@ body {
 }
 
 .error-color {
-    color: rgb(255, 0, 0);
+    color: white;
+}
+
+#errorMsg {
+  width: 100%;
+  height: 40px;
+  background-color: #00000086;
+  border-radius: 3px;
+  padding-left: 10px;
+  font-weight: bold;
+  line-height: 40px;
+  font-size: 11px;
 }
 
 .login-title-div {
@@ -24,7 +35,7 @@ body {
 .login-title {
     width: 300px;
     display: inline-block;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bold;
     color: #21D9AD;
     text-align: center;
@@ -40,7 +51,6 @@ body {
 
 .grid2 {
     position: absolute;
-    inline-size: 90%;
     max-inline-size: 35rem;
     top: 50%;
     left: 50%;
@@ -152,17 +162,23 @@ input[type="submit"] {
   display: grid;
   gap: var(--formGap);
   justify-items: center;
+  font-size: 14px;
 }
 
-.form input[type="password"],
+/* .form input[type="password"],
 .form input[type="text"],
 .form input[type="submit"] {
+  inline-size: 100%;
+} */
+
+.form input[type="password"],
+.form input[type="text"] {
   inline-size: 100%;
 }
 
 .form__field {
   display: flex;
-  width: 320px;
+  width: 100%;
 }
 
 .form__input {
@@ -244,4 +260,14 @@ input[type="submit"] {
 }
 .form__input, .button_line_none {
     border: 0;
+}
+
+.button_line_none {
+  height: 45px;
+  line-height: 5px;
+  width: 100%;
+}
+
+.prev-btn {
+  width: 30px;
 }
