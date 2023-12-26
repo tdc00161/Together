@@ -168,7 +168,8 @@
 	position: relative;
     /* top: 8px; */
     right: 10px;
-    width: 26px;
+    width: 20px;
+    left: 10px;
 }
 
 .gantt-dropdown-check-list {
@@ -181,7 +182,8 @@
 	cursor: pointer;
 	display: inline-block;
 	padding: 5px 22px 5px 22px;                    
-	border: 1px solid #ccc;
+	border: 1px solid #F9B31F;
+    background-color: #f9b31f66;
 }
 
 /* .gantt-dropdown-check-list .gantt-span:after {
@@ -396,6 +398,19 @@
 }
 .gantt-task-detail-click {
 	flex: 0 0 10%;
+	position: relative;
+	width: fit-content;
+}
+.gantt-task-detail-click-span {
+	display: block;
+	/* transform: rotate(90deg); */
+	white-space: nowrap;
+	transform-origin: 50% 50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(90deg);
+	font-size: large;
 }
 .taskKey {
 	flex: 0 0 20%;
@@ -404,7 +419,7 @@
 	flex: 1;
 }
 
-.gantt-editable-div:hover .gantt-task-detail-click {
+.gantt-editable-div:hover .gantt-task-detail-click-span {
 	color: rgb(151, 87, 255);
 }
 .gantt-editable-div:hover .taskName {

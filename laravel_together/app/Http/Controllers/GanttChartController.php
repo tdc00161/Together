@@ -240,6 +240,7 @@ class GanttChartController extends Controller
         }
     }
 
+    // 간트 프로젝트별 조회
     public function ganttIndex_one($id)
     {
         $user = Auth::user();
