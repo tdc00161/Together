@@ -14,11 +14,32 @@
 
   {{-- 1 업무상태 --}}
   <div class="app-card1"> 
-    <span class="app-card-title">
+    <div class="app-card-title2">업무상태 현황</div>
+    <canvas id="chartcanvas2" width="800" height="800"></canvas>
+    <div class="color_div">
+        <div class="color_set">
+            <div class="color_box1"></div>
+            <div class="color_name">시작전</div>
+        </div>
+        <div  class="color_set">
+            <div class="color_box2"></div>
+            <div class="color_name">진행중</div>
+        </div>
+        <div class="color_set">
+            <div class="color_box3"></div>
+            <div class="color_name">피드백</div>
+        </div>
+        <div  class="color_set">
+            <div class="color_box4"></div>
+            <div class="color_name">완료</div>
+        </div>
+    </div>
+
+    {{-- <span class="app-card-title">
      업무상태
     </span>
     <div class="app-card__subtext"></div>
-    <div class="app-card-buttons"></div>
+    <div class="app-card-buttons"></div> --}}
    </div>
 
    {{-- 2 공지 --}}

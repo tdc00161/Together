@@ -88,6 +88,76 @@ class TaskController extends Controller
 
     }
 
+    public function board_graph_data(Request $request) {
+
+        // Log::debug("***** project_graph_data Start *****".$request);
+
+        $user_id = Auth::id();
+        // dd($user_id);
+  
+        $before =DB::table('tasks')
+                    ->join('projects', function($join){
+                        $join->on('tasks.project_id','=','projects.id');
+                    })
+                    ->selectRaw('count(task_status_id) as cnt')
+                    ->where('task_status_id',0)
+                    ->where('projects.user_pk',$user_id)
+                    ->groupBy('task_status_id')
+                    ->get();
+        // dump($before);
+  
+        $ing =DB::table('tasks')
+                ->join('projects', function($join){
+                    $join->on('tasks.project_id','=','projects.id');
+                })
+                ->selectRaw('count(task_status_id) as cnt')
+                ->where('task_status_id',1)
+                ->where('project_id',$user_id)
+                ->groupBy('tasks.task_status_id')
+                ->get();
+        // dump($ing);
+  
+        $feedback =DB::table('tasks')
+                        ->join('projects', function($join){
+                            $join->on('tasks.project_id','=','projects.id');
+                        })
+                      ->selectRaw('count(task_status_id) as cnt')
+                      ->where('task_status_id',2)
+                      ->where('project_id',$user_id)
+                      ->groupBy('tasks.task_status_id')
+                      ->get();
+        // dump($feedback);
+  
+        $complete =DB::table('tasks')
+                    ->join('projects', function($join){
+                        $join->on('tasks.project_id','=','projects.id');
+                    })
+                    ->selectRaw('count(task_status_id) as cnt')
+                    ->where('task_status_id',3)
+                    ->where('project_id',$user_id)
+                    ->groupBy('tasks.task_status_id')
+                    ->get();
+        // dump($complete);
+
+  
+        //데이터 담을 빈 객체 생성
+        $baseObj = new \stdClass();
+        $baseObj->cnt = 0;
+        $statuslist = [
+          'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
+          'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
+          'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
+          'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
+        ];
+        // dd($statuslist);
+  
+        // Log::debug("Response : ", $statuslist);
+        // Log::debug("***** project_graph_data End *****");
+        return response()->json($statuslist);
+        // return '반환 테스트';
+      }
+
+
     public function showheader()
     {
 

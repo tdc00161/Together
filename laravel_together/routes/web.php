@@ -38,6 +38,8 @@ Route::get('/header', [TaskController::class,'showheader']);
 
 // 대시보드
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
+Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
+
 
 // 간트차트
 Route::get('/ganttchart', [GanttChartController::class, 'ganttIndex'])->name('ganttall.index'); // 간트 전체 출력
@@ -61,9 +63,7 @@ Route::post('/create', [ProjectController::class,'maincreate'])->name('create.po
 
 // 프로젝트 개인/팀 화면
 Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
-// Route::post('/individual', [ProjectController::class,'mainpost'])->name('individual.post');
 Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
-// Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
 Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
