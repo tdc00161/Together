@@ -546,3 +546,12 @@
 	border-radius: 3px;
 	display: inline-block;
 } */
+
+.scroll-style-parent {
+	position:relative;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+	position: fixed;
+	background-color: white;
+}
