@@ -15,9 +15,23 @@ use App\Models\BaseData;
 
 class GanttChartController extends Controller
 {
-    // 간트차트 전체화면 출력
-    public function ganttindex()
-{
+    // 태스크 전체 조회 (수정이전)
+    public function ganttIndex()
+    {
+        $data = [];
+        // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
+        $data['project'] = Project::project_depth();
+        foreach ($data['project'] as $key => $value) {
+            
+        }
+        $depth_0 = Task::depth_pj(0,); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+        // $data = $depth_0;
+        foreach ($depth_0 as $key => $value) {            
+            $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
+        }
+        dd($data);
+
+        // --- 유저 정보
         $user = Auth::user();
 
         $user_data = project::where('user_pk',$user->id)
@@ -31,6 +45,16 @@ class GanttChartController extends Controller
                 ,'created_at'
                 ,'flg'
                 )
+        ->get();
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
         ->get();
 
         // 대표 레이아웃 사이드바 생성
@@ -52,36 +76,140 @@ class GanttChartController extends Controller
         ->where('projects.user_pk','=',$user->id)
         ->first();
 
-        $result = DB::select("
-            SELECT
-                tks.id
-                ,tks.project_id
-                ,pj.project_title
-                ,tks.task_responsible_id
-                ,us.name
-                ,tks.task_status_id
-                ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
-                ,tks.priority_id
-                ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
-                ,tks.category_id
-                ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
-                ,tks.task_parent
-                ,tks.task_depth
-                ,tks.title
-                ,tks.start_date
-                ,tks.end_date
-            FROM tasks tks
-                LEFT JOIN users us
-                ON tks.task_responsible_id = us.id
-                LEFT JOIN projects pj
-                ON tks.project_id = pj.id
-            WHERE tks.deleted_at IS NULL    
-            
-            
-        ");
 
-        // $result['count']=count($result);
-        // dd($result);
+        // dd($data);
+        // $result = DB::select("
+        //     SELECT
+        //         tks.id
+        //         ,tks.project_id
+        //         ,pj.project_title
+        //         ,tks.task_responsible_id
+        //         ,us.name                
+        //         ,tks.task_status_id
+        //         ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
+        //         ,tks.priority_id
+        //         ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
+        //         ,tks.category_id
+        //         ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
+        //         ,tks.task_parent
+        //         ,tks.task_depth
+        //         ,tks.title
+        //         ,tks.start_date
+        //         ,tks.end_date
+        //     FROM tasks tks
+        //         LEFT JOIN users us
+        //         ON tks.task_responsible_id = us.id
+        //         LEFT JOIN projects pj
+        //         ON tks.project_id = pj.id
+        //     WHERE tks.deleted_at IS NULL
+        // ");
+        // return $depth_1;
+        // dd($data);  
+        // 정렬 (data배열의 값에 상응하는 key값을 따로 변수로 선언해, (0 => title_6, 1 => title_9 ...)
+        //     그 변수를 정렬하고 (4 => title_1, 6 => title_2, ...) 그 정렬 순으로 data[4], data[6], ... data값과 키를 이용해 부를 예정)
+
+        // 정렬하고 싶은 값을 빼온다
+        // foreach ($data as $key => $item) {
+        //     $sort[$key] = $item['project']->project_title;
+        // }
+
+        // // asort로 키값과 value를 정렬
+        // asort($sort);
+
+        // // data에 정렬된 배열 key값대로 변경
+        // foreach ($sort as $key => $item) {
+        //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
+        // }
+        if(Auth::check()) {
+            return view('ganttchart-all')
+            ->with('data',$result)
+            ->with('user', Session::get('user'))
+            ->with('color_code',$color_code)
+            ->with('user_data',$user_data)
+            ->with('userflg0',$userflg0)
+            ->with('userflg1',$userflg1);
+        } else {
+            return redirect('/user/login');
+        }
+    }
+
+    public function ganttIndex_one($id)
+    {
+        $user = Auth::user();
+
+        $user_data = project::where('user_pk',$user->id)
+        ->select('id'
+                ,'user_pk'
+                ,'color_code_pk'
+                ,'project_title'
+                ,'project_content'
+                ,'start_date'
+                ,'end_date'
+                ,'created_at'
+                ,'flg'
+                )
+        ->get();
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
+        ->get();
+
+        // 대표 레이아웃 사이드바 생성
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+        if ($items->flg == '0'){
+        array_push($userflg0,$items);
+        } elseif ($items->flg == '1'){
+        array_push($userflg1,$items);
+        }
+        }
+        // dd($userflg0);
+        
+        $color_code = DB::table('basedata')
+        ->join('projects','color_code_pk','=','data_content_code')
+        ->select('data_content_name')
+        ->where('data_title_code','=','3')
+        ->where('projects.user_pk','=',$user->id)
+        ->first();
+
+
+        $data = [];
+        // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
+        $data['project'] = Project::find($id);
+        $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+        // $data = $depth_0;
+        foreach ($depth_0 as $key => $value) {            
+            $value->depth_1 = Task::depth_tsk(1,$value->id);
+        }
+        $data['task'] = $depth_0;
+        // dd($data);
+        // dd($data['task'][0]->id);
+        return view('ganttchart')->with('data', $data)->with('user', Session::get('user'))->with('color_code',$color_code)
+        ->with('user_data',$user_data)
+        ->with('userflg0',$userflg0)
+        ->with('userflg1',$userflg1);
+    }
+
+    // 상세 업무/공지 조회
+    public function view($id)
+    {
+        $result['task'] = Task::task_detail($id);
+        // Log::debug($result);
+        $result['children'] = Task::task_detail_children($id);
+        $result['comment'] = Task::task_detail_comment($id);
+
+        // task->depth 값을 보고 부모를 데려올지 결정
+        return $result;
+        if ($result['task'][0]->task_depth !== '0') {
+            $result['parents'] = Task::task_detail_parents($result['task'][0]->task_depth, $id);
+        }
 
         if(Auth::check()) {
             return view('ganttchart')
@@ -93,8 +221,92 @@ class GanttChartController extends Controller
             ->with('userflg1',$userflg1);
         } else {
             return redirect('/user/login');
-        }
-    }        
+        }   
+    }
+    
+    
+    // 간트차트 전체화면 출력
+//     public function ganttindex()
+// {
+//         // $id = project_id;
+//         // $result = Project::find($id);
+//         $user = Auth::user();
+
+//         $user_data = project::where('user_pk',$user->id)
+//         ->select('id'
+//                 ,'user_pk'
+//                 ,'color_code_pk'
+//                 ,'project_title'
+//                 ,'project_content'
+//                 ,'start_date'
+//                 ,'end_date'
+//                 ,'created_at'
+//                 ,'flg'
+//                 )
+//         ->get();
+
+//         // 대표 레이아웃 사이드바 생성
+//         $userflg0=[];
+//         $userflg1=[];
+//         foreach ($user_data as $items) {
+//         if ($items->flg == '0'){
+//         array_push($userflg0,$items);
+//         } elseif ($items->flg == '1'){
+//         array_push($userflg1,$items);
+//         }
+//         }
+//         // dd($userflg0);
+        
+//         $color_code = DB::table('basedata')
+//         ->join('projects','color_code_pk','=','data_content_code')
+//         ->select('data_content_name')
+//         ->where('data_title_code','=','3')
+//         ->where('projects.user_pk','=',$user->id)
+//         ->first();
+
+//         $result = DB::select("
+//             SELECT
+//                 tks.id
+//                 ,tks.project_id
+//                 ,pj.project_title
+//                 ,tks.task_responsible_id
+//                 ,us.name
+//                 ,tks.task_status_id
+//                 ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
+//                 ,tks.priority_id
+//                 ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
+//                 ,tks.category_id
+//                 ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
+//                 ,tks.task_parent
+//                 ,tks.task_depth
+//                 ,tks.title
+//                 ,tks.start_date
+//                 ,tks.end_date
+//             FROM tasks tks
+//                 LEFT JOIN users us
+//                 ON tks.task_responsible_id = us.id
+//                 LEFT JOIN projects pj
+//                 ON tks.project_id = pj.id
+//             WHERE tks.deleted_at IS NULL    
+            
+            
+//         ");
+
+//         // $result['count']=count($result);
+//         // dd($result);
+
+//         if(Auth::check()) {
+//             return view('ganttchart')
+//             ->with('data',$result)
+//             ->with('user', Session::get('user'))
+//             ->with('color_code',$color_code)
+//             ->with('user_data',$user_data)
+//             ->with('userflg0',$userflg0)
+//             ->with('userflg1',$userflg1);
+//         } else {
+//             return redirect('/user/login');
+//         }
+//     }        
 
     // 간트차트 업무 작성
     // public function ganttstore(Request $request)

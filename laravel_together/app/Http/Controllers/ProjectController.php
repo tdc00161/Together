@@ -327,6 +327,7 @@ class ProjectController extends Controller
             WHERE
                 pj.id = ".$id
         );
+        Log::debug($dataContent);
         if (!$dataContent) {
             $responseData['code'] = 'E01';
             $responseData['msg'] = $id.' is no where';

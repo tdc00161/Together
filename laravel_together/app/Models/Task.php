@@ -33,6 +33,7 @@ class Task extends Model // 업무/공지
     'content',
     'start_date',
     'end_date',
+    'depth_1',
   ];
 
   protected $primaryKey = 'id';
@@ -71,7 +72,7 @@ class Task extends Model // 업무/공지
   }
 
   // task 깊이별로 가져오기
-  public static function depth($task_depth)
+  public static function depth_pj($task_depth, $project_id)
   {
     $result = DB::select(
       "SELECT 
@@ -79,15 +80,15 @@ class Task extends Model // 업무/공지
                 ,tsk.project_id
                 ,pj.project_title
                 ,tsk.task_responsible_id
-                ,res.name res_name
+                ,res.name as res_name
                 ,tsk.task_writer_id
-                ,wri.name wri_name
+                ,wri.name as wri_name
                 ,tsk.task_status_id
-                ,base.data_content_name
+                ,base.data_content_name as status_name
                 ,tsk.priority_id
-                ,base2.data_content_name
+                ,base2.data_content_name as priority_name
                 ,tsk.category_id
-                ,base3.data_content_name
+                ,base3.data_content_name as category_name
                 ,tsk.task_number
                 ,tsk.task_parent
                 ,tsk.task_depth
@@ -99,24 +100,73 @@ class Task extends Model // 업무/공지
                 ,tsk.updated_at
                 ,tsk.deleted_at
             FROM tasks tsk
-              JOIN basedata base 
+              LEFT JOIN basedata base 
                 ON tsk.task_status_id = base.data_content_code
                 AND base.data_title_code = '0'
-              JOIN basedata base2 
+              LEFT JOIN basedata base2 
                 ON tsk.priority_id = base2.data_content_code
                 AND base2.data_title_code = '1'
-              JOIN basedata base3 
+              LEFT JOIN basedata base3 
                 ON tsk.category_id = base3.data_content_code
                 AND base3.data_title_code = '2'
-              JOIN users res
+              LEFT JOIN users res
                 ON tsk.task_responsible_id = res.id
-              JOIN users wri
+              LEFT JOIN users wri
                 ON tsk.task_writer_id = wri.id
-              JOIN projects pj
+              LEFT JOIN projects pj
                 ON tsk.project_id = pj.id
-            WHERE 
-              tsk.deleted_at IS NULL
-              AND tsk.task_depth = " . $task_depth
+            WHERE tsk.task_depth = " . $task_depth
+            ." AND tsk.project_id = " . $project_id
+    );
+
+    return $result;
+  }
+
+  public static function depth_tsk($task_depth, $task_parent)
+  {
+    $result = DB::select(
+      "SELECT 
+                tsk.id
+                ,tsk.project_id
+                ,pj.project_title
+                ,tsk.task_responsible_id
+                ,res.name as res_name
+                ,tsk.task_writer_id
+                ,wri.name as wri_name
+                ,tsk.task_status_id
+                ,base.data_content_name as status_name
+                ,tsk.priority_id
+                ,base2.data_content_name as priority_name
+                ,tsk.category_id
+                ,base3.data_content_name as category_name
+                ,tsk.task_number
+                ,tsk.task_parent
+                ,tsk.task_depth
+                ,tsk.title
+                ,tsk.content
+                ,tsk.start_date
+                ,tsk.end_date
+                ,tsk.created_at
+                ,tsk.updated_at
+                ,tsk.deleted_at
+            FROM tasks tsk
+              LEFT JOIN basedata base 
+                ON tsk.task_status_id = base.data_content_code
+                AND base.data_title_code = '0'
+              LEFT JOIN basedata base2 
+                ON tsk.priority_id = base2.data_content_code
+                AND base2.data_title_code = '1'
+              LEFT JOIN basedata base3 
+                ON tsk.category_id = base3.data_content_code
+                AND base3.data_title_code = '2'
+              LEFT JOIN users res
+                ON tsk.task_responsible_id = res.id
+              LEFT JOIN users wri
+                ON tsk.task_writer_id = wri.id
+              LEFT JOIN projects pj
+                ON tsk.project_id = pj.id
+            WHERE tsk.task_depth = " . $task_depth
+            ." AND tsk.task_parent = " . $task_parent
     );
 
     return $result;
