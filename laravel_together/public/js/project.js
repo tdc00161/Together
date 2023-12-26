@@ -133,42 +133,82 @@ function deleteProject(project_pk) {
       });
 }
 
+// 프로젝트 명 클릭시 초기값 삭제
+// let UPDATETITLESET = document.getElementById('project_title');
+// UPDATETITLESET.addEventListener('click',deleteTitle)
+
+// function deleteTitle () {
+//    UPDATETITLESET.removeAttribute('value');
+// }
+
+let OrginalendValue = document.getElementById('end_date').value;
+let Orginalend = document.getElementById('end_date');
+
+console.log(UPDATETITLESET);
 
 // 프로젝트 명, 컨텐츠 업데이트
 const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function titleupdate(project_pk) {
-   
-   const UpdateValue = document.getElementById('project_title').value;
-   console.log(UpdateValue)
 
-   // 서버로 보낼 데이터
-   // const PutData = {
-   //    UpdateValue: UpdateValue
-   // };
+   let Updatetitle = document.getElementById('project_title').value;
+   let Updatecontent = document.getElementById('project_content').value;
+   let Updatestart = document.getElementById('start_date').value;
+   let Updateend = document.getElementById('end_date').value;
+   
+   // console.log(Updatetitle)
+
+   let dday = document.getElementById("dday");
+      start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
+      console.log(start_day);
+      end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
+      // 시작일보다 마감일이 이전일 경우 DB에 저장하지 않고 에러띄우기 및 d-day 설정 지우기
+      if(end_day < start_day) {
+         dday.innerHTML = '';
+         alert('마감일자 입력을 다시 해주세요');
+         return false;
+      }
+      console.log(end_day);
+      gap = end_day - start_day;
+      console.log(gap);
+      result = Math.floor(gap / (1000 * 60 * 60 * 24));
+
+      // // 시작일 or 마감일 1개만 수정되었을 때도 변경ㅇ 설정?
+      // if(start_day!=null || end_day!=null) {
+      //    dday.innerHTML = result;
+      // }
+      dday.innerHTML = 'D-' + result;
+
+
 
     // Fetch를 사용하여 서버에 put 요청 보내기
-    fetch('/update/' + project_pk, {
+    fetch('/update/' +project_pk, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken_project,
             // 필요에 따라 다른 헤더들 추가 가능
          },
-         body: JSON.stringify({UpdateValue: UpdateValue})
+         body: JSON.stringify({
+            "Updatetitle": Updatetitle,
+            "Updatecontent":Updatecontent,
+            "Updatestart": Updatestart,
+            "Updateend":Updateend,
+         })
+         // body: JSON.stringify({project_title: project_title})
    })
-   .then(response => {
+   .then((response) => {
       // console.log(!response.ok);
-      // console.log(response.data);
+      console.log(response);
       // if(!response.ok) {
       //    throw new Error('서버 응답이 성공적이지 않습니다.');
       // } else {
-      //    return response.json();
+      return response.json();
       // }
-      response.json()
+      // response.json();
    })
    .then(data => {
-      console.log(data.data);
-         // document.getElementsByClassId('project_title').value = data.UpdateValue;
+      console.log(data);
+         document.getElementsByClassId('project_title').value = data.project_title;
    })
    .catch(error => {
          // 오류 처리
@@ -177,6 +217,14 @@ function titleupdate(project_pk) {
 
 }
 
+
+// 프로젝트 설명 클릭시 초기값 삭제
+let UPDATECONTENTSET = document.getElementById('project_content');
+UPDATECONTENTSET.addEventListener('click',deleteContent)
+
+function deleteContent () {
+   this.value = "";
+}
 
 
 // tab 기능

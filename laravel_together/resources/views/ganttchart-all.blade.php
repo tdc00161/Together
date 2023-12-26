@@ -6,35 +6,8 @@
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
 @endsection
-@section('title', '간트차트')
+@section('title', '전체간트차트')
 @section('main')
-    <div class="first_menu">
-        <div class="menu_title">
-            <div class="project_color"></div>
-            <div>
-                <input type="text" name="title" placeholder="프로젝트명">
-                {{-- <br> --}}
-                <textarea name="content" id="content" placeholder="설명"></textarea>
-            </div>
-        </div>
-        <div class="date_set">
-            <label for="d_day"> D-day
-                <span class="date"></span>
-            </label>
-            <label for="start_date"> 시작일
-                <input class="date" type="date" name="start_date">
-            </label>
-            <label for="end_date"> 마감일
-                <input class="date" type="date" name="end_date">
-            </label>
-        </div>
-    </div>
-    <div class="tabset">
-        <a href="" class="tabmenu">피드</a>
-        <button class="gantt-tabmenu active" onclick="openTab(event,gantt)">간트차트</button>
-    </div>
-    {{-- <div class="hr"></div> --}}
-    {{-- 피드공통 헤더끝 --}}
     <div class="gantt-btn-wrap">
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="   업무명, 업무번호 검색">
         <div>
@@ -103,16 +76,14 @@
                     <li><input name="end" type="radio"><span class="gantt-item">이번달</span></li>
                 </ul>
             </div>
-            <button class="gantt-add-btn" onclick="openTaskModal(0)">업무추가</button>
-            {{-- <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button> --}}
         </div>
     </div>
     <!-- 팝업 모달 창 -->
-    <div id="ganttPopupModal" class="gantt-update-modal">
+    {{-- <div id="ganttPopupModal" class="gantt-update-modal">
         <div class="gantt-modal-content">
             <p class="gantt-modal-content-p" id="ganttPopupMessage"></p>
         </div>
-    </div>
+    </div> --}}
     <div class="gantt-content-wrap">
         <section class="gantt-all-task">
             <div class="gantt-task-wrap">
@@ -139,57 +110,32 @@
                     </div>
                 </div>
                 <div class="gantt-task-body">
-                    @forelse ($data['task'] as $key => $item)
+                    @forelse ($data['project'] as $key => $value)
+                    <div class="gantt-project" id="gantt-project-{{$value->id}}">{{$value->project_title}}</div>
+                    @forelse ($data as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable">
                                 <button class="gantt-task-detail-click">●</button>
                                 <div class="gantt-detail" style="display: none">
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
-                                    <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
                                 </div>     
-                                <div class="taskKey">{{$item->task_number}}</div>
+                                <div class="taskKey">{{$item->id}}</div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->name}}</span></div>
                             <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->status_name}}"><span id="statusNameSpan">{{$item->status_name}}</span></div>
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"><span id="statusNameSpan">{{$item->task_status_name}}</span></div>
                             </div>
                             <div class="gantt-task-4">
-                                <input type="date" class="start-date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
+                                <input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
                             </div>
                             <div class="gantt-task-5">
-                                <input type="date" class="end-date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
+                                <input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
                             </div>
                         </div>
-                        @forelse ($item->depth_1 as $item2)
-                        <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
-                            <div class="gantt-editable-div editable">
-                                <button class="gantt-task-detail-click">●</button>
-                                <div class="gantt-detail" style="display: none">
-                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
-                                    <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item2->id}})">하위업무 추가</button>
-                                </div>     
-                                <div class="taskKey">{{$item2->task_number}}</div>
-                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">┖{{$item2->title}}</div>
-                            </div>
-                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item2->res_name}}</span></div>
-                            <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item2->status_name}}"><span id="statusNameSpan">{{$item2->status_name}}</span></div>
-                            </div>
-                            <div class="gantt-task-4">
-                                <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
-                            </div>
-                            <div class="gantt-task-5">
-                                <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
-                            </div>
-                        </div>
-                        @empty
-                            
-                        @endforelse
-                    @empty
-                    @endforelse
+                    @endforeach
+                    @endforeach
+                    
                 </div>
             </div>
             <div class="gantt-chart-wrap">
@@ -200,7 +146,7 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body">
-                        @forelse ($data['task'] as $key => $item)
+                        @foreach ($data as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
                                     $startDate = new DateTime('2023-12-01');
@@ -211,31 +157,15 @@
                                     }
                                 @endphp
                             </div>
-                            @forelse ($item->depth_1 as $item2)
-                                <div class="gantt-chart" id="gantt-chart-{{$item2->id}}">
-                                    @php
-                                        $startDate = new DateTime('2023-12-01');
-                                        $endDate = new DateTime('2023-12-31');
-
-                                        for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                            echo "<div id='row" . ($item2->id) . "-" . $date->format('Ymd') . "'></div>";
-                                        }
-                                    @endphp
-                                </div>
-                            @empty
-                                
-                            @endforelse
-                        @empty
-                        @endforelse
+                        @endforeach
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    @include('modal.insert') 
-    {{-- include 순서 중요: 작성/상세 --}}
-    @include('modal.detail')
+    {{-- @include('modal.insert') include 순서 중요: 작성/상세
+    @include('modal.detail') --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   
 @endsection

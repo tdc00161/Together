@@ -1,10 +1,10 @@
 <div class="task_modal detail_modal d-none">
 	<div class="header task_modal_header">
 		<div class="">
-			<div class="project_color "></div>
+			<div class="project_color task_project_color"></div>
 			<div class="project_name "></div>
 		</div>
-		<div class="cross_icon_w" onclick="cseTaskModal(1)"></div>
+		<div class="cross_icon_w" onclick="closeTaskModal(1)"></div>
 	</div>
 	<div>
 		<div class="content">

@@ -40,7 +40,8 @@ Route::get('/header', [TaskController::class,'showheader']);
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
 // 간트차트
-Route::get('/ganttchart', [GanttChartController::class, 'ganttindex'])->name('gantt.index'); // 간트 전체 출력
+Route::get('/ganttchart', [GanttChartController::class, 'ganttIndex'])->name('ganttall.index'); // 간트 전체 출력
+Route::get('/ganttchart/{id}', [GanttChartController::class, 'ganttIndex_one'])->name('gantt.index'); // 간트 개인 출력
 // Route::post('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
 // Route::put('/ganttchartRequest', [TaskController::class, 'update'])->name('gantt.update'); // 간트 업무 수정
 
@@ -64,11 +65,12 @@ Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('ind
 Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
 // Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
-Route::POST('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
+Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
 Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
 
 // 모달
 Route::get('/modaltest', [TaskController::class,'index']);
+Route::get('/modaltest2/{id}', [TaskController::class,'index_one']);
 Route::get('/detail', function () {
     return view('modal/detail');
 });

@@ -19,8 +19,12 @@
             <div class="title_bar">
                 <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
                 <input class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
-                <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
-                {{-- <div class="title_img"><button id=delete onclick="deleteProject({{$result->id}})"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
+            </div>
+            <textarea class="project_content" name="project_content" id="project_content" placeholder="설명" onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
+        </div>
+
+        <div class="title_rightgrid">
+            <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
                 {{-- 삭제 모달창 --}}
                 <div id="deleteModal">
                     <div class="deletemodal-content">
@@ -31,21 +35,20 @@
                         </div>
                     </div>
                 </div>
-                {{-- <br> --}}
-            </div>
-            <textarea class="project_content" name="project_content" id="content" placeholder="설명">{{$result->project_content}}</textarea>
-        </div>    
-        <div class="date_set">
             {{-- <div class="dday">D-{{$result->dday}}</div> --}}
-            <label for="dday">
-                <div class="dday" id="dday">D-{{$result->dday}}</div>
-            </label>
-            <label class="label" for="start_date"> 시작일
-                <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}">
-            </label>
-            <label class="label" for="end_date"> 마감일
-                <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}">
-            </label>
+            <div class="date_set">
+                <label for="dday">
+                    <div class="dday" id="dday">D-{{$result->dday}}</div>
+                </label>
+                <label class="project_label" for="start_date"> 시작일
+                    {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
+                    <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
+                </label>
+                <label class="project_label" for="end_date"> 마감일
+                    {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
+                    <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
+                </label>
+            </div>
         </div>
     </div>
     <div class="tabset">
@@ -144,14 +147,14 @@
                             @foreach ($data as $item)
 
                                 <tr class="box_ul">
-                                    {{-- <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}
+                                    <td class="td_pd" onclick="openTaskModal(1,0)">
                                         @if ($item->category_name == "공지")
-                                            <div style="color:red"></div>;
+                                            <div style="color:red">{{$item->category_name}}</div>
                                         @elseif ($item->category_name == "업무")
-                                            <div style="color:blue"></div>;
+                                            <div style="color:blue">{{$item->category_name}}</div>
                                         @endif
-                                    </td>  --}}
-                                    <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td>
+                                    </td> 
+                                    {{-- <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> --}}
                                     {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
 
                                     <td class="td_pd">{{Str::limit($item->title,37,'...')}}</td>

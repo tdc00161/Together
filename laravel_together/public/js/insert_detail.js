@@ -12,7 +12,7 @@ const INSERT_MODAL = document.querySelector('.insert_modal')
 // 더보기모달 (디테일)
 const MORE_MODAL = document.querySelector('.more_modal')
 // 프로젝트 색상
-const PROJECT_COLOR = document.querySelectorAll('.project_color')
+const PROJECT_COLOR = document.querySelectorAll('.task_project_color')
 // 프로젝트명 (공통)
 const PROJECT_NAME = document.querySelectorAll('.project_name')
 // 상위 업무 틀
@@ -180,8 +180,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
+				console.log(data);
 				// 프로젝트 색 띄우기
-				PROJECT_COLOR[a + 1].style = 'background-color: ' + data.data[0].data_content_name + ';'
+				PROJECT_COLOR[a].style = 'background-color: ' + data.data[0].data_content_name + ';'
 				PROJECT_NAME[a].textContent = data.data[0].project_title
 			})
 			.catch(error => {
@@ -228,35 +229,27 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
-				console.log(1);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
-
-				console.log(1);
+				
 				// 업무상태 값과 색상 주기
 				statusColor(data);
-
-				console.log(1);
+				
 				// 담당자 값체크, 삽입
 				responsibleName(data, a);
-
-				console.log(1);
+				
 				// 마감일자 값체크, 삽입
 				deadLineValue(data, a);
-
-				console.log(1);
+				
 				// 우선순위 값체크, 삽입
 				priorityValue(data, a);
-
-				console.log(1);
+				
 				// 상세업무 내용 값체크, 삽입
 				modalContentValue(data, a);
-
-				console.log(1);
+				
 				// 댓글 컨트롤
 				commentControl(data);
 
-				console.log(1);
 				// 상위업무 컨트롤
 				parentTaskControl(data, a);
 
@@ -789,7 +782,7 @@ function insertModalValue(data, a) {
 	}
 	PROJECT_NAME[a].textContent = data.task[0].project_title;
 	// 프로젝트 색 띄우기
-	PROJECT_COLOR[a + 1].style = 'background-color: ' + data.task[0].project_color + ';'
+	PROJECT_COLOR[a].style = 'background-color: ' + data.task[0].project_color + ';'
 	// 더보기에 쓸 id값 숨겨두기
 	now_task_id = data.task[0].id
 }

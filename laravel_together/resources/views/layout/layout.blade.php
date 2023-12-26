@@ -27,7 +27,7 @@
     </div>
 
     <div class="header">
-      <a class="header-title">Together</a>
+      <a class="header-title" href="/dashboard">Together</a>
     
      <div class="header-profile">
       
@@ -60,7 +60,7 @@
           <img src="/img/dashboard_icon.svg" alt="" style="width: 22px; margin-right:7px;">
           <span>대시보드</span>
         </a>
-        <a href="{{ route('gantt.index') }}">
+        <a href="{{ route('ganttall.index') }}">
           <img src="/img/gangchart_icon.svg" alt="" style="width: 22px; margin-right:7px;">
          <span>간트차트</span>
          {{-- <span class="notification-number updates">3</span> --}}
@@ -76,7 +76,7 @@
         @foreach ($userflg0 as $item)
           <a href="{{route('individual.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{$item->project_title}}</span>
+            <span>{{Str::limit($item->project_title,20,"")}}</span>
           </a>
         @endforeach
        </div>
@@ -87,7 +87,7 @@
         @foreach ($userflg1 as $item)
           <a href="{{route('team.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{$item->project_title}}</span>
+            <span>{{Str::limit($item->project_title,20,"")}}</span>
           </a>
         @endforeach
         {{-- {{dd($result)}}; --}}
