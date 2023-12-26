@@ -73,8 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
           icon_title.src = '/img/table3.png';
       } else if (sortingOrder_title === 1) {
           icon_title.src = '/img/table2.png';
-      } else {
+      } else if (sortingOrder_title === 2) {
           icon_title.src = '/img/table.png';
+      } else {
+          icon_title.src = '/img/table4.png';
       }
 
       // 자식 정렬
@@ -763,17 +765,27 @@ function test(rowNum) {
       const year = dateString.substring(0, 4);
       const month = dateString.substring(4, 6);
       const day = dateString.substring(6, 8);
-      const formattedDate = year + '-' + month + '-' + day;
+      const formattedDate = year + month + day;
 
       const target = document.getElementById('row' + rowNum + '-' + dateString); // ex) row1-231201
 
+      
       // bk-row div 요소 생성
       const div = document.createElement('div');
       div.classList = 'bk-row';
       div.dataset.rowNum = rowNum; // 해당 rowNum을 데이터로 저장
+      div.textContent = '';
 
       // 타겟에 bk-row div 추가
       target.appendChild(div);
+
+      // 첫 번째와 마지막 bk-row에 시작일과 종료일 추가
+      if (currentDate === startAt) {
+        div.textContent = '시작일: ' + formattedDate;
+      }
+      if (currentDate === endAt) {
+        div.textContent = '마감일: ' + formattedDate;
+      }
     }
   }
 }
