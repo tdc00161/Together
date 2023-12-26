@@ -27,7 +27,7 @@
     </div>
 
     <div class="header">
-      <a class="header-title">Together</a>
+      <a class="header-title" href="/dashboard">Together</a>
     
      <div class="header-profile">
       

@@ -382,12 +382,35 @@ class ProjectController extends Controller
     public function update_project(Request $request, $id)
     {
       // dd($id);
-      // Log::debug($id);
-      $newValue = $request->input('UpdateValue');
+      Log::debug($id);
+      Log::debug($request);
+      $newValue = $request->Updatetitle;
       Log::debug($newValue);
-      // Log::debug($request);
 
-      $project_id = 
+
+      $project = project::where('id',$id)
+                        ->update([
+                          'project_title' => $request->Updatetitle,
+                          'project_content' => $request->Updatecontent,
+                          'start_date' => $request->Updatestart,
+                          'end_date' => $request->Updateend,
+                        ]);
+      Log::debug($project);
+
+      $project->save();
+      // // 업데이트 내용
+      // $project->project_title = $newValue;
+      // Log::debug($newValue);
+
+      // // 저장
+      // $updateproject =
+
+      return redirect()->route('/individual');
+      // return redirect()->json(['result' => $updateproject, 'project' => $project],200, [], JSON_PRETTY_PRINT);
+
+
+      // return redirect('/individual')->with('newValue',$newValue);
+
       // return response()->json(['update_project' => $UpdateValue]);
       // return response()->json(['update_project' => $newValue]);
 
