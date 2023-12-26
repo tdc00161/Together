@@ -68,14 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
       sortedTasks_title.forEach(task_title => ganttTaskBody_title.appendChild(task_title));
       sortingOrder_title = (sortingOrder_title + 1) % 3; // 클릭 수에 따라 순서 변경
 
-      // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
-      const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
-      sortedTasks_title.forEach(task_title => {
-          const taskId_title = task_title.getAttribute('id').split('-')[2];
-          const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
-          ganttChartContainer_title.appendChild(ganttChartItem_title);
-      });
-
       // 이미지 변경
       if (sortingOrder_title === 0) {
           icon_title.src = '/img/table3.png';
@@ -86,13 +78,42 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // 자식 정렬
-      const ganttChildrenSort = document.querySelectorAll('.gantt-child-task');
-      for (let index = 0; index < ganttChildrenSort.length; index++) {
-        const element = ganttChildrenSort[index];
+      const tasks_title_child = document.querySelectorAll('.gantt-child-task');
+
+      const sortedTasks_title_child = Array.from(tasks_title_child).sort(function(a, b) {
+          const taskNameA_title = a.querySelector('.taskName').textContent.toUpperCase();
+          const taskNameB_title = b.querySelector('.taskName').textContent.toUpperCase();
+
+          if (sortingOrder_title === 0) {
+            console.log('오름순');
+            return (taskNameA_title < taskNameB_title) ? -1 : (taskNameA_title > taskNameB_title) ? 1 : 0;
+          } else if (sortingOrder_title === 1) {
+            console.log('내림순');
+            return (taskNameA_title > taskNameB_title) ? -1 : (taskNameA_title < taskNameB_title) ? 1 : 0;
+          } else if (sortingOrder_title === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
+            console.log('없순');
+              const taskIdA_title = parseInt(a.querySelector('.taskKey').textContent);
+              const taskIdB_title = parseInt(b.querySelector('.taskKey').textContent);
+              return taskIdA_title - taskIdB_title;
+          }
+      })
+      
+      console.log('자식 배치 전');
+      for (let index = tasks_title_child.length; index > 0; index--) {
+        const element = tasks_title_child[index-1];
         let ganttParentValue = element.getAttribute('parent')
+        console.log(element.getAttribute('parent'));
         const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
         ganttParentElement.after(element)
       }
+      console.log('자식 배치 후');
+      // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+      const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
+      sortedTasks_title_child.forEach(task_title => {
+        const taskId_title = task_title.getAttribute('id').split('-')[2];
+        const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
+        ganttChartContainer_title.appendChild(ganttChartItem_title);
+      });
   });
 });
 
@@ -124,14 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
       sortedTasks_respon.forEach(task_respon => ganttTaskBody_respon.appendChild(task_respon));
       sortingOrder_respon = (sortingOrder_respon + 1) % 3; // 클릭 수에 따라 순서 변경
 
-      // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
-      const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
-      sortedTasks_respon.forEach(task_respon => {
-          const taskId_respon = task_respon.getAttribute('id').split('-')[2];
-          const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
-          ganttChartContainer_respon.appendChild(ganttChartItem_respon);
-      });
-
       // 이미지 변경
       if (sortingOrder_respon === 0) {
           icon_respon.src = '/img/table3.png';
@@ -140,6 +153,42 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
           icon_respon.src = '/img/table.png';
       }
+
+      // 자식 정렬
+      const tasks_respon_child = document.querySelectorAll('.gantt-child-task');
+
+      const sortedTasks_respon_child = Array.from(tasks_respon_child).sort(function(a, b) {
+        const taskNameA_respon = a.querySelector('.responName').textContent.toUpperCase();
+        const taskNameB_respon = b.querySelector('.responName').textContent.toUpperCase();
+
+        if (sortingOrder_respon === 0) {
+            return (taskNameA_respon < taskNameB_respon) ? -1 : (taskNameA_respon > taskNameB_respon) ? 1 : 0;
+        } else if (sortingOrder_respon === 1) {
+            return (taskNameA_respon > taskNameB_respon) ? -1 : (taskNameA_respon < taskNameB_respon) ? 1 : 0;
+        } else if (sortingOrder_respon === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
+            const taskIdA_respon = parseInt(a.querySelector('.taskKey').textContent);
+            const taskIdB_respon = parseInt(b.querySelector('.taskKey').textContent);
+            return taskIdA_respon - taskIdB_respon;
+        }
+    });
+      
+      console.log('자식 배치 전');
+      for (let index = tasks_respon_child.length; index > 0; index--) {
+        const element = tasks_respon_child[index-1];
+        let ganttParentValue = element.getAttribute('parent')
+        console.log(element.getAttribute('parent'));
+        const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
+        ganttParentElement.after(element)
+      }
+      console.log('자식 배치 후');
+
+      // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+      const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
+      sortedTasks_respon_child.forEach(task_respon => {
+          const taskId_respon = task_respon.getAttribute('id').split('-')[2];
+          const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
+          ganttChartContainer_respon.appendChild(ganttChartItem_respon);
+      });
   });
 });
 
@@ -170,14 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
       sortedTasks_status.forEach(task_status => ganttTaskBody_status.appendChild(task_status));
       sortingOrder_status = (sortingOrder_status + 1) % 3; // 클릭 수에 따라 순서 변경
 
-      // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
-      const ganttChartContainer_status = document.querySelector('.gantt-chart-container');
-      sortedTasks_status.forEach(task_status => {
-          const taskId_status = task_status.getAttribute('id').split('-')[2];
-          const ganttChartItem_status = document.getElementById(`gantt-chart-${taskId_status}`);
-          ganttChartContainer_status.appendChild(ganttChartItem_status);
-      });
-
       // 이미지 변경
       if (sortingOrder_status === 0) {
           icon_status.src = '/img/table3.png';
@@ -186,6 +227,42 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
           icon_status.src = '/img/table.png';
       }
+
+    //   // 자식 정렬
+    //   const tasks_respon_child = document.querySelectorAll('.gantt-child-task');
+
+    //   const sortedTasks_status = Array.from(tasks_status).sort(function(a, b) {
+    //     const taskNameA_status = a.querySelector('.statusName').textContent.toUpperCase();
+    //     const taskNameB_status = b.querySelector('.statusName').textContent.toUpperCase();
+
+    //     if (sortingOrder_status === 0) {
+    //         return (taskNameA_status < taskNameB_status) ? -1 : (taskNameA_status > taskNameB_status) ? 1 : 0;
+    //     } else if (sortingOrder_status === 1) {
+    //         return (taskNameA_status > taskNameB_status) ? -1 : (taskNameA_status < taskNameB_status) ? 1 : 0;
+    //     } else if (sortingOrder_status === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
+    //         const taskIdA_status = parseInt(a.querySelector('.taskKey').textContent);
+    //         const taskIdB_status = parseInt(b.querySelector('.taskKey').textContent);
+    //         return taskIdA_status - taskIdB_status;
+    //     }
+    // });
+      
+    //   console.log('자식 배치 전');
+    //   for (let index = tasks_respon_child.length; index > 0; index--) {
+    //     const element = tasks_respon_child[index-1];
+    //     let ganttParentValue = element.getAttribute('parent')
+    //     console.log(element.getAttribute('parent'));
+    //     const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
+    //     ganttParentElement.after(element)
+    //   }
+    //   console.log('자식 배치 후');
+
+    //   // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    //   const ganttChartContainer_status = document.querySelector('.gantt-chart-container');
+    //   sortedTasks_status.forEach(task_status => {
+    //       const taskId_status = task_status.getAttribute('id').split('-')[2];
+    //       const ganttChartItem_status = document.getElementById(`gantt-chart-${taskId_status}`);
+    //       ganttChartContainer_status.appendChild(ganttChartItem_status);
+    //   });
   });
 });
 
@@ -670,6 +747,7 @@ function test(rowNum) {
 
 // 예시: 수정 요청을 보내는 함수
 function sendUpdateRequest(id, updatedValue , numbersOnly) {
+  console.log('신청');
   // Axios를 사용하여 수정 요청을 보내는 로직
   // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
   // 아래는 가상의 코드입니다.
@@ -770,6 +848,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
         // }
 
         // 수정 요청 보내기 (이 부분은 서버에 요청을 보내는 로직으로 수정하셔야 합니다)
+        console.log('수정 신청');
         sendUpdateRequest(id, updatedValue, numbersOnly);
 
         // 수정 완료 팝업 메시지 표시

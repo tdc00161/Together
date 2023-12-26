@@ -156,10 +156,10 @@
                                 <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->status_name}}"><span id="statusNameSpan">{{$item->status_name}}</span></div>
                             </div>
                             <div class="gantt-task-4">
-                                <input type="date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
+                                <input type="date" class="start-date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
                             </div>
                             <div class="gantt-task-5">
-                                <input type="date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
+                                <input type="date" class="end-date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
                             </div>
                         </div>
                         @forelse ($item->depth_1 as $item2)
@@ -179,10 +179,10 @@
                                 <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item2->status_name}}"><span id="statusNameSpan">{{$item2->status_name}}</span></div>
                             </div>
                             <div class="gantt-task-4">
-                                <input type="date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
+                                <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
                             </div>
                             <div class="gantt-task-5">
-                                <input type="date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
+                                <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
                             </div>
                         </div>
                         @empty
