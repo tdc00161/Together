@@ -40,13 +40,13 @@
                 <label for="dday">
                     <div class="dday" id="dday">D-{{$result->dday}}</div>
                 </label>
-                <label class="label" for="start_date"> 시작일
+                <label class="project_label" for="start_date"> 시작일
                     {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
-                    <input class="date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
+                    <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
                 </label>
-                <label class="label" for="end_date"> 마감일
+                <label class="project_label" for="end_date"> 마감일
                     {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
-                    <input class="date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
+                    <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
                 </label>
             </div>
         </div>

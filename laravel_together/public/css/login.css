@@ -151,6 +151,7 @@ input[type="submit"] {
 .form {
   display: grid;
   gap: var(--formGap);
+  justify-items: center;
 }
 
 .form input[type="password"],
@@ -161,6 +162,7 @@ input[type="submit"] {
 
 .form__field {
   display: flex;
+  width: 320px;
 }
 
 .form__input {
