@@ -124,8 +124,9 @@
     /* margin-bottom: 20px */
 }
 
-.date {
+.project_date {
     width: 70%;
+    text-align: center;
     height: 30px;
     padding-left: 10px;
     border: none;
@@ -133,8 +134,8 @@
     background-color: transparent;
 }
 
-.label {
-    width: 200px;
+.project_label {
+    width: 97%;
     height: 30px;
     background-color: white;
     border-radius: 3px;
@@ -142,6 +143,7 @@
     font-weight: 600;
     padding-left: 10px;
     line-height: 30px;
+    text-align: center;
     font-size: 1em;
 }
 
@@ -339,12 +341,12 @@
 }
 
 .gird_row2 {
-    /* width: 98%; */
+    width: 100%;
     height: 570px;
-    display: grid;
+    /* display: grid;
     grid-template-rows: 1fr 1fr;
     align-items: stretch;
-    justify-content: space-between;
+    justify-content: space-between; */
 }
 
 .right_box1 {
@@ -352,7 +354,7 @@
     height: 285px;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 10px;
-    width: 755px;
+    width: 100%;
 }
 
 .point_box {

@@ -44,11 +44,11 @@
                 <div>
                     <div class="div_date">
                         <div class="div_font">시작일</div>
-                        <input class="input_date" name="start_date" type="date">
+                        <input class="input_date" name="start_date" id="start_date" type="date">
                     </div>
                     <div class="div_date">
                         <div class="div_font">마감일</div>
-                        <input class="input_date" name="end_date" type="date">
+                        <input class="input_date" name="end_date" type="date" id="end_date" min="start_date">
                     </div>
                 </div>
                 <br>
@@ -56,9 +56,9 @@
                 </div>
         </div>
         <!-- {{-- 다크모드 --}} -->
-        <div class="dark-light">
+        {{-- <div class="dark-light">
                 <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
-        </div>
+        </div> --}}
     </form>
 
   

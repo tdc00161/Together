@@ -76,7 +76,7 @@
         @foreach ($userflg0 as $item)
           <a href="{{route('individual.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{$item->project_title}}</span>
+            <span>{{Str::limit($item->project_title,20,"")}}</span>
           </a>
         @endforeach
        </div>
@@ -87,7 +87,7 @@
         @foreach ($userflg1 as $item)
           <a href="{{route('team.get',['id' => $item->id])}}">
             <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{$item->project_title}}</span>
+            <span>{{Str::limit($item->project_title,20,"")}}</span>
           </a>
         @endforeach
         {{-- {{dd($result)}}; --}}
