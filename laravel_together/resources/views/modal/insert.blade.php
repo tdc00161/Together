@@ -1,7 +1,7 @@
 <div class="task_modal insert_modal" style='display: none;'>
 	<div class="header task_modal_header">
 		<div>
-			<div class="project_color"></div>
+			<div class="project_color task_project_color"></div>
 			<div class="project_name">Project1</div>
 			<div class="vertical_line">|</div>
 			<div class="insert_type">업무</div>

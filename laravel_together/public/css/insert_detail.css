@@ -19,6 +19,7 @@
 	right: 30%;
 	/* 내부 */
 	border-radius: 14px;
+	box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.6);
 	/* 크기 */
 	height: 87%;
 }
@@ -30,6 +31,7 @@
 	right: 0;
 	/* 내부 */
 	border-radius: 14px 0 0 14px;
+	box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.6);
 	/* 크기 */
 	height: 100%;
 }
