@@ -56,10 +56,13 @@ class MyUserValidation
 
         // 유효성 (validation) 검사
         $validator = Validator::make($arrRequestParam, $arrBaseValidation);
-       
+        Log::debug(" ***********유효성 검사 시작********** ");
 
         // 유효성 (validation) 검사 실패 시 처리
+        Log::debug(" ***********유효성 검사실패시 처리********** ");
         if($validator->fails()) {
+            Log::debug($validator->errors());
+            Log::debug('/'.$request->path());
             return redirect('/'.$request->path())->withErrors($validator->errors());
         }
 
