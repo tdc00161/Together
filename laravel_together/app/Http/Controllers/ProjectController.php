@@ -169,7 +169,6 @@ class ProjectController extends Controller
                       ->where('projects.id', '=', $result->id)
                       ->where('base1.data_title_code', '=', '0')
                       ->where('base2.data_title_code', '=', '2')
-                      ->whereNull('tasks.deleted_at')
                       ->orderby('tasks.updated_at','desc')
                       // ->orderby('projects.id','desc')
                       -> get();

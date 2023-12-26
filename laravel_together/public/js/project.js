@@ -88,14 +88,45 @@ function total() {
 }
 
 
-// 프로젝트 날짜 업데이트
-function updateDate() {
-   const StartD = document.getElementById("start_date").value;
-   const EndD = document.getElementById("end_date").value;
+// // 프로젝트 날짜 업데이트
+// function updateDate() {
+//    const StartD = document.getElementById("start_date").value;
+//    const EndD = document.getElementById("end_date").value;
 
-   const updateSD = StartD.toISOString().split('T')[0];
+//    const updateSD = StartD.toISOString().split('T')[0];
    
-}
+// }
+
+
+// ************* 업무상태 색상
+document.addEventListener('DOMContentLoaded', function() {
+   var elements = document.querySelectorAll('.statuscolor');
+ 
+   elements.forEach(function(element) {
+       var status = element.getAttribute('data-status');
+       var backgroundColor;
+ 
+       switch (status) {
+           case '시작전':
+               backgroundColor = '#B1B1B1';
+               break;
+           case '진행중':
+               backgroundColor = '#04A5FF';
+               break;
+           case '피드백':
+               backgroundColor = '#F34747';
+               break;
+           case '완료':
+               backgroundColor = '#64C139';
+               break;
+         //   default:
+         //       backgroundColor = '#FFFFFF'; // 기본값 설정
+         //       break;
+       }
+ 
+       element.style.backgroundColor = backgroundColor;
+   });
+ });
 
 
 // console.log(dday);

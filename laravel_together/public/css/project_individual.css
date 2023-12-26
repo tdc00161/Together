@@ -17,7 +17,11 @@
     align-items: center
 }
 
-
+.statuscolor {
+    border-radius: 10px;
+    padding: 30px;
+    height: 60%;
+}
 
 .project_color {
     display: inline-block;
