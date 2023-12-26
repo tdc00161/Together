@@ -33,6 +33,7 @@ class Task extends Model // 업무/공지
     'content',
     'start_date',
     'end_date',
+    'depth_1',
   ];
 
   protected $primaryKey = 'id';
@@ -71,7 +72,7 @@ class Task extends Model // 업무/공지
   }
 
   // task 깊이별로 가져오기
-  public static function depth($task_depth)
+  public static function depth_pj($task_depth, $project_id)
   {
     $result = DB::select(
       "SELECT 
@@ -115,6 +116,7 @@ class Task extends Model // 업무/공지
               LEFT JOIN projects pj
                 ON tsk.project_id = pj.id
             WHERE tsk.task_depth = " . $task_depth
+            ." AND tsk.project_id = " . $project_id
     );
 
     return $result;
