@@ -18,6 +18,113 @@ class GanttChartController extends Controller
     // 태스크 전체 조회 (수정이전)
     public function ganttIndex()
     {
+        // --- 유저 정보
+        $user = Auth::user();
+
+        $user_data = project::where('user_pk',$user->id)
+                                ->select('id'
+                                        ,'user_pk'
+                                        ,'color_code_pk'
+                                        ,'project_title'
+                                        ,'project_content'
+                                        ,'start_date'
+                                        ,'end_date'
+                                        ,'created_at'
+                                        ,'flg'
+                                        )
+                                ->get();
+        // dd($user_data);
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+                            ->join('projects as p','p.id','=','t.project_id')
+                            ->join('project_users as pu','pu.project_id','=','p.id')
+                            ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+                            ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+                            ->where('b.data_title_code', '=', 3)
+                            ->where('pu.member_id', '=', $user->id)
+                            ->get();
+
+        // 대표 레이아웃 사이드바 생성
+        $userflg0=[];
+        $userflg1=[];
+        foreach ($user_data as $items) {
+            if ($items->flg == '0'){
+            array_push($userflg0,$items);
+        } elseif ($items->flg == '1'){
+            array_push($userflg1,$items);
+        }
+        }
+        // dd($userflg0);
+        
+        $color_code = DB::table('basedata')
+                        ->join('projects','color_code_pk','=','data_content_code')
+                        ->select('data_content_name')
+                        ->where('data_title_code','=','3')
+                        ->where('projects.user_pk','=',$user->id)
+                        ->first();
+
+        // 담당자 이름 출력
+        $managername = DB::table('tasks')
+                        ->join('users', function($user) {
+                            $user->on('tasks.task_responsible_id','=','users.id');
+                        })
+                        ->join('projects', function($projects) {
+                            $projects->on('tasks.project_id','=','projects.id');
+                        })
+                        ->select('users.name','tasks.project_id','projects.user_pk')
+                        ->where('projects.user_pk',$user)
+                        ->get();
+        // dd($managername);
+
+        // $project_id = project::find($id);
+        // dd($project_id);
+
+        // 대표업무/하위업무 출력
+        $tasktable = DB::table('tasks')
+                        ->join('users', function($user) {
+                            $user->on('tasks.task_responsible_id','=','users.id');
+                        })
+                        ->join('projects', function($projects) {
+                            $projects->on('tasks.project_id','=','projects.id');
+                        })
+                        ->join('basedata as base1', function($base1) {
+                            $base1->on('tasks.task_status_id','=','base1.data_content_code');
+                        })
+                        ->select(
+                            'tasks.id'
+                            ,'tasks.task_number'
+                            ,'tasks.title'
+                            ,'tasks.task_responsible_id'
+                            ,'users.name'
+                            ,'tasks.task_parent'
+                            ,'tasks.task_status_id'
+                            ,'base1.data_content_name'
+                            ,'tasks.task_depth'
+                            ,'tasks.start_date'
+                            ,'tasks.end_date'
+                        )
+                        ->where('projects.user_pk',$user)
+                        // ->where('tasks.project_id',$user_data->id)
+                        ->get();
+        dd($tasktable);
+
+        if(Auth::check()) {
+            return view('ganttchart-all')
+            ->with('color_code',$color_code)
+            ->with('user_data',$user_data)
+            ->with('userflg0',$userflg0)
+            ->with('userflg1',$userflg1)
+            ->with('managername',$managername)
+            ->with('tasktable',$tasktable);
+        } else {
+            return redirect('/user/login');
+        }
+    }
+
+    // 태스크 전체 조회 2
+    public function ganttIndex2()
+    {
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
         $data['project'] = Project::project_depth();
