@@ -16,7 +16,7 @@ use App\Models\BaseData;
 class GanttChartController extends Controller
 {
     // 간트차트 전체화면 출력
-    public function ganttindex($id)
+    public function ganttindex(Request $request, $id)
 {
         // $id = project_id;
         $result = Project::find($id);
