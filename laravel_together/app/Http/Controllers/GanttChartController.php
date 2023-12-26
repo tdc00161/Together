@@ -19,7 +19,7 @@ class GanttChartController extends Controller
     public function ganttindex()
 {
         // $id = project_id;
-        $result = Project::find($id);
+        // $result = Project::find($id);
         $user = Auth::user();
 
         $user_data = project::where('user_pk',$user->id)
