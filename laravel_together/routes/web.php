@@ -65,7 +65,7 @@ Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('ind
 Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
 // Route::post('/project/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
-Route::POST('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
+Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
 Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
 
 // 모달
