@@ -40,7 +40,8 @@ Route::get('/header', [TaskController::class,'showheader']);
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
 
 // 간트차트
-Route::get('/ganttchart', [GanttChartController::class, 'ganttindex'])->name('gantt.index'); // 간트 전체 출력
+// Route::get('/ganttchart', [GanttChartController::class, 'ganttindex'])->name('gantt.index'); // 간트 전체 출력
+Route::get('/ganttchart/{id}', [GanttChartController::class, 'ganttindex'])->name('gantt.show'); // 간트 개인 출력
 // Route::post('/ganttchart', [GanttChartController::class, 'ganttstore'])->name('gantt.store'); // 간트 업무 저장
 // Route::put('/ganttchartRequest', [TaskController::class, 'update'])->name('gantt.update'); // 간트 업무 수정
 
@@ -69,6 +70,7 @@ Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 
 
 // 모달
 Route::get('/modaltest', [TaskController::class,'index']);
+Route::get('/modaltest2/{id}', [TaskController::class,'index_one']);
 Route::get('/detail', function () {
     return view('modal/detail');
 });
