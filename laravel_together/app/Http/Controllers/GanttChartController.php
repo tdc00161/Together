@@ -16,8 +16,10 @@ use App\Models\BaseData;
 class GanttChartController extends Controller
 {
     // 간트차트 전체화면 출력
-    public function ganttindex()
+    public function ganttindex($id)
 {
+        // $id = project_id;
+        $result = Project::find($id);
         $user = Auth::user();
 
         $user_data = project::where('user_pk',$user->id)
