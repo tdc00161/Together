@@ -149,9 +149,9 @@
                                 <tr class="box_ul">
                                     <td class="td_pd" onclick="openTaskModal(1,0)">
                                         @if ($item->category_name == "공지")
-                                            <div style="color:red">{{$item->category_name}}</div>
+                                            <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->category_name}}</div>
                                         @elseif ($item->category_name == "업무")
-                                            <div style="color:blue">{{$item->category_name}}</div>
+                                            <div style="color:rgb(0, 174, 255); font-weight:bold;">{{$item->category_name}}</div>
                                         @endif
                                     </td> 
                                     {{-- <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> --}}
@@ -191,7 +191,7 @@
                                 <td class="td_pd">{{$item->dday}}</td>
                                 <td class="td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,53,'...')}}</td>
                                 <td class="td_pd">{{$item->name}}</td>
-                                <td class="td_pd">{{$item->status_name}}</td>
+                                <td class="td_pd statuscolor" data-status="{{$item->status_name}}"><div>{{$item->status_name}}</div></td>
                             </tr>
                         @endforeach
                     </table>
