@@ -122,6 +122,56 @@ class Task extends Model // 업무/공지
     return $result;
   }
 
+  public static function depth_tsk($task_depth, $task_parent)
+  {
+    $result = DB::select(
+      "SELECT 
+                tsk.id
+                ,tsk.project_id
+                ,pj.project_title
+                ,tsk.task_responsible_id
+                ,res.name as res_name
+                ,tsk.task_writer_id
+                ,wri.name as wri_name
+                ,tsk.task_status_id
+                ,base.data_content_name as status_name
+                ,tsk.priority_id
+                ,base2.data_content_name as priority_name
+                ,tsk.category_id
+                ,base3.data_content_name as category_name
+                ,tsk.task_number
+                ,tsk.task_parent
+                ,tsk.task_depth
+                ,tsk.title
+                ,tsk.content
+                ,tsk.start_date
+                ,tsk.end_date
+                ,tsk.created_at
+                ,tsk.updated_at
+                ,tsk.deleted_at
+            FROM tasks tsk
+              LEFT JOIN basedata base 
+                ON tsk.task_status_id = base.data_content_code
+                AND base.data_title_code = '0'
+              LEFT JOIN basedata base2 
+                ON tsk.priority_id = base2.data_content_code
+                AND base2.data_title_code = '1'
+              LEFT JOIN basedata base3 
+                ON tsk.category_id = base3.data_content_code
+                AND base3.data_title_code = '2'
+              LEFT JOIN users res
+                ON tsk.task_responsible_id = res.id
+              LEFT JOIN users wri
+                ON tsk.task_writer_id = wri.id
+              LEFT JOIN projects pj
+                ON tsk.project_id = pj.id
+            WHERE tsk.task_depth = " . $task_depth
+            ." AND tsk.task_parent = " . $task_parent
+    );
+
+    return $result;
+  }
+
   // 업무/공지 상세업무 하나 가져오기
   public static function task_detail($id)
   {

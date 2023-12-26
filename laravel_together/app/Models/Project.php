@@ -82,8 +82,9 @@ class Project extends Model // 프로젝트
             LEFT JOIN users us
                 ON pj.user_pk = us.id
             LEFT JOIN basedata base3
-                ON pj.color_code_pk = base3.id
+                ON pj.color_code_pk = base3.data_content_code
                 AND data_title_code = 3
+            ORDER BY id
             "
         );
         return $result;

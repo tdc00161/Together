@@ -107,15 +107,16 @@ class TaskController extends Controller
     {
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
-        $data['project'] = Project::project_depth();
-        foreach ($data['project'] as $key => $value) {
-            
+        $project = Project::project_depth();
+        foreach ($project as $key => $value) {            
+            $value->depth_0 = Task::depth_pj(0,$value->id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+            foreach ($value->depth_0 as $key2 => $value2) {            
+                $value2->depth_1 = Task::depth_tsk(1,$value2->id);
+                $data[] = $project[$key];
+            }
         }
-        $depth_0 = Task::depth_pj(0,); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
-        // $data = $depth_0;
-        foreach ($depth_0 as $key => $value) {            
-            $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
-        }
+        // // $data = $depth_0;
+        // $data['task'] = $depth_0;
         dd($data);
 
         // --- 유저 정보
