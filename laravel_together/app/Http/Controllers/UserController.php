@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class UserController extends Controller
@@ -36,8 +37,6 @@ class UserController extends Controller
         Auth::login($result, $remember);
         if(Auth::check()) {
             session(['user' => $result]);
-            // 유저쿠키 만들기
-            $cookie = cookie('user', $result->id);
         } else {
             $errorMsg = "인증 에러가 발생 했습니다.";
             return view('login')->withErrors($errorMsg);
@@ -48,11 +47,14 @@ class UserController extends Controller
    
 
     public function registrationget() {
-
+        Log::debug('*** registrationget Start ***');
         if(Auth::check()) {
             return redirect('/dashboard');
         }
-
+        if(isset($errors)) {
+            Log::debug('errors : ', $errors->all());
+        }
+        Log::debug('*** registrationget End ***');
         return view('registration');
     }
 
@@ -82,11 +84,8 @@ class UserController extends Controller
 
         Session::flush(); // 세션파기
         Auth::logout(); // 로그아웃
-
-        // 쿠키 없애기
-        $cookie = cookie('user', null, -1);
         
-        return redirect()->route('user.login.get')->cookie($cookie);
+        return redirect()->route('user.login.get');
     }
     
     // 사용자를 이메일로 조회하는 메소드

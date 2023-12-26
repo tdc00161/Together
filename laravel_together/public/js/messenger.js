@@ -263,7 +263,9 @@ function displayFriendRequests(friendRequests) {
             refusebtn.addEventListener('click', function () {
                 
                 var requestId = this.value;
+                
                 noticecount.innerHTML = noticecount.innerHTML - 1;
+
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
