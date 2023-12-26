@@ -327,6 +327,7 @@ class ProjectController extends Controller
             WHERE
                 pj.id = ".$id
         );
+        Log::debug($dataContent);
         if (!$dataContent) {
             $responseData['code'] = 'E01';
             $responseData['msg'] = $id.' is no where';
@@ -381,15 +382,15 @@ class ProjectController extends Controller
     // 프로젝트 수정
     public function update_project(Request $request, $id)
     {
-      // dd($id);
-      // Log::debug($id);
-      $newValue = $request->input('UpdateValue');
-      Log::debug($newValue);
-      // Log::debug($request);
+      // // dd($id);
+      // // Log::debug($id);
+      // $newValue = $request->input('UpdateValue');
+      // Log::debug($newValue);
+      // // Log::debug($request);
 
-      $project_id = 
-      // return response()->json(['update_project' => $UpdateValue]);
-      // return response()->json(['update_project' => $newValue]);
+      // $project_id = 
+      // // return response()->json(['update_project' => $UpdateValue]);
+      // // return response()->json(['update_project' => $newValue]);
 
 
 
