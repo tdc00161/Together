@@ -117,6 +117,7 @@ class Task extends Model // 업무/공지
                 ON tsk.project_id = pj.id
             WHERE tsk.task_depth = " . $task_depth
             ." AND tsk.project_id = " . $project_id
+            ." AND tsk.deleted_at IS NULL "
     );
 
     return $result;
@@ -167,6 +168,7 @@ class Task extends Model // 업무/공지
                 ON tsk.project_id = pj.id
             WHERE tsk.task_depth = " . $task_depth
             ." AND tsk.task_parent = " . $task_parent
+            ." AND tsk.deleted_at IS NULL "
     );
 
     return $result;
@@ -220,6 +222,7 @@ class Task extends Model // 업무/공지
             ON pj.color_code_pk = pj_clr.data_content_code
             AND pj_clr.data_title_code = '3'
         WHERE tsk.id = " . $id
+        ." AND tsk.deleted_at IS NULL "
     );
 
     return $result;
@@ -253,6 +256,7 @@ class Task extends Model // 업무/공지
          JOIN basedata pri
            ON tsk.priority_id = pri.data_content_code
           AND pri.data_title_code = 1"
+        ." WHERE tsk.deleted_at IS NULL "
         . " LIMIT 1 "
       );
       $result[] = $parent[0];
@@ -279,6 +283,7 @@ class Task extends Model // 업무/공지
           JOIN basedata pri
             ON tsk.priority_id = pri.data_content_code
             AND pri.data_title_code = 1"
+        ." WHERE tsk.deleted_at IS NULL "
         . " LIMIT 1 "
       );  
       $result[] = $grandParent[0][0];
@@ -313,6 +318,7 @@ class Task extends Model // 업무/공지
                 ON tsk.priority_id = base2.data_content_code
                AND base2.data_title_code = '1'
             WHERE tsk.task_parent = " . $id
+            ." AND tsk.deleted_at IS NULL "
     );
     return $result;
   }
@@ -333,6 +339,7 @@ class Task extends Model // 업무/공지
               JOIN users us
                 ON cmt.user_id = us.id
             WHERE cmt.task_id = " . $id
+            ." AND cmt.deleted_at IS NULL "
     );
     return $result;
   }

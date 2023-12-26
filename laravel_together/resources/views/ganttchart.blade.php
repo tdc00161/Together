@@ -114,7 +114,7 @@
         </div>
     </div>
     <div class="gantt-content-wrap">
-        <section class="gantt-all-task">
+        <section class="gantt-all-task scroll-style-parent">
             <div class="gantt-task-wrap">
                 <div class="gantt-task-header">
                     <div class="gantt-task-header-div" style="width: 30%">
@@ -192,7 +192,7 @@
                     @endforelse
                 </div>
             </div>
-            <div class="gantt-chart-wrap">
+            <div class="gantt-chart-wrap scroll-style">
                 <div class="gantt-chart-container">
                     <div class="gantt-chart-header">
                         <div class="gantt-header-scroll">
