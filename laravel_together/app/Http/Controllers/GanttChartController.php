@@ -265,6 +265,8 @@ class GanttChartController extends Controller
     {
         $user = Auth::user();
 
+        $project_id = $id; 
+
         $user_data = project::where('user_pk',$user->id)
         ->select('id'
                 ,'user_pk'
@@ -325,7 +327,8 @@ class GanttChartController extends Controller
         return view('ganttchart')->with('data', $data)
         ->with('user', Session::get('user'))
         ->with('project0title',$project0title)
-        ->with('project1title',$project1title);
+        ->with('project1title',$project1title)
+        ->with('project_id', $project_id);
     }
 
     // 상세 업무/공지 조회

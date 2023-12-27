@@ -63,18 +63,29 @@ class TaskController extends Controller
         ->orderBy('p.created_at', 'asc')
         ->get();
 
-        // --- 프로젝트 진척도 출력
-        // $completionPercentage = DB::table('tasks as t')
-        // ->join('projects as p', 't.project_id', '=', 'p.id')
-        // ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
-        // ->selectRaw('ROUND((COUNT(t.project_id) / COUNT(p.project_id)) * 100) AS completion_percentage, b.data_content_name')
-        // ->where('t.project_id', 1)
-        // ->where('t.task_status_id', 3)
-        // ->where('b.data_title_code', 3)
-        // ->groupBy('b.data_content_name')
-        // ->get();
+       // --- 프로젝트 진척도 출력
+    $projectIdData = DB::table('project_users')
+    ->select('project_id')
+    ->where('member_id', '=', $userId)
+    ->get();
 
-        // dd($completionPercentage);
+    $projectIds = $projectIdData->pluck('project_id')->toArray(); // 프로젝트 아이디 배열로 변환
+    $completionPercentages = [];
+
+    foreach ($projectIds as $projectId) {
+    $completionPercentage = DB::table('tasks as t')
+        ->join('projects as p', 't.project_id', '=', 'p.id')
+        ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+        ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name')
+        ->where('t.project_id', '=', $projectId)
+        ->where('b.data_title_code', '=', 3)
+        ->groupBy('b.data_content_name')
+        ->get();
+
+    $completionPercentages[$projectId] = $completionPercentage;
+    }
+
+        // dd($completionPercentages);
 
 
         if (Auth::check()) {
@@ -86,6 +97,7 @@ class TaskController extends Controller
                 'dashboardNotice' => $dashboardNotice,
                 'project0title' => $project0title,
                 'project1title' => $project1title,
+                'completionPercentages' => $completionPercentages,
             ]);
         } else {
             return redirect('/user/login');

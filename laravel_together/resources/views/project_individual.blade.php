@@ -53,8 +53,10 @@
         </div>
     </div>
     <div class="tabset">
-        <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
-        <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button>
+        <a href="">피드</a>
+        <a href="{{ route('gantt.index', ['id' => $result->id]) }}">간트차트</a>
+        {{-- <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
+        <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button> --}}
     </div>
 {{-- 피드안에 정보 --}}
 <div class="tabcontent" id="field" style="display: block">
