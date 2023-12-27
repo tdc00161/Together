@@ -81,7 +81,37 @@ class GanttChartController extends Controller
         // dd($project_id);
 
         // 대표업무/하위업무 출력
-        $tasktable = DB::table('tasks')
+        // $tasktable = DB::table('tasks')
+        //                 ->join('users', function($user) {
+        //                     $user->on('tasks.task_responsible_id','=','users.id');
+        //                 })
+        //                 ->join('projects', function($projects) {
+        //                     $projects->on('tasks.project_id','=','projects.id');
+        //                 })
+        //                 ->join('basedata as base1', function($base1) {
+        //                     $base1->on('tasks.task_status_id','=','base1.data_content_code');
+        //                 })
+        //                 ->select(
+        //                     'tasks.id'
+        //                     ,'tasks.task_number'
+        //                     ,'tasks.title'
+        //                     ,'tasks.task_responsible_id'
+        //                     ,'users.name'
+        //                     ,'tasks.task_parent'
+        //                     ,'tasks.task_status_id'
+        //                     ,'base1.data_content_name'
+        //                     ,'tasks.task_depth'
+        //                     ,'tasks.start_date'
+        //                     ,'tasks.end_date'
+        //                 )
+        //                 ->where('projects.user_pk',$user)
+        //                 // ->where('tasks.project_id',$user_data->id)
+        //                 ->get();
+        // dd($tasktable);
+
+
+        // 상위업무 출력
+        $firsttable = DB::table('tasks')
                         ->join('users', function($user) {
                             $user->on('tasks.task_responsible_id','=','users.id');
                         })
@@ -93,21 +123,85 @@ class GanttChartController extends Controller
                         })
                         ->select(
                             'tasks.id'
-                            ,'tasks.task_number'
                             ,'tasks.title'
                             ,'tasks.task_responsible_id'
                             ,'users.name'
-                            ,'tasks.task_parent'
-                            ,'tasks.task_status_id'
-                            ,'base1.data_content_name'
-                            ,'tasks.task_depth'
                             ,'tasks.start_date'
                             ,'tasks.end_date'
+                            ,'tasks.task_status_id'
+                            ,'base1.data_content_name'
+                            ,'tasks.task_parent'
+                            ,'tasks.task_depth'
                         )
-                        ->where('projects.user_pk',$user)
+                        ->where('projects.user_pk', 8)
+                        // ->where('projects.project_id',)
+                        // ->where('tasks.task_parent', 0)
+                        ->where('tasks.task_depth','0')
                         // ->where('tasks.project_id',$user_data->id)
                         ->get();
-        dd($tasktable);
+        dd($firsttable);
+
+        // 중위업무 출력
+        $secondtable = DB::table('tasks')
+                        ->join('users', function($user) {
+                            $user->on('tasks.task_responsible_id','=','users.id');
+                        })
+                        ->join('projects', function($projects) {
+                            $projects->on('tasks.project_id','=','projects.id');
+                        })
+                        ->join('basedata as base1', function($base1) {
+                            $base1->on('tasks.task_status_id','=','base1.data_content_code');
+                        })
+                        ->select(
+                            'tasks.id'
+                            ,'tasks.title'
+                            ,'tasks.task_responsible_id'
+                            ,'users.name'
+                            ,'tasks.start_date'
+                            ,'tasks.end_date'
+                            ,'tasks.task_status_id'
+                            ,'base1.data_content_name'
+                            ,'tasks.task_parent'
+                            ,'tasks.task_depth'
+                        )
+                        ->where('projects.user_pk', 8)
+                        // ->where('projects.project_id',)
+                        ->where('tasks.task_parent', $firsttable->id)
+                        ->where('tasks.task_depth','1')
+                        // ->where('tasks.project_id',$user_data->id)
+                        ->get();
+        dump($secondtable);
+
+        // 하위업무 출력
+        $thirdtable = DB::table('tasks')
+                ->join('users', function($user) {
+                    $user->on('tasks.task_responsible_id','=','users.id');
+                })
+                ->join('projects', function($projects) {
+                    $projects->on('tasks.project_id','=','projects.id');
+                })
+                ->join('basedata as base1', function($base1) {
+                    $base1->on('tasks.task_status_id','=','base1.data_content_code');
+                })
+                ->select(
+                    'tasks.id'
+                    ,'tasks.title'
+                    ,'tasks.task_responsible_id'
+                    ,'users.name'
+                    ,'tasks.start_date'
+                    ,'tasks.end_date'
+                    ,'tasks.task_status_id'
+                    ,'base1.data_content_name'
+                    ,'tasks.task_parent'
+                    ,'tasks.task_depth'
+                )
+                ->where('projects.user_pk', 8)
+                // ->where('projects.project_id',)
+                ->where('tasks.task_parent', $secondtable->id)
+                ->where('tasks.task_depth','2')
+                // ->where('tasks.project_id',$user_data->id)
+                ->get();
+        dd($thirdtable);
 
         if(Auth::check()) {
             return view('ganttchart-all')

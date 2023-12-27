@@ -16,6 +16,14 @@ class TaskFactory extends Factory
      */
     public function definition()
     {
+        // $project_id = DB::table('projects')->select('id')->whereNull('deleted_at')->get();
+        // $random_project_id = $project_id[$this->faker->randomElement($project_id)];
+        // $task_responsible_id = DB::table('users')->select('id')->whereNotNull('email_verified_at')->whereNotNull('remember_token')->get();
+        // $task_writer_id = DB::table('users')->select('id')->whereNotNull('email_verified_at')->whereNotNull('remember_token')->get();
+        // $task_status_id = DB::table('basedata')->select('data_content_code')->where('data_title_code','0')->get();
+        // $priority_id = DB::table('basedata')->select('data_content_code')->where('data_title_code','1')->get();
+        // $category_id = DB::table('basedata')->select('data_content_code')->where('data_title_code','2')->get();
+        // $task_parent = DB::table('tasks')->select('id')->whereNull('deleted_at')->get();
         $date1 = $this->faker->dateTimeBetween('-1 years');
         $date2 = $this->faker->dateTimeBetween('-1 years');
         $date3 = $this->faker->dateTimeBetween('-1 years');
@@ -23,7 +31,7 @@ class TaskFactory extends Factory
         return [
             
             'project_id'=>16, // 프로젝트 pk
-            'task_responsible_id'=>$this->faker->randomNumber(1), // 담당자 pk
+            'task_responsible_id' => $arr[$this->faker->randomNumber($arr)], // 담당자 pk
             'task_writer_id'=>$this->faker->randomNumber(1), // 작성자 pk
             'task_status_id'=>$this->faker->numberBetween(0,3), // 업무상태 pk
             'priority_id'=>$this->faker->numberBetween(0,4), // 우선순위 pk

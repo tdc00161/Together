@@ -52,7 +52,7 @@ function toggleModal() {
 
 function closeModalOutside(event) {
     var modal = document.getElementById('m-myModal');
-    var activeElements = document.querySelectorAll('.active');
+    var activeElements = document.querySelectorAll('.activee');
 
     for (var i = 0; i < activeElements.length; i++) {
         if (activeElements[i].contains(event.target) || modal.contains(event.target)) {
@@ -61,7 +61,7 @@ function closeModalOutside(event) {
     }
 
     for (var i = 0; i < activeElements.length; i++) {
-        activeElements[i].classList.remove('active');
+        activeElements[i].classList.remove('activee');
     }
 
     modal.style.display = 'none';

@@ -15,6 +15,7 @@ use App\Models\BaseData;
 
 class TaskController extends Controller
 {
+    // 대시보드 show
     public function showdashboard()
     {
 
@@ -28,19 +29,6 @@ class TaskController extends Controller
         // --- 현재 요일 출력
         $koreanDayOfWeek = $now->isoFormat('dddd');
 
-        $user_data = project::where('user_pk',$user->id)
-        ->select('id'
-                ,'user_pk'
-                ,'color_code_pk'
-                ,'project_title'
-                ,'project_content'
-                ,'start_date'
-                ,'end_date'
-                ,'created_at'
-                ,'flg'
-                )
-        ->get();
-
         // --- 대시보드 공지 출력
         $dashboardNotice = DB::table('tasks as t')
         ->join('projects as p','p.id','=','t.project_id')
@@ -49,26 +37,31 @@ class TaskController extends Controller
         ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
         ->where('b.data_title_code', '=', 3)
         ->where('pu.member_id', '=', $user->id)
+        ->where('t.category_id','=', 1)
         ->get();
 
-        // 대표 레이아웃 사이드바 생성
-        $userflg0=[];
-        $userflg1=[];
-        foreach ($user_data as $items) {
-        if ($items->flg == '0'){
-        array_push($userflg0,$items);
-        } elseif ($items->flg == '1'){
-        array_push($userflg1,$items);
-        }
-        }
-        // dd($userflg0);
-        
-        $color_code = DB::table('basedata')
-        ->join('projects','color_code_pk','=','data_content_code')
-        ->select('data_content_name')
-        ->where('data_title_code','=','3')
-        ->where('projects.user_pk','=',$user->id)
-        ->first();
+        // --- 사이드바 출력
+        $userId = Auth::id();
+
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
         if (Auth::check()) {
             return view('dashboard', [
@@ -77,24 +70,22 @@ class TaskController extends Controller
                 // 'formatDate2' => $formatDate2,
                 'koreanDayOfWeek' => $koreanDayOfWeek,
                 'dashboardNotice' => $dashboardNotice,
-            ])
-            ->with('color_code',$color_code)
-            ->with('user_data',$user_data)
-            ->with('userflg0',$userflg0)
-            ->with('userflg1',$userflg1);
+                'project0title' => $project0title,
+                'project1title' => $project1title,
+            ]);
         } else {
             return redirect('/user/login');
         }
-
     }
 
+    // 대시보드 그래픽 데이터
     public function board_graph_data(Request $request) {
 
         // Log::debug("***** project_graph_data Start *****".$request);
 
         $user_id = Auth::id();
         // dd($user_id);
-  
+
         $before =DB::table('tasks')
                     ->join('projects', function($join){
                         $join->on('tasks.project_id','=','projects.id');
@@ -157,21 +148,6 @@ class TaskController extends Controller
         // return '반환 테스트';
       }
 
-
-    public function showheader()
-    {
-
-        $user = Auth::user();
-
-        if (Auth::check()) {
-            return view('layout', [
-                'user' => $user,
-            ]);
-        } else {
-            return redirect('/user/login');
-        }
-    }
-
     // 태스크 전체 조회 (수정이전)
     public function index()
     {
@@ -215,24 +191,29 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $user->id)
         ->get();
 
-        // 대표 레이아웃 사이드바 생성
-        $userflg0=[];
-        $userflg1=[];
-        foreach ($user_data as $items) {
-        if ($items->flg == '0'){
-        array_push($userflg0,$items);
-        } elseif ($items->flg == '1'){
-        array_push($userflg1,$items);
-        }
-        }
-        // dd($userflg0);
-        
-        $color_code = DB::table('basedata')
-        ->join('projects','color_code_pk','=','data_content_code')
-        ->select('data_content_name')
-        ->where('data_title_code','=','3')
-        ->where('projects.user_pk','=',$user->id)
-        ->first();
+        // --- 사이드바 출력
+        $userId = Auth::id();
+
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
 
 
         // dd($data);
@@ -287,6 +268,7 @@ class TaskController extends Controller
         ->with('userflg1',$userflg1);;
     }
 
+    // 프로젝트별 간트차트
     public function index_one($id)
     {
         $data = [];
@@ -453,45 +435,45 @@ class TaskController extends Controller
             "data" => []
         ];
 
-        // $result = Task::find($id);
+        $result = Task::find($id);
         Log::debug('$request :' . $request);
         // Log::debug($result->data);
 
-        // if (!$result) {
-        //     $responseData["code"] = "E01";
-        //     $responseData["msg"] = "No Data.";
-        // } else {
-        //     $res = User::where('name', $request['task_responsible_id'])->first();
-        //     $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
-        //     $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
-        //     Log::debug('$request :' . $request);
-        //     Log::debug('$res :' . $res->data_content_code);
-        //     Log::debug('$sta :' . $sta->data_content_code);
-        //     $result->task_responsible_id = $res->data_content_code;
-        //     $result->task_status_id = $sta->data_content_code;
-        //     $result->priority_id = $pri->id;
-        //     Log::debug('$request->title :' . $request->title);
-        //     $result->title = $request->title;
-        //     Log::debug('$request->content :' . $request->content);
-        //     $result->content = $request->content;
-        //     Log::debug('$request->start_date :' . $request->start_date);
-        //     if ($request->start_date !== '시작일') {
-        //         $result->start_date = $request->start_date;
-        //         Log::debug('$result->start_date :' . $result->start_date);
-        //     }
-        //     Log::debug($request->end_date);
-        //     if ($request->end_date !== '마감일') {
-        //         $result->end_date = $request->end_date;
-        //         Log::debug('$result->end_date :' . $result->end_date);
-        //     }
-        //     $result->save();
+        if (!$result) {
+            $responseData["code"] = "E01";
+            $responseData["msg"] = "No Data.";
+        } else {
+            $res = User::where('name', $request['task_responsible_id'])->first();
+            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+            $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
+            Log::debug('$request :' . $request);
+            Log::debug('$res :' . $res->data_content_code);
+            Log::debug('$sta :' . $sta->data_content_code);
+            $result->task_responsible_id = $res->data_content_code;
+            $result->task_status_id = $sta->data_content_code;
+            $result->priority_id = $pri->id;
+            Log::debug('$request->title :' . $request->title);
+            $result->title = $request->title;
+            Log::debug('$request->content :' . $request->content);
+            $result->content = $request->content;
+            Log::debug('$request->start_date :' . $request->start_date);
+            if ($request->start_date !== '시작일') {
+                $result->start_date = $request->start_date;
+                Log::debug('$result->start_date :' . $result->start_date);
+            }
+            Log::debug($request->end_date);
+            if ($request->end_date !== '마감일') {
+                $result->end_date = $request->end_date;
+                Log::debug('$result->end_date :' . $result->end_date);
+            }
+            $result->save();
 
-        //     $responseData["code"] = "U01";
-        //     $responseData["msg"] = $id." updated";
-        //     $responseData['data'] = $result;
-        // }
+            $responseData["code"] = "U01";
+            $responseData["msg"] = $id." updated";
+            $responseData['data'] = $result;
+        }
 
-        // return $responseData;
+        return $responseData;
     }
     // 업무 수정 간트버전
     public function ganttUpdate(Request $request, $id)
