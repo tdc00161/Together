@@ -32,13 +32,15 @@ body {
 .carousel-item {
 text-align: center;
 }
-/* 대시보드 - 캐러샐 - 이전/다음 버튼 */
+/* 대시보드 - 공지 - 캐러샐 - 이전/다음 버튼 */
 .carousel-control-next, .carousel-control-prev {
     width: 5%;
 }
 .dashboard-title-notice {
     display: inline-block;
     height: 10px;
+    font-weight: bold;
+    margin-left: 6px;
 }
 .dashboard-project-notice {
     display: block;
@@ -61,6 +63,31 @@ height: 15px;
 line-height: 15px;
 margin-left: 5px;
 }
+/* 대시보드 - 프로젝트 진척도 */
+.project-progress {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+}
+/* 대시보드 - 프로그레스 - 프로젝트명 div */
+.project-progress-project-title-div {
+    display: flex;
+    height: 20px;
+}
+
+/* 대시보드 - 프로그레스 - 프로젝트명 */
+.dashboard-progress-project-title {
+    display: inline-block;
+    font-size: 13px;
+}
+
+/* 대시보드 - 프로그레스 - 디데이 */
+.dashboard-progress-project-dday {
+    margin-left: 5px;
+}
+
 
 a {
     text-decoration: none;
@@ -89,7 +116,6 @@ a {
 
 .app-card-title {
     display: inline-block;
-    margin-left: 10px;
     margin-top: 10px;
     font-weight: bold;
 }
@@ -139,6 +165,7 @@ a {
 }
 
 .project-box {
+    display: inline-block;
     width: 15px;
     height: 15px;
     background-color: rgb(248, 238, 100);
@@ -1006,6 +1033,8 @@ box-sizing: border-box;
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     transition: 0.3s ease;
     &:hover {
      transform: scale(1.02);

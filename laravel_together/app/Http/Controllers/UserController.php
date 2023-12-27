@@ -30,7 +30,7 @@ class UserController extends Controller
         $result = User::where('email', $request->email)->first();
         if(!$result || !(Hash::check($request->password, $result->password))) {
             $errorMsg= '이메일과 비밀번호 다시 확인해주세요.';
-            return view('login')->withErrors($errorMsg);
+            return redirect('/user/login')->withErrors($errorMsg);
         }
 
         // 유저 인증작업
@@ -39,12 +39,10 @@ class UserController extends Controller
             session(['user' => $result]);
         } else {
             $errorMsg = "인증 에러가 발생 했습니다.";
-            return view('login')->withErrors($errorMsg);
+            return redirect('/user/login')->withErrors($errorMsg);
         }
         return redirect('/dashboard');
     }
-
-   
 
     public function registrationget() {
         Log::debug('*** registrationget Start ***');
