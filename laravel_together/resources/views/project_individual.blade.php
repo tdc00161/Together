@@ -17,7 +17,7 @@
     <div class="first_menu">
         <div class="menu_title">
             <div class="title_bar">
-                <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
+                <div class="project_color" style="background-color:{{$color_code[0]->data_content_name}}"></div>
                 <input class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
             </div>
             <textarea class="project_content" name="project_content" id="project_content" placeholder="설명" onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
@@ -65,22 +65,26 @@
                 <div class="status_title">업무상태 현황</div>
                 <canvas id="chartcanvas" width="800" height="800"></canvas>
                 <div class="color_div">
-                    <div class="color_set">
-                        <div class="color_box1"></div>
-                        <div class="color_name">시작전</div>
-                    </div>
-                    <div  class="color_set">
-                        <div class="color_box2"></div>
-                        <div class="color_name">진행중</div>
-                    </div>
-                    <div class="color_set">
-                        <div class="color_box3"></div>
-                        <div class="color_name">피드백</div>
-                    </div>
-                    <div  class="color_set">
-                        <div class="color_box4"></div>
-                        <div class="color_name">완료</div>
-                    </div>
+                        <div class="color_set">
+                            <div class="color_box1"></div>
+                            <div class="color_name">시작전:{{$statuslist['before'][0]->cnt}}</div>
+                            {{-- @php
+                            dump($statuslist);
+                            exit;
+                            @endphp --}}
+                        </div>
+                        <div  class="color_set">
+                            <div class="color_box2"></div>
+                            <div class="color_name">진행중:{{$statuslist['ing'][0]->cnt}}</div>
+                        </div>
+                        <div class="color_set">
+                            <div class="color_box3"></div>
+                            <div class="color_name">피드백:{{$statuslist['feedback'][0]->cnt}}</div>
+                        </div>
+                        <div  class="color_set">
+                            <div class="color_box4"></div>
+                            <div class="color_name">완료:{{$statuslist['complete'][0]->cnt}}</div>
+                        </div>
                 </div>
             </div>
 
@@ -123,9 +127,9 @@
                             <colgroup>
                                 <col class="col1">
                             </colgroup>
-                            @foreach ($data as $item)
+                            @foreach ($first_data as $item)
                                 <tr class="box_ul">
-                                    <td class="td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,50,'...')}}</td>
+                                    <td class="td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,46,'...')}}</td>
                                 </tr>
                             @endforeach
                         </table>
@@ -144,20 +148,20 @@
                                 <col class="col2">
                                 <col class="col3">
                             </colgroup>
-                            @foreach ($data as $item)
+                            @foreach ($update_data as $item)
 
                                 <tr class="box_ul">
                                     <td class="td_pd" onclick="openTaskModal(1,0)">
-                                        @if ($item->category_name == "공지")
-                                            <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->category_name}}</div>
-                                        @elseif ($item->category_name == "업무")
-                                            <div style="color:rgb(0, 174, 255); font-weight:bold;">{{$item->category_name}}</div>
+                                        @if ($item->data_content_name == "공지")
+                                            <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->data_content_name}}</div>
+                                        @elseif ($item->data_content_name == "업무")
+                                            <div style="color:rgb(0, 174, 255); font-weight:bold;">{{$item->data_content_name}}</div>
                                         @endif
                                     </td> 
                                     {{-- <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> --}}
                                     {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
 
-                                    <td class="td_pd">{{Str::limit($item->title,37,'...')}}</td>
+                                    <td class="td_pd">{{Str::limit($item->title,35,'...')}}</td>
                                     {{-- <td>{{$item->user_id}}</td> --}}
                                 </tr>
                             @endforeach
@@ -185,13 +189,13 @@
                             <col class="col7">
                             <col class="col8">
                         </colgroup>
-                        @foreach ($data as $item)
+                        @foreach ($deadline_data as $item)
                             <tr class="box_ul">
                                 <td class="td_pd"></td>
                                 <td class="td_pd">{{$item->dday}}</td>
-                                <td class="td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,53,'...')}}</td>
+                                <td class="td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,50,'...')}}</td>
                                 <td class="td_pd">{{$item->name}}</td>
-                                <td class="td_pd statuscolor" data-status="{{$item->status_name}}"><div>{{$item->status_name}}</div></td>
+                                <td class="td_pd"><div class="statuscolor" data-status="{{$item->data_content_name}}">{{$item->data_content_name}}</div></td>
                             </tr>
                         @endforeach
                     </table>

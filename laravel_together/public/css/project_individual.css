@@ -19,8 +19,9 @@
 
 .statuscolor {
     border-radius: 10px;
-    padding: 30px;
+    width: 80%;
     height: 60%;
+    margin: 0 auto;
 }
 
 .project_color {
