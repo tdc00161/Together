@@ -341,8 +341,21 @@ function createTask() {
 				closeTaskModal(0)
 				document.querySelector('.gantt-all-task').scrollIntoView(false)
 			} else {
-				let refreshProjectElement = document.querySelector('.box_ul').cloneNode(ture)
-				refreshProjectElement.firstElementChild.textContent = data.data.content
+				let Notice = document.querySelector('.project_task_notice_list')
+				let Update = document.querySelector('.project_task_update_list')
+
+				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
+				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
+				cloneNotice.firstElementChild.textContent = data.data.content
+				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
+				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.content
+
+				let NoticeParent = Notice.parentElement
+				let UpdateParent = Update.parentElement
+
+				NoticeParent.firstChild.before(cloneNotice)
+				UpdateParent.firstChild.before(cloneUpdate)
+
 				closeTaskModal(0)
 			}
 		})
