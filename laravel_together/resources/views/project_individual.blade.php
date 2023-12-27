@@ -92,7 +92,11 @@
             {{-- 구성원 --}}
             <div class="invite_box">
                 {{-- 프로젝트 구성원 초대 --}}
-                <button onclick="projectMemberAddOpenModal()" id="projectmemberadd" class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
+                @if($result->flg === "0")
+
+                @elseif($result->flg === "1")
+                    <button onclick="projectMemberAddOpenModal()" id="projectmemberadd" class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
+                @endif
                 @forelse ($projectmemberdata as $item)
                     <div id="{{'project_num'.$item->project_id.'_user'.$item->member_id}}" class="invite-member-div"><img class="invite-img" src="/img/Group 114.png" alt=""><div class="member_name">{{$item->name}}</div></div>
                 @empty
@@ -129,7 +133,7 @@
                                 <col class="col1">
                             </colgroup>
                             @foreach ($first_data as $item)
-                                <tr class="box_ul">
+                                <tr class="box_ul project_task_notice_list">
                                     <td class="td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,46,'...')}}</td>
                                 </tr>
                             @endforeach
@@ -151,7 +155,7 @@
                             </colgroup>
                             @foreach ($update_data as $item)
 
-                                <tr class="box_ul">
+                                <tr class="box_ul project_task_update_list">
                                     <td class="td_pd" onclick="openTaskModal(1,0)">
                                         @if ($item->data_content_name == "공지")
                                             <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->data_content_name}}</div>
