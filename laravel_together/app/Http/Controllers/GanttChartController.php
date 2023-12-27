@@ -157,7 +157,7 @@ class GanttChartController extends Controller
             ->with('userflg0',$userflg0)
             ->with('userflg1',$userflg1)
             ->with('managername',$managername)
-            ->with('tasktable',$tasktable)
+            ->with('listdata',$returnData)
             ->with('project0title',$project0title)
             ->with('project1title',$project1title);
         } else {
