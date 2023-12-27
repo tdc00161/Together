@@ -43,29 +43,55 @@
    </div>
 
    {{-- 2 공지 --}}
-   <div class="app-card2"> 
-    <span class="app-card-title">
-     공지
-    </span>
-    {{-- <div class="carousel-container">
-      <button class="prev d-notice-button" onclick="changeSlide(-1)">&#10094;</button>
-      <div class="slides">
+   <div class="app-card2">
+    {{-- <span class="app-card-title">
+        공지
+    </span> --}}
 
-        <div class="app-card__subtext">
-          @forelse ($dashboardNotice as $item)
-          <div class="slide">
-             <p class="notice-title">{{$item->title}}</p>
-          </div>
-          @empty
-              
-          @endforelse
-          
+    <div class="app-card__subtext">
+        <!-- 여기에 캐러셀 추가 -->
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+             <p class="dashboard-title-notice">공지</p>
+              @if($dashboardNotice->isEmpty())
+              <!-- 데이터가 없을 때의 처리 -->
+              공지 없음
+              @else
+              {{-- 첫 캐러샐 --}}
+              <div class="carousel-item active">
+              {{-- 첫 캐러샐 - 프로젝트명 --}}
+                <p class="dashboard-project-name">{{$dashboardNotice->first()->project_title}}</p>
+              {{-- 첫 캐러샐 - 프로젝트 컬러 --}}
+                <div class="dashboard-project-color-box" style="background-color:{{$dashboardNotice->first()->data_content_name}};"></div>
+              {{-- 첫 캐러샐 - 공지 제목 --}}
+              <br><p class="dashboard-project-notice">{{$dashboardNotice->first()->title}}</p>
+              </div>
+
+              {{-- 다음 캐러샐 --}}
+              @foreach($dashboardNotice as $notice)
+                <div class="carousel-item">
+                  {{-- 프로젝트명 --}}
+                  <p class="dashboard-project-name">{{ $notice->project_title }}</p>
+                  {{-- 프로젝트 컬러 --}}
+                  <div class="dashboard-project-color-box" style="background-color:{{$notice->data_content_name}};"></div>
+                  {{-- 공지 제목 --}}
+                  <br><p class="dashboard-project-notice">{{ $notice->title }}</p>
+                </div>
+
+              @endforeach
+              @endif
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only"></span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only"></span>
+            </a>
         </div>
-      </div>
-      <button class="next d-notice-button" onclick="changeSlide(1)">&#10095;</button>
     </div>
-    <div class="page-indicator"></div> --}}
-   </div>
+</div>
     {{-- 2섹션 --}}
     <div class="content-section-2">
       <div class="content-section-3">

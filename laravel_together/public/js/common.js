@@ -102,17 +102,17 @@ window.onclick = function (event) {
     function toggleActive(className) {
         // 해당 클래스의 액티브 상태를 토글
         var element = document.querySelector(`.${className}`);
-        if (element.classList.contains('active')) {
-            element.classList.remove('active');
+        if (element.classList.contains('activee')) {
+            element.classList.remove('activee');
         } else {
-            element.classList.add('active');
+            element.classList.add('activee');
         }
     }
     // 문서의 다른 부분을 클릭했을 때 액티브 상태 해제
     document.addEventListener('click', function (event) {
-        var activeElement = document.querySelector('.active');
+        var activeElement = document.querySelector('.activee');
         if (activeElement && !activeElement.contains(event.target)) {
-            activeElement.classList.remove('active');
+            activeElement.classList.remove('activee');
         }
     });
 

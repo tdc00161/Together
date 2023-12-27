@@ -49,6 +49,7 @@ class TaskController extends Controller
         ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
         ->where('b.data_title_code', '=', 3)
         ->where('pu.member_id', '=', $user->id)
+        ->where('t.category_id','=', 1)
         ->get();
 
         // 대표 레이아웃 사이드바 생성
@@ -287,6 +288,7 @@ class TaskController extends Controller
         ->with('userflg1',$userflg1);;
     }
 
+    // 프로젝트별 간트차트
     public function index_one($id)
     {
         $data = [];
