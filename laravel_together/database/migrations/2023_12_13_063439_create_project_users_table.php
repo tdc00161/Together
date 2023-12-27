@@ -22,7 +22,7 @@ return new class extends Migration
             // $table->foreign('project_id')->references('id')->on('projects'); // projects 테이블과 연결
             // $table->foreign('authority_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             // $table->foreign('member_id')->references('id')->on('users'); // users 테이블과 연결
-            $table->timestamps(); // 참여일자
+            $table->timestamps('created_at'); // 참여일자
             $table->softDeletes(); // 탈퇴일자
         });
     }

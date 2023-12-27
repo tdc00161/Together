@@ -418,45 +418,45 @@ class TaskController extends Controller
             "data" => []
         ];
 
-        // $result = Task::find($id);
+        $result = Task::find($id);
         Log::debug('$request :' . $request);
         // Log::debug($result->data);
 
-        // if (!$result) {
-        //     $responseData["code"] = "E01";
-        //     $responseData["msg"] = "No Data.";
-        // } else {
-        //     $res = User::where('name', $request['task_responsible_id'])->first();
-        //     $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
-        //     $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
-        //     Log::debug('$request :' . $request);
-        //     Log::debug('$res :' . $res->data_content_code);
-        //     Log::debug('$sta :' . $sta->data_content_code);
-        //     $result->task_responsible_id = $res->data_content_code;
-        //     $result->task_status_id = $sta->data_content_code;
-        //     $result->priority_id = $pri->id;
-        //     Log::debug('$request->title :' . $request->title);
-        //     $result->title = $request->title;
-        //     Log::debug('$request->content :' . $request->content);
-        //     $result->content = $request->content;
-        //     Log::debug('$request->start_date :' . $request->start_date);
-        //     if ($request->start_date !== '시작일') {
-        //         $result->start_date = $request->start_date;
-        //         Log::debug('$result->start_date :' . $result->start_date);
-        //     }
-        //     Log::debug($request->end_date);
-        //     if ($request->end_date !== '마감일') {
-        //         $result->end_date = $request->end_date;
-        //         Log::debug('$result->end_date :' . $result->end_date);
-        //     }
-        //     $result->save();
+        if (!$result) {
+            $responseData["code"] = "E01";
+            $responseData["msg"] = "No Data.";
+        } else {
+            $res = User::where('name', $request['task_responsible_id'])->first();
+            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+            $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
+            Log::debug('$request :' . $request);
+            Log::debug('$res :' . $res->data_content_code);
+            Log::debug('$sta :' . $sta->data_content_code);
+            $result->task_responsible_id = $res->data_content_code;
+            $result->task_status_id = $sta->data_content_code;
+            $result->priority_id = $pri->id;
+            Log::debug('$request->title :' . $request->title);
+            $result->title = $request->title;
+            Log::debug('$request->content :' . $request->content);
+            $result->content = $request->content;
+            Log::debug('$request->start_date :' . $request->start_date);
+            if ($request->start_date !== '시작일') {
+                $result->start_date = $request->start_date;
+                Log::debug('$result->start_date :' . $result->start_date);
+            }
+            Log::debug($request->end_date);
+            if ($request->end_date !== '마감일') {
+                $result->end_date = $request->end_date;
+                Log::debug('$result->end_date :' . $result->end_date);
+            }
+            $result->save();
 
-        //     $responseData["code"] = "U01";
-        //     $responseData["msg"] = $id." updated";
-        //     $responseData['data'] = $result;
-        // }
+            $responseData["code"] = "U01";
+            $responseData["msg"] = $id." updated";
+            $responseData['data'] = $result;
+        }
 
-        // return $responseData;
+        return $responseData;
     }
     // 업무 수정 간트버전
     public function ganttUpdate(Request $request, $id)
