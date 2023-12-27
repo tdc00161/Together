@@ -68,26 +68,21 @@
       <div class="side-wrapper">
        <div class="side-title">개인 프로젝트</div>
        <div class="side-menu">
-        {{-- <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 1</a>
-        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 2</a> --}}
-        @foreach ($userflg0 as $item)
-          <a href="{{route('individual.get',['id' => $item->id])}}">
-            <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{Str::limit($item->project_title,20,"")}}</span>
-          </a>
-        @endforeach
+        @forelse ($project0title as $item)
+        <a class="sidebar-project-name" href="{{route('individual.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
+        @empty
+            프로젝트 없음
+        @endforelse
        </div>
       </div>
       <div class="side-wrapper">
        <div class="side-title">팀 프로젝트</div>
        <div class="side-menu">
-        @foreach ($userflg1 as $item)
-          <a href="{{route('team.get',['id' => $item->id])}}">
-            <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{Str::limit($item->project_title,20,"")}}</span>
-          </a>
-        @endforeach
-        {{-- {{dd($result)}}; --}}
+        @forelse ($project1title as $item)
+        <a class="sidebar-project-name" href="{{route('team.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
+        @empty
+            프로젝트 없음
+        @endforelse
        </div>
       </div>
      </div>

@@ -81,29 +81,31 @@ class ProjectController extends Controller
         // $user_id = Auth::id();
         // dd($user_id);
 
-        $user_data = project::where('user_pk',$user->id)
-                    ->select('id'
-                            ,'user_pk'
-                            ,'color_code_pk'
-                            ,'project_title'
-                            ,'project_content'
-                            ,'start_date'
-                            ,'end_date'
-                            ,'created_at'
-                            ,'flg'
-                            )
-                    ->get();
+        // $user_data = project::where('user_pk',$user->id)
+        //             ->select('id'
+        //                     ,'user_pk'
+        //                     ,'color_code_pk'
+        //                     ,'project_title'
+        //                     ,'project_content'
+        //                     ,'start_date'
+        //                     ,'end_date'
+        //                     ,'created_at'
+        //                     ,'flg'
+        //                     )
+        //             ->get();
 
-        // 대표 레이아웃 사이드바 생성
-        $userflg0=[];
-        $userflg1=[];
-        foreach ($user_data as $items) {
-            if ($items->flg == '0'){
-              array_push($userflg0,$items);
-          } elseif ($items->flg == '1'){
-            array_push($userflg1,$items);
-          }
-        }
+        // // 대표 레이아웃 사이드바 생성
+        // $userflg0=[];
+        // $userflg1=[];
+        // foreach ($user_data as $items) {
+        //     if ($items->flg == '0'){
+        //       array_push($userflg0,$items);
+        //   } elseif ($items->flg == '1'){
+        //     array_push($userflg1,$items);
+        //   }
+        // }
+
+        
 
         // 탭명과 해당 프로젝트 연동
         
@@ -194,6 +196,31 @@ class ProjectController extends Controller
 
         // dd($result);
 
+
+
+        // (jueunyang08) 사이드바 출력
+        $userId = Auth::id();
+
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
         // (jueunyang08) 프로젝트 구성원 출력
         $projectmemberdata = DB::table('project_users as p')
         ->join('users as u', 'u.id', '=', 'p.member_id')
@@ -204,12 +231,11 @@ class ProjectController extends Controller
 
         return view('project_individual')
         ->with('color_code',$color_code)
-        ->with('user_data',$user_data)
         ->with('result',$result)
         ->with('data',$tkdata)
         ->with('user',Auth::id())
-        ->with('userflg0',$userflg0)
-        ->with('userflg1',$userflg1)
+        ->with('project0title', $project0title)
+        ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
     }
 
