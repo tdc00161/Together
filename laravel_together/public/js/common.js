@@ -152,20 +152,15 @@ window.onclick = function (event) {
 window.onload = function() {
     // 경로만 가져오기
     var pathname = window.location.pathname;
-    console.log(pathname);
     // debug("***** project_graph_data End *****");
     $.ajax({
        url: '/dashboard-chart/',
        type: 'GET',
        success: function (response) {
-          console.log('***** Ajax Success *****');
-          console.log(response);
- 
  
           // var responseObject = JSON.parse(response);
           // console.log(responseObject);
           var dataArray = response.data;
-          console.log(dataArray);
  
           // 차트 생성
           var canvas = document.getElementById("chartcanvas2");
@@ -176,8 +171,7 @@ window.onload = function() {
  
           // 데이터 입력(기본값 0이 될 수 있도록 데이터 설정해줘야함)
           var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
-          console.log(data);
- 
+
           //데이터별 색상
           var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
  
@@ -200,7 +194,7 @@ window.onload = function() {
           }
        },
        error: function (request, status, error) {
-          console.log('***** Ajax Error *****');
+        
           // 결과 에러 콜백함수
           console.log(error)
        }

@@ -35,34 +35,27 @@ class GanttChartController extends Controller
                                 ->get();
         // dd($user_data);
 
-        // --- 대시보드 공지 출력
-        $dashboardNotice = DB::table('tasks as t')
-                            ->join('projects as p','p.id','=','t.project_id')
-                            ->join('project_users as pu','pu.project_id','=','p.id')
-                            ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
-                            ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
-                            ->where('b.data_title_code', '=', 3)
-                            ->where('pu.member_id', '=', $user->id)
-                            ->get();
+        $userId = Auth::id();
 
-        // 대표 레이아웃 사이드바 생성
-        $userflg0=[];
-        $userflg1=[];
-        foreach ($user_data as $items) {
-            if ($items->flg == '0'){
-            array_push($userflg0,$items);
-        } elseif ($items->flg == '1'){
-            array_push($userflg1,$items);
-        }
-        }
-        // dd($userflg0);
-        
-        $color_code = DB::table('basedata')
-                        ->join('projects','color_code_pk','=','data_content_code')
-                        ->select('data_content_name')
-                        ->where('data_title_code','=','3')
-                        ->where('projects.user_pk','=',$user->id)
-                        ->first();
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
         // 담당자 이름 출력
         $managername = DB::table('tasks')
@@ -210,7 +203,9 @@ class GanttChartController extends Controller
             ->with('userflg0',$userflg0)
             ->with('userflg1',$userflg1)
             ->with('managername',$managername)
-            ->with('tasktable',$tasktable);
+            ->with('tasktable',$tasktable)
+            ->with('project0title',$project0title)
+            ->with('project1title',$project1title);
         } else {
             return redirect('/user/login');
         }
@@ -235,48 +230,28 @@ class GanttChartController extends Controller
         // --- 유저 정보
         $user = Auth::user();
 
-        $user_data = project::where('user_pk',$user->id)
-        ->select('id'
-                ,'user_pk'
-                ,'color_code_pk'
-                ,'project_title'
-                ,'project_content'
-                ,'start_date'
-                ,'end_date'
-                ,'created_at'
-                ,'flg'
-                )
-        ->get();
-
-        // --- 대시보드 공지 출력
-        $dashboardNotice = DB::table('tasks as t')
-        ->join('projects as p','p.id','=','t.project_id')
-        ->join('project_users as pu','pu.project_id','=','p.id')
-        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
-        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
-        ->where('b.data_title_code', '=', 3)
-        ->where('pu.member_id', '=', $user->id)
-        ->get();
-
-        // 대표 레이아웃 사이드바 생성
-        $userflg0=[];
-        $userflg1=[];
-        foreach ($user_data as $items) {
-        if ($items->flg == '0'){
-        array_push($userflg0,$items);
-        } elseif ($items->flg == '1'){
-        array_push($userflg1,$items);
-        }
-        }
-        // dd($userflg0);
+       
+        $userId = Auth::id();
         
-        $color_code = DB::table('basedata')
-        ->join('projects','color_code_pk','=','data_content_code')
-        ->select('data_content_name')
-        ->where('data_title_code','=','3')
-        ->where('projects.user_pk','=',$user->id)
-        ->first();
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
         // dd($data);
         // $result = DB::select("
@@ -325,10 +300,10 @@ class GanttChartController extends Controller
             return view('ganttchart-all')
             ->with('data',$result)
             ->with('user', Session::get('user'))
-            ->with('color_code',$color_code)
-            ->with('user_data',$user_data)
-            ->with('userflg0',$userflg0)
-            ->with('userflg1',$userflg1);
+            ->with('project0title',$project0title)
+            ->with('project1title',$project1title);
+
+    
         } else {
             return redirect('/user/login');
         }
@@ -362,24 +337,27 @@ class GanttChartController extends Controller
         ->where('pu.member_id', '=', $user->id)
         ->get();
 
-        // 대표 레이아웃 사이드바 생성
-        $userflg0=[];
-        $userflg1=[];
-        foreach ($user_data as $items) {
-        if ($items->flg == '0'){
-        array_push($userflg0,$items);
-        } elseif ($items->flg == '1'){
-        array_push($userflg1,$items);
-        }
-        }
-        // dd($userflg0);
+        $userId = Auth::id();
         
-        $color_code = DB::table('basedata')
-        ->join('projects','color_code_pk','=','data_content_code')
-        ->select('data_content_name')
-        ->where('data_title_code','=','3')
-        ->where('projects.user_pk','=',$user->id)
-        ->first();
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
 
         $data = [];
@@ -395,10 +373,8 @@ class GanttChartController extends Controller
         // dd($data['task'][0]->id);
         return view('ganttchart')->with('data', $data)
         ->with('user', Session::get('user'))
-        ->with('color_code',$color_code)
-        ->with('user_data',$user_data)
-        ->with('userflg0',$userflg0)
-        ->with('userflg1',$userflg1);
+        ->with('project0title',$project0title)
+        ->with('project1title',$project1title);
     }
 
     // 상세 업무/공지 조회
