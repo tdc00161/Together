@@ -38,24 +38,24 @@ class GanttChartController extends Controller
         $userId = Auth::id();
 
         $project0title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 0)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+                            ->join('project_users as pu', 'p.id','=','pu.project_id')
+                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+                            ->select('p.project_title', 'b.data_content_name', 'p.id')
+                            ->where('pu.member_id', '=', $userId)
+                            ->where('p.flg','=', 0)
+                            ->where('b.data_title_code', '=', 3)
+                            ->orderBy('p.created_at', 'asc')
+                            ->get();
 
         $project1title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 1)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+                            ->join('project_users as pu', 'p.id','=','pu.project_id')
+                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+                            ->select('p.project_title', 'b.data_content_name', 'p.id')
+                            ->where('pu.member_id', '=', $userId)
+                            ->where('p.flg','=', 1)
+                            ->where('b.data_title_code', '=', 3)
+                            ->orderBy('p.created_at', 'asc')
+                            ->get();
 
         // 담당자 이름 출력
         $managername = DB::table('tasks')
@@ -152,10 +152,7 @@ class GanttChartController extends Controller
    
         if(Auth::check()) {
             return view('ganttchart-all')
-            ->with('color_code',$color_code)
             ->with('user_data',$user_data)
-            ->with('userflg0',$userflg0)
-            ->with('userflg1',$userflg1)
             ->with('managername',$managername)
             ->with('listdata',$returnData)
             ->with('project0title',$project0title)

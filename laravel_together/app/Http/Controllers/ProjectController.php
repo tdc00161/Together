@@ -74,9 +74,10 @@ class ProjectController extends Controller
         $color_code = DB::table('projects as pj')
                         ->join('basedata as bd','bd.data_content_code','pj.color_code_pk')
                         ->select('pj.id', 'bd.data_content_name')
-                        ->where('pj.user_pk','=',$user->id)
-                        ->where('bd.data_title_code','=','3')
+                        ->where('pj.user_pk',$user->id)
                         ->where('pj.id',$result->id)
+                        ->where('bd.data_title_code','3')
+                        ->whereNull('pj.deleted_at')
                         ->get();
         // dd($color_code);
 
