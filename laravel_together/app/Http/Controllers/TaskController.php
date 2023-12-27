@@ -87,6 +87,26 @@ class TaskController extends Controller
 
         // dd($completionPercentages);
 
+        // --- 프로젝트별 업무 마감일 출력
+        $tasksDeadline = DB::table('tasks as tsk')
+        ->join('projects as pj', 'pj.id','=', 'tsk.project_id')
+        ->join('basedata as bd','bd.data_content_code','=', 'pj.color_code_pk')
+        ->select('tsk.project_id', 'bd.data_content_name', 'tsk.title')
+        // ->where('tsk.id', '=', $taskId)
+        ->where('bd.data_title_code', '3')
+        ->whereNull('pj.deleted_at')
+        ->get();
+
+        // dd($tasksDeadline);
+
+        // dday 호출
+        foreach ($result as $items) {
+        $start = Carbon::create($result['start_date']);
+        $end = Carbon::create($result['end_date']);
+        $result['dday'] = $start->diffInDays($end); // data에 dday 추가
+        }
+
+
 
         if (Auth::check()) {
             return view('dashboard', [
@@ -98,6 +118,7 @@ class TaskController extends Controller
                 'project0title' => $project0title,
                 'project1title' => $project1title,
                 'completionPercentages' => $completionPercentages,
+                'tasksDeadline' => $tasksDeadline,
             ]);
         } else {
             return redirect('/user/login');

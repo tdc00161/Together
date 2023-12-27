@@ -134,7 +134,9 @@
       <span class="app-card-title">
        마감
       </span>
-      <div class="app-card__subtext"></div>
+      <div class="app-card__subtext">
+        <div class="task_dday" id="taskDday">D-{{$result->dday}}</div>
+      </div>
       <div class="app-card-buttons"></div>
      </div>
   
