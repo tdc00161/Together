@@ -4,8 +4,9 @@
 @section('link')
 {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 <script src="/js/project.js" defer></script>
-<script src="/js/insert_detile.js" defer></script>
 <script src="/js/project_member.js" defer></script>
+<link rel="stylesheet" href="/css/insert_detail.css">
+<script defer src="/js/insert_detail.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endsection
 
@@ -204,6 +205,10 @@
             <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
         </div> --}}
 </div>
+
+    @include('modal.insert') 
+    {{-- include 순서 중요: 작성/상세 --}}
+    @include('modal.detail')
 
 @endsection
 
