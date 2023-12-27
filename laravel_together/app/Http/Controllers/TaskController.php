@@ -310,32 +310,63 @@ class TaskController extends Controller
             "msg" => "",
             "data" => []
         ];
+        Log::debug('request: ' , $request->all());
 
         // 입력받은 데이터로 pk(id) 추출
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
-        $sta = DB::table('basedata as status')
+        if($request['task_status_id']){            
+            $sta = DB::table('basedata as status')
             ->where('data_title_code', 0)
             ->where('data_content_name', $request['task_status_id'])
             ->select('data_content_code','data_content_name')
             ->get();
-        Log::debug('상태: ' . $sta);
-        $pri = DB::table('basedata')
-            ->where('data_title_code', 1)
-            ->where('data_content_name', $request['priority_id'])
+        } else if($request->task_status_id){            
+            $sta = DB::table('basedata as status')
+            ->where('data_title_code', 0)
+            ->where('data_content_name', $request->task_status_id)
             ->select('data_content_code','data_content_name')
             ->get();
-        Log::debug('순위: ' . $pri);
-        $res = DB::table('users')
-            ->where('name', $request['task_responsible_id'])
-            ->select('id','name')
+        } 
+        // Log::debug('상태: ' , $sta->toArray());
+        if($request['priority_id']){   
+            $pri = DB::table('basedata')
+                ->where('data_title_code', 1)
+                ->where('data_content_name', $request['priority_id'])
+                ->select('data_content_code','data_content_name')
+                ->get();
+        } else if($request->priority_id){ 
+            $pri = DB::table('basedata')
+            ->where('data_title_code', 1)
+            ->where('data_content_name', $request->priority_id)
+            ->select('data_content_code','data_content_name')
             ->get();
-        Log::debug('user_id: ' . $res);
-        $tsk_num = DB::table('tasks')
-            ->where('project_id', $request['project_id'])
+        }
+        // Log::debug('순위: ' , $pri->toArray());
+        if($request['task_responsible_id']){   
+            $res = DB::table('users')
+                ->where('name', $request['task_responsible_id'])
+                ->select('id','name')
+                ->get();
+        } else if($request->task_responsible_id){ 
+                $res = DB::table('users')
+                    ->where('name', $request->task_responsible_id)
+                    ->select('id','name')
+                    ->get();
+        }
+        // Log::debug('user_id: ' , $res->toArray());
+        if($request['project_id']){   
+            $tsk_num = DB::table('tasks')
+                ->where('project_id', $request['project_id'])
+                ->orderBy('task_number', 'desc')
+                ->first();
+        } else if($request->project_id){ 
+            $tsk_num = DB::table('tasks')
+            ->where('project_id', $request->project_id)
             ->orderBy('task_number', 'desc')
             ->first();
-        Log::debug('$tsk_num: ' . $tsk_num->task_number);
+        }
+        // Log::debug('$tsk_num: ' . $tsk_num->task_number);
 
         // 이메일 추가 시 대비
         // $eml = DB::table('users')->where('email', $request['email'])->first();
@@ -369,15 +400,21 @@ class TaskController extends Controller
         // not null
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
-        $request['category_id'] = $nowUser;
-        $request['task_number'] = $tsk_num->task_number + 1;
+        // $request['category_id'] = ;
+        if(isset($tsk_num)){        
+            $request['task_number'] = $tsk_num->task_number + 1;
+        }
+        // if(isset($request['task_parent'])){
+        //     $result['task_parent'] = $request['task_parent'];
+        // }
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
         Log::debug($request);
-
+        
         // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
+        Log::debug($result);
         if (!$result) {
             $responseData['msg'] = 'task not created.';
             $responseData['data'] = $result;
@@ -475,18 +512,19 @@ class TaskController extends Controller
             "msg" => ""
         ];
         
-        // $result = Task::where('id', $id)->delete();
+        $result = Task::where('id', $id)->delete();
 
-        // if (!$result) {
-        //     $responseData['code'] = 'E01';
-        //     $responseData['msg'] = $id . ' is no where';
-        // } else {
-        //     $responseData['code'] = 'D01';
-        //     $responseData['msg'] = 'task : ' . $id . '->deleted.';
-        // }
+        if (!$result) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id . ' is no where';
+        } else {
+            $responseData['code'] = 'D01';
+            $responseData['msg'] = 'task : ' . $id . '->deleted.';
+            $responseData['data'] = $id;
+        }
 
-        // return $responseData;
-        return [$request, $id];
+        return $responseData;
+        // return [$request, $id];
     }
 }
 
