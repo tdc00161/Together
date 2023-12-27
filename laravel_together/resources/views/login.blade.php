@@ -15,9 +15,8 @@
         </div>
       <form action="{{route('user.login.post')}}" method="POST" class="form login">
         @csrf
-        @include('layout.errorlayout')
         <br>
-        {{-- @if ($errors->any())
+        @if ($errors->any())
         <div id="errorMsg" class="form-text text-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -25,7 +24,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif --}}
+        @endif
         <div class="form__field">
           <label for="login__username"><svg class="icon">
               <use xlink:href="#icon-user"></use>

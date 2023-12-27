@@ -145,7 +145,7 @@
                                 <div class="gantt-detail" style="display: none">
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
                                     <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item->id}})">하위업무 추가</button>
+                                    <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
                                 </div>     
                                 <div class="taskKey" style="display: none">{{$item->task_number}}</div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
@@ -167,11 +167,9 @@
                                 <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
                                 <div class="gantt-detail" style="display: none">
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
-                                    <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask({{$item2->id}})">하위업무 추가</button>
                                 </div>     
                                 <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
-                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">┖{{$item2->title}}</div>
+                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">ㄴ{{$item2->title}}</div>
                             </div>
                             <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item2->res_name}}</span></div>
                             <div class="gantt-status-name">

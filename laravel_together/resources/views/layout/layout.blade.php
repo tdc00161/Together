@@ -22,9 +22,6 @@
         <button type="button" style="background:transparent; border:none; cursor:pointer"><img src="/img/free-icon-moon-7682051.png" style="width: 30px; height: auto;" alt="이미지 설명"></button>
   </div> --}}
    <div class="app">
-    <div id="custom_cursor" class="custom-cursor">
-      <div class="custom-cursor-icon"></div>
-    </div>
 
     <div class="header">
       <a class="header-title" href="/dashboard">Together</a>
@@ -71,26 +68,21 @@
       <div class="side-wrapper">
        <div class="side-title">개인 프로젝트</div>
        <div class="side-menu">
-        {{-- <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 1</a>
-        <a class="sidebar-project-name" href="#"><div class="project-box"></div>개인프로젝트 2</a> --}}
-        @foreach ($userflg0 as $item)
-          <a href="{{route('individual.get',['id' => $item->id])}}">
-            <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{Str::limit($item->project_title,20,"")}}</span>
-          </a>
-        @endforeach
+        @forelse ($project0title as $item)
+        <a class="sidebar-project-name" href="{{route('individual.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
+        @empty
+            프로젝트 없음
+        @endforelse
        </div>
       </div>
       <div class="side-wrapper">
        <div class="side-title">팀 프로젝트</div>
        <div class="side-menu">
-        @foreach ($userflg1 as $item)
-          <a href="{{route('team.get',['id' => $item->id])}}">
-            <div class="project_color" style="background-color:{{$color_code->data_content_name}}"></div>
-            <span>{{Str::limit($item->project_title,20,"")}}</span>
-          </a>
-        @endforeach
-        {{-- {{dd($result)}}; --}}
+        @forelse ($project1title as $item)
+        <a class="sidebar-project-name" href="{{route('team.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
+        @empty
+            프로젝트 없음
+        @endforelse
        </div>
       </div>
      </div>
@@ -101,15 +93,18 @@
     {{-- <div class="overlay-app">
       
     </div> --}}
-   </div>
-   {{-- 부트스트랩 --}}
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-   {{-- 코드펜 --}}
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-   <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
-   {{-- js --}}
-   <script src="/js/common.js"></script>
-   <script src="/js/custom-cursor.js"></script>
-   @yield('project_css','')
+  </div>
+  {{-- 부트스트랩 --}}
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  {{-- 코드펜 --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
+  {{-- js --}}
+  <script src="/js/common.js"></script>
+  @yield('project_css','')
 </body>
 </html>

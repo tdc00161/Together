@@ -168,7 +168,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 
 		// 프로젝트 색 가져오기
-		fetch('/api/project/' + thisProjectId, {
+		fetch('/project/' + thisProjectId, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -220,7 +220,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 
 		// 상세 정보 가져오기
-		fetch('/api/task/' + c, {
+		fetch('/task/' + c, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -299,7 +299,7 @@ function createTask() {
 		postData.priority_name = ''
 		postData.category_id = 0
 	}
-	fetch('/api/task', {
+	fetch('/task', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -382,7 +382,7 @@ function updateTask() {
 		'end_date': document.querySelectorAll('.end_date')[0].value,
 		'priority_id': document.querySelector('.insert_priority_val').textContent
 	}
-	fetch('/api/task/' + now_task_id, {
+	fetch('/task/' + now_task_id, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -480,7 +480,7 @@ function addResponsible(a) {
 	}
 	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
 
-	fetch('/api/project/user/' + thisProjectId, {
+	fetch('/project/user/' + thisProjectId, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -567,7 +567,7 @@ function addPriority(a) {
 	}
 	ADD_PRIORITY_MODAL.append(clonePriorityModal)
 	// responsibleModalClone.remove()
-	fetch('/api/basedata/' + 1, {
+	fetch('/basedata/' + 1, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -700,7 +700,7 @@ function commitUpdateComment() {
 		"content": comment_input.value,
 		"task_id": now_task_id
 	}
-	fetch('/api/comment/' + thisCommentId, {
+	fetch('/comment/' + thisCommentId, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -723,7 +723,7 @@ function commitUpdateComment() {
 // 댓글 삭제
 function removeComment(event, a) {
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling
-	fetch('/api/comment/' + thisCommentId.value, {
+	fetch('/comment/' + thisCommentId.value, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -757,7 +757,7 @@ function addComment() {
 		"task_id": now_task_id,
 		"content": INPUT_COMMENT_CONTENT.value
 	}
-	fetch('/api/comment/' + now_task_id, {
+	fetch('/comment/' + now_task_id, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -1024,7 +1024,7 @@ function TaskFlg(a, b) {
 // 수정 모달 값 넣기
 function updateModalOpen() {
 	createUpdate = 1
-	fetch('/api/task/' + now_task_id, { // // insertModalValue() 모달창 띄울때 담았던 변수
+	fetch('/task/' + now_task_id, { // // insertModalValue() 모달창 띄울때 담았던 변수
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -1083,9 +1083,14 @@ function updateModalOpen() {
 
 // 모달 삭제
 function deleteTask() {
-	axios.delete('/api/task/' + now_task_id)
+	axios.delete('/task/' + now_task_id)
 		.then(res => {
 			console.log(res);
+			
+			// console.log(res.data.data);
+			document.querySelector('#gantt-task-'+res.data.data).remove()
+			document.querySelector('#gantt-chart-'+res.data.data).remove()
+
 			closeTaskModal(1)
 		})
 		.catch(err => {
