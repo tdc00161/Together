@@ -1,10 +1,11 @@
+console.log('프로젝트 페이지가 insert_detail.js를 읽어들이지 않는다.');
 // 변수 선언 ---------------------------------
 // body 전체
 const BODY = document.querySelector('body')
 // 간트 업무 좌측 영역
-const GANTT_LEFT = document.querySelectorAll('.gantt-task')
+const GANTT_LEFT = document.querySelectorAll('.gantt-task') ? document.querySelectorAll('.gantt-task') : ''
 // 간트 업무 우측 영역
-const GANTT_RIGHT = document.querySelectorAll('.gantt-chart')
+const GANTT_RIGHT = document.querySelectorAll('.gantt-chart') ? document.querySelectorAll('.gantt-chart') : ''
 // 모달 전체
 const TASK_MODAL = document.querySelectorAll('.task_modal')
 // 작성 모달
@@ -95,21 +96,21 @@ let SUBMIT = document.querySelectorAll('.submit')
 
 
 // 담당자 모달 초기화용 클론
-let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true)
+let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) ? ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) : ''
 // 담당자 초기화용 클론
-let cloneResponsibleReset = RESPONSIBLE[0].cloneNode(true)
+let cloneResponsibleReset = RESPONSIBLE[0].cloneNode(true) ? RESPONSIBLE[0].cloneNode(true) : ''
 // 담당자 추가용 클론
-let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true)
+let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true) ? RESPONSIBLE_PERSON[0].cloneNode(true) : ''
 // 우선순위 모달 초기화용 클론
-let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true)
+let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true) ? ADD_PRIORITY_MODAL_ONE.cloneNode(true) : ''
 // 우선순위 추가용 클론
-let clonePriority = PRIORITY_ONE[0].cloneNode(true)
+let clonePriority = PRIORITY_ONE[0].cloneNode(true) ? PRIORITY_ONE[0].cloneNode(true) : ''
 // 댓글 초기화용 클론
-let cloneResetComments = COMMENT_PARENT.cloneNode(true)
+let cloneResetComments = COMMENT_PARENT.cloneNode(true) ? COMMENT_PARENT.cloneNode(true) : ''
 // 좌측 간트 초기화용 클론
-let cloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
+let cloneLeftGanttChart = GANTT_LEFT[0] ? GANTT_LEFT[0].cloneNode(true) : ''
 // 우측 간트 초기화용 클론
-let cloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
+let cloneRightGanttChart = GANTT_RIGHT[0] ? GANTT_RIGHT[0].cloneNode(true) : ''
 // 모달 내용 저장소
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
@@ -119,8 +120,8 @@ let createUpdate = 0;
 // 업무/공지 플래그
 let TaskNoticeFlg = 0;
 // 현재 프로젝트 확인
-let thisProjectId = 0;
-thisProjectId = 1; // 임시
+let thisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
+// thisProjectId = window.location.pathname.match(/\d+/)[0]; // 임시
 // 현재 업무번호 확인
 let now_task_id = 0;
 // 현재 댓글id 확인
@@ -286,7 +287,8 @@ function createTask() {
 	let postData = {
 		"title": INSERT_TITLE.value,
 		"content": INSERT_CONTENT.value,
-		"project_id": thisProjectId
+		"project_id": thisProjectId,
+		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 // TODO
 	}
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
@@ -297,7 +299,6 @@ function createTask() {
 		postData.end_date = document.querySelectorAll('.end_date')[0].value
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.priority_name = ''
-		postData.category_id = 0
 	}
 	fetch('/task', {
 		method: 'POST',
@@ -309,34 +310,54 @@ function createTask() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			// console.log(data);
-			let refreshCloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
-			let refreshCloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
+			console.log(data);
+			if(GANTT_LEFT[0]){
 
-			let gantt_task_element = refreshCloneLeftGanttChart
-			let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
-			let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
-			let taskKey_element = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
-			let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
-			let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
-			let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
-			let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
-			gantt_task_element.id = 'gantt-task-' + data.data.id
-			start_element.value = data.data.start_date
-			start_element.setAttribute('id','start-row' + data.data.id)
-			start_element.setAttribute('onclick', 'test('+data.data.id+');')
-			end_element.value = data.data.end_date
-			end_element.setAttribute('id','end-row' + data.data.id)
-			end_element.setAttribute('onclick', 'test('+data.data.id+');')
-			taskKey_element.textContent = data.data.task_number
-			taskName_element.textContent = data.data.title
-			responsibleName_element.textContent = data.names.task_responsible_name
-			statusName_element.textContent = data.names.task_status_name
-			statusColorAutoPainting(statusName_element_textContent.textContent,statusName_element)
-			document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
-			document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
-			closeTaskModal(0)
-			document.querySelector('.gantt-all-task').scrollIntoView(false)
+				let refreshCloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
+				let refreshCloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
+				
+				let gantt_task_element = refreshCloneLeftGanttChart
+				let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+				let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+				let taskKey_element = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
+				let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+				let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
+				let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
+				let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
+				gantt_task_element.id = 'gantt-task-' + data.data.id
+				start_element.value = data.data.start_date
+				start_element.setAttribute('id','start-row' + data.data.id)
+				start_element.setAttribute('onclick', 'test('+data.data.id+');')
+				end_element.value = data.data.end_date
+				end_element.setAttribute('id','end-row' + data.data.id)
+				end_element.setAttribute('onclick', 'test('+data.data.id+');')
+				taskKey_element.textContent = data.data.task_number
+				taskName_element.textContent = data.data.title
+				responsibleName_element.textContent = data.names.task_responsible_name
+				statusName_element.textContent = data.names.task_status_name
+				statusColorAutoPainting(statusName_element_textContent.textContent,statusName_element)
+				document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
+				document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
+				closeTaskModal(0)
+				document.querySelector('.gantt-all-task').scrollIntoView(false)
+			} else {
+				let Notice = document.querySelector('.project_task_notice_list')
+				let Update = document.querySelector('.project_task_update_list')
+
+				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
+				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
+				cloneNotice.firstElementChild.textContent = data.data.content
+				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
+				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.content
+
+				let NoticeParent = Notice.parentElement
+				let UpdateParent = Update.parentElement
+
+				NoticeParent.firstChild.before(cloneNotice)
+				UpdateParent.firstChild.before(cloneUpdate)
+
+				closeTaskModal(0)
+			}
 		})
 		.catch(err => {
 			console.log(err.message)

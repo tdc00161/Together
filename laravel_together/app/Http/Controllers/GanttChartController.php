@@ -38,24 +38,24 @@ class GanttChartController extends Controller
         $userId = Auth::id();
 
         $project0title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 0)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+                            ->join('project_users as pu', 'p.id','=','pu.project_id')
+                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+                            ->select('p.project_title', 'b.data_content_name', 'p.id')
+                            ->where('pu.member_id', '=', $userId)
+                            ->where('p.flg','=', 0)
+                            ->where('b.data_title_code', '=', 3)
+                            ->orderBy('p.created_at', 'asc')
+                            ->get();
 
         $project1title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 1)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+                            ->join('project_users as pu', 'p.id','=','pu.project_id')
+                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+                            ->select('p.project_title', 'b.data_content_name', 'p.id')
+                            ->where('pu.member_id', '=', $userId)
+                            ->where('p.flg','=', 1)
+                            ->where('b.data_title_code', '=', 3)
+                            ->orderBy('p.created_at', 'asc')
+                            ->get();
 
         // 담당자 이름 출력
         $managername = DB::table('tasks')
@@ -152,10 +152,7 @@ class GanttChartController extends Controller
    
         if(Auth::check()) {
             return view('ganttchart-all')
-            ->with('color_code',$color_code)
             ->with('user_data',$user_data)
-            ->with('userflg0',$userflg0)
-            ->with('userflg1',$userflg1)
             ->with('managername',$managername)
             ->with('listdata',$returnData)
             ->with('project0title',$project0title)
@@ -165,103 +162,103 @@ class GanttChartController extends Controller
         }
     }
 
-    // 태스크 전체 조회 2
-    public function ganttIndex2()
-    {
-        $data = [];
-        // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
-        $data['project'] = Project::project_depth();
-        foreach ($data['project'] as $key => $value) {
+    // // 태스크 전체 조회 2
+    // public function ganttIndex2()
+    // {
+    //     $data = [];
+    //     // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
+    //     $data['project'] = Project::project_depth();
+    //     foreach ($data['project'] as $key => $value) {
             
-        }
-        $depth_0 = Task::depth_pj(0,); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
-        // $data = $depth_0;
-        foreach ($depth_0 as $key => $value) {            
-            $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
-        }
-        dd($data);
+    //     }
+    //     $depth_0 = Task::depth_pj(0,); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+    //     // $data = $depth_0;
+    //     foreach ($depth_0 as $key => $value) {            
+    //         $data[$value->id][] = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
+    //     }
+    //     // dd($data);
 
-        // --- 유저 정보
-        $user = Auth::user();
+    //     // --- 유저 정보
+    //     $user = Auth::user();
 
        
-        $userId = Auth::id();
+    //     $userId = Auth::id();
         
-        $project0title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 0)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+    //     $project0title = DB::table('projects as p')
+    //     ->join('project_users as pu', 'p.id','=','pu.project_id')
+    //     ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+    //     ->select('p.project_title', 'b.data_content_name', 'p.id')
+    //     ->where('pu.member_id', '=', $userId)
+    //     ->where('p.flg','=', 0)
+    //     ->where('b.data_title_code', '=', 3)
+    //     ->orderBy('p.created_at', 'asc')
+    //     ->get();
 
-        $project1title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 1)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+    //     $project1title = DB::table('projects as p')
+    //     ->join('project_users as pu', 'p.id','=','pu.project_id')
+    //     ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+    //     ->select('p.project_title', 'b.data_content_name', 'p.id')
+    //     ->where('pu.member_id', '=', $userId)
+    //     ->where('p.flg','=', 1)
+    //     ->where('b.data_title_code', '=', 3)
+    //     ->orderBy('p.created_at', 'asc')
+    //     ->get();
 
-        // dd($data);
-        // $result = DB::select("
-        //     SELECT
-        //         tks.id
-        //         ,tks.project_id
-        //         ,pj.project_title
-        //         ,tks.task_responsible_id
-        //         ,us.name                
-        //         ,tks.task_status_id
-        //         ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
-        //         ,tks.priority_id
-        //         ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
-        //         ,tks.category_id
-        //         ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
-        //         ,tks.task_parent
-        //         ,tks.task_depth
-        //         ,tks.title
-        //         ,tks.start_date
-        //         ,tks.end_date
-        //     FROM tasks tks
-        //         LEFT JOIN users us
-        //         ON tks.task_responsible_id = us.id
-        //         LEFT JOIN projects pj
-        //         ON tks.project_id = pj.id
-        //     WHERE tks.deleted_at IS NULL
-        // ");
-        // return $depth_1;
-        // dd($data);  
-        // 정렬 (data배열의 값에 상응하는 key값을 따로 변수로 선언해, (0 => title_6, 1 => title_9 ...)
-        //     그 변수를 정렬하고 (4 => title_1, 6 => title_2, ...) 그 정렬 순으로 data[4], data[6], ... data값과 키를 이용해 부를 예정)
+    //     // dd($data);
+    //     // $result = DB::select("
+    //     //     SELECT
+    //     //         tks.id
+    //     //         ,tks.project_id
+    //     //         ,pj.project_title
+    //     //         ,tks.task_responsible_id
+    //     //         ,us.name                
+    //     //         ,tks.task_status_id
+    //     //         ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
+    //     //         ,tks.priority_id
+    //     //         ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
+    //     //         ,tks.category_id
+    //     //         ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
+    //     //         ,tks.task_parent
+    //     //         ,tks.task_depth
+    //     //         ,tks.title
+    //     //         ,tks.start_date
+    //     //         ,tks.end_date
+    //     //     FROM tasks tks
+    //     //         LEFT JOIN users us
+    //     //         ON tks.task_responsible_id = us.id
+    //     //         LEFT JOIN projects pj
+    //     //         ON tks.project_id = pj.id
+    //     //     WHERE tks.deleted_at IS NULL
+    //     // ");
+    //     // return $depth_1;
+    //     // dd($data);  
+    //     // 정렬 (data배열의 값에 상응하는 key값을 따로 변수로 선언해, (0 => title_6, 1 => title_9 ...)
+    //     //     그 변수를 정렬하고 (4 => title_1, 6 => title_2, ...) 그 정렬 순으로 data[4], data[6], ... data값과 키를 이용해 부를 예정)
 
-        // 정렬하고 싶은 값을 빼온다
-        // foreach ($data as $key => $item) {
-        //     $sort[$key] = $item['project']->project_title;
-        // }
+    //     // 정렬하고 싶은 값을 빼온다
+    //     // foreach ($data as $key => $item) {
+    //     //     $sort[$key] = $item['project']->project_title;
+    //     // }
 
-        // // asort로 키값과 value를 정렬
-        // asort($sort);
+    //     // // asort로 키값과 value를 정렬
+    //     // asort($sort);
 
-        // // data에 정렬된 배열 key값대로 변경
-        // foreach ($sort as $key => $item) {
-        //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
-        // }
-        if(Auth::check()) {
-            return view('ganttchart-all')
-            ->with('data',$result)
-            ->with('user', Session::get('user'))
-            ->with('project0title',$project0title)
-            ->with('project1title',$project1title);
+    //     // // data에 정렬된 배열 key값대로 변경
+    //     // foreach ($sort as $key => $item) {
+    //     //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
+    //     // }
+    //     if(Auth::check()) {
+    //         return view('ganttchart-all')
+    //         ->with('data',$result)
+    //         ->with('user', Session::get('user'))
+    //         ->with('project0title',$project0title)
+    //         ->with('project1title',$project1title);
 
     
-        } else {
-            return redirect('/user/login');
-        }
-    }
+    //     } else {
+    //         return redirect('/user/login');
+    //     }
+    // }
 
     // 간트 프로젝트별 조회
     public function ganttIndex_one($id)
