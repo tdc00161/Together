@@ -8,6 +8,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GanttChartController;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\FriendlistController;
+use App\Http\Controllers\BaseDataController;
+use App\Http\Controllers\CommentController;
 use App\Models\User;
 
 

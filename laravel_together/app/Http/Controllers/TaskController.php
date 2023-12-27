@@ -228,58 +228,11 @@ class TaskController extends Controller
         ->orderBy('p.created_at', 'asc')
         ->get();
 
-
-
-        // dd($data);
-        // $result = DB::select("
-        //     SELECT
-        //         tks.id
-        //         ,tks.project_id
-        //         ,pj.project_title
-        //         ,tks.task_responsible_id
-        //         ,us.name                
-        //         ,tks.task_status_id
-        //         ,(SELECT bs1.data_content_name FROM basedata bs1 WHERE bs1.data_title_code = '0' AND tks.task_status_id = bs1.data_content_code) task_status_name
-        //         ,tks.priority_id
-        //         ,(SELECT bs2.data_content_name FROM basedata bs2 WHERE bs2.data_title_code = '1' AND tks.priority_id = bs2.data_content_code) priority_name
-        //         ,tks.category_id
-        //         ,(SELECT bs3.data_content_name FROM basedata bs3 WHERE bs3.data_title_code = '2' AND tks.category_id = bs3.data_content_code) category_name
-        //         ,tks.task_parent
-        //         ,tks.task_depth
-        //         ,tks.title
-        //         ,tks.start_date
-        //         ,tks.end_date
-        //     FROM tasks tks
-        //         LEFT JOIN users us
-        //         ON tks.task_responsible_id = us.id
-        //         LEFT JOIN projects pj
-        //         ON tks.project_id = pj.id
-        //     WHERE tks.deleted_at IS NULL
-        // ");
-        // return $depth_1;
-        // dd($data);  
-        // 정렬 (data배열의 값에 상응하는 key값을 따로 변수로 선언해, (0 => title_6, 1 => title_9 ...)
-        //     그 변수를 정렬하고 (4 => title_1, 6 => title_2, ...) 그 정렬 순으로 data[4], data[6], ... data값과 키를 이용해 부를 예정)
-
-        // 정렬하고 싶은 값을 빼온다
-        // foreach ($data as $key => $item) {
-        //     $sort[$key] = $item['project']->project_title;
-        // }
-
-        // // asort로 키값과 value를 정렬
-        // asort($sort);
-
-        // // data에 정렬된 배열 key값대로 변경
-        // foreach ($sort as $key => $item) {
-        //     $sorted_data[] = $data[$key]; // 배열로 넣어서 자동으로 배열 뒤로 들어가게
-        // }
         return view('modal.modalgantt')
         ->with('data', $data)
-        ->with('user', Session::get('user'))
-        ->with('color_code',$color_code)
-        ->with('user_data',$user_data)
-        ->with('userflg0',$userflg0)
-        ->with('userflg1',$userflg1);;
+        ->with('project0title', $project0title)
+        ->with('project1title', $project1title)
+        ->with('user', Session::get('user'));
     }
 
     // 프로젝트별 간트차트
@@ -324,7 +277,7 @@ class TaskController extends Controller
             "msg" => "",
             "data" => []
         ];
-        Log::debug('request: ' , $request->all());
+        // Log::debug('request: ' , $request->all());
 
         // 입력받은 데이터로 pk(id) 추출
         // Log::debug('cookie: '.$request->cookie('user'));
@@ -372,11 +325,13 @@ class TaskController extends Controller
         if($request['project_id']){   
             $tsk_num = DB::table('tasks')
                 ->where('project_id', $request['project_id'])
+                ->where('category_id', $request['category_id'])
                 ->orderBy('task_number', 'desc')
                 ->first();
         } else if($request->project_id){ 
             $tsk_num = DB::table('tasks')
             ->where('project_id', $request->project_id)
+            ->where('category_id', $request->category_id)
             ->orderBy('task_number', 'desc')
             ->first();
         }
@@ -398,7 +353,8 @@ class TaskController extends Controller
                     ->where('end_date', $request->end_date)
                     ->get();
         }
-        // Log::debug('$tsk_num: ' . $tsk_num->task_number);
+        Log::debug([$tsk_num]);
+        // Log::debug($tsk_num['task_number']);
 
         // 이메일 추가 시 대비
         // $eml = DB::table('users')->where('email', $request['email'])->first();
@@ -439,6 +395,8 @@ class TaskController extends Controller
         // $request['category_id'] = ;
         if(isset($tsk_num)){        
             $request['task_number'] = $tsk_num->task_number + 1;
+        } else {
+            $request['task_number'] = 1;
         }
         // if(isset($request['task_parent'])){
         //     $result['task_parent'] = $request['task_parent'];
@@ -446,7 +404,7 @@ class TaskController extends Controller
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
-        // Log::debug($request);
+        Log::debug($request);
         
         // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
