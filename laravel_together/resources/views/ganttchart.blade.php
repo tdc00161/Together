@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="tabset">
-        <a href="" class="tabmenu">피드</a>
+        <a href="{{ route('individual.get', ['id' => $project_id])}}" class="tabmenu">피드</a>
         <button class="gantt-tabmenu active" onclick="openTab(event,gantt)">간트차트</button>
     </div>
     {{-- <div class="hr"></div> --}}
