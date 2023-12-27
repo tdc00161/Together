@@ -97,8 +97,7 @@ a {
 
 #chartcanvas2 {
     box-sizing: border-box;
-    width: 250px;
-    height: 250px;
+    width: 100%;
 }
 .common-button {
     border: none;
@@ -999,6 +998,8 @@ box-sizing: border-box;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
     transition: 0.3s ease;
+    padding-top: 50px;
+    min-width: 300px;
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);

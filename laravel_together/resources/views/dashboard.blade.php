@@ -34,13 +34,7 @@
             <div class="color_name">완료</div>
         </div>
     </div>
-
-    {{-- <span class="app-card-title">
-     업무상태
-    </span>
-    <div class="app-card__subtext"></div>
-    <div class="app-card-buttons"></div> --}}
-   </div>
+  </div>
 
    {{-- 2 공지 --}}
    <div class="app-card2">

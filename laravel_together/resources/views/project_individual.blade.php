@@ -56,7 +56,6 @@
         <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
         <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button>
     </div>
-    {{-- <div class="hr"></div> --}}
 {{-- 피드안에 정보 --}}
 <div class="tabcontent" id="field" style="display: block">
     <div class="grid_div">
@@ -69,10 +68,6 @@
                         <div class="color_set">
                             <div class="color_box1"></div>
                             <div class="color_name">시작전:{{$statuslist['before'][0]->cnt}}</div>
-                            {{-- @php
-                            dump($statuslist);
-                            exit;
-                            @endphp --}}
                         </div>
                         <div  class="color_set">
                             <div class="color_box2"></div>
@@ -163,11 +158,9 @@
                                             <div style="color:rgb(0, 174, 255); font-weight:bold;">{{$item->data_content_name}}</div>
                                         @endif
                                     </td> 
-                                    {{-- <td class="td_pd" onclick="openTaskModal(1,0)">{{$item->category_name}}</td> --}}
                                     {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
 
                                     <td class="td_pd">{{Str::limit($item->title,35,'...')}}</td>
-                                    {{-- <td>{{$item->user_id}}</td> --}}
                                 </tr>
                             @endforeach
                         </table>

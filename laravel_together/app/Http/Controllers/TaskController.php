@@ -95,10 +95,7 @@ class TaskController extends Controller
     // 대시보드 그래픽 데이터
     public function board_graph_data(Request $request) {
 
-        // Log::debug("***** project_graph_data Start *****".$request);
-
         $user_id = Auth::id();
-        // dd($user_id);
 
         $before =DB::table('tasks')
                     ->join('projects', function($join){
