@@ -63,6 +63,20 @@ class TaskController extends Controller
         ->orderBy('p.created_at', 'asc')
         ->get();
 
+        // --- 프로젝트 진척도 출력
+        // $completionPercentage = DB::table('tasks as t')
+        // ->join('projects as p', 't.project_id', '=', 'p.id')
+        // ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+        // ->selectRaw('ROUND((COUNT(t.project_id) / COUNT(p.project_id)) * 100) AS completion_percentage, b.data_content_name')
+        // ->where('t.project_id', 1)
+        // ->where('t.task_status_id', 3)
+        // ->where('b.data_title_code', 3)
+        // ->groupBy('b.data_content_name')
+        // ->get();
+
+        // dd($completionPercentage);
+
+
         if (Auth::check()) {
             return view('dashboard', [
                 'user' => $user,

@@ -81,6 +81,7 @@
               @endforeach
               @endif
             </div>
+
             <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only"></span>
@@ -90,6 +91,12 @@
                 <span class="sr-only"></span>
             </a>
         </div>
+          {{-- <!-- 인디케이터 추가 -->
+          <ol class="carousel-indicators">
+            @foreach($dashboardNotice as $key => $notice)
+                <li data-target="#myCarousel" data-slide-to="{{ $key }}" @if($key === 0) class="active" @endif></li>
+            @endforeach
+        </ol> --}}
     </div>
 </div>
     {{-- 2섹션 --}}
@@ -101,7 +108,15 @@
       개인 프로젝트 진척률
       </span>
       <div class="app-card__subtext"></div>
-      <div class="app-card-buttons"></div>
+      
+      {{-- 프로젝트 프로그레스 바 --}}
+      <div class="project-progress">
+        <div class="project-progress-project-title-div"><div style="background-color: black;" class="project-box"></div><p class="dashboard-progress-project-title">프로젝트명</p><p class="dashboard-progress-project-dday">D-2</p></div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+        </div>
+      </div>
+
     </div>
       {{-- 3  --}}
       <div class="app-card3-2"> 
