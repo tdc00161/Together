@@ -95,10 +95,32 @@ a {
     font-weight: lighter;
 }
 
+/* 대시보드 그래프 */
 #chartcanvas2 {
     box-sizing: border-box;
     width: 100%;
 }
+
+/* 상태 문구 */
+.color_set1 {
+    padding-left: 25%;
+}
+
+.color_div1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+/* 마감 */
+.dash_dday {
+    font-weight: bold;
+    /* display: inline-block; */
+}
+
+
+
 .common-button {
     border: none;
     background: transparent;

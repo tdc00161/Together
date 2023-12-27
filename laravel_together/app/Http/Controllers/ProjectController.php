@@ -91,32 +91,37 @@ class ProjectController extends Controller
 
         // 프로젝트 상태갯수
         $before =DB::table('tasks')
-        ->selectRaw('count(task_status_id) as cnt')
-        ->where('project_id',$id)
-        ->where('task_status_id',0)
-        ->groupBy('task_status_id')
-        ->get();
+                    ->selectRaw('count(task_status_id) as cnt')
+                    ->where('project_id',$id)
+                    ->where('category_id',0)
+                    ->where('task_status_id',0)
+                    ->groupBy('task_status_id')
+                    ->get();
+                    // dd($before);
 
         $ing =DB::table('tasks')
-            ->selectRaw('count(task_status_id) as cnt')
-            ->where('task_status_id',1)
-            ->where('project_id',$id)
-            ->groupBy('tasks.task_status_id')
-            ->get();
+                ->selectRaw('count(task_status_id) as cnt')
+                ->where('project_id',$id)
+                ->where('category_id',0)
+                ->where('task_status_id',1)
+                ->groupBy('task_status_id')
+                ->get();
 
         $feedback =DB::table('tasks')
-                  ->selectRaw('count(task_status_id) as cnt')
-                  ->where('task_status_id',2)
-                  ->where('project_id',$id)
-                  ->groupBy('tasks.task_status_id')
-                  ->get();
+                    ->selectRaw('count(task_status_id) as cnt')
+                    ->where('project_id',$id)
+                    ->where('category_id',0)
+                    ->where('task_status_id',2)
+                    ->groupBy('task_status_id')
+                    ->get();
 
         $complete =DB::table('tasks')
-                ->selectRaw('count(task_status_id) as cnt')
-                ->where('task_status_id',3)
-                ->where('project_id',$id)
-                ->groupBy('tasks.task_status_id')
-                ->get();
+                    ->selectRaw('count(task_status_id) as cnt')
+                    ->where('project_id',$id)
+                    ->where('category_id',0)
+                    ->where('task_status_id',3)
+                    ->groupBy('task_status_id')
+                    ->get();
 
         //데이터 담을 빈 객체 생성
         $baseObj = new \stdClass();

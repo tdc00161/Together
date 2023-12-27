@@ -260,7 +260,7 @@
     height: 10px;
     background-color: #B1B1B1;
     border: none;
-    border-radius: 1px;
+    border-radius: 10px;
     display: inline-block;
 }
 
@@ -269,7 +269,7 @@
     height: 10px;
     background-color: #04A5FF;
     border: none;
-    border-radius: 1px;
+    border-radius: 10px;
     display: inline-block;
 }
 
@@ -278,7 +278,7 @@
     height: 10px;
     background-color: #F34747;
     border: none;
-    border-radius: 1px;
+    border-radius: 10px;
     display: inline-block;
 }
 
@@ -287,9 +287,10 @@
     height: 10px;
     background-color: #64C139;
     border: none;
-    border-radius: 1px;
+    border-radius: 10px;
     display: inline-block;
 }
+
 
 .color_set {
     margin: 0 5px;

@@ -87,6 +87,80 @@ class TaskController extends Controller
 
         // dd($completionPercentages);
 
+    // 상태현황 개수 출력
+    $before =DB::table('tasks')
+                ->join('project_users', function($join){
+                    $join->on('project_users.project_id','=','tasks.project_id');
+                })
+                ->selectRaw('count(tasks.task_status_id) as cnt')
+                ->where('project_users.member_id',$user->id)
+                ->where('tasks.category_id',0)
+                ->where('tasks.task_status_id',0)
+                ->groupBy('tasks.task_status_id')
+                ->get();
+    // dump($before);
+
+    $ing =DB::table('tasks')
+            ->join('project_users', function($join){
+                $join->on('project_users.project_id','=','tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id',$user->id)
+            ->where('tasks.category_id',0)
+            ->where('tasks.task_status_id',1)
+            ->groupBy('tasks.task_status_id')
+            ->get();
+    // dump($ing);
+
+    $feedback =DB::table('tasks')
+                ->join('project_users', function($join){
+                    $join->on('project_users.project_id','=','tasks.project_id');
+                })
+                ->selectRaw('count(tasks.task_status_id) as cnt')
+                ->where('project_users.member_id',$user->id)
+                ->where('tasks.category_id',0)
+                ->where('tasks.task_status_id',2)
+                ->groupBy('tasks.task_status_id')
+                ->get();
+    // dump($feedback);
+
+    $complete =DB::table('tasks')
+                ->join('project_users', function($join){
+                    $join->on('project_users.project_id','=','tasks.project_id');
+                })
+                ->selectRaw('count(tasks.task_status_id) as cnt')
+                ->where('project_users.member_id',$user->id)
+                ->where('tasks.category_id',0)
+                ->where('tasks.task_status_id',3)
+                ->groupBy('tasks.task_status_id')
+                ->get();
+    // dd($complete);
+
+
+    //데이터 담을 빈 객체 생성
+    $baseObj = new \stdClass();
+    $baseObj->cnt = 0;
+    $statuslist = [
+    'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
+    'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
+    'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
+    'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
+    ];
+    // dd($statuslist);
+
+    // d-day 데이터 출력
+    $dday_data = DB::table('tasks as tk')
+                    ->join('project_users as pu', function($join){
+                        $join->on('pu.project_id','=','tk.project_id');
+                    })
+                    ->select('tk.title','tk.start_date', 'tk.end_date', DB::raw('tk.end_date - tk.start_date as dday'))
+                    ->where('pu.member_id',$user->id)
+                    ->where('tk.task_depth',0) //디데이 출력시 상위업무만 보이게 할 것인지, 하위업무도 같이 보이게 할 것인지 결정해야 함.
+                    ->where('tk.category_id',0)
+                    ->orderBy('dday','desc')
+                    ->get();
+    // dd($dday_data);
+
 
         if (Auth::check()) {
             return view('dashboard', [
@@ -98,6 +172,8 @@ class TaskController extends Controller
                 'project0title' => $project0title,
                 'project1title' => $project1title,
                 'completionPercentages' => $completionPercentages,
+                'statuslist' => $statuslist,
+                'dday_data' => $dday_data
             ]);
         } else {
             return redirect('/user/login');
@@ -107,51 +183,55 @@ class TaskController extends Controller
     // 대시보드 그래픽 데이터
     public function board_graph_data(Request $request) {
 
-        $user_id = Auth::id();
+        $user = Auth::user();
 
         $before =DB::table('tasks')
-                    ->join('projects', function($join){
-                        $join->on('tasks.project_id','=','projects.id');
-                    })
-                    ->selectRaw('count(task_status_id) as cnt')
-                    ->where('task_status_id',0)
-                    ->where('projects.user_pk',$user_id)
-                    ->groupBy('task_status_id')
-                    ->get();
+        ->join('project_users', function($join){
+            $join->on('project_users.project_id','=','tasks.project_id');
+        })
+        ->selectRaw('count(tasks.task_status_id) as cnt')
+        ->where('project_users.member_id',$user->id)
+        ->where('tasks.category_id',0)
+        ->where('tasks.task_status_id',0)
+        ->groupBy('tasks.task_status_id')
+        ->get();
         // dump($before);
-  
+
         $ing =DB::table('tasks')
-                ->join('projects', function($join){
-                    $join->on('tasks.project_id','=','projects.id');
+            ->join('project_users', function($join){
+                $join->on('project_users.project_id','=','tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id',$user->id)
+            ->where('tasks.category_id',0)
+            ->where('tasks.task_status_id',1)
+            ->groupBy('tasks.task_status_id')
+            ->get();
+        // dump($ing);
+
+        $feedback =DB::table('tasks')
+                ->join('project_users', function($join){
+                    $join->on('project_users.project_id','=','tasks.project_id');
                 })
-                ->selectRaw('count(task_status_id) as cnt')
-                ->where('task_status_id',1)
-                ->where('project_id',$user_id)
+                ->selectRaw('count(tasks.task_status_id) as cnt')
+                ->where('project_users.member_id',$user->id)
+                ->where('tasks.category_id',0)
+                ->where('tasks.task_status_id',2)
                 ->groupBy('tasks.task_status_id')
                 ->get();
-        // dump($ing);
-  
-        $feedback =DB::table('tasks')
-                        ->join('projects', function($join){
-                            $join->on('tasks.project_id','=','projects.id');
-                        })
-                      ->selectRaw('count(task_status_id) as cnt')
-                      ->where('task_status_id',2)
-                      ->where('project_id',$user_id)
-                      ->groupBy('tasks.task_status_id')
-                      ->get();
         // dump($feedback);
-  
+
         $complete =DB::table('tasks')
-                    ->join('projects', function($join){
-                        $join->on('tasks.project_id','=','projects.id');
-                    })
-                    ->selectRaw('count(task_status_id) as cnt')
-                    ->where('task_status_id',3)
-                    ->where('project_id',$user_id)
-                    ->groupBy('tasks.task_status_id')
-                    ->get();
-        // dump($complete);
+                ->join('project_users', function($join){
+                    $join->on('project_users.project_id','=','tasks.project_id');
+                })
+                ->selectRaw('count(tasks.task_status_id) as cnt')
+                ->where('project_users.member_id',$user->id)
+                ->where('tasks.category_id',0)
+                ->where('tasks.task_status_id',3)
+                ->groupBy('tasks.task_status_id')
+                ->get();
+        // dd($complete);
 
   
         //데이터 담을 빈 객체 생성

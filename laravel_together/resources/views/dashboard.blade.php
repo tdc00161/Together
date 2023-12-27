@@ -16,22 +16,24 @@
   <div class="app-card1"> 
     <div class="app-card-title2">업무상태 현황</div>
     <canvas id="chartcanvas2" width="800" height="800"></canvas>
-    <div class="color_div">
-        <div class="color_set">
+    <div class="color_div1">
+        <div class="color_set1">
             <div class="color_box1"></div>
-            <div class="color_name">시작전</div>
+            <div class="color_name">시작전:{{$statuslist['before'][0]->cnt}}</div>
         </div>
-        <div  class="color_set">
+        <div  class="color_set1">
             <div class="color_box2"></div>
-            <div class="color_name">진행중</div>
+            <div class="color_name">진행중:{{$statuslist['ing'][0]->cnt}}</div>
         </div>
-        <div class="color_set">
+    </div>
+    <div class="color_div1">
+        <div class="color_set1">
             <div class="color_box3"></div>
-            <div class="color_name">피드백</div>
+            <div class="color_name">피드백:{{$statuslist['feedback'][0]->cnt}}</div>
         </div>
-        <div  class="color_set">
+        <div  class="color_set1">
             <div class="color_box4"></div>
-            <div class="color_name">완료</div>
+            <div class="color_name">완료:{{$statuslist['complete'][0]->cnt}}</div>
         </div>
     </div>
   </div>
@@ -134,8 +136,19 @@
       <span class="app-card-title">
        마감
       </span>
-      <div class="app-card__subtext"></div>
-      <div class="app-card-buttons"></div>
+      @foreach ($dday_data as $data => $item)
+        {{-- @if($data >= 1)
+          $first_data = $data-1;
+          $next_data = $data-0;
+        @endif
+        @if ($data >=1)
+            
+        @else
+            
+        @endif --}}
+        <div class="dash_dday">D-{{$item->dday}}</div>
+        <div class="dash_ddaytitle">{{Str::limit($item->title,10,'...')}}</div>
+      @endforeach
      </div>
   
     </div>
