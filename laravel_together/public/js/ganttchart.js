@@ -432,17 +432,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
 // ************* 하위 업무 추가
-let creating_delete = 0;
 // id 값은 임의로 넣은것
 function addSubTask(event, mainId) {
-  console.log(creating_delete);
   console.log(event.target.parentNode.parentNode.parentNode);
   // const doMGanttTask = document.getElementById('gantt-task-314'); // 원래 자리접근
+  // $item->id : ${ganttModalId}
+  // $item2->id :   
   const doMGanttTask = event.target.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
-  const ganttModalId = gantt_modal_id[0];
+  // const ganttModalId = gantt_modal_id[0];
   console.log(gantt_modal_id[0]);
   // 차트 부분
   const doMGanttChart = document.getElementById('gantt-chart-' + gantt_modal_id[0]); // 원래 자리접근
@@ -460,7 +459,7 @@ function addSubTask(event, mainId) {
   // <div class="gantt-editable-div editable"></div>
   const addGanttEditableDiv = document.createElement('div');
   addGanttEditableDiv.classList.add('gantt-editable-div', 'editable');
-  addGanttEditableDiv
+  // addGanttEditableDiv
 
   // gantt-task 안 첫번째 div 안 첫번째 btn 
   // <button class="gantt-task-detail-click"></button>
@@ -483,14 +482,14 @@ function addSubTask(event, mainId) {
   const addDetailButton = document.createElement('button');
   addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
-  addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttModalId})`);
+  // addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttModalId})`); // 밑에서 처리
 
   // gantt-task 안 첫번째 div 안 세번째 div 
   // <div class="taskKey">{{$item->task_number}}</div>
   const addTaskKey = document.createElement('div');
   addTaskKey.classList.add('taskKey');
   addTaskKey.style.display = 'none';
-  // addTaskKey.textContent = '800';
+  // addTaskKey.textContent = '800'; // 밑에서 처리
 
   // gantt-task 안 첫번째 div 안 네번째 div
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
@@ -501,10 +500,10 @@ function addSubTask(event, mainId) {
   addTaskName.textContent = 'ㄴ업무명';
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
-  addTaskName.addEventListener('blur', addChildTask)
   console.log('addChildTask');
+  addTaskName.addEventListener('blur', addChildTask)
 
-  let ganttUnderTaskId = 0;
+  
   // 하위업무 추가 과정
   function addChildTask() {
     console.log('blur 시작');
@@ -522,42 +521,92 @@ function addSubTask(event, mainId) {
       postData.task_number = ''
       // postData.task_responsible_id = document.querySelectorAll('.responsible_user')[0].textContent
       postData.task_responsible_name = ''
-      postData.start_date = document.querySelectorAll('.start_date')[0].value
-      postData.end_date = document.querySelectorAll('.end_date')[0].value
+      postData.start_date = document.querySelector('#start-row000').value
+      postData.end_date = document.querySelector('#end-row000').value
       // postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
       postData.priority_name = ''
       postData.category_id = 0
     }
     console.log('blur 중');
-    if(creating_delete === 0){
-      fetch('/task', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken_gantt,
-        },
-        body: JSON.stringify(postData),
-      })
-        .then(response => response.json()) // response.json()
-        .then(data => {
-          addTaskName.removeEventListener('blur', addChildTask)
-          addTaskKey.textContent = data.data.task_number;
-          console.log(data.data.task_number);
+    
+    fetch('/task', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken_gantt,
+      },
+      body: JSON.stringify(postData),
+    })
+      .then(response => response.json()) // response.json()
+      .then(data => {
+        addTaskName.removeEventListener('blur', addChildTask);
+        addTaskKey.textContent = data.data.task_number;
 
-          ganttUnderTaskId = data.data.task_number
+        const ganttChildId = data.data.id;
+        console.log(ganttChildId);
+        addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttChildId})`);
 
-          addChildTaskAfter(data);
+        addTaskStartDate.id = 'start-row' + ganttChildId;
+        console.log(addTaskStartDate);
+        addTaskEndDate.id = 'end-row' + ganttChildId;
+        console.log(addTaskEndDate);
+        newChart.id = 'gantt-chart-' + ganttChildId;
+        console.log(newChart);
+        
+        // 시작일 종료일 날짜 설정
+        const chartStartDate = new Date('2023-12-01');
+        const chartEndDate = new Date('2023-12-31');
+
+        // chartStartDate를 클론하여 chartNewStartDate에 할당
+        const chartNewStartDate = new Date(chartStartDate);
+
+        // 요소 생성 배치
+        // end가 start보다 이전인지 확인
+        while (chartNewStartDate <= chartEndDate) {
+          // 날짜 yyyymmdd 변경
+          const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
+
+          // gantt-chart안에 들어갈 새로운 div
+          const ganttChartRow = document.createElement('div');
+          ganttChartRow.id = 'row' + ganttChildId + '-' + chartFormatDate;
+
+          // 다음 날짜 이동
+          chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
+
+          // <div class="gantt-chart" id="ganbtt-chart-800">
+          //    <div id="row800-(231201~231231)"></div>
+          // </div> 생성
+          newChart.appendChild(ganttChartRow);
         }
-          )
-        .catch(err=>console.log(err.message))
-    }
+
+        // test
+        addTaskStartDate.setAttribute('onchange', `test(${ganttChildId})`);
+        addTaskEndDate.setAttribute('onchange', `test(${ganttChildId})`);
+
+        // addEventListener 로 하는 방법
+        //
+        // const eventSubStartDate = document.getElementById(addTaskStartDate.id);
+        // const eventSubEndDate = document.getElementById(addTaskEndDate.id);
+        // console.log('start test에 id');
+        // eventSubStartDate.addEventListener('change', e => test(`${ganttChildId}`));
+        // console.log(eventSubStartDate.getAttribute('change'));
+        // console.log('end test에 id');
+        // eventSubEndDate.addEventListener('change', e => test(`${ganttChildId}`));
+        // console.log(eventSubEndDate.getAttribute('change'));
+        
+
+        addChildTaskAfter(data);
+      }
+        )
+      .catch(err=>console.log(err.message))
+  
   }
 
   function addChildTaskAfter (data) {
     console.log('addChildTaskAfter');
     creating_delete = 1;
     console.log(data);
-    // 이 곳에 after 간트차트(+날짜 계산해서 바도 출력)
+    // 이 곳에 after 간트차트(+날짜 계산해서 바로 출력)
     newTask.id = 'gantt-task-' + data.data.id;
     // 작성 기능 -> 수정 기능으로 바꾸기
     document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
@@ -661,8 +710,10 @@ function addSubTask(event, mainId) {
   const addTaskStartDate = document.createElement('input');
   addTaskStartDate.type = 'date';
   addTaskStartDate.name = 'start';
-  addTaskStartDate.id = 'start-row' + ganttUnderTaskId;
-  // addTaskStartDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
+  addTaskStartDate.classList.add('start-date');
+  // console.log(ganttUnderTaskId);
+  addTaskStartDate.id = 'start-row000'; //위에서
+  addTaskStartDate.setAttribute('onchange', 'test(000);'); // 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   // addTaskEndDate.value = '2023-12-01';
 
   // gantt-task 안 다섯번째 div
@@ -675,8 +726,9 @@ function addSubTask(event, mainId) {
   const addTaskEndDate = document.createElement('input');
   addTaskEndDate.type = 'date';
   addTaskEndDate.name = 'end';
-  addTaskEndDate.id = 'end-row' + ganttUnderTaskId;
-  // addTaskEndDate.setAttribute('onchange', 'test(800)'); 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
+  addTaskEndDate.classList.add('end-date');
+  addTaskEndDate.id = 'end-row000'  //위에서
+  addTaskEndDate.setAttribute('onchange', 'test(000);'); // 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   // addTaskEndDate.value = '2023-12-05';
 
 
@@ -712,7 +764,7 @@ function addSubTask(event, mainId) {
 
   const newChart = document.createElement('div');
   newChart.classList.add('gantt-chart');
-  newChart.id = 'gantt-chart-' + ganttUnderTaskId;
+  newChart.id = 'gantt-chart-000'; //위에서
 
   // 원래있던 282 다음에 800 생성
   doMGanttChart.after(newChart);
@@ -732,7 +784,7 @@ function addSubTask(event, mainId) {
 
     // gantt-chart안에 들어갈 새로운 div
     const ganttChartRow = document.createElement('div');
-    ganttChartRow.id = 'row' + ganttUnderTaskId + '-' + chartFormatDate;
+    ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
 
     // 다음 날짜 이동
     chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
@@ -745,10 +797,12 @@ function addSubTask(event, mainId) {
 
   // addEventListener 로 하는 방법
   //
-  const eventSubStartDate = document.getElementById(addTaskStartDate.id);
-  const eventSubEndDate = document.getElementById(addTaskEndDate.id);
-  eventSubStartDate.addEventListener('change', e => test(ganttUnderTaskId));
-  eventSubEndDate.addEventListener('change', e => test(ganttUnderTaskId));
+  // const eventSubStartDate = document.getElementById(addTaskStartDate.id);
+  // const eventSubEndDate = document.getElementById(addTaskEndDate.id);
+  // eventSubStartDate.addEventListener('change', e => test('000'));
+  // console.log(eventSubStartDate.getAttribute('onchange'));
+  // eventSubEndDate.addEventListener('change', e => test('000'));
+  // console.log(eventSubEndDate.getAttribute('onchange'));
 
 
   // --- 차트 부분 생성 완
