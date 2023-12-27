@@ -380,6 +380,24 @@ class TaskController extends Controller
             ->orderBy('task_number', 'desc')
             ->first();
         }
+        if($request['start_date']){   
+            $res = DB::table('tasks')
+                ->where('start_date', $request['start_date'])
+                ->get();
+        } else if($request->start_date){ 
+                $res = DB::table('tasks')
+                    ->where('start_date', $request->start_date)
+                    ->get();
+        }
+        if($request['end_date']){   
+            $res = DB::table('tasks')
+                ->where('end_date', $request['end_date'])
+                ->get();
+        } else if($request->task_responsible_id){ 
+                $res = DB::table('tasks')
+                    ->where('end_date', $request->end_date)
+                    ->get();
+        }
         // Log::debug('$tsk_num: ' . $tsk_num->task_number);
 
         // 이메일 추가 시 대비
@@ -400,13 +418,17 @@ class TaskController extends Controller
         }
         if(!empty($res[0])){
             $request['task_responsible_id'] = $res[0]->id;
-            $responseData['names']['task_responsible_name'] = $res[0]->name;
+            if(isset($responseData['names'])){
+                $responseData['names']['task_responsible_name'] = $res[0]->name;
+            }
         } else {
             $request['task_responsible_name'] = null;
         }
         if(!empty($pri[0])){
             $request['priority_id'] = $pri[0]->data_content_code;
-            $responseData['names']['priority_name'] = $pri[0]->data_content_name;
+            if(isset($responseData['names'])){
+                $responseData['names']['priority_name'] = $pri[0]->data_content_name;
+            }
         } else {
             $request['priority_name'] = null;
         }
@@ -424,11 +446,11 @@ class TaskController extends Controller
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
-        Log::debug($request);
+        // Log::debug($request);
         
         // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
-        Log::debug($result);
+        // Log::debug($result);
         if (!$result) {
             $responseData['msg'] = 'task not created.';
             $responseData['data'] = $result;
