@@ -33,8 +33,8 @@ Route::get('/user/registration', [UserController::class, 'registrationget'])->na
 Route::middleware('my.user.validation')->post('/user/registration', [UserController::class, 'registrationpost'])->name('user.registration.post'); // 회원가입 처리
 Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.logout.get'); // 로그아웃 처리
 
-// 헤더
-Route::get('/header', [TaskController::class,'showheader']);
+// 사이드바
+Route::get('/sidebar', [TaskController::class,'showSidebar']);
 
 // 대시보드
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
