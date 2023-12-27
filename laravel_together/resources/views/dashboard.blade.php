@@ -110,6 +110,13 @@
       <div class="app-card__subtext"></div>
       
       {{-- 프로젝트 프로그레스 바 --}}
+      {{-- @foreach ($completionPercentages as $projectId => $completionPercentage)
+      <h2>Project ID: {{ $projectId }}</h2>
+      @foreach ($completionPercentage as $result)
+          <p>Completion Percentage: {{ $result->completion_percentage }}</p>
+          <p>Data Content Name: {{ $result->data_content_name }}</p>
+      @endforeach
+  @endforeach --}}
       <div class="project-progress">
         <div class="project-progress-project-title-div"><div style="background-color: black;" class="project-box"></div><p class="dashboard-progress-project-title">프로젝트명</p><p class="dashboard-progress-project-dday">D-2</p></div>
         <div class="progress">
