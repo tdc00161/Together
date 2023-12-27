@@ -495,18 +495,19 @@ class TaskController extends Controller
             "msg" => ""
         ];
         
-        // $result = Task::where('id', $id)->delete();
+        $result = Task::where('id', $id)->delete();
 
-        // if (!$result) {
-        //     $responseData['code'] = 'E01';
-        //     $responseData['msg'] = $id . ' is no where';
-        // } else {
-        //     $responseData['code'] = 'D01';
-        //     $responseData['msg'] = 'task : ' . $id . '->deleted.';
-        // }
+        if (!$result) {
+            $responseData['code'] = 'E01';
+            $responseData['msg'] = $id . ' is no where';
+        } else {
+            $responseData['code'] = 'D01';
+            $responseData['msg'] = 'task : ' . $id . '->deleted.';
+            $responseData['data'] = $id;
+        }
 
-        // return $responseData;
-        return [$request, $id];
+        return $responseData;
+        // return [$request, $id];
     }
 }
 

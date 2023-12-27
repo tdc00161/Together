@@ -1086,6 +1086,11 @@ function deleteTask() {
 	axios.delete('/api/task/' + now_task_id)
 		.then(res => {
 			console.log(res);
+			
+			// console.log(res.data.data);
+			document.querySelector('#gantt-task-'+res.data.data).remove()
+			document.querySelector('#gantt-chart-'+res.data.data).remove()
+
 			closeTaskModal(1)
 		})
 		.catch(err => {
