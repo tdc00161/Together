@@ -52,6 +52,8 @@ class ProjectController extends Controller
 
         $data2result = ProjectUser::create($data2);
 
+        // dd($result);
+
         if ($result->flg == '0'){
           return redirect()->route('individual.get',['id' => $result['id']]);
         } elseif ($result->flg == '1'){
@@ -74,7 +76,6 @@ class ProjectController extends Controller
         $color_code = DB::table('projects as pj')
                         ->join('basedata as bd','bd.data_content_code','pj.color_code_pk')
                         ->select('pj.id', 'bd.data_content_name')
-                        ->where('pj.user_pk',$user->id)
                         ->where('pj.id',$result->id)
                         ->where('bd.data_title_code','3')
                         ->whereNull('pj.deleted_at')

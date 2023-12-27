@@ -134,7 +134,7 @@
                             </colgroup>
                             @foreach ($first_data as $item)
                                 <tr class="box_ul project_task_notice_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,1)">{{Str::limit($item->title,46,'...')}}</td>
+                                    <td class="td_pd" onclick="openTaskModal(1,1,{{$item->id}})">{{Str::limit($item->title,46,'...')}}</td>
                                 </tr>
                             @endforeach
                         </table>
