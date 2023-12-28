@@ -261,9 +261,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 		// 모달 띄우기
 		openInsertDetailModal(a);
-		// 글/업무 플래그
-		TaskFlg(a, b);
 	}
+	// 글/업무 플래그
+	TaskFlg(a, b);
 }
 // 모달 닫기
 function closeTaskModal(a) {
