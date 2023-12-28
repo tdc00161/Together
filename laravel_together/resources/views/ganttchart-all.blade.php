@@ -113,11 +113,11 @@
                 </div>
                 <div class="gantt-task-body">
                     @forelse($listdata as $projectitem)
-                        <div></div>
+                        <div>{{$projectitem['project_title']}}</div>
                         @forelse ($projectitem as $taskitem)
-                            @if($taskitem->task_depth =='0')
+                            @if($taskitem[0]->$task_depth == '0')
                                 <div class="gantt-task" id="gantt-task-{{$taskitem->id}}">
-                                    {{-- 업무 pk --}}
+                                    {{-- 업무 pk --}}                                    
                                     <div class="gantt-editable-div editable">
                                         <button class="gantt-task-detail-click">●</button>
                                         <div class="gantt-detail" style="display: none">

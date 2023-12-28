@@ -164,6 +164,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (a === 0) {
 		// 작성 전 초기화
 		document.querySelector('.insert_title').value = ''
+		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
 		if (!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
@@ -363,9 +364,9 @@ function createTask() {
 
 				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
 				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
-				cloneNotice.firstElementChild.textContent = data.data.content
+				cloneNotice.firstElementChild.textContent = data.data.title
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
-				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.content
+				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
 
 				let NoticeParent = Notice.parentElement
 				let UpdateParent = Update.parentElement
