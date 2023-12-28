@@ -37,18 +37,18 @@
             <br>
             <div>프로젝트를 어떻게 만들지 선택해보세요</div>
             <br>
-                <input class="fontcolor" type="text" name="project_title" placeholder="프로젝트명을 입력하세요">
+                <input class="fontcolor" type="text" name="project_title" placeholder="프로젝트명을 입력하세요" required>
                 <br><br>
                 <textarea name="project_content" cols="30" rows="10" placeholder="프로젝트에 관한 설명 입력(선택)"></textarea>
                 <br><br>
                 <div>
                     <div class="div_date">
                         <div class="div_font">시작일</div>
-                        <input class="input_date" name="start_date" id="start_date" type="date">
+                        <input class="input_date" name="start_date" id="start_date" type="date" required>
                     </div>
                     <div class="div_date">
                         <div class="div_font">마감일</div>
-                        <input class="input_date" name="end_date" type="date" id="end_date" min="start_date">
+                        <input class="input_date" name="end_date" type="date" id="end_date" min="start_date" required>
                     </div>
                 </div>
                 <br>

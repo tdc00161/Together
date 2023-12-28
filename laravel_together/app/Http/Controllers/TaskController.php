@@ -421,13 +421,13 @@ class TaskController extends Controller
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
         if($request['task_status_id']){            
-            $sta = DB::table('basedata as status')
+            $sta = DB::table('basedata')
             ->where('data_title_code', 0)
             ->where('data_content_name', $request['task_status_id'])
             ->select('data_content_code','data_content_name')
             ->get();
         } else if($request->task_status_id){            
-            $sta = DB::table('basedata as status')
+            $sta = DB::table('basedata')
             ->where('data_title_code', 0)
             ->where('data_content_name', $request->task_status_id)
             ->select('data_content_code','data_content_name')
@@ -454,10 +454,10 @@ class TaskController extends Controller
                 ->select('id','name')
                 ->get();
         } else if($request->task_responsible_id){ 
-                $res = DB::table('users')
-                    ->where('name', $request->task_responsible_id)
-                    ->select('id','name')
-                    ->get();
+            $res = DB::table('users')
+                ->where('name', $request->task_responsible_id)
+                ->select('id','name')
+                ->get();
         }
         // Log::debug('user_id: ' , $res->toArray());
         if($request['project_id']){   
@@ -473,25 +473,26 @@ class TaskController extends Controller
             ->orderBy('task_number', 'desc')
             ->first();
         }
-        if($request['start_date']){   
-            $res = DB::table('tasks')
-                ->where('start_date', $request['start_date'])
-                ->get();
-        } else if($request->start_date){ 
-                $res = DB::table('tasks')
-                    ->where('start_date', $request->start_date)
-                    ->get();
-        }
-        if($request['end_date']){   
-            $res = DB::table('tasks')
-                ->where('end_date', $request['end_date'])
-                ->get();
-        } else if($request->task_responsible_id){ 
-                $res = DB::table('tasks')
-                    ->where('end_date', $request->end_date)
-                    ->get();
-        }
-        Log::debug([$tsk_num]);
+        // if($request['start_date']){   
+        //     $start = DB::table('tasks')
+        //         ->where('start_date', $request['start_date'])
+        //         ->get();
+        // } else if($request->start_date){ 
+        //     $start = DB::table('tasks')
+        //             ->where('start_date', $request->start_date)
+        //             ->get();
+        // }
+        // if($request['end_date']){   
+        //     $end = DB::table('tasks')
+        //         ->where('end_date', $request['end_date'])
+        //         ->get();
+        // } else if($request->task_responsible_id){ 
+        //     $end = DB::table('tasks')
+        //             ->where('end_date', $request->end_date)
+        //             ->get();
+        // }
+        Log::debug('1');
+        // Log::debug([$tsk_num]);
         // Log::debug($tsk_num['task_number']);
 
         // 이메일 추가 시 대비
@@ -510,6 +511,8 @@ class TaskController extends Controller
         } else {
             $request['task_status_name'] = null;
         }
+        Log::debug('1-1');
+        Log::debug($res);
         if(!empty($res[0])){
             $request['task_responsible_id'] = $res[0]->id;
             if(isset($responseData['names'])){
@@ -518,6 +521,7 @@ class TaskController extends Controller
         } else {
             $request['task_responsible_name'] = null;
         }
+        Log::debug('1-2');
         if(!empty($pri[0])){
             $request['priority_id'] = $pri[0]->data_content_code;
             if(isset($responseData['names'])){
@@ -526,7 +530,7 @@ class TaskController extends Controller
         } else {
             $request['priority_name'] = null;
         }
-
+        Log::debug('2');
         // not null
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
@@ -543,7 +547,7 @@ class TaskController extends Controller
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
         Log::debug($request);
-        
+        Log::debug('3');
         // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
         // Log::debug($result);

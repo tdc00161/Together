@@ -164,6 +164,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (a === 0) {
 		// 작성 전 초기화
 		document.querySelector('.insert_title').value = ''
+		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
 		if (!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
@@ -261,9 +262,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 		// 모달 띄우기
 		openInsertDetailModal(a);
-		// 글/업무 플래그
-		TaskFlg(a, b);
 	}
+	// 글/업무 플래그
+	TaskFlg(a, b);
 }
 // 모달 닫기
 function closeTaskModal(a) {
@@ -287,6 +288,7 @@ function createTask() {
 		"project_id": thisProjectId,
 		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 // TODO
 	}
+	console.log(postData);
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
 		postData.task_status_name = ''
@@ -297,6 +299,7 @@ function createTask() {
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.priority_name = ''
 	}
+	console.log(postData);
 	fetch('/task', {
 		method: 'POST',
 		headers: {
@@ -354,7 +357,7 @@ function createTask() {
 
 				document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
 				document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
-				document.querySelector('#gantt-chart-000').classList.add('d-none')
+				document.querySelector('#gantt-chart-000') ? document.querySelector('#gantt-chart-000').classList.add('d-none') : 0;
 				closeTaskModal(0)
 				document.querySelector('.gantt-all-task').scrollIntoView(false)
 			} else {
@@ -363,9 +366,9 @@ function createTask() {
 
 				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
 				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
-				cloneNotice.firstElementChild.textContent = data.data.content
+				cloneNotice.firstElementChild.textContent = data.data.title
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
-				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.content
+				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
 
 				let NoticeParent = Notice.parentElement
 				let UpdateParent = Update.parentElement
@@ -419,7 +422,7 @@ function updateTask() {
 		'task_responsible_id': document.querySelectorAll('.responsible_user') ? document.querySelectorAll('.responsible_user')[0].textContent : null,
 		'start_date': document.querySelectorAll('.start_date') ? document.querySelectorAll('.start_date')[0].value : null,
 		'end_date': document.querySelectorAll('.end_date') ? document.querySelectorAll('.end_date')[0].value : null,
-		'priority_id': document.querySelector('.insert_priority_val') ? document.querySelector('.insert_priority_val').textContent : null
+		'priority_id': document.querySelector('.responsible_user') ? document.querySelector('.responsible_user').textContent : null
 	}
 	console.log(updateData);
 	fetch('/task/' + now_task_id, {
