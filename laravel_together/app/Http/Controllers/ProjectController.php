@@ -226,18 +226,17 @@ class ProjectController extends Controller
         // ->with('project1title', $project1title)
         // ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
         if (Auth::check()) {
-            return view('project_individual', [
-           'color_code'=>$color_code,
-            'result',$result,
-            'first_data',$first_data,
-            'update_data',$update_data,
-            'deadline_data',$deadline_data,
-            'statuslist',$statuslist,
-            'user',$user,
-            'project0title', $project0title,
-            'project1title', $project1title,
-            'projectmemberdata',$projectmemberdata // (jueunyang08) 프로젝트 구성원 출력
-          ]);
+            return view('project_individual')
+            ->with('color_code',$color_code)
+            ->with('result',$result)
+            ->with('first_data',$first_data)
+            ->with('update_data',$update_data)
+            ->with('deadline_data',$deadline_data)
+            ->with('statuslist',$statuslist)
+            ->with('user',Auth::id())
+            ->with('project0title', $project0title)
+            ->with('project1title', $project1title)
+            ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
       } else {
           return redirect('/user/login');
       }
