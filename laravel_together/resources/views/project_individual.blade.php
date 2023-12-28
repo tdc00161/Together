@@ -170,7 +170,7 @@
                                 </tr>
                                 @empty
                                 <tr class="box_ul project_task_update_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,0)">
+                                    <td class="td_pd" onclick="openTaskModal(1,1)">
                                             <div style="color:rgb(255, 196, 0); font-weight:bold;"></div>
                                     </td> 
                                     {{-- 나중에 글/업무 플래그 변수로 삽입 --}}

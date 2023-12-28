@@ -227,9 +227,10 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
+				// console.log(data);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
-
+				
 				// 업무상태 값과 색상 주기
 				statusColor(data);
 
@@ -368,8 +369,12 @@ function createTask() {
 				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
 				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
 				cloneNotice.firstElementChild.textContent = data.data.title
+				cloneNotice.firstElementChild.setAttribute('onclick','openTaskModal(1,1,'+ data.data.id +')')
+				// console.log(cloneNotice.firstElementChild);
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
 				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
+				// console.log(cloneUpdate.firstElementChild.nextElementSibling);
+				cloneUpdate.firstElementChild.nextElementSibling.setAttribute('onclick','openTaskModal(1,1,'+ data.data.id +')')
 				console.log('2');
 				
 				let NoticeParent = Notice.parentElement
@@ -847,7 +852,7 @@ function addComment() {
 
 // 값을 모달에 삽입
 function insertModalValue(data, a) {
-	// console.log(data);
+	console.log(data);
 	if (a === 1) { // 상세
 		WRITER_NAME.textContent = data.task[0].wri_name;
 		TASK_CREATED_AT.textContent = data.task[0].created_at;
