@@ -193,7 +193,7 @@
                             <tr class="box_ul">
                                 <td class="td_pd"></td>
                                 <td class="td_pd">{{$item->dday}}</td>
-                                <td class="td_pd" onclick="openTaskModal(1,0)">{{Str::limit($item->title,50,'...')}}</td>
+                                <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,50,'...')}}</td>
                                 <td class="td_pd">{{$item->name}}</td>
                                 <td class="td_pd"><div class="statuscolor" data-status="{{$item->data_content_name}}">{{$item->data_content_name}}</div></td>
                             </tr>
