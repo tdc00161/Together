@@ -183,6 +183,15 @@ function titleupdate(project_pk) {
 
    let Updatetitle = document.getElementById('project_title').value;
    let Updatecontent = document.getElementById('project_content').value;
+   let Updatetitlemax = 17;
+   let Updatecontentmax = 45;
+
+   if(Updatetitle.length > Updatetitlemax){
+      alert('텍스트 길이를 초과하였습니다.')
+   }
+   if(Updatetitlemax.length > Updatecontentmax){
+      alert('텍스트 길이를 초과하였습니다.')
+   }
    let Updatestart = document.getElementById('start_date').value;
    let Updateend = document.getElementById('end_date').value;
    
@@ -240,6 +249,7 @@ function titleupdate(project_pk) {
    .then(data => {
       console.log(data);
          document.getElementsByClassId('project_title').value = data.project_title;
+         document.getElementsByClassId('project_content').value = data.project_content;
    })
    .catch(error => {
          // 오류 처리
