@@ -1028,7 +1028,7 @@ function showPopupMessage(message) {
   // 일정 시간(여기서는 3초) 후 팝업 창 닫기
   setTimeout(() => {
     popupModal.style.display = 'none';
-  }, 2000);
+  }, 1000);
 }
 
 // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시

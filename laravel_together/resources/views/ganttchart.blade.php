@@ -10,31 +10,51 @@
 @endsection
 @section('title', '간트차트')
 @section('main')
-    <div class="first_menu">
-        <div class="menu_title">
-            <div class="project_color"></div>
-            <div>
-                <input type="text" name="title" placeholder="프로젝트명">
-                {{-- <br> --}}
-                <textarea name="content" id="content" placeholder="설명"></textarea>
+<input type="hidden" id="user" value="{{$user}}">
+{{-- 상단바 --}}
+<div class="first_menu">
+    <div class="menu_title">
+        <div class="title_bar">
+            <div class="project_color" style="background-color:{{$color_code[0]->data_content_name}}"></div>
+            <input class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
+        </div>
+        <textarea class="project_content" name="project_content" id="project_content" placeholder="설명" onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
+    </div>
+
+    <div class="title_rightgrid">
+        <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
+            {{-- 삭제 모달창 --}}
+            <div id="deleteModal">
+                <div class="deletemodal-content">
+                    <p class="deletespan">정말로 삭제하시겠습니까?</p>
+                    <div class="gridbutton">
+                        <button class="deletebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                        <button class="closebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                    </div>
+                </div>
             </div>
-        </div>
+        {{-- <div class="dday">D-{{$result->dday}}</div> --}}
         <div class="date_set">
-            <label for="d_day"> D-day
-                <span class="date"></span>
+            <label for="dday">
+                <div class="dday" id="dday">D-{{$result->dday}}</div>
             </label>
-            <label for="start_date"> 시작일
-                <input class="date" type="date" name="start_date">
+            <label class="project_label" for="start_date"> 시작일
+                {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
+                <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
             </label>
-            <label for="end_date"> 마감일
-                <input class="date" type="date" name="end_date">
+            <label class="project_label" for="end_date"> 마감일
+                {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
+                <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
             </label>
         </div>
     </div>
-    <div class="tabset">
-        <a href="{{ route('individual.get', ['id' => $project_id])}}" class="tabmenu">피드</a>
-        <button class="gantt-tabmenu active" onclick="openTab(event,gantt)">간트차트</button>
-    </div>
+</div>
+<div class="tabset">
+    <a href="{{ route('individual.get', ['id' => $result->id]) }}">피드</a>
+    <a href="">간트차트</a>
+    {{-- <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
+    <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button> --}}
+</div>
     {{-- <div class="hr"></div> --}}
     {{-- 피드공통 헤더끝 --}}
     <div class="gantt-btn-wrap">
@@ -188,6 +208,28 @@
                             
                         @endforelse
                     @empty
+                        <div class="gantt-task d-none" id="gantt-task-000">
+                            <div class="gantt-editable-div editable">
+                                <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,000)">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="addSubTask(event, 000)">하위업무 추가</button>
+                                </div>     
+                                <div class="taskKey" style="display: none">000</div>
+                                <div class="taskName editable-title" spellcheck="false" contenteditable="true"></div>
+                            </div>
+                            <div class="responName gantt-update-dropdown"><span id="responNameSpan"></span></div>
+                            <div class="gantt-status-name">
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="000"><span id="statusNameSpan"></span></div>
+                            </div>
+                            <div class="gantt-task-4">
+                                <input type="date" class="start-date" name="start" id="start-row000" onchange="test(000);" value="">
+                            </div>
+                            <div class="gantt-task-5">
+                                <input type="date" class="end-date" name="end" id="end-row000" onchange="test(000);" value="">
+                            </div>
+                        </div>
                     @endforelse
                 </div>
             </div>
@@ -225,6 +267,16 @@
                                 
                             @endforelse
                         @empty
+                        <div class="gantt-chart" id="gantt-chart-000">
+                            @php
+                                $startDate = new DateTime('2023-12-01');
+                                $endDate = new DateTime('2023-12-31');
+
+                                for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+                                    echo "<div id='row"."-" . $date->format('Ymd') . "' class='d-none'></div>";
+                                }
+                            @endphp
+                        </div>
                         @endforelse
                     </div>
                 </div>
