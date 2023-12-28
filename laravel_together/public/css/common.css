@@ -46,6 +46,7 @@ text-align: center;
     display: block;
     margin: 17px;
     text-align: center;
+    /* width: 100%; */
     height: 10px;
 }
 .dashboard-project-color-box {
