@@ -11,9 +11,22 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/project_individual.css">
-  
   @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
   <title>@yield('title', 'Laravel Board')</title>
+
+  <style>
+    /* 프로그레스바 배경색 변경 */
+    .progress {
+      background-color: rgba(0, 0, 0, 0.356) 
+    }
+   /* 프로그레스바 바 내부 색상 변경 */
+   .progress-bar {
+      background-color: rgba(255, 255, 255, 0.945);
+      color: rgb(0, 0, 0);
+      font-weight: bold;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
  
