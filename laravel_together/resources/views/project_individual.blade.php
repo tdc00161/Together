@@ -31,8 +31,8 @@
                     <div class="deletemodal-content">
                         <p class="deletespan">정말로 삭제하시겠습니까?</p>
                         <div class="gridbutton">
-                            <button class="deletebutton" type="button" onclick="closeDeleteModal()">취소</button>
-                            <button class="closebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                            <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                            <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
                         </div>
                     </div>
                 </div>
