@@ -288,6 +288,7 @@ function createTask() {
 		"project_id": thisProjectId,
 		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 // TODO
 	}
+	console.log(postData);
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
 		postData.task_status_name = ''
@@ -298,6 +299,7 @@ function createTask() {
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.priority_name = ''
 	}
+	console.log(postData);
 	fetch('/task', {
 		method: 'POST',
 		headers: {
@@ -361,20 +363,25 @@ function createTask() {
 			} else {
 				let Notice = document.querySelector('.project_task_notice_list')
 				let Update = document.querySelector('.project_task_update_list')
-
+				console.log('1');
+				
 				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
 				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
 				cloneNotice.firstElementChild.textContent = data.data.title
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
 				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
-
+				console.log('2');
+				
 				let NoticeParent = Notice.parentElement
 				let UpdateParent = Update.parentElement
-
+				console.log('3');
+				
 				NoticeParent.firstChild.before(cloneNotice)
 				UpdateParent.firstChild.before(cloneUpdate)
-
+				console.log('4');
+				
 				closeTaskModal(0)
+				console.log('5');
 			}
 		})
 		.catch(err => {

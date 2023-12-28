@@ -497,7 +497,7 @@ function addSubTask(event, mainId) {
   addTaskName.classList.add('taskName', 'editable-title');
   addTaskName.setAttribute("spellcheck", "false");
   addTaskName.setAttribute("contenteditable", "true");
-  addTaskName.textContent = 'ㄴ업무명';
+  addTaskName.textContent = '하위업무명';
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
   console.log('addChildTask');
