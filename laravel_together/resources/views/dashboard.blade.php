@@ -104,55 +104,68 @@
       개인 프로젝트 진척률
       </span>
       <div class="app-card__subtext"></div>
-      
-      {{-- 프로젝트 프로그레스 바 --}}
-      {{-- @foreach ($completionPercentages as $projectId => $completionPercentage)
-      <h2>Project ID: {{ $projectId }}</h2>
-      @foreach ($completionPercentage as $result)
-          <p>Completion Percentage: {{ $result->completion_percentage }}</p>
-          <p>Data Content Name: {{ $result->data_content_name }}</p>
-      @endforeach
-  @endforeach --}}
+      {{-- 개인 프로젝트 프로그레스 바 --}}
+      @foreach ($IndividualcompletionPercentages as $projectId => $IndividualcompletionPercentage)
+      {{-- <h2>Project ID: {{ $projectId }}</h2> --}}
+      @foreach ($IndividualcompletionPercentage as $result)
       <div class="project-progress">
-        <div class="project-progress-project-title-div"><div style="background-color: black;" class="project-box"></div><p class="dashboard-progress-project-title">프로젝트명</p><p class="dashboard-progress-project-dday">D-2</p></div>
+        <div class="project-progress-project-title-div"><div style="background-color: {{ $result->data_content_name }};" class="project-box"></div><p class="dashboard-progress-project-title">{{$result->project_title}}</p><p class="dashboard-progress-project-dday"></p></div>
         <div class="progress">
-          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+          <div class="progress-bar" role="progressbar" aria-label="Animated striped example" aria-valuenow="{{ $result->completion_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $result->completion_percentage }}%">{{ $result->completion_percentage }}%</div>
         </div>
       </div>
+      @endforeach
+      @endforeach
+      </div>
 
-    </div>
-      {{-- 3  --}}
+      {{-- 3-2 --}}
       <div class="app-card3-2"> 
         <span class="app-card-title">
       팀 프로젝트 진척률
         </span>
-        <div class="app-card__subtext"></div>
-        <div class="app-card-buttons"></div>
-       </div>
+        <div class="app-card__subtext">
+          {{-- 팀 프로젝트 프로그레스 바 --}}
+          @foreach ($TeamcompletionPercentages as $projectId => $TeamcompletionPercentage)
+          {{-- <h2>Project ID: {{ $projectId }}</h2> --}}
+          @foreach ($TeamcompletionPercentage as $result)
+          <div class="project-progress">
+            <div class="project-progress-project-title-div"><div style="background-color: {{ $result->data_content_name }};" class="project-box"></div><p class="dashboard-progress-project-title">{{$result->project_title}}</p><p class="dashboard-progress-project-dday"></p></div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-label="Animated striped example" aria-valuenow="{{ $result->completion_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $result->completion_percentage }}%">{{ $result->completion_percentage }}%</div>
+            </div>
+          </div>
+          @endforeach
+          @endforeach
+        </div>
       </div>
-   
+      </div>
+  
     {{-- 3  --}}
     <div class="app-card4"> 
       <span class="app-card-title">
-       마감
+      마감
       </span>
-      @foreach ($dday_data as $data => $item)
-        {{-- @if($data >= 1)
-          $first_data = $data-1;
-          $next_data = $data-0;
-        @endif
-        @if ($data >=1)
-            
-        @else
-            
-        @endif --}}
-        <div class="dash_dday">D-{{$item->dday}}</div>
-        <div class="dash_ddaytitle">{{Str::limit($item->title,10,'...')}}</div>
+      @foreach ($group_dday as $dday => $item)
+        <div class="dash_dday">
+          @if ($dday <= 1 && $dday >= -1)
+            <div style="color:rgb(212, 14, 0); font-weight:bold;">D{{$dday < 0 ? $dday : '+'.$dday}}</div>
+          @elseif ($dday <= -2 && $dday >= -4)
+            <div style="color:rgb(235, 157, 12); font-weight:bold;">D{{$dday < 0 ? $dday : '+'.$dday}}</div>
+          @elseif ($dday <= -5 && $dday >= -7)
+            <div style="color:rgb(246, 250, 32); font-weight:bold;">D{{$dday < 0 ? $dday : '+'.$dday}}</div>
+          @else
+            @continue
+          @endif
+          @foreach ($item as $ddayitem)
+            <div class="dash_dday_grid">
+              <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}"></div>
+              <div class="dash_ddaytitle" style="">{{Str::limit($ddayitem->title,15,'...')}}</div>
+            </div>
+          @endforeach
+        </div>
       @endforeach
-     </div>
-  
     </div>
-
+  </div>
  </div>
-
+</div>
 @endsection
