@@ -354,7 +354,7 @@ function createTask() {
 
 				document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
 				document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
-				document.querySelector('#gantt-chart-000').classList.add('d-none')
+				document.querySelector('#gantt-chart-000') ? document.querySelector('#gantt-chart-000').classList.add('d-none') : 0;
 				closeTaskModal(0)
 				document.querySelector('.gantt-all-task').scrollIntoView(false)
 			} else {
@@ -419,7 +419,7 @@ function updateTask() {
 		'task_responsible_id': document.querySelectorAll('.responsible_user') ? document.querySelectorAll('.responsible_user')[0].textContent : null,
 		'start_date': document.querySelectorAll('.start_date') ? document.querySelectorAll('.start_date')[0].value : null,
 		'end_date': document.querySelectorAll('.end_date') ? document.querySelectorAll('.end_date')[0].value : null,
-		'priority_id': document.querySelector('.insert_priority_val') ? document.querySelector('.insert_priority_val').textContent : null
+		'priority_id': document.querySelector('.responsible_user') ? document.querySelector('.responsible_user').textContent : null
 	}
 	console.log(updateData);
 	fetch('/task/' + now_task_id, {
