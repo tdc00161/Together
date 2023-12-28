@@ -53,7 +53,7 @@
         .m-modal-content {
             min-width: 460px;
             width: 460px;
-            height: 93%;
+            height: 100%;
             position: absolute;
             right: 0px;
             /* padding-top: 10px; */

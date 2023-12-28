@@ -771,7 +771,7 @@ function displayFriendlist(friendList, useUserId) {
     searchInput.addEventListener('input', function() {
         // 현재 입력된 검색어 가져오기
         const searchTerm = searchInput.value.toLowerCase();
-
+        console.log(searchTerm);
         // 모든 친구 엘리먼트를 숨김
         for (var i = 0; i < friendList.length; i++) {
             var friendlistId = useUserId ? friendList[i].user_id : friendList[i].friend_id;
