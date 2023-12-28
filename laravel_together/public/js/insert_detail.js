@@ -164,6 +164,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (a === 0) {
 		// 작성 전 초기화
 		document.querySelector('.insert_title').value = ''
+		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
 		if (!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
