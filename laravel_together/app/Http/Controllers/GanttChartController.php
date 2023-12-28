@@ -148,7 +148,7 @@ class GanttChartController extends Controller
 
             $returnData[] = $tempData;
         }
-    //  dd($returnData);
+     dd($returnData);
    
         if(Auth::check()) {
             return view('ganttchart-all')
