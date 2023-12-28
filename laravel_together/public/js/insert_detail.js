@@ -95,21 +95,24 @@ let SUBMIT = document.querySelectorAll('.submit')
 
 
 // 담당자 모달 초기화용 클론
-let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) ? ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) : ''
+let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE ? ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) : ''
 // 담당자 초기화용 클론
-let cloneResponsibleReset = RESPONSIBLE[0].cloneNode(true) ? RESPONSIBLE[0].cloneNode(true) : ''
+let cloneResponsibleReset = RESPONSIBLE[0] ? RESPONSIBLE[0].cloneNode(true) : ''
 // 담당자 추가용 클론
-let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true) ? RESPONSIBLE_PERSON[0].cloneNode(true) : ''
+let cloneResponsible = RESPONSIBLE_PERSON[0] ? RESPONSIBLE_PERSON[0].cloneNode(true) : ''
 // 우선순위 모달 초기화용 클론
-let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true) ? ADD_PRIORITY_MODAL_ONE.cloneNode(true) : ''
+let clonePriorityModal = ADD_PRIORITY_MODAL_ONE ? ADD_PRIORITY_MODAL_ONE.cloneNode(true) : ''
 // 우선순위 추가용 클론
-let clonePriority = PRIORITY_ONE[0].cloneNode(true) ? PRIORITY_ONE[0].cloneNode(true) : ''
+let clonePriority = PRIORITY_ONE[0] ? PRIORITY_ONE[0].cloneNode(true) : ''
 // 댓글 초기화용 클론
-let cloneResetComments = COMMENT_PARENT.cloneNode(true) ? COMMENT_PARENT.cloneNode(true) : ''
+let cloneResetComments = COMMENT_PARENT ? COMMENT_PARENT.cloneNode(true) : ''
 // 좌측 간트 초기화용 클론
 let cloneLeftGanttChart = GANTT_LEFT[0] ? GANTT_LEFT[0].cloneNode(true) : ''
 // 우측 간트 초기화용 클론
 let cloneRightGanttChart = GANTT_RIGHT[0] ? GANTT_RIGHT[0].cloneNode(true) : ''
+// 공지 초기 클론
+let firstCloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list') : ''
+let firstCloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : ''
 // 모달 내용 저장소
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
@@ -362,8 +365,8 @@ function createTask() {
 				closeTaskModal(0)
 				document.querySelector('.gantt-all-task').scrollIntoView(false)
 			} else {
-				let Notice = document.querySelector('.project_task_notice_list')
-				let Update = document.querySelector('.project_task_update_list')
+				let Notice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list') : firstCloneNotice
+				let Update = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : firstCloneUpdate
 				console.log('1');
 				
 				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
@@ -1137,19 +1140,28 @@ function updateModalOpen() {
 
 // 모달 삭제
 function deleteTask() {
-	axios.delete('/task/' + now_task_id)
-		.then(res => {
-			console.log(res);
+	fetch('/task/' + now_task_id, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
 
-			// console.log(res.data.data);
-			document.querySelector('#gantt-task-' + res.data.data).remove()
-			document.querySelector('#gantt-chart-' + res.data.data).remove()
+			document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
+			document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
+			
+			document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''			
+			document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''			
 
 			closeTaskModal(1)
 		})
 		.catch(err => {
-			console.log(err.message);
-		})
+			console.log(err.message)
+		});
 }
 
 function updateStatusColor(data) {

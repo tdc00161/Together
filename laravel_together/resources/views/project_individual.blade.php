@@ -130,8 +130,8 @@
                                 <col class="col1">
                             </colgroup>
                             @forelse ($first_data as $item)
-                                <tr class="box_ul project_task_notice_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,1,{{$item->id}})">{{Str::limit($item->title,46,'...')}}</td>
+                                <tr class="box_ul project_task_notice_list notice-layout-{{$item->id}}">
+                                    <td class="td_pd notice-{{$item->id}}" onclick="openTaskModal(1,1,{{$item->id}})">{{Str::limit($item->title,46,'...')}}</td>
                                 </tr>
                                 @empty
                                 <tr class="box_ul project_task_notice_list">
@@ -156,8 +156,8 @@
                             </colgroup>
                             @forelse ($update_data as $item)
 
-                                <tr class="box_ul project_task_update_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">
+                                <tr class="box_ul project_task_update_list update-layout-{{$item->id}}">
+                                    <td class="td_pd update-{{$item->id}}" onclick="openTaskModal(1,0,{{$item->id}})">
                                         @if ($item->data_content_name == "공지")
                                             <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->data_content_name}}</div>
                                         @elseif ($item->data_content_name == "업무")
