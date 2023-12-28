@@ -512,7 +512,7 @@ class TaskController extends Controller
             $request['task_status_name'] = null;
         }
         Log::debug('1-1');
-        Log::debug($res);
+        // Log::debug($res);
         if(!empty($res[0])){
             $request['task_responsible_id'] = $res[0]->id;
             if(isset($responseData['names'])){
