@@ -363,9 +363,9 @@ function createTask() {
 
 				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
 				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
-				cloneNotice.firstElementChild.textContent = data.data.content
+				cloneNotice.firstElementChild.textContent = data.data.title
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
-				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.content
+				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
 
 				let NoticeParent = Notice.parentElement
 				let UpdateParent = Update.parentElement
