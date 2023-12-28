@@ -119,7 +119,7 @@ class TaskController extends Controller
         }
         // --------- 프로젝트 진척률 출력 끝 ------------
 
-        // 상태현황 개수 출력
+        // 대시보드 전체 업무 상태별 개수 출력
         $before =DB::table('tasks')
                     ->join('project_users', function($join){
                         $join->on('project_users.project_id','=','tasks.project_id');
@@ -130,7 +130,6 @@ class TaskController extends Controller
                     ->where('tasks.task_status_id',0)
                     ->groupBy('tasks.task_status_id')
                     ->get();
-        // dump($before);
 
         $ing =DB::table('tasks')
                 ->join('project_users', function($join){
@@ -142,7 +141,6 @@ class TaskController extends Controller
                 ->where('tasks.task_status_id',1)
                 ->groupBy('tasks.task_status_id')
                 ->get();
-        // dump($ing);
 
         $feedback =DB::table('tasks')
                     ->join('project_users', function($join){
@@ -154,7 +152,6 @@ class TaskController extends Controller
                     ->where('tasks.task_status_id',2)
                     ->groupBy('tasks.task_status_id')
                     ->get();
-        // dump($feedback);
 
         $complete =DB::table('tasks')
                     ->join('project_users', function($join){
@@ -166,21 +163,22 @@ class TaskController extends Controller
                     ->where('tasks.task_status_id',3)
                     ->groupBy('tasks.task_status_id')
                     ->get();
-        // dd($complete);
-
 
         //데이터 담을 빈 객체 생성
         $baseObj = new \stdClass();
+
+        //데이터 값이 ""일 경우 초기값 0으로 설정
         $baseObj->cnt = 0;
+
+        //상태별 삼항연산자로 비교 후 데이터 출력
         $statuslist = [
         'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
         'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
         'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
         'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
         ];
-        // dd($statuslist);
 
-    // d-day 데이터 출력
+    //대시보드 d-day기준 업무 출력(내림차순)
     $dday_data = DB::table('tasks as tk')
                     ->join('project_users as pu', function($project_users){
                         $project_users->on('pu.project_id','=','tk.project_id');
@@ -198,12 +196,11 @@ class TaskController extends Controller
                     ->where('tk.category_id','0')
                     ->orderBy('dday','desc')
                     ->get();
-    // dd($dday_data);
+
+    //d-day기준 업무 그룹화
     $group_dday = $dday_data->groupBy(function($item){
         return $item->dday;
     });
-
-    // dd($group_dday);
 
 
         // ***************************   데이터 리턴  ************************** 
@@ -228,11 +225,13 @@ class TaskController extends Controller
     }
     // ***************************************************************************
 
-    // 대시보드 그래픽 데이터
+    //대시보드 원형그래프 데이터 js 전송
     public function board_graph_data(Request $request) {
 
+        //로그인한 유저 정보 출력
         $user = Auth::user();
 
+        //업무 상태별 개수 출력
         $before =DB::table('tasks')
         ->join('project_users', function($join){
             $join->on('project_users.project_id','=','tasks.project_id');
@@ -243,7 +242,6 @@ class TaskController extends Controller
         ->where('tasks.task_status_id',0)
         ->groupBy('tasks.task_status_id')
         ->get();
-        // dump($before);
 
         $ing =DB::table('tasks')
             ->join('project_users', function($join){
@@ -255,7 +253,6 @@ class TaskController extends Controller
             ->where('tasks.task_status_id',1)
             ->groupBy('tasks.task_status_id')
             ->get();
-        // dump($ing);
 
         $feedback =DB::table('tasks')
                 ->join('project_users', function($join){
@@ -267,7 +264,6 @@ class TaskController extends Controller
                 ->where('tasks.task_status_id',2)
                 ->groupBy('tasks.task_status_id')
                 ->get();
-        // dump($feedback);
 
         $complete =DB::table('tasks')
                 ->join('project_users', function($join){
@@ -279,24 +275,24 @@ class TaskController extends Controller
                 ->where('tasks.task_status_id',3)
                 ->groupBy('tasks.task_status_id')
                 ->get();
-        // dd($complete);
 
-  
         //데이터 담을 빈 객체 생성
         $baseObj = new \stdClass();
+
+        //데이터 값이 ""일 경우 초기값 0으로 설정
         $baseObj->cnt = 0;
+
+        //데이터 삼항연산자로 비교 후 출력
         $statuslist = [
           'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
           'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
           'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
           'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
         ];
-        // dd($statuslist);
-  
-        // Log::debug("Response : ", $statuslist);
-        // Log::debug("***** project_graph_data End *****");
+
+        //데이터 common.js로 json으로 변환하여 전송
         return response()->json($statuslist);
-        // return '반환 테스트';
+
       }
 
     // 태스크 전체 조회 (수정이전)

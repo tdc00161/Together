@@ -20,6 +20,7 @@ class GanttChartController extends Controller
     {
         // --- 유저 정보
         $user = Auth::user();
+        // dd($user);
 
         $user_data = project::where('user_pk',$user->id)
                                 ->select('id'
@@ -74,6 +75,7 @@ class GanttChartController extends Controller
 
         foreach ($user_data as $item) {
             $tempData = $item->getAttributes();
+            // dd($tempData);
             $tempData['task'] = [];
             // 상위 테이블
             $firstTask = DB::table('tasks')
@@ -105,7 +107,7 @@ class GanttChartController extends Controller
                 ->where('base1.data_title_code','0')
                 ->orderby('tasks.id')
                 ->get();
-            // dd($firstTask);
+
 
             //하위 테이블
             foreach ($firstTask as $fristItem) {
@@ -148,7 +150,7 @@ class GanttChartController extends Controller
 
             $returnData[] = $tempData;
         }
-     dd($returnData);
+    //  dd($returnData);
    
         if(Auth::check()) {
             return view('ganttchart-all')

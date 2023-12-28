@@ -117,6 +117,7 @@ class Task extends Model // 업무/공지
                 ON tsk.project_id = pj.id
             WHERE tsk.task_depth = " . $task_depth
             ." AND tsk.project_id = " . $project_id
+            ." AND tsk.category_id = 0 "
             ." AND tsk.deleted_at IS NULL "
             ." ORDER BY tsk.created_at "
     );
@@ -168,6 +169,7 @@ class Task extends Model // 업무/공지
               LEFT JOIN projects pj
                 ON tsk.project_id = pj.id
             WHERE tsk.task_depth = " . $task_depth
+            ." AND tsk.category_id = 0 "
             ." AND tsk.task_parent = " . $task_parent
             ." AND tsk.deleted_at IS NULL "
             ." ORDER BY tsk.created_at "
