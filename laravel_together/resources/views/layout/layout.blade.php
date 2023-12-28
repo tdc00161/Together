@@ -84,7 +84,7 @@
         @forelse ($project0title as $item)
         <a class="sidebar-project-name" href="{{route('individual.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
         @empty
-            프로젝트 없음
+        <p style="margin-top: 14px;" class="empty-msg">프로젝트 없음</p>
         @endforelse
        </div>
       </div>
@@ -94,7 +94,7 @@
         @forelse ($project1title as $item)
         <a class="sidebar-project-name" href="{{route('team.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
         @empty
-            프로젝트 없음
+        <p style="margin-top: 14px;" class="empty-msg">프로젝트 없음</p>
         @endforelse
        </div>
       </div>
