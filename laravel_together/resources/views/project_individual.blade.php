@@ -153,7 +153,7 @@
                             @foreach ($update_data as $item)
 
                                 <tr class="box_ul project_task_update_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,0)">
+                                    <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">
                                         @if ($item->data_content_name == "공지")
                                             <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->data_content_name}}</div>
                                         @elseif ($item->data_content_name == "업무")
@@ -162,7 +162,7 @@
                                     </td> 
                                     {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
 
-                                    <td class="td_pd">{{Str::limit($item->title,35,'...')}}</td>
+                                    <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,35,'...')}}</td>
                                 </tr>
                             @endforeach
                         </table>
