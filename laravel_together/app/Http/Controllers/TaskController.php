@@ -29,7 +29,7 @@ class TaskController extends Controller
         // --- 현재 요일 출력
         $koreanDayOfWeek = $now->isoFormat('dddd');
 
-        // --- 대시보드 공지 출력
+        // -------- 대시보드 공지 출력 ------------
         $dashboardNotice = DB::table('tasks as t')
         ->join('projects as p','p.id','=','t.project_id')
         ->join('project_users as pu','pu.project_id','=','p.id')
@@ -39,8 +39,9 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $user->id)
         ->where('t.category_id','=', 1)
         ->get();
+        // -------- 대시보드 공지 출력 끝 ------------
 
-        // --- 사이드바 출력
+        // ------------ 사이드바 출력 -----------
         $userId = Auth::id();
 
         $project0title = DB::table('projects as p')
@@ -63,105 +64,149 @@ class TaskController extends Controller
         ->orderBy('p.created_at', 'asc')
         ->get();
 
-       // --- 프로젝트 진척도 출력
-    $projectIdData = DB::table('project_users')
-    ->select('project_id')
-    ->where('member_id', '=', $userId)
-    ->get();
+        // ---------- 사이드바 출력 끝 -----------------
 
-    $projectIds = $projectIdData->pluck('project_id')->toArray(); // 프로젝트 아이디 배열로 변환
-    $completionPercentages = [];
+        // ---------- 프로젝트 진척도 출력 -------------
 
-    foreach ($projectIds as $projectId) {
-    $completionPercentage = DB::table('tasks as t')
-        ->join('projects as p', 't.project_id', '=', 'p.id')
-        ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
-        ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name')
-        ->where('t.project_id', '=', $projectId)
-        ->where('b.data_title_code', '=', 3)
-        ->groupBy('b.data_content_name')
+        // 개인 프로젝트
+        $projectIndividualIdData = DB::table('project_users as pu')
+        ->join('projects as p', 'p.id', '=', 'pu.project_id')
+        ->select('pu.project_id')
+        ->where('member_id', '=', $userId)
+        ->where('p.flg', 0)
         ->get();
 
-    $completionPercentages[$projectId] = $completionPercentage;
-    }
+        // 팀 프로젝트
+        $projectTeamIdData = DB::table('project_users as pu')
+        ->join('projects as p', 'p.id', '=', 'pu.project_id')
+        ->select('pu.project_id')
+        ->where('member_id', '=', $userId)
+        ->where('p.flg', 1)
+        ->get();
 
-        // dd($completionPercentages);
+        $projectIndividualIds = $projectIndividualIdData->pluck('project_id')->toArray(); // 개인 프로젝트 아이디 배열로 변환
+        $projectTeamIds = $projectTeamIdData->pluck('project_id')->toArray(); // 팀 프로젝트 아이디 배열로 변환
 
-    // 상태현황 개수 출력
-    $before =DB::table('tasks')
-                ->join('project_users', function($join){
-                    $join->on('project_users.project_id','=','tasks.project_id');
-                })
-                ->selectRaw('count(tasks.task_status_id) as cnt')
-                ->where('project_users.member_id',$user->id)
-                ->where('tasks.category_id',0)
-                ->where('tasks.task_status_id',0)
-                ->groupBy('tasks.task_status_id')
-                ->get();
-    // dump($before);
+        $IndividualcompletionPercentages = []; // 개인
+        $TeamcompletionPercentages = []; //팀
 
-    $ing =DB::table('tasks')
-            ->join('project_users', function($join){
-                $join->on('project_users.project_id','=','tasks.project_id');
-            })
-            ->selectRaw('count(tasks.task_status_id) as cnt')
-            ->where('project_users.member_id',$user->id)
-            ->where('tasks.category_id',0)
-            ->where('tasks.task_status_id',1)
-            ->groupBy('tasks.task_status_id')
+        // 개인
+        foreach ($projectIndividualIds as $projectId) {
+            $IndividualcompletionPercentage = DB::table('tasks as t')
+            ->join('projects as p', 't.project_id', '=', 'p.id')
+            ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+            ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
+            ->where('t.project_id', '=', $projectId)
+            ->where('b.data_title_code', '=', 3)
+            ->groupBy('b.data_content_name','p.project_title')
             ->get();
-    // dump($ing);
 
-    $feedback =DB::table('tasks')
+            $IndividualcompletionPercentages[$projectId] = $IndividualcompletionPercentage;
+        }
+
+        // 팀
+        foreach ($projectTeamIds as $projectId) {
+            $TeamcompletionPercentage = DB::table('tasks as t')
+                ->join('projects as p', 't.project_id', '=', 'p.id')
+                ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+                ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
+                ->where('t.project_id', '=', $projectId)
+                ->where('b.data_title_code', '=', 3)
+                ->groupBy('b.data_content_name','p.project_title')
+                ->get();
+
+            $TeamcompletionPercentages[$projectId] = $TeamcompletionPercentage;
+        }
+        // --------- 프로젝트 진척률 출력 끝 ------------
+
+        // 상태현황 개수 출력
+        $before =DB::table('tasks')
+                    ->join('project_users', function($join){
+                        $join->on('project_users.project_id','=','tasks.project_id');
+                    })
+                    ->selectRaw('count(tasks.task_status_id) as cnt')
+                    ->where('project_users.member_id',$user->id)
+                    ->where('tasks.category_id',0)
+                    ->where('tasks.task_status_id',0)
+                    ->groupBy('tasks.task_status_id')
+                    ->get();
+        // dump($before);
+
+        $ing =DB::table('tasks')
                 ->join('project_users', function($join){
                     $join->on('project_users.project_id','=','tasks.project_id');
                 })
                 ->selectRaw('count(tasks.task_status_id) as cnt')
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
-                ->where('tasks.task_status_id',2)
+                ->where('tasks.task_status_id',1)
                 ->groupBy('tasks.task_status_id')
                 ->get();
-    // dump($feedback);
+        // dump($ing);
 
-    $complete =DB::table('tasks')
-                ->join('project_users', function($join){
-                    $join->on('project_users.project_id','=','tasks.project_id');
-                })
-                ->selectRaw('count(tasks.task_status_id) as cnt')
-                ->where('project_users.member_id',$user->id)
-                ->where('tasks.category_id',0)
-                ->where('tasks.task_status_id',3)
-                ->groupBy('tasks.task_status_id')
-                ->get();
-    // dd($complete);
+        $feedback =DB::table('tasks')
+                    ->join('project_users', function($join){
+                        $join->on('project_users.project_id','=','tasks.project_id');
+                    })
+                    ->selectRaw('count(tasks.task_status_id) as cnt')
+                    ->where('project_users.member_id',$user->id)
+                    ->where('tasks.category_id',0)
+                    ->where('tasks.task_status_id',2)
+                    ->groupBy('tasks.task_status_id')
+                    ->get();
+        // dump($feedback);
+
+        $complete =DB::table('tasks')
+                    ->join('project_users', function($join){
+                        $join->on('project_users.project_id','=','tasks.project_id');
+                    })
+                    ->selectRaw('count(tasks.task_status_id) as cnt')
+                    ->where('project_users.member_id',$user->id)
+                    ->where('tasks.category_id',0)
+                    ->where('tasks.task_status_id',3)
+                    ->groupBy('tasks.task_status_id')
+                    ->get();
+        // dd($complete);
 
 
-    //데이터 담을 빈 객체 생성
-    $baseObj = new \stdClass();
-    $baseObj->cnt = 0;
-    $statuslist = [
-    'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
-    'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
-    'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
-    'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
-    ];
-    // dd($statuslist);
+        //데이터 담을 빈 객체 생성
+        $baseObj = new \stdClass();
+        $baseObj->cnt = 0;
+        $statuslist = [
+        'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
+        'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
+        'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
+        'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
+        ];
+        // dd($statuslist);
 
     // d-day 데이터 출력
     $dday_data = DB::table('tasks as tk')
-                    ->join('project_users as pu', function($join){
-                        $join->on('pu.project_id','=','tk.project_id');
+                    ->join('project_users as pu', function($project_users){
+                        $project_users->on('pu.project_id','=','tk.project_id');
                     })
-                    ->select('tk.title','tk.start_date', 'tk.end_date', DB::raw('tk.end_date - tk.start_date as dday'))
+                    ->join('projects as pj', function($projects){
+                        $projects->on('pj.id','=','tk.project_id');
+                    })
+                    ->join('basedata as bd', function($basedata){
+                        $basedata->on('bd.data_content_code','=','pj.color_code_pk');
+                    })
+                    ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd.data_content_name',DB::raw('tk.end_date - date(NOW()) as dday'))
                     ->where('pu.member_id',$user->id)
-                    ->where('tk.task_depth',0) //디데이 출력시 상위업무만 보이게 할 것인지, 하위업무도 같이 보이게 할 것인지 결정해야 함.
-                    ->where('tk.category_id',0)
+                    ->where('tk.task_depth', '0') //상위업무만 출력
+                    ->where('bd.data_title_code','3')
+                    ->where('tk.category_id','0')
                     ->orderBy('dday','desc')
                     ->get();
     // dd($dday_data);
+    $group_dday = $dday_data->groupBy(function($item){
+        return $item->dday;
+    });
+
+    // dd($group_dday);
 
 
+        // ***************************   데이터 리턴  ************************** 
         if (Auth::check()) {
             return view('dashboard', [
                 'user' => $user,
@@ -171,14 +216,17 @@ class TaskController extends Controller
                 'dashboardNotice' => $dashboardNotice,
                 'project0title' => $project0title,
                 'project1title' => $project1title,
-                'completionPercentages' => $completionPercentages,
+                'IndividualcompletionPercentages' => $IndividualcompletionPercentages,
                 'statuslist' => $statuslist,
-                'dday_data' => $dday_data
+                'dday_data' => $dday_data,
+                'TeamcompletionPercentages' => $TeamcompletionPercentages,
+                'group_dday' =>$group_dday,
             ]);
         } else {
             return redirect('/user/login');
         }
     }
+    // ***************************************************************************
 
     // 대시보드 그래픽 데이터
     public function board_graph_data(Request $request) {
@@ -366,6 +414,7 @@ class TaskController extends Controller
             "msg" => "",
             "data" => []
         ];
+        Log::debug('작성');
         // Log::debug('request: ' , $request->all());
 
         // 입력받은 데이터로 pk(id) 추출
@@ -519,41 +568,44 @@ class TaskController extends Controller
         ];
 
         $result = Task::find($id);
-        Log::debug('$request :' . $request);
+        Log::debug('수정 $request :' . $request);
         // Log::debug($result->data);
 
         if (!$result) {
             $responseData["code"] = "E01";
             $responseData["msg"] = "No Data.";
         } else {
-            $res = User::where('name', $request['task_responsible_id'])->first();
-            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+            if($request['task_responsible_id'] !== null) {
+                $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
+            }
+                $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
-            Log::debug('$request :' . $request);
-            Log::debug('$res :' . $res->data_content_code);
-            Log::debug('$sta :' . $sta->data_content_code);
-            $result->task_responsible_id = $res->data_content_code;
+            // Log::debug('$request :' . $request);
+            Log::debug('$res :' . $res->id);
+            // Log::debug('$sta :' . $sta->data_content_code);
+            $result->task_responsible_id = $res ? $res->id : null;
             $result->task_status_id = $sta->data_content_code;
-            $result->priority_id = $pri->id;
-            Log::debug('$request->title :' . $request->title);
+            $result->priority_id = $pri ? $pri->data_content_code : null;
+            // Log::debug('$request->title :' . $request->title);
             $result->title = $request->title;
-            Log::debug('$request->content :' . $request->content);
+            // Log::debug('$request->content :' . $request->content);
             $result->content = $request->content;
-            Log::debug('$request->start_date :' . $request->start_date);
+            // Log::debug('$request->start_date :' . $request->start_date);
             if ($request->start_date !== '시작일') {
                 $result->start_date = $request->start_date;
-                Log::debug('$result->start_date :' . $result->start_date);
+                // Log::debug('$result->start_date :' . $result->start_date);
             }
-            Log::debug($request->end_date);
+            // Log::debug($request->end_date);
             if ($request->end_date !== '마감일') {
                 $result->end_date = $request->end_date;
-                Log::debug('$result->end_date :' . $result->end_date);
+                // Log::debug('$result->end_date :' . $result->end_date);
             }
+            Log::debug($result);
             $result->save();
 
             $responseData["code"] = "U01";
             $responseData["msg"] = $id." updated";
-            $responseData['data'] = $result;
+            $responseData['data'] = ['task' => $result];
         }
 
         return $responseData;

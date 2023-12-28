@@ -206,6 +206,28 @@
                             
                         @endforelse
                     @empty
+                        <div class="gantt-task d-none" id="gantt-task-000">
+                            <div class="gantt-editable-div editable">
+                                <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,000)">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="addSubTask(event, 000)">하위업무 추가</button>
+                                </div>     
+                                <div class="taskKey" style="display: none">000</div>
+                                <div class="taskName editable-title" spellcheck="false" contenteditable="true"></div>
+                            </div>
+                            <div class="responName gantt-update-dropdown"><span id="responNameSpan"></span></div>
+                            <div class="gantt-status-name">
+                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="000"><span id="statusNameSpan"></span></div>
+                            </div>
+                            <div class="gantt-task-4">
+                                <input type="date" class="start-date" name="start" id="start-row000" onchange="test(000);" value="">
+                            </div>
+                            <div class="gantt-task-5">
+                                <input type="date" class="end-date" name="end" id="end-row000" onchange="test(000);" value="">
+                            </div>
+                        </div>
                     @endforelse
                 </div>
             </div>
@@ -243,6 +265,16 @@
                                 
                             @endforelse
                         @empty
+                        <div class="gantt-chart" id="gantt-chart-000">
+                            @php
+                                $startDate = new DateTime('2023-12-01');
+                                $endDate = new DateTime('2023-12-31');
+
+                                for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
+                                    echo "<div id='row"."-" . $date->format('Ymd') . "' class='d-none'></div>";
+                                }
+                            @endphp
+                        </div>
                         @endforelse
                     </div>
                 </div>

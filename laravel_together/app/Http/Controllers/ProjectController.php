@@ -21,7 +21,12 @@ class ProjectController extends Controller
 {
     public function tableget() {
         // dd($user_id);
-        return view('project_create');
+        if (Auth::check()) {
+          return view('project_create');
+        } else {
+            return redirect('/user/login');
+        }
+
     }
 
     public function maincreate(Request $request) {
@@ -53,15 +58,15 @@ class ProjectController extends Controller
         $data2result = ProjectUser::create($data2);
 
         // dd($result);
-
-        if ($result->flg == '0'){
-          return redirect()->route('individual.get',['id' => $result['id']]);
-        } elseif ($result->flg == '1'){
-          return redirect()->route('team.get',['id' => $result['id']]);
+        if (Auth::check()) {
+          if ($result->flg == '0'){
+            return redirect()->route('individual.get',['id' => $result['id']]);
+          } elseif ($result->flg == '1'){
+            return redirect()->route('team.get',['id' => $result['id']]);
+          };
+        } else {
+            return redirect('/user/login');
         }
-
-        //오류시 출력
-        return '다시 확인해주세요';
     }
 
 
@@ -209,17 +214,32 @@ class ProjectController extends Controller
         ->orderBy('p.created_at','asc')
         ->get();
 
-        return view('project_individual')
-        ->with('color_code',$color_code)
-        ->with('result',$result)
-        ->with('first_data',$first_data)
-        ->with('update_data',$update_data)
-        ->with('deadline_data',$deadline_data)
-        ->with('statuslist',$statuslist)
-        ->with('user',Auth::id())
-        ->with('project0title', $project0title)
-        ->with('project1title', $project1title)
-        ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
+        // return view('project_individual')
+        // ->with('color_code',$color_code)
+        // ->with('result',$result)
+        // ->with('first_data',$first_data)
+        // ->with('update_data',$update_data)
+        // ->with('deadline_data',$deadline_data)
+        // ->with('statuslist',$statuslist)
+        // ->with('user',Auth::id())
+        // ->with('project0title', $project0title)
+        // ->with('project1title', $project1title)
+        // ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
+        if (Auth::check()) {
+            return view('project_individual')
+            ->with('color_code',$color_code)
+            ->with('result',$result)
+            ->with('first_data',$first_data)
+            ->with('update_data',$update_data)
+            ->with('deadline_data',$deadline_data)
+            ->with('statuslist',$statuslist)
+            ->with('user',Auth::id())
+            ->with('project0title', $project0title)
+            ->with('project1title', $project1title)
+            ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
+      } else {
+          return redirect('/user/login');
+      }
     }
 
 
