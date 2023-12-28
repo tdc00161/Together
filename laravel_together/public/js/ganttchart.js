@@ -547,8 +547,12 @@ function addSubTask(event, mainId) {
         addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttChildId})`);
 
         addTaskStartDate.id = 'start-row' + ganttChildId;
+        // addTaskStartDate.id = 'start-row000';
+
         console.log(addTaskStartDate);
         addTaskEndDate.id = 'end-row' + ganttChildId;
+        // addTaskEndDate.id = 'end-row000';
+
         console.log(addTaskEndDate);
         newChart.id = 'gantt-chart-' + ganttChildId;
         console.log(newChart);
