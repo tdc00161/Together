@@ -136,18 +136,25 @@
       <span class="app-card-title">
        마감
       </span>
-      @foreach ($dday_data as $data => $item)
-        {{-- @if($data >= 1)
-          $first_data = $data-1;
-          $next_data = $data-0;
-        @endif
-        @if ($data >=1)
-            
-        @else
-            
-        @endif --}}
-        <div class="dash_dday">D-{{$item->dday}}</div>
-        <div class="dash_ddaytitle">{{Str::limit($item->title,10,'...')}}</div>
+      @foreach ($group_dday as $dday => $item)
+        <div class="dash_dday">
+          @if ($dday <= 1 && $dday >= -1)
+            <div style="color:rgb(212, 14, 0); font-weight:bold;">D{{$dday < 0 ? $dday : '+'.$dday}}</div>
+          @elseif ($dday <= -2 && $dday >= 4)
+            <div style="color:rgb(235, 157, 12); font-weight:bold;">D{{$dday < 0 ? $dday : '+'.$dday}}</div>
+          @elseif ($dday <= -5 && $dday >= 7)
+            <div style="color:rgb(246, 250, 32); font-weight:bold;">D{{$dday < 0 ? $dday : '+'.$dday}}</div>
+          @else
+            @continue
+          @endif
+            @foreach ($item as $ddayitem)
+              <div class="dash_dday_grid">
+                <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}"></div>
+                <div class="dash_ddaytitle" style="">{{Str::limit($ddayitem->title,10,'...')}}</div>
+              </div>
+            @endforeach
+          </div>
+        </div>
       @endforeach
      </div>
   

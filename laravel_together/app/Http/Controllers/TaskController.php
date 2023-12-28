@@ -150,16 +150,28 @@ class TaskController extends Controller
 
     // d-day 데이터 출력
     $dday_data = DB::table('tasks as tk')
-                    ->join('project_users as pu', function($join){
-                        $join->on('pu.project_id','=','tk.project_id');
+                    ->join('project_users as pu', function($project_users){
+                        $project_users->on('pu.project_id','=','tk.project_id');
                     })
-                    ->select('tk.title','tk.start_date', 'tk.end_date', DB::raw('tk.end_date - tk.start_date as dday'))
+                    ->join('projects as pj', function($projects){
+                        $projects->on('pj.id','=','tk.project_id');
+                    })
+                    ->join('basedata as bd', function($basedata){
+                        $basedata->on('bd.data_content_code','=','pj.color_code_pk');
+                    })
+                    ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd.data_content_name',DB::raw('tk.end_date - date(NOW()) as dday'))
                     ->where('pu.member_id',$user->id)
-                    ->where('tk.task_depth',0) //디데이 출력시 상위업무만 보이게 할 것인지, 하위업무도 같이 보이게 할 것인지 결정해야 함.
-                    ->where('tk.category_id',0)
+                    ->where('tk.task_depth', '0') //상위업무만 출력
+                    ->where('bd.data_title_code','3')
+                    ->where('tk.category_id','0')
                     ->orderBy('dday','desc')
                     ->get();
     // dd($dday_data);
+    $group_dday = $dday_data->groupBy(function($item){
+        return $item->dday;
+    });
+
+    // dd($group_dday);
 
 
         if (Auth::check()) {
@@ -173,7 +185,8 @@ class TaskController extends Controller
                 'project1title' => $project1title,
                 'completionPercentages' => $completionPercentages,
                 'statuslist' => $statuslist,
-                'dday_data' => $dday_data
+                'dday_data' => $dday_data,
+                'group_dday' =>$group_dday
             ]);
         } else {
             return redirect('/user/login');

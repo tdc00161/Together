@@ -13,7 +13,7 @@
 @section('title', '개인프로젝트')
 
 @section('main')
-    <input type="hidden" id="user" value="{{$user}}">
+    <input type="hidden" id="user" value="{{$user->id}}">
     {{-- 상단바 --}}
     <div class="first_menu">
         <div class="menu_title">

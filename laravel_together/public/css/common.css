@@ -116,9 +116,15 @@ a {
 /* 마감 */
 .dash_dday {
     font-weight: bold;
+    margin-bottom: 10px;
     /* display: inline-block; */
 }
 
+.dash_dday_grid {
+    display: grid;
+    grid-template-columns: 0.2fr 1.5fr;
+    margin: 5px 0;
+}
 
 
 .common-button {
