@@ -288,6 +288,7 @@ function createTask() {
 		"project_id": thisProjectId,
 		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 // TODO
 	}
+	console.log(postData);
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
 		postData.task_status_name = ''
@@ -298,6 +299,7 @@ function createTask() {
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.priority_name = ''
 	}
+	console.log(postData);
 	fetch('/task', {
 		method: 'POST',
 		headers: {
