@@ -350,7 +350,7 @@ function createTask() {
 				let chartDateList = refreshCloneRightGanttChart.children
 				for (let index = 0; index < chartDateList.length; index++) {
 					const element = chartDateList[index];
-					console.log(element);
+					// console.log(element);
 					let date = element.id.match(/-(\d+)/)[0]
 					element.setAttribute('id','row' + data.data.id + date)
 					element.classList.remove('d-none')
