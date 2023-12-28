@@ -51,7 +51,7 @@
              <p class="dashboard-title-notice">공지</p>
               @if($dashboardNotice->isEmpty())
               <!-- 데이터가 없을 때의 처리 -->
-              공지 없음
+              <p style="margin-top: 18px;" class="empty-msg">공지 없음</p>
               @else
               {{-- 첫 캐러샐 --}}
               <div class="carousel-item active">
@@ -105,17 +105,20 @@
       </span>
       <div class="app-card__subtext"></div>
       {{-- 개인 프로젝트 프로그레스 바 --}}
-      @foreach ($IndividualcompletionPercentages as $projectId => $IndividualcompletionPercentage)
+      @forelse ($IndividualcompletionPercentages as $projectId => $IndividualcompletionPercentage)
       {{-- <h2>Project ID: {{ $projectId }}</h2> --}}
-      @foreach ($IndividualcompletionPercentage as $result)
+      @forelse ($IndividualcompletionPercentage as $result)
       <div class="project-progress">
         <div class="project-progress-project-title-div"><div style="background-color: {{ $result->data_content_name }};" class="project-box"></div><p class="dashboard-progress-project-title">{{$result->project_title}}</p><p class="dashboard-progress-project-dday"></p></div>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-label="Animated striped example" aria-valuenow="{{ $result->completion_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $result->completion_percentage }}%">{{ $result->completion_percentage }}%</div>
         </div>
       </div>
-      @endforeach
-      @endforeach
+      @empty
+      @endforelse
+      @empty
+      <p class="empty-msg">프로젝트가 없습니다.</p>
+      @endforelse
       </div>
 
       {{-- 3-2 --}}
@@ -125,17 +128,20 @@
         </span>
         <div class="app-card__subtext">
           {{-- 팀 프로젝트 프로그레스 바 --}}
-          @foreach ($TeamcompletionPercentages as $projectId => $TeamcompletionPercentage)
+          @forelse ($TeamcompletionPercentages as $projectId => $TeamcompletionPercentage)
           {{-- <h2>Project ID: {{ $projectId }}</h2> --}}
-          @foreach ($TeamcompletionPercentage as $result)
+          @forelse ($TeamcompletionPercentage as $result)
           <div class="project-progress">
             <div class="project-progress-project-title-div"><div style="background-color: {{ $result->data_content_name }};" class="project-box"></div><p class="dashboard-progress-project-title">{{$result->project_title}}</p><p class="dashboard-progress-project-dday"></p></div>
             <div class="progress">
               <div class="progress-bar" role="progressbar" aria-label="Animated striped example" aria-valuenow="{{ $result->completion_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $result->completion_percentage }}%">{{ $result->completion_percentage }}%</div>
             </div>
           </div>
-          @endforeach
-          @endforeach
+          @empty
+          @endforelse
+          @empty
+          <p class="empty-msg">프로젝트가 없습니다.</p>
+          @endforelse
         </div>
       </div>
       </div>

@@ -17,12 +17,22 @@ body {
     width: 35px;
     height: auto;
 }
+a:hover {
+    text-decoration: none;
+}
 
  /* 헤더 - 활성화된 버튼에 대한 스타일 */
  .activee {
     filter: invert(100%);
     color: black;
     font-weight: bold;
+}
+/* empty msg */
+.empty-msg {
+    font-size: 12px;
+    color: #cecece;
+    text-align: center;
+    margin-top: 74px;
 }
 /* 대시보드 - 공지 커스텀 */
 .carousel-inner {

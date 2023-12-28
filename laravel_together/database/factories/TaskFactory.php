@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
@@ -25,15 +26,14 @@ class TaskFactory extends Factory
         //                 })
         //                 ->get();
 
-        $project_id = DB::table('tasks')
-                        ->select('tasks.project_id')
-                        ->join('projects', 'tasks.project_id','=','projects.id')
-                        ->get();
-        Log::debug($project_id);
-
-        $random_project_id = $project_id[$this->faker->randomElement($project_id)];
-        $task_responsible_id = DB::table('users')->select('id')->whereNotNull('email_verified_at')->whereNotNull('remember_token')->get();
-        $task_writer_id = DB::table('users')->select('id')->whereNotNull('email_verified_at')->whereNotNull('remember_token')->get();
+        $project_id = DB::table('projects')->whereNull('deleted_at')->select('id')->get();
+        
+        $random_project_id = $this->faker->randomElement($project_id)->id;
+        Log::debug($random_project_id);
+        
+        $task_responsible_id = DB::table('project_users')->join('users','users.id','project_users.member_id')->where('project_users.project_id',$random_project_id)->select('users.id')->get();
+        Log::debug($task_responsible_id);
+        $task_writer_id = DB::table('users')->select('id')->get();
         $task_status_id = DB::table('basedata')->select('data_content_code')->where('data_title_code','0')->get();
         $priority_id = DB::table('basedata')->select('data_content_code')->where('data_title_code','1')->get();
         $category_id = DB::table('basedata')->select('data_content_code')->where('data_title_code','2')->get();

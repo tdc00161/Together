@@ -129,11 +129,15 @@
                             <colgroup>
                                 <col class="col1">
                             </colgroup>
-                            @foreach ($first_data as $item)
-                                <tr class="box_ul project_task_notice_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,1,{{$item->id}})">{{Str::limit($item->title,46,'...')}}</td>
+                            @forelse ($first_data as $item)
+                                <tr class="box_ul project_task_notice_list notice-layout-{{$item->id}}">
+                                    <td class="td_pd notice-{{$item->id}}" onclick="openTaskModal(1,1,{{$item->id}})">{{Str::limit($item->title,46,'...')}}</td>
                                 </tr>
-                            @endforeach
+                                @empty
+                                <tr class="box_ul project_task_notice_list">
+                                    <td class="td_pd" onclick="openTaskModal(1,1)"></td>
+                                </tr>
+                            @endforelse
                         </table>
                     </div>
                 </div>
@@ -150,10 +154,10 @@
                                 <col class="col2">
                                 <col class="col3">
                             </colgroup>
-                            @foreach ($update_data as $item)
+                            @forelse ($update_data as $item)
 
-                                <tr class="box_ul project_task_update_list">
-                                    <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">
+                                <tr class="box_ul project_task_update_list update-layout-{{$item->id}}">
+                                    <td class="td_pd update-{{$item->id}}" onclick="openTaskModal(1,0,{{$item->id}})">
                                         @if ($item->data_content_name == "공지")
                                             <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->data_content_name}}</div>
                                         @elseif ($item->data_content_name == "업무")
@@ -164,7 +168,16 @@
 
                                     <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,35,'...')}}</td>
                                 </tr>
-                            @endforeach
+                                @empty
+                                <tr class="box_ul project_task_update_list">
+                                    <td class="td_pd" onclick="openTaskModal(1,1)">
+                                            <div style="color:rgb(255, 196, 0); font-weight:bold;"></div>
+                                    </td> 
+                                    {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
+
+                                    <td class="td_pd" onclick="openTaskModal(1,0)"></td>
+                                </tr>
+                            @endforelse
                         </table>
                     </div>
                 </div>
