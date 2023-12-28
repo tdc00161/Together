@@ -373,11 +373,15 @@ function createTask() {
 				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
 				cloneNotice.firstElementChild.textContent = data.data.title
 				cloneNotice.firstElementChild.setAttribute('onclick','openTaskModal(1,1,'+ data.data.id +')')
+				cloneNotice.firstElementChild.classList.add('notice-'+ data.data.id)
+				cloneNotice.classList.add('notice-layout-'+ data.data.id)
 				// console.log(cloneNotice.firstElementChild);
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
 				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
 				// console.log(cloneUpdate.firstElementChild.nextElementSibling);
 				cloneUpdate.firstElementChild.nextElementSibling.setAttribute('onclick','openTaskModal(1,1,'+ data.data.id +')')
+				cloneUpdate.firstElementChild.classList.add('update-'+ data.data.id)
+				cloneUpdate.classList.add('update-layout-'+ data.data.id)
 				console.log('2');
 				
 				let NoticeParent = Notice.parentElement
