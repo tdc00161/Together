@@ -220,6 +220,7 @@ class TaskController extends Controller
                 'statuslist' => $statuslist,
                 'dday_data' => $dday_data,
                 'TeamcompletionPercentages' => $TeamcompletionPercentages,
+                'group_dday' =>$group_dday,
             ]);
         } else {
             return redirect('/user/login');
