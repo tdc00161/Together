@@ -75,6 +75,7 @@ margin-left: 5px;
 .project-progress-project-title-div {
     display: flex;
     height: 20px;
+    margin-bottom: 4px;
 }
 
 /* 대시보드 - 프로그레스 - 프로젝트명 */
@@ -193,6 +194,7 @@ a {
     border-radius: 3px;
     margin-right: 7px;
     content: '';
+    margin-top: 2px;
 }
 
 :root {
@@ -1059,6 +1061,7 @@ box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
     transition: 0.3s ease;
+    overflow-y: scroll;
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);
@@ -1076,6 +1079,7 @@ box-sizing: border-box;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
     transition: 0.3s ease;
+    overflow-y: scroll;
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);

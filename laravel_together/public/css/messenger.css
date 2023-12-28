@@ -359,7 +359,7 @@ button {
 }
 .friend-Modal-content {
     position: absolute;
-    background-color: var(--m-requestcancel-btn);
+    background-color: rgba(0, 0, 0, 0.7);
     width: 420px;
     height: 155px;
     top: 50%;
