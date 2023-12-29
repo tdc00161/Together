@@ -26,21 +26,17 @@ function openTab(tabId) {
 
 // <Messenger> 모달 토글
 function toggleModal() {
-    console.log(1);
     
     var modal = document.getElementById('m-myModal');
     
-    console.log(modal);
     if (modal.style.display === 'block') {
         document.removeEventListener('click', closeModalOutside);
     } else {
         document.addEventListener('click', closeModalOutside);
     }
     
-    console.log(modal.style.display);
     modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-    
-    console.log(modal.style.display);
+
     const lastActiveElementId = sessionStorage.getItem('lastActiveElementId');
     if (lastActiveElementId) {
         const lastActiveElement = document.getElementById(lastActiveElementId);
@@ -49,11 +45,9 @@ function toggleModal() {
         }
     }
     
-    console.log(lastActiveElementId);
     friendRequestList();
     friendSendList();
     friendList();
-    console.log(1);
 }
 
 function closeModalOutside(event) {
@@ -95,7 +89,7 @@ function fcloseModal() {
     resetModal();
     friendRequestList();
     friendSendList();
-    friendList()
+    friendList();
 }
 
 // 모달 메세지 초기화 함수
@@ -325,6 +319,8 @@ function displayFriendRequests(friendRequests) {
                 var requestId = this.value;
                 noticecount.innerHTML = noticecount.innerHTML - 1;
 
+                // friendRequestList();
+
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
                     emptyRequestMsg.classList.add('empty-msg-css');
@@ -382,7 +378,6 @@ function displayFriendRequests(friendRequests) {
                     // 추가된 삭제버튼 클릭 시
                     addfdeletebtn.addEventListener('click', function() {
                         var deletefriendId = this.value;
-                        console.log(deletefriendId);
 
                         // AJAX 요청 수행
                         fetch('/friendDelete', {
