@@ -155,10 +155,11 @@ function deleteProject(project_pk) {
          'X-CSRF-TOKEN': csrfToken_project
       },
    }).then((response) => 
-      console.log(response)) // response.json()
-      .then(() => {
+      console.log(response))
+      // response.json()
+     .then(() => {
          window.location.href = '/dashboard'; // 메인화면으로 이동
-      });
+   }).catch(error => console.log(error));
 }
 
 // 프로젝트 명 클릭시 초기값 삭제
@@ -172,7 +173,7 @@ function deleteProject(project_pk) {
 let OrginalendValue = document.getElementById('end_date').value;
 let Orginalend = document.getElementById('end_date');
 
-console.log(UPDATETITLESET);
+// console.log(UPDATETITLESET);
 
 // 프로젝트 명, 컨텐츠 업데이트
 const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -257,12 +258,12 @@ function titleupdate(project_pk) {
 
 
 // 프로젝트 설명 클릭시 초기값 삭제
-let UPDATECONTENTSET = document.getElementById('project_content');
-UPDATECONTENTSET.addEventListener('click',deleteContent)
+// let UPDATECONTENTSET = document.getElementById('project_content');
+// UPDATECONTENTSET.addEventListener('click',deleteContent)
 
-function deleteContent () {
-   this.value = "";
-}
+// function deleteContent () {
+//    this.value = "";
+// }
 
 
 // tab 기능

@@ -87,6 +87,7 @@ class ProjectController extends Controller
 
     //프로젝트 id 출력
     $result = project::find($id);
+    // dd($result);
 
     //프로젝트 색상 출력
     $color_code = DB::table('projects as pj')
@@ -205,6 +206,7 @@ class ProjectController extends Controller
                         ->where('pu.member_id', '=', $userId)
                         ->where('p.flg','=', 0)
                         ->where('b.data_title_code', '=', 3)
+                        ->whereNull('p.deleted_at')
                         ->orderBy('p.created_at', 'asc')
                         ->get();
 
@@ -215,6 +217,7 @@ class ProjectController extends Controller
                         ->where('pu.member_id', '=', $userId)
                         ->where('p.flg','=', 1)
                         ->where('b.data_title_code', '=', 3)
+                        ->whereNull('p.deleted_at')
                         ->orderBy('p.created_at', 'asc')
                         ->get();
 
@@ -395,7 +398,18 @@ class ProjectController extends Controller
   // 프로젝트 삭제
   public function delete_project(Request $request, $id)
   {
+    Log::debug("id 확인요청 : ". $id);
+    $user = Project::find($id);
+    Log::debug("id 확인완료");
 
+    if(!$user) {
+      return response()->json(['errer' => 'item not found'], 404);
+    }
+    Log::debug("user 에러");
+    $user->delete();
+    Log::debug("user 삭제");
+    return response()->json();
+    Log::debug("화면전달");
   }
 }
 
