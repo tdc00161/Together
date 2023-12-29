@@ -26,17 +26,21 @@ function openTab(tabId) {
 
 // <Messenger> 모달 토글
 function toggleModal() {
-
+    console.log(1);
+    
     var modal = document.getElementById('m-myModal');
-
+    
+    console.log(modal);
     if (modal.style.display === 'block') {
         document.removeEventListener('click', closeModalOutside);
     } else {
         document.addEventListener('click', closeModalOutside);
     }
-
+    
+    console.log(modal.style.display);
     modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-
+    
+    console.log(modal.style.display);
     const lastActiveElementId = sessionStorage.getItem('lastActiveElementId');
     if (lastActiveElementId) {
         const lastActiveElement = document.getElementById(lastActiveElementId);
@@ -44,10 +48,12 @@ function toggleModal() {
             lastActiveElement.classList.add('tab-active');
         }
     }
-
+    
+    console.log(lastActiveElementId);
     friendRequestList();
     friendSendList();
     friendList();
+    console.log(1);
 }
 
 function closeModalOutside(event) {
