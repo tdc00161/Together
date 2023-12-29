@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('gantt_link')
+@section('link')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/css/ganttchart.css">
     <script src="/js/ganttchart.js" defer></script>
