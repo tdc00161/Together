@@ -316,10 +316,11 @@ function displayFriendRequests(friendRequests) {
 
             acceptbtn.addEventListener('click', function () {
 
+                // friendList();
+                // friendRequestList();
+
                 var requestId = this.value;
                 noticecount.innerHTML = noticecount.innerHTML - 1;
-
-                // friendRequestList();
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
