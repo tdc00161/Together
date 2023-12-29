@@ -199,10 +199,18 @@ class TaskController extends Controller
                     ->orderBy('dday','desc')
                     ->get();
 
+                    
     //d-day기준 업무 그룹화
     $group_dday = $dday_data->groupBy(function($item){
         return $item->dday;
     });
+    // $group_dday2
+    // foreach ($group_dday as $key => $value) {
+    //     if($key<=-7){
+
+    //     }
+    // }
+    // dd($group_dday);
 
 
         // ***************************   데이터 리턴  ************************** 
