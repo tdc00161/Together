@@ -284,6 +284,19 @@ function closeTaskModal(a) {
 	}
 }
 
+// // 모달 작성에 쓰일 => 간트업무 더보기 모달
+function ganttDetailChange(ganttDetail){
+	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
+		ganttDetail[0].style.display = 'block';
+		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+		// button.style.color = 'rgb(151, 87, 255)';
+	} else {
+		ganttDetail[0].style.display = 'none';
+		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+		// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+	}
+}
+
 // 모달 작성
 function createTask() {
 	let postData = {
@@ -330,7 +343,13 @@ function createTask() {
 				let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
 				let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
 				let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
-				gantt_task_element.id = 'gantt-task-' + data.data.id
+				let gantt_more_modal_btn = refreshCloneLeftGanttChart.firstElementChild.firstElementChild
+				// console.log();
+				let more_view = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+				let add_under_task = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
+				let gantt_more_modal = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling
+				console.log(gantt_more_modal);
+				gantt_task_element.id = 'gantt-task-' + data.data.id // TODO
 				start_element.value = data.data.start_date
 				start_element.setAttribute('id', 'start-row' + data.data.id)
 				start_element.setAttribute('onchange', 'test(' + data.data.id + ');')
@@ -339,10 +358,27 @@ function createTask() {
 				end_element.setAttribute('onchange', 'test(' + data.data.id + ');')
 				taskKey_element.textContent = data.data.task_number
 				taskName_element.textContent = data.data.title
+				more_view.setAttribute('onclick', 'openTaskModal(1,0,'+data.data.id+')')
+				add_under_task.setAttribute('onclick', 'addSubTask(event,'+data.data.id+')')
 				responsibleName_element.textContent = data.names.task_responsible_name
 				statusName_element.textContent = data.names.task_status_name
 				statusColorAutoPainting(statusName_element_textContent.textContent, statusName_element)
+				gantt_more_modal_btn.setAttribute('onclick','ganttDetailChange('+ gantt_more_modal +')')
+				// ganttDetailChange()
 
+				gantt_more_modal_btn.addEventListener('click',function(){
+					if (gantt_more_modal.style.display === 'none' || gantt_more_modal.style.display === '') {
+						gantt_more_modal.style.display = 'block';
+						// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+						// button.style.color = 'rgb(151, 87, 255)';
+					} else {
+						gantt_more_modal.style.display = 'none';
+						// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+						// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+					}
+				})
+					
+					
 				// 우 간트
 				// let a = refreshCloneRightGanttChart
 				// console.log(a);
@@ -350,7 +386,7 @@ function createTask() {
 				let chartDateList = refreshCloneRightGanttChart.children
 				for (let index = 0; index < chartDateList.length; index++) {
 					const element = chartDateList[index];
-					// console.log(element);
+					console.log(element);
 					let date = element.id.match(/-(\d+)/)[0]
 					element.setAttribute('id','row' + data.data.id + date)
 					element.classList.remove('d-none')
@@ -403,10 +439,10 @@ function createTask() {
 
 	function gantt_task_modal() {
 		// 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
-		const parentEditableDiv = button.closest('.gantt-editable-div');
+		const parentEditableDiv2 = button.closest('.gantt-editable-div');
 
 		// 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
-		const ganttDetail = parentEditableDiv.querySelector('.gantt-detail');
+		const ganttDetail = parentEditableDiv2.querySelector('.gantt-detail');
 
 		// gantt-detail 요소의 표시 여부를 토글합니다.
 		if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {

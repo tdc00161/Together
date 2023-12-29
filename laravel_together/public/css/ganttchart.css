@@ -319,7 +319,7 @@
 	background-color: #64C139;
 }
 .gantt-status-color {
-	padding: 0px 15px;
+	/* padding: 0px 15px; */
     border-radius: 15px;
     height: 25px;
 }
@@ -517,7 +517,9 @@
 	display: inline-block;
 	width: 90%;
 	height: 100%;
+	text-align: center;
 }
+
 .statusDropdown {
 	display: none;
 	position: absolute;

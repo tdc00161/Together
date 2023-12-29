@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/css/ganttchart.css">
     <script src="/js/ganttchart.js" defer></script>
     {{-- 헤더 js --}}
-    <script src="/js/project.js" defer></script>
+    {{-- <script src="/js/project.js" defer></script> --}}
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
