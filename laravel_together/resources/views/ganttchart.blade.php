@@ -1,5 +1,5 @@
 @extends('layout.layout')
-@section('gantt_link')
+@section('link')
     <link rel="stylesheet" href="/css/ganttchart.css">
     <script src="/js/ganttchart.js" defer></script>
     {{-- 헤더 js --}}
