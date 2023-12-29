@@ -76,6 +76,7 @@ class TaskController extends Controller
         ->select('pu.project_id')
         ->where('member_id', '=', $userId)
         ->where('p.flg', 0)
+        ->whereNull('p.deleted_at')
         ->get();
 
         // 팀 프로젝트
@@ -84,6 +85,7 @@ class TaskController extends Controller
         ->select('pu.project_id')
         ->where('member_id', '=', $userId)
         ->where('p.flg', 1)
+        ->whereNull('p.deleted_at')
         ->get();
 
         $projectIndividualIds = $projectIndividualIdData->pluck('project_id')->toArray(); // 개인 프로젝트 아이디 배열로 변환
