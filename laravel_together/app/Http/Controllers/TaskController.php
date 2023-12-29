@@ -593,9 +593,9 @@ class TaskController extends Controller
                 $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
             // Log::debug('$request :' . $request);
-            Log::debug('$res :' . $res->id);
+            // Log::debug('$res :' . $res->id);
             // Log::debug('$sta :' . $sta->data_content_code);
-            $result->task_responsible_id = $res ? $res->id : null;
+            $result->task_responsible_id = isset($res) ? $res->id : null;
             $result->task_status_id = $sta->data_content_code;
             $result->priority_id = $pri ? $pri->data_content_code : null;
             // Log::debug('$request->title :' . $request->title);
