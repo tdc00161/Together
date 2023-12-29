@@ -655,7 +655,6 @@ const searchResults = document.getElementById('friend-list-div');
 
 // 검색 결과를 출력하는 함수
 function displayResults(results) {
-    friendList();
 
     // 이전 결과 삭제
     searchResults.innerHTML = '';
