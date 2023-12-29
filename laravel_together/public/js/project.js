@@ -196,6 +196,7 @@ function titleupdate(project_pk) {
    // console.log(Updatetitle)
 
    let dday = document.getElementById("dday");
+      today = new Date();
       start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
       console.log(start_day);
       end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
@@ -206,7 +207,11 @@ function titleupdate(project_pk) {
          return false;
       }
       console.log(end_day);
-      gap = end_day - start_day;
+      gap = end_day - today;
+      if(gap < 0) {
+         dday.innerHTML = '';
+         return false;
+      }
       console.log(gap);
       result = Math.floor(gap / (1000 * 60 * 60 * 24));
 

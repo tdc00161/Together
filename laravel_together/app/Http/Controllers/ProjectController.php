@@ -59,7 +59,7 @@ class ProjectController extends Controller
     $data2['project_id'] = $result->id;
 
     //authority_id 추가
-    $data2['authority_id'] = $user_id;
+    $data2['authority_id'] = 0;
 
     //member_id 추가
     $data2['member_id'] = $user_id;
@@ -111,10 +111,11 @@ class ProjectController extends Controller
 
     //프로젝트 dday 출력
     foreach ($result as $items) {
-      $start = Carbon::create($result['start_date']);
+      $start = Carbon::now();
       $end = Carbon::create($result['end_date']);
       $result['dday'] = $start->diffInDays($end); // data에 dday 추가
     }
+    dd($start);
 
     //프로젝트 상태별 개수 출력
     $before =DB::table('tasks')
