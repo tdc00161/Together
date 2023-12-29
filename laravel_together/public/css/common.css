@@ -1094,6 +1094,8 @@ box-sizing: border-box;
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     transition: 0.3s ease;
     overflow-y: scroll;
     &:hover {
