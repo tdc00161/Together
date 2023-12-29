@@ -285,7 +285,7 @@ function closeTaskModal(a) {
 }
 
 // // 모달 작성에 쓰일 => 간트업무 더보기 모달
-function ganttDetailChange(ganttDetail){
+function ganttDetailChange(ganttDetail) {
 	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
 		ganttDetail[0].style.display = 'block';
 		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
@@ -348,7 +348,7 @@ function createTask() {
 				let more_view = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
 				let add_under_task = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
 				let gantt_more_modal = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling
-				console.log(gantt_more_modal);
+				// console.log(gantt_more_modal);
 				gantt_task_element.id = 'gantt-task-' + data.data.id // TODO
 				start_element.value = data.data.start_date
 				start_element.setAttribute('id', 'start-row' + data.data.id)
@@ -358,15 +358,16 @@ function createTask() {
 				end_element.setAttribute('onchange', 'test(' + data.data.id + ');')
 				taskKey_element.textContent = data.data.task_number
 				taskName_element.textContent = data.data.title
-				more_view.setAttribute('onclick', 'openTaskModal(1,0,'+data.data.id+')')
-				add_under_task.setAttribute('onclick', 'addSubTask(event,'+data.data.id+')')
+				more_view.setAttribute('onclick', 'openTaskModal(1,0,' + data.data.id + ')')
+				add_under_task.setAttribute('onclick', 'addSubTask(event,' + data.data.id + ')')
 				responsibleName_element.textContent = data.names.task_responsible_name
 				statusName_element.textContent = data.names.task_status_name
-				statusColorAutoPainting(statusName_element_textContent.textContent, statusName_element)
-				gantt_more_modal_btn.setAttribute('onclick','ganttDetailChange('+ gantt_more_modal +')')
+				statusName_element.setAttribute('data-status',data.names.task_status_name) 
+				statusColorAutoPainting(data.names.task_status_name, statusName_element)
+				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
 				// ganttDetailChange()
 
-				gantt_more_modal_btn.addEventListener('click',function(){
+				gantt_more_modal_btn.addEventListener('click', function () {
 					if (gantt_more_modal.style.display === 'none' || gantt_more_modal.style.display === '') {
 						gantt_more_modal.style.display = 'block';
 						// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
@@ -377,8 +378,8 @@ function createTask() {
 						// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
 					}
 				})
-					
-					
+
+
 				// 우 간트
 				// let a = refreshCloneRightGanttChart
 				// console.log(a);
@@ -386,10 +387,30 @@ function createTask() {
 				let chartDateList = refreshCloneRightGanttChart.children
 				for (let index = 0; index < chartDateList.length; index++) {
 					const element = chartDateList[index];
-					console.log(element);
-					let date = element.id.match(/-(\d+)/)[0]
+					// console.log(element);
+					element.firstChild ? element.removeChild(element.firstChild) : ''
+					let date = element.id.match(/-(\d+)/)[1]
 					element.setAttribute('id', 'row' + data.data.id + date)
 					element.classList.remove('d-none')
+					// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
+					let gantt_start = start_element.value.replace(/-/g, '')
+					// console.log(gantt_start);
+					let gantt_end = end_element.value.replace(/-/g, '')
+					// console.log(gantt_end);
+					// console.log(date);
+					if (gantt_start <= date && gantt_end >= date) {
+						// console.log(date + '유효한 날짜');
+						let create_1 = document.createElement('div')
+						create_1.classList.add('bk-row')
+						create_1.setAttribute('data-row-num', data.data.id)
+						if (gantt_start == date) {
+							create_1.textContent = '시작일: ' + gantt_start
+						} else if (gantt_end == date) {
+							create_1.textContent = '마감일: ' + gantt_end
+						}
+
+						element.append(create_1)
+					}
 				}
 
 				refreshCloneLeftGanttChart.classList.remove('d-none')
@@ -405,8 +426,8 @@ function createTask() {
 				let Update = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : firstCloneUpdate
 				console.log('1');
 
-				let cloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list').cloneNode(true) : firstCloneNotice.cloneNode(true) 
-				let cloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list').cloneNode(true) : firstCloneUpdate.cloneNode(true) 
+				let cloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list').cloneNode(true) : firstCloneNotice.cloneNode(true)
+				let cloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list').cloneNode(true) : firstCloneUpdate.cloneNode(true)
 				cloneNotice.firstElementChild.textContent = data.data.title
 				cloneNotice.firstElementChild.setAttribute('onclick', 'openTaskModal(1,1,' + data.data.id + ')')
 				cloneNotice.firstElementChild.classList.add('notice-' + data.data.id)
@@ -519,23 +540,25 @@ function closeMoreModal() {
 
 // 업무상태 색삽입 모듈
 function statusColorAutoPainting(switching, paintTo) {
+console.log(switching);
 	switch (switching) {
 		case '시작전':
-			paintTo.style = 'background-color: #B1B1B1;';
+			paintTo.style.backgroundColor = '#B1B1B1';
 			break;
 		case '진행중':
-			paintTo.style = 'background-color: #04A5FF;';
+			paintTo.style.backgroundColor = '#04A5FF';
 			break;
 		case '피드백':
-			paintTo.style = 'background-color: #F34747;';
+			paintTo.style.backgroundColor = '#F34747';
 			break;
 		case '완료':
-			paintTo.style = 'background-color: #64C139;';
+			paintTo.style.backgroundColor = '#64C139';
 			break;
 		default:
-			paintTo.style = 'background-color: var(--m-btn);';
+			paintTo.style.backgroundColor = 'var(--m-btn)';
 			break;
 	}
+	console.log(paintTo.style.backgroundColor);
 }
 
 // 업무상태 선택
