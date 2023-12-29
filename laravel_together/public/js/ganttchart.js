@@ -891,7 +891,7 @@ const headerScroll = document.querySelector('.gantt-header-scroll');
 
 // 예시 데이터 - 날짜
 const startDate = new Date('2023-12-01');
-const endDate = new Date('2023-12-31');
+const endDate = new Date('2024-01-31');
 
 // 날짜를 헤더에 추가하는 함수
 function addDatesToHeader() {

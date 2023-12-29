@@ -158,7 +158,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	}
 
 	// 더보기 모달 닫기
-	closeMoreModal()
+	// closeMoreModal(a == 0 ? 1 : 0) // 모달 닫기 오류시 패러미터 삭제
 
 	// 창 틀 우선 띄우기
 	// TASK_MODAL[a].classList.remove('d-none')
@@ -176,6 +176,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		if (!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')) {
 			PRIORITY[0].removeChild(document.querySelectorAll('.insert_priority_one')[0])
 		}
+		// TODO: 날짜 초기화 (value)
 
 
 		// 프로젝트 색 가져오기
@@ -460,33 +461,33 @@ function createTask() {
 			console.log(err.stack)
 		});
 
-	function gantt_task_modal() {
-		// 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
-		const parentEditableDiv2 = button.closest('.gantt-editable-div');
+	// function gantt_task_modal() {
+	// 	// 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
+	// 	const parentEditableDiv2 = button.closest('.gantt-editable-div');
 
-		// 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
-		const ganttDetail = parentEditableDiv2.querySelector('.gantt-detail');
+	// 	// 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
+	// 	const ganttDetail = parentEditableDiv2.querySelector('.gantt-detail');
 
-		// gantt-detail 요소의 표시 여부를 토글합니다.
-		if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
-			ganttDetail.style.display = 'block';
-			// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
-			button.style.color = 'rgb(151, 87, 255)';
-		} else {
-			ganttDetail.style.display = 'none';
-			// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
-			button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
-		}
-		// 문서에 전체 이벤트 리스너 추가
-		document.addEventListener('click', function closeGanttDetail(e) {
-			// 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
-			if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
-				ganttDetail.style.display = 'none';
-				button.style.color = ''; // 버튼 색상 초기화
-				document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
-			}
-		});
-	}
+	// 	// gantt-detail 요소의 표시 여부를 토글합니다.
+	// 	if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
+	// 		ganttDetail.style.display = 'block';
+	// 		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+	// 		button.style.color = 'rgb(151, 87, 255)';
+	// 	} else {
+	// 		ganttDetail.style.display = 'none';
+	// 		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+	// 		button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+	// 	}
+	// 	// 문서에 전체 이벤트 리스너 추가
+	// 	document.addEventListener('click', function closeGanttDetail(e) {
+	// 		// 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
+	// 		if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
+	// 			ganttDetail.style.display = 'none';
+	// 			button.style.color = ''; // 버튼 색상 초기화
+	// 			document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
+	// 		}
+	// 	});
+	// }
 }
 
 // 등록 버튼으로 작성/수정
@@ -540,7 +541,7 @@ function closeMoreModal() {
 
 // 업무상태 색삽입 모듈
 function statusColorAutoPainting(switching, paintTo) {
-console.log(switching);
+// console.log(switching);
 	switch (switching) {
 		case '시작전':
 			paintTo.style.backgroundColor = '#B1B1B1';
@@ -558,7 +559,7 @@ console.log(switching);
 			paintTo.style.backgroundColor = 'var(--m-btn)';
 			break;
 	}
-	console.log(paintTo.style.backgroundColor);
+	// console.log(paintTo.style.backgroundColor);
 }
 
 // 업무상태 선택
@@ -1182,6 +1183,8 @@ function updateModalOpen() {
 
 			// 상위업무 컨트롤
 			parentTaskControl(data, 0);
+
+			// 수정 이후 처리
 		})
 		.catch(err => {
 			console.log(err.message);
