@@ -245,7 +245,7 @@
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
                                     $startDate = new DateTime('2023-12-01');
-                                    $endDate = new DateTime('2024-01-31');
+                                    $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
                                         echo "<div id='row" . ($item->id) . "-" . $date->format('Ymd') . "'></div>";
@@ -256,7 +256,7 @@
                                 <div class="gantt-chart" id="gantt-chart-{{$item2->id}}">
                                     @php
                                         $startDate = new DateTime('2023-12-01');
-                                        $endDate = new DateTime('2024-01-31');
+                                        $endDate = new DateTime('2024-03-31');
 
                                         for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
                                             echo "<div id='row" . ($item2->id) . "-" . $date->format('Ymd') . "'></div>";
@@ -270,7 +270,7 @@
                         <div class="gantt-chart" id="gantt-chart-000">
                             @php
                                 $startDate = new DateTime('2023-12-01');
-                                $endDate = new DateTime('2023-01-31');
+                                $endDate = new DateTime('2023-03-31');
 
                                 for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
                                     echo "<div id='row"."-" . $date->format('Ymd') . "' class='d-none'></div>";

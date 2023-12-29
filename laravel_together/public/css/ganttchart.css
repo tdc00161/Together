@@ -688,6 +688,6 @@
 }
 
 .scroll-style::-webkit-scrollbar-thumb {
-	position: fixed;
+	/* position: fixed; */
 	background-color: white;
 }
