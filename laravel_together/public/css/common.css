@@ -1104,6 +1104,7 @@ box-sizing: border-box;
 
 /* 4  */
 .app-card4 {
+    overflow: auto;
     margin-left: 7px;
     display: block;
     flex-direction: column;
