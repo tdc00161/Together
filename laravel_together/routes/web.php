@@ -66,9 +66,9 @@ Route::middleware('auth')->get('/create', [ProjectController::class,'tableget'])
 Route::middleware('auth')->post('/create', [ProjectController::class,'maincreate'])->name('create.post');
 
 // 프로젝트 개인/팀 화면
-Route::middleware('auth')->get('/individual', [ProjectController::class,'mainindex'])->name('individual');
+Route::middleware('auth')->get('/individual', [ProjectController::class,'mainindex']);
 Route::middleware('auth')->get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
-Route::middleware('auth')->get('/team', [ProjectController::class,'mainindex'])->name('individual');
+Route::middleware('auth')->get('/team', [ProjectController::class,'mainindex']);
 Route::middleware('auth')->get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
 Route::middleware('auth.api')->get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 Route::middleware('auth.api')->post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
@@ -77,9 +77,6 @@ Route::middleware('auth.api')->delete('/delete/{id}', [ProjectController::class,
 // 모달
 Route::get('/messenger', function () {
     return view('modal/messenger');
-});
-
-Route::group(['middleware' => ['web']], function () { // web이라는 기본 미들웨어, session 접근 가능
 });
 
 Route::group(['middleware' => ['web']], function () {
