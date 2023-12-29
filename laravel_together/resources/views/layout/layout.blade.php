@@ -4,14 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- <script src="{{asset('js/app.js')}}" defer></script> -->
-  @yield('gantt_link', '') {{-- 12/12 민주 gantt css 개별 링크용--}}
   {{-- 부트스트랩 --}}
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/project_individual.css">
-  @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
   <title>@yield('title', 'Laravel Board')</title>
 
   <style>
@@ -118,6 +114,5 @@
   <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
   {{-- js --}}
   <script src="/js/common.js"></script>
-  @yield('project_css','')
 </body>
 </html>
