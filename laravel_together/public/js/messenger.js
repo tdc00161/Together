@@ -316,10 +316,11 @@ function displayFriendRequests(friendRequests) {
 
             acceptbtn.addEventListener('click', function () {
 
+                // friendList();
+                // friendRequestList();
+
                 var requestId = this.value;
                 noticecount.innerHTML = noticecount.innerHTML - 1;
-
-                // friendRequestList();
 
                 if(noticecount.innerHTML==='0'){
                     emptydiv.style.display = 'block';
@@ -654,7 +655,6 @@ const searchResults = document.getElementById('friend-list-div');
 
 // 검색 결과를 출력하는 함수
 function displayResults(results) {
-    friendList();
 
     // 이전 결과 삭제
     searchResults.innerHTML = '';
