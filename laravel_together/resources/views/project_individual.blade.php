@@ -7,6 +7,7 @@
 <script src="/js/project_member.js" defer></script>
 <link rel="stylesheet" href="/css/insert_detail.css">
 <script defer src="/js/insert_detail.js"></script>
+<link rel="stylesheet" href="/css/project_individual.css">
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endsection
 
