@@ -1014,6 +1014,7 @@ function sendUpdateRequest(id, updatedValue, numbersOnly) {
     .then(res => {
       // 성공적으로 요청을 보낸 후에 할 작업
       console.log('수정 요청 성공:', res.data);
+      // addChildTaskAfter(res.data);
     })
     .catch(err => {
       // 요청 실패 시 에러 처리
