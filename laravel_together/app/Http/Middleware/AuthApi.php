@@ -16,11 +16,10 @@ class AuthApi
      */
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->expectsJson()) {
-            $err = 'Have no Authentication.';
-            return response()->json($err);
-        } else {
+        if ($request->header('Accept') == 'application/json' || $request->is('api/*')) { // 주소 시작이 /api/ 인지
             return $next($request);
+        } else {
+            return abort(403, 'Unauthorized'); // HTTP 통신 중단 후 값 반환?
         }
     }
 }
