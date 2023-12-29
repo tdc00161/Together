@@ -245,7 +245,7 @@
 	background-color: var(--theme-bg-color);
 	/* background-color: #fff; */
 	/* color: #000; */
-	height: auto;
+	height: 100%;
 	margin: -40px -40px 0 -40px;
 	position: relative;
 	top: 40px;
