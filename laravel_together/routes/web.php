@@ -40,7 +40,7 @@ Route::get('/sidebar', [TaskController::class,'showSidebar']);
 
 // 대시보드
 Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
-Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
+Route::middleware('auth.api')->get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
 
 
 // 간트차트
@@ -66,23 +66,15 @@ Route::middleware('auth')->get('/create', [ProjectController::class,'tableget'])
 Route::middleware('auth')->post('/create', [ProjectController::class,'maincreate'])->name('create.post');
 
 // 프로젝트 개인/팀 화면
-Route::get('/individual', [ProjectController::class,'mainindex'])->name('individual');
-Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
-Route::get('/team', [ProjectController::class,'mainindex'])->name('individual');
-Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
-Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
-Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
-Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
+Route::middleware('auth')->get('/individual', [ProjectController::class,'mainindex'])->name('individual');
+Route::middleware('auth')->get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
+Route::middleware('auth')->get('/team', [ProjectController::class,'mainindex'])->name('individual');
+Route::middleware('auth')->get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
+Route::middleware('auth.api')->get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+Route::middleware('auth.api')->post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
+Route::middleware('auth.api')->delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
 
 // 모달
-Route::get('/modaltest', [TaskController::class,'index']);
-Route::get('/modaltest2/{id}', [TaskController::class,'index_one']);
-Route::get('/detail', function () {
-    return view('modal/detail');
-});
-Route::get('/insert', function () {
-    return view('modal/insert');
-});
 Route::get('/messenger', function () {
     return view('modal/messenger');
 });
@@ -90,30 +82,27 @@ Route::get('/messenger', function () {
 Route::group(['middleware' => ['web']], function () { // web이라는 기본 미들웨어, session 접근 가능
 });
 
-
-
-
 Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/task', [TaskController::class, 'index']); // 전체 업무 조회
-    Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함)
-    Route::post('/task',[TaskController::class,'store']); // 업무 작성
-    Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정
-    Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제
+    Route::middleware('auth')->get('/task', [TaskController::class, 'index']); // 전체 업무 조회 / page
+    Route::middleware('auth.api')->get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함) / api
+    Route::middleware('auth.api')->post('/task',[TaskController::class,'store']); // 업무 작성 / api
+    Route::middleware('auth.api')->put('/task/{id}',[TaskController::class,'update']); // 업무 수정 / api
+    Route::middleware('auth.api')->delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제 / api
     
-    Route::get('/basedata/{id}', [BaseDataController::class, 'get_priority_list']); // 우선순위 리스트 조회
+    Route::middleware('auth.api')->get('/basedata/{id}', [BaseDataController::class, 'get_priority_list']); // 우선순위 리스트 조회 / api
     
-    Route::get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기
-    Route::get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기
+    Route::middleware('auth.api')->get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기 / api
+    Route::middleware('auth.api')->get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기 / api
 
-    Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id
-    Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id
-    Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id
-
+    Route::middleware('auth.api')->post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id / api
+    Route::middleware('auth.api')->put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id / api
+    Route::middleware('auth.api')->delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id / api
+ 
 
 });
 
-Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+Route::middleware('auth.api')->get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 
 Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정
 // Route::put('/gantt', [TaskController::class, 'store']); // 간트차트 하위생성후 작성

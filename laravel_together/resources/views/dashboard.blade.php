@@ -185,7 +185,7 @@
                         @endif
                         @forelse ($item as $ddayitem)
                             <div class="dash_dday_grid">
-                                <div class="project_color" style="background-color:{{ $ddayitem->data_content_name }}">
+                                <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}">
                                 </div>
                                 <div class="dash_ddaytitle" style="">{{ Str::limit($ddayitem->title, 15, '...') }}
                                 </div>
