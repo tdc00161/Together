@@ -96,6 +96,10 @@ class ProjectController extends Controller
     $result = project::find($id);
     // dd($result);
 
+    if(!$result){
+      return redirect()->route('dashboard.show');
+    }
+
     //프로젝트 색상 출력
     $color_code = DB::table('projects as pj')
                     ->join('basedata as bd','bd.data_content_code','pj.color_code_pk')

@@ -62,8 +62,8 @@ Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); 
 
 
 // 프로젝트 생성
-Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
-Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post');
+Route::middleware('auth')->get('/create', [ProjectController::class,'tableget'])->name('create.get');
+Route::middleware('auth')->post('/create', [ProjectController::class,'maincreate'])->name('create.post');
 
 // 프로젝트 개인/팀 화면
 Route::get('/individual', [ProjectController::class,'mainindex'])->name('individual');
