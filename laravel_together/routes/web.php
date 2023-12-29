@@ -59,12 +59,16 @@ Route::middleware('auth')->patch('/cancleFriendRequest', [FriendRequestControlle
 Route::get('/myfriendlist', [FriendlistController::class, 'myfriendList']); // 친구 목록
 Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
 Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
+
+
 // 프로젝트 생성
 Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
 Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post');
 
 // 프로젝트 개인/팀 화면
+Route::get('/individual', [ProjectController::class,'mainindex'])->name('individual');
 Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
+Route::get('/team', [ProjectController::class,'mainindex'])->name('individual');
 Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
 Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정

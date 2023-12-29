@@ -79,6 +79,13 @@ class ProjectController extends Controller
     }
   }
 
+  public function mainindex() {
+    if (Auth::check()) {
+      return redirect('/dashboard');
+    } else {
+        return redirect('/user/login');
+    }
+  }
 
   public function mainshow(Request $request, $id) {
 
@@ -111,6 +118,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',0)
+                ->whereNull('deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
                 // dd($before);
@@ -120,6 +128,7 @@ class ProjectController extends Controller
             ->where('project_id',$id)
             ->where('category_id',0)
             ->where('task_status_id',1)
+            ->whereNull('deleted_at')
             ->groupBy('task_status_id')
             ->get();
 
@@ -128,6 +137,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',2)
+                ->whereNull('deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
 
@@ -136,6 +146,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',3)
+                ->whereNull('deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
 
@@ -157,9 +168,9 @@ class ProjectController extends Controller
     $first_data = DB::table('tasks as tk')
                     ->join('projects as pj','pj.id','tk.project_id')
                     ->select('tk.id','tk.title','tk.created_at')
-                    ->whereNull('tk.deleted_at')
                     ->where('tk.project_id',$result->id)
                     ->where('tk.category_id','1')
+                    ->whereNull('tk.deleted_at')
                     ->orderBy('tk.created_at','desc')
                     ->get();
 
@@ -169,9 +180,9 @@ class ProjectController extends Controller
                     ->join('projects as pj','pj.id','tk.project_id')
                     ->join('basedata as bd','bd.data_content_code','tk.category_id')
                     ->select('tk.id','tk.title','tk.updated_at','tk.category_id','bd.data_content_name')
-                    ->whereNull('tk.deleted_at')
                     ->where('bd.data_title_code','2')
                     ->where('tk.project_id',$result->id)
+                    ->whereNull('tk.deleted_at')
                     ->orderBy('tk.updated_at','desc')
                     ->get();
 
@@ -188,11 +199,11 @@ class ProjectController extends Controller
                             ,'tk.task_status_id'
                             ,'bd.data_content_name'
                             , DB::raw('tk.end_date - tk.start_date as dday'))
-                            ->whereNull('tk.deleted_at')
                     ->where('tk.category_id','0')
                     ->where('bd.data_title_code','0')
                     ->where('tk.project_id',$result->id)
-                    ->orderBy('dday','desc')
+                    ->whereNull('tk.deleted_at')
+                    ->orderBy('dday','asc')
                     ->get();
 
 
@@ -258,27 +269,31 @@ class ProjectController extends Controller
                 ->selectRaw('count(task_status_id) as cnt')
                 ->where('project_id',$id)
                 ->where('task_status_id',0)
+                ->whereNull('deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
 
     $ing=DB::table('tasks')
             ->selectRaw('count(task_status_id) as cnt')
-            ->where('task_status_id',1)
             ->where('project_id',$id)
+            ->where('task_status_id',1)
+            ->whereNull('deleted_at')
             ->groupBy('tasks.task_status_id')
             ->get();
 
     $feedback=DB::table('tasks')
                   ->selectRaw('count(task_status_id) as cnt')
-                  ->where('task_status_id',2)
                   ->where('project_id',$id)
+                  ->where('task_status_id',2)
+                  ->whereNull('deleted_at')
                   ->groupBy('tasks.task_status_id')
                   ->get();
 
     $complete=DB::table('tasks')
                 ->selectRaw('count(task_status_id) as cnt')
-                ->where('task_status_id',3)
                 ->where('project_id',$id)
+                ->where('task_status_id',3)
+                ->whereNull('deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -390,8 +405,6 @@ class ProjectController extends Controller
     $project->save();
 
     return redirect()->route('/individual');
-
-
   }
 
 
