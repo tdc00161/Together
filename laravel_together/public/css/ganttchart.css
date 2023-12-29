@@ -156,7 +156,61 @@
     font-size: 1em;
 }
 
+/* 모달창 */
 
+#deleteModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+.deletemodal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 20%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+}
+
+.deletespan {
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+}
+
+.deletebutton {
+    color: white;
+    width: 62px;
+    height: 27px;
+    margin-right: 10px;
+    background-color: #04A5FF;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.closebutton {
+    color: white;
+    width: 62px;
+    height: 27px;
+    margin-right: 10px;
+    background-color: #919191;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+}
 
 
 
