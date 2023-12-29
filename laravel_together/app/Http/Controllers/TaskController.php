@@ -51,6 +51,7 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $userId)
         ->where('p.flg','=', 0)
         ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -61,6 +62,7 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $userId)
         ->where('p.flg','=', 1)
         ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
