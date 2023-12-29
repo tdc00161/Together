@@ -233,7 +233,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 				// console.log(data);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
-				
+
 				// 업무상태 값과 색상 주기
 				statusColor(data);
 
@@ -352,7 +352,7 @@ function createTask() {
 					const element = chartDateList[index];
 					// console.log(element);
 					let date = element.id.match(/-(\d+)/)[0]
-					element.setAttribute('id','row' + data.data.id + date)
+					element.setAttribute('id', 'row' + data.data.id + date)
 					element.classList.remove('d-none')
 				}
 
@@ -368,30 +368,32 @@ function createTask() {
 				let Notice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list') : firstCloneNotice
 				let Update = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : firstCloneUpdate
 				console.log('1');
-				
-				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
-				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
+
+				let cloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list').cloneNode(true) : firstCloneNotice.cloneNode(true) 
+				let cloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list').cloneNode(true) : firstCloneUpdate.cloneNode(true) 
 				cloneNotice.firstElementChild.textContent = data.data.title
-				cloneNotice.firstElementChild.setAttribute('onclick','openTaskModal(1,1,'+ data.data.id +')')
-				cloneNotice.firstElementChild.classList.add('notice-'+ data.data.id)
-				cloneNotice.classList.add('notice-layout-'+ data.data.id)
+				cloneNotice.firstElementChild.setAttribute('onclick', 'openTaskModal(1,1,' + data.data.id + ')')
+				cloneNotice.firstElementChild.classList.add('notice-' + data.data.id)
+				cloneNotice.classList.add('notice-layout-' + data.data.id)
 				// console.log(cloneNotice.firstElementChild);
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
+				cloneUpdate.firstElementChild.firstElementChild.style = "color:rgb(255, 196, 0);"
+				console.log('1-1');
 				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
 				// console.log(cloneUpdate.firstElementChild.nextElementSibling);
-				cloneUpdate.firstElementChild.nextElementSibling.setAttribute('onclick','openTaskModal(1,1,'+ data.data.id +')')
-				cloneUpdate.firstElementChild.classList.add('update-'+ data.data.id)
-				cloneUpdate.classList.add('update-layout-'+ data.data.id)
+				cloneUpdate.firstElementChild.nextElementSibling.setAttribute('onclick', 'openTaskModal(1,1,' + data.data.id + ')')
+				cloneUpdate.firstElementChild.classList.add('update-' + data.data.id)
+				cloneUpdate.classList.add('update-layout-' + data.data.id)
 				console.log('2');
-				
-				let NoticeParent = Notice.parentElement
-				let UpdateParent = Update.parentElement
+
+				let NoticeParent = document.querySelector('.project_task_notice_list_parent')
+				let UpdateParent = document.querySelector('.project_task_update_list_parent')
 				console.log('3');
-				
+
 				NoticeParent.firstChild.before(cloneNotice)
 				UpdateParent.firstChild.before(cloneUpdate)
 				console.log('4');
-				
+
 				closeTaskModal(0)
 				console.log('5');
 			}
@@ -1094,22 +1096,22 @@ function updateModalOpen() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);			
+			console.log(data);
 			// 값을 모달에 삽입
 			insertModalValue(data, 0);
-			
+
 			// 업무상태 값과 색상 주기
 			updateStatusColor(data);
-			
+
 			// 담당자 값체크, 삽입
 			updateResponsibleName(data, 0);
-			
+
 			// 마감일자 값체크, 삽입
 			deadLineValue(data, 0);
-			
+
 			// 우선순위 값체크, 삽입
 			updatePriorityValue(data, 0);
-			
+
 			// 상세업무 내용 값체크, 삽입
 			modalContentValue(data, 0);
 
@@ -1118,7 +1120,7 @@ function updateModalOpen() {
 
 			// // 댓글 컨트롤
 			// commentControl(data);
-			
+
 			// 상위업무 컨트롤
 			parentTaskControl(data, 0);
 		})
@@ -1157,9 +1159,9 @@ function deleteTask() {
 
 			document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
 			document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
-			
-			document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''			
-			document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''			
+
+			document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''
+			document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''
 
 			closeTaskModal(1)
 		})

@@ -125,7 +125,7 @@
                         <hr id="titleline">
                     </div>
                     <div class="listscroll">
-                        <table class="listtable">
+                        <table class="listtable project_task_notice_list_parent">
                             <colgroup>
                                 <col class="col1">
                             </colgroup>
@@ -149,7 +149,7 @@
                     </div>
                     <hr id="titleline">
                     <div class="listscroll">
-                        <table class="listtable">
+                        <table class="listtable project_task_update_list_parent">
                             <colgroup>
                                 <col class="col2">
                                 <col class="col3">
