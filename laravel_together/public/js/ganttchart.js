@@ -450,7 +450,7 @@ function addSubTask(event, mainId) {
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
   const newTask = document.createElement('div');
   newTask.classList.add('gantt-task', 'gantt-child-task');
-  // newTask.id = 'gantt-task-';
+  // newTask.id = 'gantt-task-'; // 밑에서
   newTask.setAttribute('parent', gantt_modal_id[0])
 
   // gantt-task 안에 5개 div 생성
@@ -541,20 +541,21 @@ function addSubTask(event, mainId) {
       .then(data => {
         addTaskName.removeEventListener('blur', addChildTask);
         addTaskKey.textContent = data.data.task_number;
+        // console.log(data);
 
-        const ganttChildId = data.data.id;
-        console.log(ganttChildId);
-        addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttChildId})`);
+        // const ganttChildId = data.data.id;
+        // console.log(ganttChildId);
+        addDetailButton.setAttribute('onclick', 'openTaskModal(1,0, '+data.data.id+')');
 
-        addTaskStartDate.id = 'start-row' + ganttChildId;
+        addTaskStartDate.id = 'start-row' + data.data.id;
         // addTaskStartDate.id = 'start-row000';
 
         console.log(addTaskStartDate);
-        addTaskEndDate.id = 'end-row' + ganttChildId;
+        addTaskEndDate.id = 'end-row' + data.data.id;
         // addTaskEndDate.id = 'end-row000';
 
         console.log(addTaskEndDate);
-        newChart.id = 'gantt-chart-' + ganttChildId;
+        newChart.id = 'gantt-chart-' + data.data.id;
         console.log(newChart);
         
         // 시작일 종료일 날짜 설정
@@ -572,7 +573,7 @@ function addSubTask(event, mainId) {
 
           // gantt-chart안에 들어갈 새로운 div
           const ganttChartRow = document.createElement('div');
-          ganttChartRow.id = 'row' + ganttChildId + '-' + chartFormatDate;
+          ganttChartRow.id = 'row' + data.data.id + '-' + chartFormatDate;
 
           // 다음 날짜 이동
           chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
@@ -584,8 +585,8 @@ function addSubTask(event, mainId) {
         }
 
         // test
-        addTaskStartDate.setAttribute('onchange', `test(${ganttChildId})`);
-        addTaskEndDate.setAttribute('onchange', `test(${ganttChildId})`);
+        addTaskStartDate.setAttribute('onchange', 'test('+data.data.id+')');
+        addTaskEndDate.setAttribute('onchange', 'test('+data.data.id+')');
 
         // addEventListener 로 하는 방법
         //
@@ -742,7 +743,7 @@ function addSubTask(event, mainId) {
   addGanttDetailClick.appendChild(addGanttDetailClickSpan);
   addGanttEditableDiv.appendChild(addGanttDetail);
   addGanttDetail.appendChild(addDetailButton);
-  // addGanttEditableDiv.appendChild(addTaskKey);
+  addGanttEditableDiv.appendChild(addTaskKey);
   addGanttEditableDiv.appendChild(addTaskName);
 
   // gantt-task 안에 두번째
@@ -937,13 +938,13 @@ window.onload = function () {
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
 
 function test(rowNum) {
-  console.log('***** test() Start *****');
+  // console.log('***** test() Start *****');
 
   const start = document.getElementById('start-row' + rowNum).value;
   const end = document.getElementById('end-row' + rowNum).value;
 
-  console.log(start);
-  console.log(end);
+  // console.log(start);
+  // console.log(end);
 
   if (start && end) {
     let startDate = new Date(start);
