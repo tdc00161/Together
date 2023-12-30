@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelector('.gantt-task-header-div:nth-child(1) button').addEventListener('click', function () {
     const tasks_title = document.querySelectorAll('.gantt-task');
+    // console.log(tasks_title);
     const icon_title = this.querySelector('img');
 
     const sortedTasks_title = Array.from(tasks_title).sort(function (a, b) {
@@ -104,15 +105,25 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
+        
+
+    
     
     // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
     const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
-    sortedTasks_title_child.forEach(tasks_title => {
+    sortedTasks_title.forEach(tasks_title => {
       const taskId_title = tasks_title.getAttribute('id').split('-')[2];
       const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
       ganttChartContainer_title.appendChild(ganttChartItem_title);
     });
 
+    // sortedTasks_title_child.forEach(tasks_title => {
+    //   const taskId_title = tasks_title.getAttribute('id').split('-')[2];
+    //   const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
+    //   ganttChartContainer_title.appendChild(ganttChartItem_title);
+    // });
+
+    
 
   });
 });
