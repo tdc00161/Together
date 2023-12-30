@@ -115,7 +115,7 @@ class ProjectController extends Controller
       $end = Carbon::create($result['end_date']);
       $result['dday'] = $start->diffInDays($end); // data에 dday 추가
     }
-    dd($start);
+    // dd($start);
 
     //프로젝트 상태별 개수 출력
     $before =DB::table('tasks')
