@@ -102,6 +102,7 @@ class TaskController extends Controller
             ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
             ->where('t.project_id', '=', $projectId)
             ->where('b.data_title_code', '=', 3)
+            ->where('t.category_id',0)
             ->groupBy('b.data_content_name','p.project_title')
             ->get();
 
@@ -116,6 +117,7 @@ class TaskController extends Controller
                 ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
                 ->where('t.project_id', '=', $projectId)
                 ->where('b.data_title_code', '=', 3)
+                ->where('t.category_id',0)
                 ->groupBy('b.data_content_name','p.project_title')
                 ->get();
 
