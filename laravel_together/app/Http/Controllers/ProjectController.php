@@ -115,7 +115,7 @@ class ProjectController extends Controller
       $end = Carbon::create($result['end_date']);
       $result['dday'] = $start->diffInDays($end); // data에 dday 추가
     }
-    dd($start);
+    // dd($start);
 
     //프로젝트 상태별 개수 출력
     $before =DB::table('tasks')
@@ -273,6 +273,7 @@ class ProjectController extends Controller
     $before=DB::table('tasks')
                 ->selectRaw('count(task_status_id) as cnt')
                 ->where('project_id',$id)
+                ->where('category_id',0)
                 ->where('task_status_id',0)
                 ->whereNull('deleted_at')
                 ->groupBy('task_status_id')
@@ -281,6 +282,7 @@ class ProjectController extends Controller
     $ing=DB::table('tasks')
             ->selectRaw('count(task_status_id) as cnt')
             ->where('project_id',$id)
+            ->where('category_id',0)
             ->where('task_status_id',1)
             ->whereNull('deleted_at')
             ->groupBy('tasks.task_status_id')
@@ -289,6 +291,7 @@ class ProjectController extends Controller
     $feedback=DB::table('tasks')
                   ->selectRaw('count(task_status_id) as cnt')
                   ->where('project_id',$id)
+                  ->where('category_id',0)
                   ->where('task_status_id',2)
                   ->whereNull('deleted_at')
                   ->groupBy('tasks.task_status_id')
@@ -297,6 +300,7 @@ class ProjectController extends Controller
     $complete=DB::table('tasks')
                 ->selectRaw('count(task_status_id) as cnt')
                 ->where('project_id',$id)
+                ->where('category_id',0)
                 ->where('task_status_id',3)
                 ->whereNull('deleted_at')
                 ->groupBy('tasks.task_status_id')

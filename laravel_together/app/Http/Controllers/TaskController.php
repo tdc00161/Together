@@ -132,6 +132,7 @@ class TaskController extends Controller
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',0)
+                    ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -143,6 +144,7 @@ class TaskController extends Controller
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',1)
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -154,6 +156,7 @@ class TaskController extends Controller
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',2)
+                    ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -165,6 +168,7 @@ class TaskController extends Controller
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',3)
+                    ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -198,6 +202,7 @@ class TaskController extends Controller
                     ->where('tk.task_depth', '0') //상위업무만 출력
                     ->where('bd.data_title_code','3')
                     ->where('tk.category_id','0')
+                    ->whereNull('tk.deleted_at')
                     ->orderBy('dday','desc')
                     ->get();
 
@@ -252,6 +257,7 @@ class TaskController extends Controller
         ->where('project_users.member_id',$user->id)
         ->where('tasks.category_id',0)
         ->where('tasks.task_status_id',0)
+        ->whereNull('tasks.deleted_at')
         ->groupBy('tasks.task_status_id')
         ->get();
 
@@ -263,6 +269,7 @@ class TaskController extends Controller
             ->where('project_users.member_id',$user->id)
             ->where('tasks.category_id',0)
             ->where('tasks.task_status_id',1)
+            ->whereNull('tasks.deleted_at')
             ->groupBy('tasks.task_status_id')
             ->get();
 
@@ -274,6 +281,7 @@ class TaskController extends Controller
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',2)
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -285,6 +293,7 @@ class TaskController extends Controller
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',3)
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -518,6 +527,7 @@ class TaskController extends Controller
             $responseData['names']['task_status_name'] = $sta[0]->data_content_name;
         } else {
             $request['task_status_name'] = null;
+            $request['task_status_id'] = 0;
         }
         Log::debug('1-1');
         // Log::debug($res);
@@ -589,8 +599,10 @@ class TaskController extends Controller
         } else {
             if($request['task_responsible_id'] !== null) {
                 $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
+            } else if($request->task_responsible_id !== null){
+                $res = DB::table('users')->where('name', $request->task_responsible_id)->first();
             }
-                $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
             // Log::debug('$request :' . $request);
             // Log::debug('$res :' . $res->id);
@@ -617,7 +629,9 @@ class TaskController extends Controller
 
             $responseData["code"] = "U01";
             $responseData["msg"] = $id." updated";
-            $responseData['data'] = ['task' => $result];
+            $responseData['data']['task'] = $result;
+            $responseData['data']['names']['task_status_name'] = $request->task_status_id;
+            $responseData['data']['names']['task_responsible_name'] = $request->task_responsible_id;
         }
 
         return $responseData;

@@ -169,14 +169,19 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		document.querySelector('.insert_title').value = ''
 		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
-		if (!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')) {
+		if (document.querySelectorAll('.insert_responsible_one') ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
-		}
+		} // 작성되어있는 첫번째 담당자 삭제
+		START_DATE[0].value = ''
+		START_DATE[0].placeholder = '시작일'
+		END_DATE[0].value = ''
+		END_DATE[0].placeholder = '마감일'
 		DEAD_LINE[0].classList.remove('d-none')
+		console.log('remove');
 		if (!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')) {
 			PRIORITY[0].removeChild(document.querySelectorAll('.insert_priority_one')[0])
 		}
-		// TODO: 날짜 초기화 (value)
+		// 날짜 초기화 필요 (value)
 
 
 		// 프로젝트 색 가져오기
@@ -304,7 +309,7 @@ function createTask() {
 		"title": INSERT_TITLE.value,
 		"content": INSERT_CONTENT.value,
 		"project_id": thisProjectId,
-		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 // TODO
+		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0
 	}
 	console.log(postData);
 	if (TaskNoticeFlg === 0) {
@@ -350,7 +355,7 @@ function createTask() {
 				let add_under_task = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
 				let gantt_more_modal = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling
 				// console.log(gantt_more_modal);
-				gantt_task_element.id = 'gantt-task-' + data.data.id // TODO
+				gantt_task_element.id = 'gantt-task-' + data.data.id
 				start_element.value = data.data.start_date
 				start_element.setAttribute('id', 'start-row' + data.data.id)
 				start_element.setAttribute('onchange', 'test(' + data.data.id + ');')
@@ -363,7 +368,7 @@ function createTask() {
 				add_under_task.setAttribute('onclick', 'addSubTask(event,' + data.data.id + ')')
 				responsibleName_element.textContent = data.names.task_responsible_name
 				statusName_element.textContent = data.names.task_status_name
-				statusName_element.setAttribute('data-status',data.names.task_status_name) 
+				statusName_element.setAttribute('data-status', data.names.task_status_name)
 				statusColorAutoPainting(data.names.task_status_name, statusName_element)
 				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
 				// ganttDetailChange()
@@ -496,10 +501,10 @@ function updateTask() {
 		'title': document.querySelector('.insert_title') ? document.querySelector('.insert_title').value : null,
 		'content': document.querySelector('.insert_content') ? document.querySelector('.insert_content').value : null,
 		'task_status_id': document.querySelectorAll('#checked') ? document.querySelectorAll('#checked')[0].textContent : null,
-		'task_responsible_id': document.querySelectorAll('.responsible_user') ? document.querySelectorAll('.responsible_user')[0].textContent : null,
+		'task_responsible_id': document.querySelector('.insert_responsible_one') ? document.querySelector('.insert_responsible_one').textContent : null,
 		'start_date': document.querySelectorAll('.start_date') ? document.querySelectorAll('.start_date')[0].value : null,
 		'end_date': document.querySelectorAll('.end_date') ? document.querySelectorAll('.end_date')[0].value : null,
-		'priority_id': document.querySelector('.responsible_user') ? document.querySelector('.responsible_user').textContent : null
+		'priority_id': document.querySelector('.insert_priority_one') ? document.querySelector('.insert_priority_one').textContent : null
 	}
 	console.log(updateData);
 	fetch('/task/' + now_task_id, {
@@ -512,12 +517,65 @@ function updateTask() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			// console.log(data.data);
+			console.log(data);
 			closeTaskModal(0)
+			if (GANTT_LEFT[0]) {
+				// 해당 간트 row
+				let refreshTarget = document.querySelector('#gantt-task-' + now_task_id)
+				// console.log(refreshTarget);
+				// 해당 간트 상태
+				let refreshStatus = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild
+				// console.log(refreshStatus);
+				refreshStatus.setAttribute('data-status', data.data.names.task_status_name)
+				// console.log(refreshStatus.firstElementChild);
+				refreshStatus.firstElementChild.textContent = data.data.names.task_status_name
+				statusColorAutoPainting(data.data.names.task_status_name, refreshStatus)
+				// 해당 간트 담당자
+				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild
+				refreshResponsible.textContent = data.data.names.task_responsible_name
+				// 해당 간트 제목
+				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+				refreshTitle.textContent = data.data.task.title
+				// 해당 간트 시작일				
+				let refreshStart = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+				refreshStart.value = data.data.task.start_date
+				// 해당 간트 마감일
+				let refreshEnd = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+				refreshEnd.value = data.data.task.end_date
+
+				let refreshRightGanttChart = document.querySelector('#gantt-chart-' + now_task_id)
+				let chartDateList = refreshRightGanttChart.children
+				for (let index = 0; index < chartDateList.length; index++) {
+					const element = chartDateList[index];
+					// console.log(element);
+					element.firstChild ? element.removeChild(element.firstChild) : ''
+					let date = element.id.match(/-(\d+)/)[1]
+					// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
+					let gantt_start = data.data.task.start_date.replace(/-/g, '')
+					// console.log(gantt_start);
+					let gantt_end = data.data.task.end_date.replace(/-/g, '')
+					// console.log(gantt_end);
+					// console.log(date);
+					if (gantt_start <= date && gantt_end >= date) {
+						// console.log(date + '유효한 날짜');
+						let create_1 = document.createElement('div')
+						create_1.classList.add('bk-row')
+						create_1.setAttribute('data-row-num', data.data.id)
+						if (gantt_start == date) {
+							create_1.textContent = '시작일: ' + gantt_start
+						} else if (gantt_end == date) {
+							create_1.textContent = '마감일: ' + gantt_end
+						}
+
+						element.append(create_1)
+					}
+				}
+			}
 			openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
 		.catch(err => {
 			console.log(err.message)
+			console.log(err.stack)
 		});
 }
 
@@ -541,7 +599,7 @@ function closeMoreModal() {
 
 // 업무상태 색삽입 모듈
 function statusColorAutoPainting(switching, paintTo) {
-// console.log(switching);
+	// console.log(switching);
 	switch (switching) {
 		case '시작전':
 			paintTo.style.backgroundColor = '#B1B1B1';
@@ -628,7 +686,8 @@ function addResponsible(a) {
 
 				// 현재 추가된/추가안된 담당자 모달에 수정된 클론을 추가
 				let nowResponsibleModal = document.querySelector('.add_responsible_modal')
-				nowResponsibleModal.append(responsibleModalClone)
+				// nowResponsibleModal.append(responsibleModalClone)
+				nowResponsibleModal.insertBefore(responsibleModalClone, nowResponsibleModal.firstElementChild);
 				// console.log(element.member_name);
 			}
 		})
@@ -1168,6 +1227,7 @@ function updateModalOpen() {
 
 			// 마감일자 값체크, 삽입
 			deadLineValue(data, 0);
+			DEAD_LINE[0].classList.remove('d-none')
 
 			// 우선순위 값체크, 삽입
 			updatePriorityValue(data, 0);
@@ -1234,6 +1294,8 @@ function deleteTask() {
 
 function updateStatusColor(data) {
 	// console.log(data);
+	// TODO: checked값 초기화
+	document.querySelectorAll('.status_val') ? document.querySelectorAll('.status_val')[0].setAttribute('id', '') : ''
 	let status_val = document.querySelectorAll('.status_val')
 	let element_for_painting = null;
 	for (let index = 0; index < status_val.length; index++) {
