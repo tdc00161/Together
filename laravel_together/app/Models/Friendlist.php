@@ -13,7 +13,7 @@ class Friendlist extends Model // 친구 목록
 
     use HasFactory;
 
-    protected $fillable = ['user_id', 'friend_id'];
+    protected $fillable = ['user_id', 'friend_id', 'deleted_at'];
 
     public function user()
     {

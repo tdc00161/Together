@@ -218,12 +218,12 @@ class FriendRequestController extends Controller
          ->where('to_user_id', $userId)
          ->first();
 
-     if ($friendRequest) {
-         $addfriendlist = new Friendlist();
-         $addfriendlist->user_id = $friendRequest->to_user_id;
-         $addfriendlist->friend_id = $friendRequest->from_user_id;
-         $addfriendlist->save();
-     }
+         if ($friendRequest) {
+            Friendlist::create([
+                'user_id' => $friendRequest->to_user_id,
+                'friend_id' => $friendRequest->from_user_id,
+            ]);
+        }
         return response()->json(['success' => true, 'message' => 'Friend request accepted.']);
     } else {
         return response()->json(['success' => false, 'message' => 'Friend request not found.']);

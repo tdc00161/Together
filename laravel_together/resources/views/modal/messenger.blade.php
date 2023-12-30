@@ -76,7 +76,7 @@
           {{-- 친구 검색 bar --}}
           <div class="friend-searchbar-div">
           <div class="friend-searchbar">
-          <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색"> 
+          <input type="search" id="friendSearchInput" class="f-search" placeholder="친구 검색" autocomplete="off"> 
           <img class="f-search-img" src="/img/icon-search.png" alt="">
           </div>
           {{-- 친구 추가 버튼 --}}
@@ -111,5 +111,5 @@
 </form>
 </div>
     </div>
-<script src="/js/messenger.js"></script>
+<script src="/js/messenger.js" defer></script>
 </body>

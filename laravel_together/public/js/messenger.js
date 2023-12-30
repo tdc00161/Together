@@ -298,6 +298,8 @@ function displayFriendRequests(friendRequests) {
 
                         if (clickDiv) {
                             clickDiv.style.display = 'none';
+                            clickDiv.classList.remove = 'messenger-user-div';
+                            clickDiv.removeAttribute('id');
                         }
                     })
                     .catch(error => {
@@ -315,10 +317,7 @@ function displayFriendRequests(friendRequests) {
             acceptbtn.textContent = '수락'
 
             acceptbtn.addEventListener('click', function () {
-
-                // friendList();
-                // friendRequestList();
-
+                
                 var requestId = this.value;
                 noticecount.innerHTML = noticecount.innerHTML - 1;
 
@@ -334,10 +333,12 @@ function displayFriendRequests(friendRequests) {
 
                     // 친구 목록에 '추가된 유저' 표시
                     if(friendRequest.id == requestId) {
+                    friendList();
+                    emptyfrienddiv.style.display = 'none';
                     var addfriendlistdiv = document.createElement('div');
                     friendlistdiv.appendChild(addfriendlistdiv);
                     addfriendlistdiv.classList.add('messenger-user-div');
-                    addfriendlistdiv.id = 'add_user_pk'+ requestId;
+                    addfriendlistdiv.id = 'user_pk'+ requestId;
     
                     // 0. div 생성
                     var adduserprofilediv = document.createElement('div');
@@ -378,7 +379,11 @@ function displayFriendRequests(friendRequests) {
                 
                     // 추가된 삭제버튼 클릭 시
                     addfdeletebtn.addEventListener('click', function() {
+                        friendList();
+                        friendList.length = friendList.length-1;
                         var deletefriendId = this.value;
+                        var clickDivId = 'user_pk' + deletefriendId; 
+                        var clickDiv = document.getElementById(clickDivId);
 
                         // AJAX 요청 수행
                         fetch('/friendDelete', {
@@ -397,23 +402,19 @@ function displayFriendRequests(friendRequests) {
                         })
                         .then(data => {
                             // 성공 응답 받았을 때 처리
-        
-                            var clickDivId = 'add_user_pk' + deletefriendId; 
-                            var clickDiv = document.getElementById(clickDivId);
-        
                             if (clickDiv) {
                                 clickDiv.style.left = '500px';
                                 setTimeout(function() {
                                     clickDiv.style.opacity = '0';
+                                    clickDiv.remove();
                                 }, 500);
-        
                                 clickDiv.addEventListener('transitionend', function() {
                                     if (clickDiv.style.opacity !== '1') {
                                         clickDiv.style.display = 'none';
+                                        clickDiv.classList.remove('messenger-user-div');
                                     }
                                 }, { once: true });
                             }
-
                             console.log('Success: Friend delete.', data);
                         })
                         .catch(error => {
@@ -451,6 +452,8 @@ function displayFriendRequests(friendRequests) {
 
                         if (specificDiv) {
                             specificDiv.style.display = 'none';
+                            specificDiv.classList.remove('messenger-user-div');
+                            specificDiv.removeAttribute('id');
                         }
                     })
                     .catch(error => {
@@ -458,8 +461,8 @@ function displayFriendRequests(friendRequests) {
                         console.error('Error:', error.message);
                     });
             });
-
             userDiv.appendChild(acceptbtn);
+            // friendList();
         }
     } else {
         console.error('Element with id "friend-request-div" not found.');
@@ -558,21 +561,18 @@ function displayFriendsends(friendSendlist) {
             var friendSendId = friendSends.id;
             var requestcanclebtn = document.createElement('button');
             requestcanclebtn.classList.add('request-cancle-btn');
+            var emptysenddiv = document.getElementById('emptysenddiv');
+            
             requestcanclebtn.setAttribute('value', friendSendId);
             requestcanclebtn.textContent = '요청 취소'
 
             requestcanclebtn.addEventListener('click', function () {
-                
+            
+            friendSendlist.length = friendSendlist.length-1
             var sendId = this.value;
-            friendSendList()
-            if(friendSendlist.length===0){
-            // emptysenddiv.style.display = 'none';
-            var emptysenddiv = document.getElementById('emptysenddiv');
-            var emptysendMsg = document.createElement('p');
 
-            emptysendMsg.classList.add('empty-msg-css');
-            emptysendMsg.innerHTML = '요청 없음';
-            emptysenddiv.appendChild(emptysendMsg);   
+            if(friendSendlist.length===0){
+            emptysenddiv.style.display = 'block';
             }
 
                 // AJAX 요청 수행
@@ -599,6 +599,7 @@ function displayFriendsends(friendSendlist) {
 
                         if (clickDiv) {
                             clickDiv.style.display = 'none';
+                            clickDiv.removeAttribute('id');
                         }
                     })
                     .catch(error => {
@@ -606,7 +607,6 @@ function displayFriendsends(friendSendlist) {
                         console.error('Error:', error.message);
                     });
             });
-
             userDiv.appendChild(requestcanclebtn);
         }
     } else {
@@ -620,6 +620,8 @@ function displayFriendsends(friendSendlist) {
 
 // friend-list-div
 var friendlistdiv = document.getElementById('friend-list-div');
+var emptyfrienddiv = document.getElementById('emptyfrienddiv');
+var emptyfriendMsg = document.createElement('p');
 // 모달이 열릴때 실행 되는 함수
 function friendList() {
 
@@ -638,11 +640,18 @@ function friendList() {
             var friendList = data.myfriendList;
             var useUserId = data.useUserId;
             // 0 :
-            if (friendList === 0) {
+            if (friendList.length === 0) {
+                emptyfrienddiv.style.display = 'block';
+                emptyfrienddiv.appendChild(emptyfriendMsg);
+                emptyfriendMsg.innerHTML = '친구 목록 없음';
+                emptyfriendMsg.classList.add('empty-msg-css');
+                emptyfriendMsg.style.marginTop = '50px';
+
             // !0 :
             } else {
                 // 친구 목록 표시 함수 실행
                 displayFriendlist(friendList,useUserId);
+                emptyfrienddiv.style.display = 'none';
             }
         })
         .catch(error => {
@@ -655,7 +664,6 @@ const searchResults = document.getElementById('friend-list-div');
 
 // 검색 결과를 출력하는 함수
 function displayResults(results) {
-
     // 이전 결과 삭제
     searchResults.innerHTML = '';
 
@@ -666,7 +674,6 @@ function displayResults(results) {
         listItem.textContent = result.name;
         searchResults.appendChild(listItem);
     });
-    console.log(results);
 }
 // 친구 목록 출력
 function displayFriendlist(friendList, useUserId) {
@@ -716,9 +723,16 @@ function displayFriendlist(friendList, useUserId) {
 
             // 삭제 버튼 클릭시
             fdeletebtn.addEventListener('click', function () {
+                friendList.length = friendList.length-1;
                 var deletefriendId = this.value;
 
-                console.log(deletefriendId);
+                if(friendList.length === 0) {
+                    emptyfrienddiv.style.display='block';
+                    emptyfrienddiv.appendChild(emptyfriendMsg);
+                    emptyfriendMsg.classList.add('empty-msg-css');
+                    emptyfriendMsg.innerHTML = '친구 목록 없음';
+                    emptyfriendMsg.style.marginTop = '50px';
+                }
                 // AJAX 요청 수행
                 fetch('/friendDelete', {
                     method: 'DELETE',
@@ -744,11 +758,13 @@ function displayFriendlist(friendList, useUserId) {
                         clickDiv.style.left = '500px';
                         setTimeout(function() {
                             clickDiv.style.opacity = '0';
+                            clickDiv.remove();
                         }, 500);
 
                         clickDiv.addEventListener('transitionend', function() {
                             if (clickDiv.style.opacity !== '1') {
                                 clickDiv.style.display = 'none';
+                                clickDiv.classList.remove('messenger-user-div');
                             }
                         }, { once: true });
                     }
@@ -788,11 +804,14 @@ function displayFriendlist(friendList, useUserId) {
             item.name.toLowerCase().includes(searchTerm) || 
             item.email.toLowerCase().includes(searchTerm)
         );
-
         for (var i = 0; i < filteredData.length; i++) {
             var friendlistId = useUserId ? filteredData[i].user_id : filteredData[i].friend_id;
             var userDiv = document.getElementById('user_pk' + friendlistId);
-            userDiv.style.display = 'inline-block';
+    
+            // 요소가 존재하는 경우에만 스타일 조작
+            if (userDiv) {
+                userDiv.style.display = 'inline-block';
+            }
         }
     });
 }
