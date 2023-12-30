@@ -40,7 +40,15 @@
             {{-- <div class="dday">D-{{$result->dday}}</div> --}}
             <div class="date_set">
                 <label for="dday">
-                    <div class="dday" id="dday">D-{{$result->dday}}</div>
+                    <div class="dday" id="dday">
+                        @if($result->dday === 0)
+                            <div class="dday">D-day</div>
+                        @elseif($result->dday > 0)
+                            <div class="dday">D-{{$result->dday}}</div>
+                        @else
+                            
+                        @endif
+                    </div>
                 </label>
                 <label class="project_label" for="start_date"> 시작일
                     {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
@@ -204,24 +212,26 @@
                             <col class="col8">
                         </colgroup>
                         @foreach ($deadline_data as $item)
-                            @if($item->dday == 0)
+                            @if($item->dday === 0)
                                 <tr class="box_ul">
                                     <td class="td_pd"></td>
                                     <td class="td_pd">
-                                            <div style="color: rgb(207, 25, 25)">{{$item->dday}}</div>
+                                            <div style="color: rgb(207, 25, 25)">d-day</div>
                                     </td>
                                     <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,50,'...')}}</td>
                                     <td class="td_pd">{{$item->name}}</td>
                                     <td class="td_pd"><div class="statuscolor" data-status="{{$item->data_content_name}}">{{$item->data_content_name}}</div></td>
                                 </tr>
-                            @elseif($item->dday > 1)
+                            @elseif($item->dday > 0)
                                 <tr class="box_ul">
                                     <td class="td_pd"></td>
-                                    <td class="td_pd">{{$item->dday}}</td>
+                                    <td class="td_pd">-{{$item->dday}}</td>
                                     <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,50,'...')}}</td>
                                     <td class="td_pd">{{$item->name}}</td>
                                     <td class="td_pd"><div class="statuscolor" data-status="{{$item->data_content_name}}">{{$item->data_content_name}}</div></td>
                                 </tr>
+                            @elseif($item->dday == null || $item->dday == "")
+
                             @endif
                         @endforeach
                     </table>
