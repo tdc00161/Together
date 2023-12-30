@@ -123,7 +123,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',0)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
                 // dd($before);
@@ -133,7 +133,7 @@ class ProjectController extends Controller
             ->where('project_id',$id)
             ->where('category_id',0)
             ->where('task_status_id',1)
-            ->whereNull('deleted_at')
+            ->whereNull('tasks.deleted_at')
             ->groupBy('task_status_id')
             ->get();
 
@@ -142,7 +142,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',2)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
 
@@ -151,7 +151,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',3)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
 
@@ -195,7 +195,7 @@ class ProjectController extends Controller
     //마감기한 내역(d-day순)
     $deadline_data = DB::table('tasks as tk')
                     ->join('projects as pj','pj.id','tk.project_id')
-                    ->join('basedata as bd','bd.data_content_code','tk.category_id')
+                    ->join('basedata as bd','bd.data_content_code','tk.task_status_id')
                     ->join('users as us','us.id','pj.user_pk')
                     ->select('tk.id'
                             ,'tk.title'
@@ -203,8 +203,7 @@ class ProjectController extends Controller
                             ,'us.name'
                             ,'tk.task_status_id'
                             ,'bd.data_content_name'
-                            , DB::raw('tk.end_date - tk.start_date as dday'))
-                    ->where('tk.category_id','0')
+                            , DB::raw('TIMESTAMPDIFF(DAY, curdate(), tk.end_date) as dday'))
                     ->where('bd.data_title_code','0')
                     ->where('tk.project_id',$result->id)
                     ->whereNull('tk.deleted_at')
@@ -275,7 +274,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',0)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
 
@@ -284,7 +283,7 @@ class ProjectController extends Controller
             ->where('project_id',$id)
             ->where('category_id',0)
             ->where('task_status_id',1)
-            ->whereNull('deleted_at')
+            ->whereNull('tasks.deleted_at')
             ->groupBy('tasks.task_status_id')
             ->get();
 
@@ -293,7 +292,7 @@ class ProjectController extends Controller
                   ->where('project_id',$id)
                   ->where('category_id',0)
                   ->where('task_status_id',2)
-                  ->whereNull('deleted_at')
+                  ->whereNull('tasks.deleted_at')
                   ->groupBy('tasks.task_status_id')
                   ->get();
 
@@ -302,7 +301,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',3)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -398,9 +397,10 @@ class ProjectController extends Controller
   //프로젝트명, 콘텐츠, 시작일, 마감일 수정
   public function update_project(Request $request, $id)
   {
+    Log::debug("시작".$request);
     //project.js 에서 전송한 업데이트할 데이터를 변수에 담음
     $newValue = $request->Updatetitle;
-
+    Log::debug("값호출".$newValue);
     //project에 수정한 내용으로 업데이트
     $project = project::where('id',$id)
                       ->update([
@@ -409,7 +409,7 @@ class ProjectController extends Controller
                         'start_date' => $request->Updatestart,
                         'end_date' => $request->Updateend,
                       ]);
-
+    Log::debug("정보출력".$project);
     //DB에 저장
     $project->save();
 
