@@ -218,17 +218,17 @@
 .gantt-update-modal {
 	display: none;
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	/* background-color: rgba(0, 0, 0, 0.5); */
+	top: 10%;
+	left: 50%;
+	width: 8%;
+	/* height: 0%; */
+	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 9999;
 }
 .gantt-modal-content {
 	position: absolute;
-    top: 10%;
-    left: 50%;
+    /* top: 50%; */
+    /* left: 44%; */
     transform: translate(-50%, -50%);
     background-color: #9656FF;
     padding: 10px 30px;
@@ -486,6 +486,7 @@
 /*  업무 부분 너비 조절 */
 .gantt-task .gantt-editable-div {
 	width: 30%;
+	text-align: left;
 }
 .gantt-task .responName {
 	width: 16%;
@@ -528,11 +529,17 @@
 .taskKey {
 	flex: 0 0 20%;
 }
+
+.taskChildPosition {
+	width: 15%;
+}
+
 .taskName {
 	flex: 1;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	padding-left: 10px;
 }
 
 .gantt-editable-div:hover .gantt-task-detail-click-span {
