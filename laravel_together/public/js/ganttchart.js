@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelector('.gantt-task-header-div:nth-child(1) button').addEventListener('click', function () {
     const tasks_title = document.querySelectorAll('.gantt-task');
+    // console.log(tasks_title);
     const icon_title = this.querySelector('img');
 
     const sortedTasks_title = Array.from(tasks_title).sort(function (a, b) {
@@ -78,41 +79,51 @@ document.addEventListener('DOMContentLoaded', function () {
     } else{
       icon_title.src = '/img/table.png';
     }
-    // 자식 정렬
-    const tasks_title_child = document.querySelectorAll('.gantt-child-task');
+    // // 자식 정렬
+    // const tasks_title_child = document.querySelectorAll('.gantt-child-task');
 
-    const sortedTasks_title_child = Array.from(tasks_title_child).sort(function (a, b) {
-      const taskNameA_title = a.querySelector('.taskName').textContent.toUpperCase();
-      const taskNameB_title = b.querySelector('.taskName').textContent.toUpperCase();
+    // const sortedTasks_title_child = Array.from(tasks_title_child).sort(function (a, b) {
+    //   const taskNameA_title = a.querySelector('.taskName').textContent.toUpperCase();
+    //   const taskNameB_title = b.querySelector('.taskName').textContent.toUpperCase();
 
-      if (sortingOrder_title === 0) {
-        return (taskNameA_title < taskNameB_title) ? -1 : (taskNameA_title > taskNameB_title) ? 1 : 0;
-      } else if (sortingOrder_title === 1) {
-        return (taskNameA_title > taskNameB_title) ? -1 : (taskNameA_title < taskNameB_title) ? 1 : 0;
-      } else if (sortingOrder_title === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
-        const taskIdA_title = parseInt(a.querySelector('.taskKey').textContent);
-        const taskIdB_title = parseInt(b.querySelector('.taskKey').textContent);
-        return taskIdA_title - taskIdB_title;
-      }
-    })
+    //   if (sortingOrder_title === 0) {
+    //     return (taskNameA_title < taskNameB_title) ? -1 : (taskNameA_title > taskNameB_title) ? 1 : 0;
+    //   } else if (sortingOrder_title === 1) {
+    //     return (taskNameA_title > taskNameB_title) ? -1 : (taskNameA_title < taskNameB_title) ? 1 : 0;
+    //   } else if (sortingOrder_title === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
+    //     const taskIdA_title = parseInt(a.querySelector('.taskKey').textContent);
+    //     const taskIdB_title = parseInt(b.querySelector('.taskKey').textContent);
+    //     return taskIdA_title - taskIdB_title;
+    //   }
+    // })
 
-    // 배치
-    for (let index = tasks_title_child.length; index > 0; index--) {
-      const element = tasks_title_child[index - 1];
-      let ganttParentValue = element.getAttribute('parent')
-      const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
-      ganttParentElement.after(element)
-    }
+    // // 배치
+    // for (let index = tasks_title_child.length; index > 0; index--) {
+    //   const element = tasks_title_child[index - 1];
+    //   let ganttParentValue = element.getAttribute('parent')
+    //   const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
+    //   ganttParentElement.after(element)
+    // }
 
+        
+
+    
     
     // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
     const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
-    sortedTasks_title_child.forEach(tasks_title => {
+    sortedTasks_title.forEach(tasks_title => {
       const taskId_title = tasks_title.getAttribute('id').split('-')[2];
       const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
       ganttChartContainer_title.appendChild(ganttChartItem_title);
     });
 
+    // sortedTasks_title_child.forEach(tasks_title => {
+    //   const taskId_title = tasks_title.getAttribute('id').split('-')[2];
+    //   const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
+    //   ganttChartContainer_title.appendChild(ganttChartItem_title);
+    // });
+
+    
 
   });
 });
@@ -493,7 +504,12 @@ function addSubTask(event, mainId) {
   addTaskKey.style.display = 'none';
   // addTaskKey.textContent = '800'; // 밑에서 처리
 
-  // gantt-task 안 첫번째 div 안 네번째 div
+  // gantt-task 안 첫번째 div 안 네번째 div 
+  // <div class="taskChildPosition"></div>
+  const addTaskChildPosition = document.createElement('div');
+  addTaskChildPosition.classList.add('taskChildPosition');
+
+  // gantt-task 안 첫번째 div 안 다섯번째 div
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
@@ -746,6 +762,7 @@ function addSubTask(event, mainId) {
   addGanttEditableDiv.appendChild(addGanttDetail);
   addGanttDetail.appendChild(addDetailButton);
   addGanttEditableDiv.appendChild(addTaskKey);
+  addGanttEditableDiv.appendChild(addTaskChildPosition);
   addGanttEditableDiv.appendChild(addTaskName);
 
   // gantt-task 안에 두번째
@@ -854,39 +871,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // ************* 버튼에 클릭 시 gantt-detail 요소 드롭다운 보이기
-// 모든 gantt-task-detail-click 버튼을 선택합니다.
-const taskDetailClickBtns = document.querySelectorAll('.gantt-task-detail-click');
+document.addEventListener('DOMContentLoaded', function() {
+  let ganttDetailList = document.querySelectorAll('.gantt-detail');
+  let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
-// 각 버튼에 대해 반복하여 이벤트 리스너를 추가
-taskDetailClickBtns.forEach(function (button) {
-  button.addEventListener('click', function () {
-    // 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
-    const parentEditableDiv = button.closest('.gantt-editable-div');
+  ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
+      taskDetailClick.addEventListener('click', function(event) {
+          ganttDetailList.forEach(function(detail, i) {
+              if (i !== index) {
+                  detail.style.display = 'none';
+              }
+          });
+          ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
+      });
+  });
 
-    // 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
-    const ganttDetail = parentEditableDiv.querySelector('.gantt-detail');
+  ganttDetailList.forEach(function(detail) {
+      detail.addEventListener('click', function(event) {
+          event.stopPropagation();
+      });
+  });
 
-    // gantt-detail 요소의 표시 여부를 토글합니다.
-    if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
-      ganttDetail.style.display = 'block';
-      // gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
-      button.style.color = 'rgb(151, 87, 255)';
-    } else {
-      ganttDetail.style.display = 'none';
-      // gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
-      button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
-    }
-    // 문서에 전체 이벤트 리스너 추가
-    document.addEventListener('click', function closeGanttDetail(e) {
-      // 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
-      if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
-        ganttDetail.style.display = 'none';
-        button.style.color = ''; // 버튼 색상 초기화
-        document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
-      }
-    });
+  document.addEventListener('click', function(event) {
+      ganttDetailList.forEach(function(detail) {
+          if (!event.target.closest('.gantt-editable-div')) {
+              detail.style.display = 'none';
+          }
+      });
+  });
+
+  let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
+  ganttDetailButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+          ganttDetailList.forEach(function(detail) {
+              detail.style.display = 'none';
+          });
+      });
   });
 });
+
+
+
+
 
 
 
@@ -1084,10 +1110,24 @@ function showPopupMessage(message) {
   popupMessage.textContent = message;
   popupModal.style.display = 'block';
 
+  // 팝업 창 닫기
+  const closePopup = () => {
+    popupModal.style.display = 'none';
+    document.removeEventListener('click', closePopup);
+  };
+
+  // 팝업 영역에서의 클릭 이벤트 전파 차단
+  popupModal.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+
   // 일정 시간(여기서는 3초) 후 팝업 창 닫기
   setTimeout(() => {
-    popupModal.style.display = 'none';
+    closePopup();
   }, 1000);
+
+  // // 팝업 외의 영역 클릭 시 팝업 닫기
+  // document.addEventListener('click', closePopup);
 }
 
 // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
