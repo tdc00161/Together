@@ -253,7 +253,7 @@
                                 @endphp
                             </div>
                             @forelse ($item->depth_1 as $item2)
-                                <div class="gantt-chart" id="gantt-chart-{{$item2->id}}">
+                                <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                     @php
                                         $startDate = new DateTime('2023-12-01');
                                         $endDate = new DateTime('2024-03-31');
