@@ -1,7 +1,7 @@
-// 원형 그래프
 
+//프로젝트 원형차트 생성
 window.onload = function() {
-   // 경로만 가져오기
+   //출력할 방법 설정(화면 출력시 데이터 띄움)
    var pathname = window.location.pathname;
    console.log(pathname);
    // debug("***** project_graph_data End *****");
@@ -12,9 +12,6 @@ window.onload = function() {
          console.log('***** Ajax Success *****');
          console.log(response);
 
-
-         // var responseObject = JSON.parse(response);
-         // console.log(responseObject);
          var dataArray = response.data;
          console.log(dataArray);
 
@@ -25,11 +22,11 @@ window.onload = function() {
          var sh = canvas.height;
          var PADDING = 100;
 
-         // 데이터 입력(기본값 0이 될 수 있도록 데이터 설정해줘야함)
+         // 프로젝트 상태별 데이터
          var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
          console.log(data);
 
-         //데이터별 색상
+         // 프로젝트 상태별 적용 색상
          var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
 
          var center_X = sw / 2;  //원의 중심 x 좌표
@@ -38,7 +35,7 @@ window.onload = function() {
          var radius = Math.min(sw - (PADDING * 2), sh - (PADDING * 2)) / 2;
          var angle = 0;
          var total = 0;
-         for (var i in data) { total += data[i].cnt; } //데이터(data)의 총합 계산
+         for (var i in data) { total += data[i].cnt; } //데이터(data)의 총합
 
          for (var i = 0; i < data.length; i++) {
             context.fillStyle = colors[i];  //생성되는 부분의 채울 색 설정
@@ -158,10 +155,11 @@ function deleteProject(project_pk) {
          'X-CSRF-TOKEN': csrfToken_project
       },
    }).then((response) => 
-      console.log(response)) // response.json()
-      .then(() => {
+      console.log(response))
+      // response.json()
+     .then(() => {
          window.location.href = '/dashboard'; // 메인화면으로 이동
-      });
+   }).catch(error => console.log(error));
 }
 
 // 프로젝트 명 클릭시 초기값 삭제
@@ -175,7 +173,7 @@ function deleteProject(project_pk) {
 let OrginalendValue = document.getElementById('end_date').value;
 let Orginalend = document.getElementById('end_date');
 
-console.log(UPDATETITLESET);
+// console.log(UPDATETITLESET);
 
 // 프로젝트 명, 컨텐츠 업데이트
 const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -183,12 +181,22 @@ function titleupdate(project_pk) {
 
    let Updatetitle = document.getElementById('project_title').value;
    let Updatecontent = document.getElementById('project_content').value;
+   let Updatetitlemax = 17;
+   let Updatecontentmax = 45;
+
+   if(Updatetitle.length > Updatetitlemax){
+      alert('텍스트 길이를 초과하였습니다.')
+   }
+   if(Updatetitlemax.length > Updatecontentmax){
+      alert('텍스트 길이를 초과하였습니다.')
+   }
    let Updatestart = document.getElementById('start_date').value;
    let Updateend = document.getElementById('end_date').value;
    
    // console.log(Updatetitle)
 
    let dday = document.getElementById("dday");
+      today = new Date();
       start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
       console.log(start_day);
       end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
@@ -199,7 +207,11 @@ function titleupdate(project_pk) {
          return false;
       }
       console.log(end_day);
-      gap = end_day - start_day;
+      gap = end_day - today;
+      if(gap < 0) {
+         dday.innerHTML = '';
+         return false;
+      }
       console.log(gap);
       result = Math.floor(gap / (1000 * 60 * 60 * 24));
 
@@ -240,6 +252,7 @@ function titleupdate(project_pk) {
    .then(data => {
       console.log(data);
          document.getElementsByClassId('project_title').value = data.project_title;
+         document.getElementsByClassId('project_content').value = data.project_content;
    })
    .catch(error => {
          // 오류 처리
@@ -250,12 +263,12 @@ function titleupdate(project_pk) {
 
 
 // 프로젝트 설명 클릭시 초기값 삭제
-let UPDATECONTENTSET = document.getElementById('project_content');
-UPDATECONTENTSET.addEventListener('click',deleteContent)
+// let UPDATECONTENTSET = document.getElementById('project_content');
+// UPDATECONTENTSET.addEventListener('click',deleteContent)
 
-function deleteContent () {
-   this.value = "";
-}
+// function deleteContent () {
+//    this.value = "";
+// }
 
 
 // tab 기능

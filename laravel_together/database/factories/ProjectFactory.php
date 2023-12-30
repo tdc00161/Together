@@ -18,7 +18,7 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
-        $user_pk = DB::table('users')->select('id')->whereNotNull('email_verified_at')->whereNotNull('remember_token')->get()->toArray();
+        $user_pk = DB::table('users')->select('id')->get()->toArray();
         $color_code_pk = DB::table('basedata')->select('data_content_code')->where('data_title_code', '3')->get()->toArray();        
         $created_at = $this->faker->dateTimeBetween('-1 years');
         $updated_at = $this->faker->dateTimeBetween($created_at);

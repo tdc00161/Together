@@ -1,4 +1,3 @@
-console.log('프로젝트 페이지가 insert_detail.js를 읽어들이지 않는다.');
 // 변수 선언 ---------------------------------
 // body 전체
 const BODY = document.querySelector('body')
@@ -96,21 +95,24 @@ let SUBMIT = document.querySelectorAll('.submit')
 
 
 // 담당자 모달 초기화용 클론
-let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) ? ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) : ''
+let cloneResponsibleModal = ADD_RESPONSIBLE_MODAL_ONE ? ADD_RESPONSIBLE_MODAL_ONE.cloneNode(true) : ''
 // 담당자 초기화용 클론
-let cloneResponsibleReset = RESPONSIBLE[0].cloneNode(true) ? RESPONSIBLE[0].cloneNode(true) : ''
+let cloneResponsibleReset = RESPONSIBLE[0] ? RESPONSIBLE[0].cloneNode(true) : ''
 // 담당자 추가용 클론
-let cloneResponsible = RESPONSIBLE_PERSON[0].cloneNode(true) ? RESPONSIBLE_PERSON[0].cloneNode(true) : ''
+let cloneResponsible = RESPONSIBLE_PERSON[0] ? RESPONSIBLE_PERSON[0].cloneNode(true) : ''
 // 우선순위 모달 초기화용 클론
-let clonePriorityModal = ADD_PRIORITY_MODAL_ONE.cloneNode(true) ? ADD_PRIORITY_MODAL_ONE.cloneNode(true) : ''
+let clonePriorityModal = ADD_PRIORITY_MODAL_ONE ? ADD_PRIORITY_MODAL_ONE.cloneNode(true) : ''
 // 우선순위 추가용 클론
-let clonePriority = PRIORITY_ONE[0].cloneNode(true) ? PRIORITY_ONE[0].cloneNode(true) : ''
+let clonePriority = PRIORITY_ONE[0] ? PRIORITY_ONE[0].cloneNode(true) : ''
 // 댓글 초기화용 클론
-let cloneResetComments = COMMENT_PARENT.cloneNode(true) ? COMMENT_PARENT.cloneNode(true) : ''
+let cloneResetComments = COMMENT_PARENT ? COMMENT_PARENT.cloneNode(true) : ''
 // 좌측 간트 초기화용 클론
 let cloneLeftGanttChart = GANTT_LEFT[0] ? GANTT_LEFT[0].cloneNode(true) : ''
 // 우측 간트 초기화용 클론
 let cloneRightGanttChart = GANTT_RIGHT[0] ? GANTT_RIGHT[0].cloneNode(true) : ''
+// 공지 초기 클론
+let firstCloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list') : ''
+let firstCloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : ''
 // 모달 내용 저장소
 let detail_data = {};
 // 띄운 상세 업무 id (더보기용)
@@ -148,8 +150,15 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	// 업무/공지 플래그
 	TaskNoticeFlg = b
 
+	// 작성/수정 플래그별 등록버튼 기능
+	if (createUpdate === 1) {
+		SUBMIT[0].setAttribute('onclick', 'updateTask()')
+	} else {
+		SUBMIT[0].setAttribute('onclick', 'createTask()')
+	}
+
 	// 더보기 모달 닫기
-	closeMoreModal()
+	// closeMoreModal(a == 0 ? 1 : 0) // 모달 닫기 오류시 패러미터 삭제
 
 	// 창 틀 우선 띄우기
 	// TASK_MODAL[a].classList.remove('d-none')
@@ -158,6 +167,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (a === 0) {
 		// 작성 전 초기화
 		document.querySelector('.insert_title').value = ''
+		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
 		if (!document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none')) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
@@ -166,6 +176,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		if (!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')) {
 			PRIORITY[0].removeChild(document.querySelectorAll('.insert_priority_one')[0])
 		}
+		// TODO: 날짜 초기화 (value)
 
 
 		// 프로젝트 색 가져오기
@@ -205,16 +216,6 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		}
 	}
 
-	// 업무/공지 플래그 넣기 (나중에 변수로 통합가능)
-	TaskNoticeFlg = b
-
-	// 작성/수정 플래그별 등록버튼 기능
-	if (createUpdate === 1) {
-		SUBMIT[0].setAttribute('onclick', 'updateTask()')
-	} else {
-		SUBMIT[0].setAttribute('onclick', 'createTask()')
-	}
-
 	// 상세 모달 띄우기
 	if (a === 1) {
 		// 작성모달 모서리 둥글게
@@ -230,24 +231,25 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
+				// console.log(data);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
-				
+
 				// 업무상태 값과 색상 주기
 				statusColor(data);
-				
+
 				// 담당자 값체크, 삽입
 				responsibleName(data, a);
-				
+
 				// 마감일자 값체크, 삽입
 				deadLineValue(data, a);
-				
+
 				// 우선순위 값체크, 삽입
 				priorityValue(data, a);
-				
+
 				// 상세업무 내용 값체크, 삽입
 				modalContentValue(data, a);
-				
+
 				// 댓글 컨트롤
 				commentControl(data);
 
@@ -262,9 +264,10 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 			.catch(error => {
 				console.error('Error:', error);
 			});
+
+		// 모달 띄우기
+		openInsertDetailModal(a);
 	}
-	// 모달 띄우기
-	openInsertDetailModal(a);
 	// 글/업무 플래그
 	TaskFlg(a, b);
 }
@@ -282,6 +285,19 @@ function closeTaskModal(a) {
 	}
 }
 
+// // 모달 작성에 쓰일 => 간트업무 더보기 모달
+function ganttDetailChange(ganttDetail) {
+	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
+		ganttDetail[0].style.display = 'block';
+		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+		// button.style.color = 'rgb(151, 87, 255)';
+	} else {
+		ganttDetail[0].style.display = 'none';
+		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+		// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+	}
+}
+
 // 모달 작성
 function createTask() {
 	let postData = {
@@ -290,6 +306,7 @@ function createTask() {
 		"project_id": thisProjectId,
 		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 // TODO
 	}
+	console.log(postData);
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
 		postData.task_status_name = ''
@@ -300,6 +317,7 @@ function createTask() {
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.priority_name = ''
 	}
+	console.log(postData);
 	fetch('/task', {
 		method: 'POST',
 		headers: {
@@ -311,12 +329,14 @@ function createTask() {
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
-			if(GANTT_LEFT[0]){
+			if (GANTT_LEFT[0]) {
 
 				let refreshCloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
 				let refreshCloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
-				
+
 				let gantt_task_element = refreshCloneLeftGanttChart
+
+				// 좌 간트
 				let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				let taskKey_element = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
@@ -324,85 +344,164 @@ function createTask() {
 				let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
 				let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
 				let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
-				gantt_task_element.id = 'gantt-task-' + data.data.id
+				let gantt_more_modal_btn = refreshCloneLeftGanttChart.firstElementChild.firstElementChild
+				// console.log();
+				let more_view = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+				let add_under_task = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
+				let gantt_more_modal = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling
+				// console.log(gantt_more_modal);
+				gantt_task_element.id = 'gantt-task-' + data.data.id // TODO
 				start_element.value = data.data.start_date
-				start_element.setAttribute('id','start-row' + data.data.id)
-				start_element.setAttribute('onclick', 'test('+data.data.id+');')
+				start_element.setAttribute('id', 'start-row' + data.data.id)
+				start_element.setAttribute('onchange', 'test(' + data.data.id + ');')
 				end_element.value = data.data.end_date
-				end_element.setAttribute('id','end-row' + data.data.id)
-				end_element.setAttribute('onclick', 'test('+data.data.id+');')
+				end_element.setAttribute('id', 'end-row' + data.data.id)
+				end_element.setAttribute('onchange', 'test(' + data.data.id + ');')
 				taskKey_element.textContent = data.data.task_number
 				taskName_element.textContent = data.data.title
+				more_view.setAttribute('onclick', 'openTaskModal(1,0,' + data.data.id + ')')
+				add_under_task.setAttribute('onclick', 'addSubTask(event,' + data.data.id + ')')
 				responsibleName_element.textContent = data.names.task_responsible_name
 				statusName_element.textContent = data.names.task_status_name
-				statusColorAutoPainting(statusName_element_textContent.textContent,statusName_element)
+				statusName_element.setAttribute('data-status',data.names.task_status_name) 
+				statusColorAutoPainting(data.names.task_status_name, statusName_element)
+				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
+				// ganttDetailChange()
+
+				gantt_more_modal_btn.addEventListener('click', function () {
+					if (gantt_more_modal.style.display === 'none' || gantt_more_modal.style.display === '') {
+						gantt_more_modal.style.display = 'block';
+						// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+						// button.style.color = 'rgb(151, 87, 255)';
+					} else {
+						gantt_more_modal.style.display = 'none';
+						// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+						// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+					}
+				})
+
+
+				// 우 간트
+				// let a = refreshCloneRightGanttChart
+				// console.log(a);
+				refreshCloneRightGanttChart.setAttribute('id', 'gantt-chart-' + data.data.id)
+				let chartDateList = refreshCloneRightGanttChart.children
+				for (let index = 0; index < chartDateList.length; index++) {
+					const element = chartDateList[index];
+					// console.log(element);
+					element.firstChild ? element.removeChild(element.firstChild) : ''
+					let date = element.id.match(/-(\d+)/)[1]
+					element.setAttribute('id', 'row' + data.data.id + date)
+					element.classList.remove('d-none')
+					// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
+					let gantt_start = start_element.value.replace(/-/g, '')
+					// console.log(gantt_start);
+					let gantt_end = end_element.value.replace(/-/g, '')
+					// console.log(gantt_end);
+					// console.log(date);
+					if (gantt_start <= date && gantt_end >= date) {
+						// console.log(date + '유효한 날짜');
+						let create_1 = document.createElement('div')
+						create_1.classList.add('bk-row')
+						create_1.setAttribute('data-row-num', data.data.id)
+						if (gantt_start == date) {
+							create_1.textContent = '시작일: ' + gantt_start
+						} else if (gantt_end == date) {
+							create_1.textContent = '마감일: ' + gantt_end
+						}
+
+						element.append(create_1)
+					}
+				}
+
+				refreshCloneLeftGanttChart.classList.remove('d-none')
+				refreshCloneRightGanttChart.classList.remove('d-none')
+
 				document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
 				document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
+				document.querySelector('#gantt-chart-000') ? document.querySelector('#gantt-chart-000').classList.add('d-none') : 0;
 				closeTaskModal(0)
 				document.querySelector('.gantt-all-task').scrollIntoView(false)
 			} else {
-				let Notice = document.querySelector('.project_task_notice_list')
-				let Update = document.querySelector('.project_task_update_list')
+				let Notice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list') : firstCloneNotice
+				let Update = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : firstCloneUpdate
+				console.log('1');
 
-				let cloneNotice = document.querySelector('.project_task_notice_list').cloneNode(true)
-				let cloneUpdate = document.querySelector('.project_task_update_list').cloneNode(true)
-				cloneNotice.firstElementChild.textContent = data.data.content
+				let cloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list').cloneNode(true) : firstCloneNotice.cloneNode(true)
+				let cloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list').cloneNode(true) : firstCloneUpdate.cloneNode(true)
+				cloneNotice.firstElementChild.textContent = data.data.title
+				cloneNotice.firstElementChild.setAttribute('onclick', 'openTaskModal(1,1,' + data.data.id + ')')
+				cloneNotice.firstElementChild.classList.add('notice-' + data.data.id)
+				cloneNotice.classList.add('notice-layout-' + data.data.id)
+				// console.log(cloneNotice.firstElementChild);
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
-				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.content
+				cloneUpdate.firstElementChild.firstElementChild.style = "color:rgb(255, 196, 0);"
+				console.log('1-1');
+				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
+				// console.log(cloneUpdate.firstElementChild.nextElementSibling);
+				cloneUpdate.firstElementChild.nextElementSibling.setAttribute('onclick', 'openTaskModal(1,1,' + data.data.id + ')')
+				cloneUpdate.firstElementChild.classList.add('update-' + data.data.id)
+				cloneUpdate.classList.add('update-layout-' + data.data.id)
+				console.log('2');
 
-				let NoticeParent = Notice.parentElement
-				let UpdateParent = Update.parentElement
+				let NoticeParent = document.querySelector('.project_task_notice_list_parent')
+				let UpdateParent = document.querySelector('.project_task_update_list_parent')
+				console.log('3');
 
 				NoticeParent.firstChild.before(cloneNotice)
 				UpdateParent.firstChild.before(cloneUpdate)
+				console.log('4');
 
 				closeTaskModal(0)
+				console.log('5');
 			}
 		})
 		.catch(err => {
 			console.log(err.message)
+			console.log(err.stack)
 		});
 
-		function gantt_task_modal() {
-			// 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
-			const parentEditableDiv = button.closest('.gantt-editable-div');
-	
-			// 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
-			const ganttDetail = parentEditableDiv.querySelector('.gantt-detail');
-	
-			// gantt-detail 요소의 표시 여부를 토글합니다.
-			if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
-			  ganttDetail.style.display = 'block';
-			  // gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
-			  button.style.color = 'rgb(151, 87, 255)';
-		  } else {
-			  ganttDetail.style.display = 'none';
-			  // gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
-			  button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
-		  }
-			// 문서에 전체 이벤트 리스너 추가
-			document.addEventListener('click', function closeGanttDetail(e) {
-			  // 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
-			  if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
-				  ganttDetail.style.display = 'none';
-				  button.style.color = ''; // 버튼 색상 초기화
-				  document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
-				}
-			});
-		}
+	// function gantt_task_modal() {
+	// 	// 클릭된 버튼의 부모 요소인 gantt-editable-div를 찾습니다.
+	// 	const parentEditableDiv2 = button.closest('.gantt-editable-div');
+
+	// 	// 해당 버튼 아래에 있는 gantt-detail 요소를 찾습니다.
+	// 	const ganttDetail = parentEditableDiv2.querySelector('.gantt-detail');
+
+	// 	// gantt-detail 요소의 표시 여부를 토글합니다.
+	// 	if (ganttDetail.style.display === 'none' || ganttDetail.style.display === '') {
+	// 		ganttDetail.style.display = 'block';
+	// 		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+	// 		button.style.color = 'rgb(151, 87, 255)';
+	// 	} else {
+	// 		ganttDetail.style.display = 'none';
+	// 		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+	// 		button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+	// 	}
+	// 	// 문서에 전체 이벤트 리스너 추가
+	// 	document.addEventListener('click', function closeGanttDetail(e) {
+	// 		// 클릭된 요소가 gantt-detail 또는 그 부모 요소가 아니면 gantt-detail을 숨깁니다.
+	// 		if (!e.target.closest('.gantt-detail') && !e.target.closest('.gantt-task-detail-click')) {
+	// 			ganttDetail.style.display = 'none';
+	// 			button.style.color = ''; // 버튼 색상 초기화
+	// 			document.removeEventListener('click', closeGanttDetail); // 이벤트 리스너 제거
+	// 		}
+	// 	});
+	// }
 }
 
 // 등록 버튼으로 작성/수정
 function updateTask() {
 	let updateData = {
-		'title': document.querySelector('.insert_title').value,
-		'content': document.querySelector('.insert_content').value,
-		'task_status_id': document.querySelectorAll('#checked')[0].textContent,
-		'task_responsible_id': document.querySelectorAll('.responsible_user')[0].textContent,
-		'start_date': document.querySelectorAll('.start_date')[0].value,
-		'end_date': document.querySelectorAll('.end_date')[0].value,
-		'priority_id': document.querySelector('.insert_priority_val').textContent
+		'title': document.querySelector('.insert_title') ? document.querySelector('.insert_title').value : null,
+		'content': document.querySelector('.insert_content') ? document.querySelector('.insert_content').value : null,
+		'task_status_id': document.querySelectorAll('#checked') ? document.querySelectorAll('#checked')[0].textContent : null,
+		'task_responsible_id': document.querySelectorAll('.responsible_user') ? document.querySelectorAll('.responsible_user')[0].textContent : null,
+		'start_date': document.querySelectorAll('.start_date') ? document.querySelectorAll('.start_date')[0].value : null,
+		'end_date': document.querySelectorAll('.end_date') ? document.querySelectorAll('.end_date')[0].value : null,
+		'priority_id': document.querySelector('.responsible_user') ? document.querySelector('.responsible_user').textContent : null
 	}
+	console.log(updateData);
 	fetch('/task/' + now_task_id, {
 		method: 'PUT',
 		headers: {
@@ -415,6 +514,7 @@ function updateTask() {
 		.then(data => {
 			// console.log(data.data);
 			closeTaskModal(0)
+			openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
 		.catch(err => {
 			console.log(err.message)
@@ -441,23 +541,25 @@ function closeMoreModal() {
 
 // 업무상태 색삽입 모듈
 function statusColorAutoPainting(switching, paintTo) {
+// console.log(switching);
 	switch (switching) {
 		case '시작전':
-			paintTo.style = 'background-color: #B1B1B1;';
+			paintTo.style.backgroundColor = '#B1B1B1';
 			break;
 		case '진행중':
-			paintTo.style = 'background-color: #04A5FF;';
+			paintTo.style.backgroundColor = '#04A5FF';
 			break;
 		case '피드백':
-			paintTo.style = 'background-color: #F34747;';
+			paintTo.style.backgroundColor = '#F34747';
 			break;
 		case '완료':
-			paintTo.style = 'background-color: #64C139;';
+			paintTo.style.backgroundColor = '#64C139';
 			break;
 		default:
-			paintTo.style = 'background-color: var(--m-btn);';
+			paintTo.style.backgroundColor = 'var(--m-btn)';
 			break;
 	}
+	// console.log(paintTo.style.backgroundColor);
 }
 
 // 업무상태 선택
@@ -819,7 +921,7 @@ function addComment() {
 
 // 값을 모달에 삽입
 function insertModalValue(data, a) {
-	// console.log(data);
+	console.log(data);
 	if (a === 1) { // 상세
 		WRITER_NAME.textContent = data.task[0].wri_name;
 		TASK_CREATED_AT.textContent = data.task[0].created_at;
@@ -1026,10 +1128,10 @@ function openInsertDetailModal(a) {
 	TASK_MODAL[a].style = 'display: block;'
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: block;'
-		TASK_MODAL[1].style = 'display: none;'
+		// TASK_MODAL[1].style = 'display: none;'
 	} else {
 		BEHIND_MODAL.style = 'display: none;'
-		TASK_MODAL[0].style = 'display: none;'
+		// TASK_MODAL[0].style = 'display: none;'
 	}
 }
 // 공지/업무 플래그 : 공지면 업무속성 미출력
@@ -1054,7 +1156,7 @@ function updateModalOpen() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			// console.log(data);
+			console.log(data);
 			// 값을 모달에 삽입
 			insertModalValue(data, 0);
 
@@ -1081,6 +1183,8 @@ function updateModalOpen() {
 
 			// 상위업무 컨트롤
 			parentTaskControl(data, 0);
+
+			// 수정 이후 처리
 		})
 		.catch(err => {
 			console.log(err.message);
@@ -1104,19 +1208,28 @@ function updateModalOpen() {
 
 // 모달 삭제
 function deleteTask() {
-	axios.delete('/task/' + now_task_id)
-		.then(res => {
-			console.log(res);
-			
-			// console.log(res.data.data);
-			document.querySelector('#gantt-task-'+res.data.data).remove()
-			document.querySelector('#gantt-chart-'+res.data.data).remove()
+	fetch('/task/' + now_task_id, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+
+			document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
+			document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
+
+			document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''
+			document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''
 
 			closeTaskModal(1)
 		})
 		.catch(err => {
-			console.log(err.message);
-		})
+			console.log(err.message)
+		});
 }
 
 function updateStatusColor(data) {
@@ -1156,20 +1269,22 @@ function updateResponsibleName(data, a) {
 	// 기존에 클론한 엘리먼트에 값을 넣기
 	if (data.task[0].res_name) {
 		cloneResponsible.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].res_name
+
+		// 삽입할 태그 선택
+		let nowFrontOfResponsible = document.querySelectorAll('.responsible_icon')[0]
+		// console.log(nowFrontOfResponsible);
+
+		// d-none 삭제
+		cloneResponsible.classList.remove('d-none')
+
+		// 투명화 되어있는 기본 담당자 삭제
+		RESPONSIBLE_PERSON[0].remove()
+
+		// 태그에 넣기
+		nowFrontOfResponsible.after(cloneResponsible)
+	} else {
+		RESPONSIBLE_PERSON[0].remove()
 	}
-
-	// 삽입할 태그 선택
-	let nowFrontOfResponsible = document.querySelectorAll('.responsible_icon')[0]
-	// console.log(nowFrontOfResponsible);
-
-	// d-none 삭제
-	cloneResponsible.classList.remove('d-none')
-
-	// 투명화 되어있는 기본 담당자 삭제
-	RESPONSIBLE_PERSON[0].remove()
-
-	// 태그에 넣기
-	nowFrontOfResponsible.after(cloneResponsible)
 }
 
 function updatePriorityValue(data, a) {
@@ -1177,47 +1292,49 @@ function updatePriorityValue(data, a) {
 	// 기존에 클론한 엘리먼트에 값을 넣기
 	if (data.task[0].priority_name) {
 		clonePriority.firstChild.nextElementSibling.nextElementSibling.textContent = data.task[0].priority_name
-	}
 
-	// 삽입할 태그 선택
-	let nowFrontOfPriority = document.querySelectorAll('.flag_icon')[0]
-	// console.log(nowFrontOfResponsible);
+		// 삽입할 태그 선택
+		let nowFrontOfPriority = document.querySelectorAll('.flag_icon')[0]
+		// console.log(nowFrontOfResponsible);
 
-	// 태그에 넣기
-	nowFrontOfPriority.after(clonePriority)
+		// 태그에 넣기
+		nowFrontOfPriority.after(clonePriority)
 
-	// 우선순위 값별로 이미지 삽입
-	// 갱신된 우선순위 가져오기
-	let insert_priority_val = document.querySelectorAll('.insert_priority_val')
-	let insert_priority_icon = document.querySelectorAll('.insert_priority_icon')
-	for (let index = 0; index < insert_priority_val.length; index++) {
-		const element = insert_priority_val[index];
-		// console.log(element.textContent !== null);
-		// console.log(data.task[0].priority_name);
-		if (element.textContent !== null) {
-			switch (data.task[0].priority_name) {
-				case '긴급':
-					insert_priority_icon[index].style = 'background-image: url(/img/gantt-bisang.png);'
-					break;
-				case '높음':
-					insert_priority_icon[index].style = 'background-image: url(/img/gantt-up.png);'
-					break;
-				case '보통':
-					insert_priority_icon[index].style = 'background-image: url(/img/free-icon-long-horizontal-25426-nomal.png);'
-					break;
-				case '낮음':
-					insert_priority_icon[index].style = 'background-image: url(/img/gantt-down.png);'
-					break;
-				default:
-					insert_priority_icon[index].style = 'display: none;'
-					break;
+		// 우선순위 값별로 이미지 삽입
+		// 갱신된 우선순위 가져오기
+		let insert_priority_val = document.querySelectorAll('.insert_priority_val')
+		let insert_priority_icon = document.querySelectorAll('.insert_priority_icon')
+		for (let index = 0; index < insert_priority_val.length; index++) {
+			const element = insert_priority_val[index];
+			// console.log(element.textContent !== null);
+			// console.log(data.task[0].priority_name);
+			if (element.textContent !== null) {
+				switch (data.task[0].priority_name) {
+					case '긴급':
+						insert_priority_icon[index].style = 'background-image: url(/img/gantt-bisang.png);'
+						break;
+					case '높음':
+						insert_priority_icon[index].style = 'background-image: url(/img/gantt-up.png);'
+						break;
+					case '보통':
+						insert_priority_icon[index].style = 'background-image: url(/img/free-icon-long-horizontal-25426-nomal.png);'
+						break;
+					case '낮음':
+						insert_priority_icon[index].style = 'background-image: url(/img/gantt-down.png);'
+						break;
+					default:
+						insert_priority_icon[index].style = 'display: none;'
+						break;
+				}
 			}
 		}
+
+		// 투명화 되어있는 기본 우선순위 삭제
+		PRIORITY_ONE[0].remove()
+
+		// d-none 삭제
+		clonePriority.classList.remove('d-none')
+	} else {
+		PRIORITY_ONE[0].remove()
 	}
-
-	// 투명화 되어있는 기본 우선순위 삭제
-	PRIORITY_ONE[0].remove()
-
-	// d-none 삭제
-	clonePriority.classList.remove('d-none')
 }

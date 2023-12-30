@@ -450,7 +450,7 @@ function addSubTask(event, mainId) {
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
   const newTask = document.createElement('div');
   newTask.classList.add('gantt-task', 'gantt-child-task');
-  // newTask.id = 'gantt-task-';
+  // newTask.id = 'gantt-task-'; // 밑에서
   newTask.setAttribute('parent', gantt_modal_id[0])
 
   // gantt-task 안에 5개 div 생성
@@ -497,7 +497,7 @@ function addSubTask(event, mainId) {
   addTaskName.classList.add('taskName', 'editable-title');
   addTaskName.setAttribute("spellcheck", "false");
   addTaskName.setAttribute("contenteditable", "true");
-  addTaskName.textContent = 'ㄴ업무명';
+  addTaskName.textContent = '하위업무명';
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
   console.log('addChildTask');
@@ -541,16 +541,21 @@ function addSubTask(event, mainId) {
       .then(data => {
         addTaskName.removeEventListener('blur', addChildTask);
         addTaskKey.textContent = data.data.task_number;
+        // console.log(data);
 
-        const ganttChildId = data.data.id;
-        console.log(ganttChildId);
-        addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttChildId})`);
+        // const ganttChildId = data.data.id;
+        // console.log(ganttChildId);
+        addDetailButton.setAttribute('onclick', 'openTaskModal(1,0, '+data.data.id+')');
 
-        addTaskStartDate.id = 'start-row' + ganttChildId;
+        addTaskStartDate.id = 'start-row' + data.data.id;
+        // addTaskStartDate.id = 'start-row000';
+
         console.log(addTaskStartDate);
-        addTaskEndDate.id = 'end-row' + ganttChildId;
+        addTaskEndDate.id = 'end-row' + data.data.id;
+        // addTaskEndDate.id = 'end-row000';
+
         console.log(addTaskEndDate);
-        newChart.id = 'gantt-chart-' + ganttChildId;
+        newChart.id = 'gantt-chart-' + data.data.id;
         console.log(newChart);
         
         // 시작일 종료일 날짜 설정
@@ -568,7 +573,7 @@ function addSubTask(event, mainId) {
 
           // gantt-chart안에 들어갈 새로운 div
           const ganttChartRow = document.createElement('div');
-          ganttChartRow.id = 'row' + ganttChildId + '-' + chartFormatDate;
+          ganttChartRow.id = 'row' + data.data.id + '-' + chartFormatDate;
 
           // 다음 날짜 이동
           chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
@@ -580,8 +585,8 @@ function addSubTask(event, mainId) {
         }
 
         // test
-        addTaskStartDate.setAttribute('onchange', `test(${ganttChildId})`);
-        addTaskEndDate.setAttribute('onchange', `test(${ganttChildId})`);
+        addTaskStartDate.setAttribute('onchange', 'test('+data.data.id+')');
+        addTaskEndDate.setAttribute('onchange', 'test('+data.data.id+')');
 
         // addEventListener 로 하는 방법
         //
@@ -738,7 +743,7 @@ function addSubTask(event, mainId) {
   addGanttDetailClick.appendChild(addGanttDetailClickSpan);
   addGanttEditableDiv.appendChild(addGanttDetail);
   addGanttDetail.appendChild(addDetailButton);
-  // addGanttEditableDiv.appendChild(addTaskKey);
+  addGanttEditableDiv.appendChild(addTaskKey);
   addGanttEditableDiv.appendChild(addTaskName);
 
   // gantt-task 안에 두번째
@@ -887,7 +892,7 @@ const headerScroll = document.querySelector('.gantt-header-scroll');
 
 // 예시 데이터 - 날짜
 const startDate = new Date('2023-12-01');
-const endDate = new Date('2023-12-31');
+const endDate = new Date('2024-03-31');
 
 // 날짜를 헤더에 추가하는 함수
 function addDatesToHeader() {
@@ -931,62 +936,111 @@ window.onload = function () {
 };
 
 // 파라미터 : rowNum   테이블에서의 해당 row 번호
+
 function test(rowNum) {
   // console.log('***** test() Start *****');
-  // 해당 시작일, 종료일 요소 습득
+
   const start = document.getElementById('start-row' + rowNum).value;
   const end = document.getElementById('end-row' + rowNum).value;
-
 
   // console.log(start);
   // console.log(end);
 
   if (start && end) {
-    // 추가 할 bk-row div의 데이트 포멧 변경 : yyyy-mm-dd >> yyyymmdd
-    let startAt = parseInt(start.replace(/-/g, ''), 10); // - 제거
-    let endAt = parseInt(end.replace(/-/g, ''), 10);
+    let startDate = new Date(start);
+    let endDate = new Date(end);
 
-    // 기존 bk-row div 삭제
     const existingBkRowList = document.querySelectorAll('.bk-row[data-row-num="' + rowNum + '"]');
-
-    // console.log(existingBkRowList);
     existingBkRowList.forEach(function (item) {
       item.parentNode.removeChild(item);
     });
 
-    // bk-row div 추가
-    for (let currentDate = startAt; currentDate <= endAt; currentDate++) {
-      const dateString = currentDate.toString();
-      const year = dateString.substring(0, 4);
-      const month = dateString.substring(4, 6);
-      const day = dateString.substring(6, 8);
-      const formattedDate = year + month + day;
+    while (startDate <= endDate) {
+      const formattedDate = startDate.toISOString().slice(0, 10).replace(/-/g, '');
 
-      const target = document.getElementById('row' + rowNum + '-' + dateString); // ex) row1-231201
+      const target = document.getElementById('row' + rowNum + '-' + formattedDate);
 
-
-      // bk-row div 요소 생성
       const div = document.createElement('div');
       div.classList = 'bk-row';
-      div.dataset.rowNum = rowNum; // 해당 rowNum을 데이터로 저장
+      div.dataset.rowNum = rowNum;
       div.textContent = '';
 
-      // 타겟에 bk-row div 추가
       target.appendChild(div);
 
-      // 첫 번째와 마지막 bk-row에 시작일과 종료일 추가
-
-      if (currentDate === startAt) {
+      if (startDate.getTime() === new Date(start).getTime()) {
         div.textContent = '시작일: ' + formattedDate;
       }
 
-
-      if (currentDate === endAt) {
+      if (startDate.getTime() === new Date(end).getTime()) {
         div.textContent = '마감일: ' + formattedDate;
       }
+
+      // 다음 날짜로 이동
+      startDate.setDate(startDate.getDate() + 1);
     }
   }
 }
+
+// 기존 것인데 다음달이 넘어가면 차트바가 표시안됨
+// function test(rowNum) {
+//   console.log('***** test() Start *****');
+//   // 해당 시작일, 종료일 요소 습득
+//   const start = document.getElementById('start-row' + rowNum).value;
+//   const end = document.getElementById('end-row' + rowNum).value;
+
+
+//   console.log(start);
+//   console.log(end);
+
+//   if (start && end) {
+//     // 추가 할 bk-row div의 데이트 포멧 변경 : yyyy-mm-dd >> yyyymmdd
+//     let startAt = parseInt(start.replace(/-/g, ''), 10); // - 제거
+//     let endAt = parseInt(end.replace(/-/g, ''), 10);
+//     // console.log(endAt);
+
+//     // 기존 bk-row div 삭제
+//     const existingBkRowList = document.querySelectorAll('.bk-row[data-row-num="' + rowNum + '"]');
+
+//     // console.log(existingBkRowList);
+//     existingBkRowList.forEach(function (item) {
+//       item.parentNode.removeChild(item);
+//     });
+
+//     // bk-row div 추가
+//     for (let currentDate = startAt; currentDate <= endAt; currentDate++) {
+//       const dateString = currentDate.toString();
+//       const year = dateString.substring(0, 4);
+//       const month = dateString.substring(4, 6);
+//       const day = dateString.substring(6, 8);
+//       const formattedDate = year + month + day;
+//       // console.log(endAt);
+
+//       const target = document.getElementById('row' + rowNum + '-' + formattedDate); // ex) row1-231201
+//       // console.log(target);
+
+
+//       // bk-row div 요소 생성
+//       const div = document.createElement('div');
+//       div.classList = 'bk-row';
+//       div.dataset.rowNum = rowNum; // 해당 rowNum을 데이터로 저장
+//       div.textContent = '';
+
+//       // 타겟에 bk-row div 추가
+//       target.appendChild(div);
+
+//       // 첫 번째와 마지막 bk-row에 시작일과 종료일 추가
+
+//       if (currentDate === startAt) {
+//         div.textContent = '시작일: ' + formattedDate;
+//       }
+
+
+//       if (currentDate === endAt) {
+//         div.textContent = '마감일: ' + formattedDate;
+//       }
+//     }
+//   }
+// }
 
 // ************* 업무추가 버튼클릭 시 상위업무 추가
 
@@ -1010,6 +1064,7 @@ function sendUpdateRequest(id, updatedValue, numbersOnly) {
     .then(res => {
       // 성공적으로 요청을 보낸 후에 할 작업
       console.log('수정 요청 성공:', res.data);
+      // addChildTaskAfter(res.data);
     })
     .catch(err => {
       // 요청 실패 시 에러 처리
@@ -1028,7 +1083,7 @@ function showPopupMessage(message) {
   // 일정 시간(여기서는 3초) 후 팝업 창 닫기
   setTimeout(() => {
     popupModal.style.display = 'none';
-  }, 2000);
+  }, 1000);
 }
 
 // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시

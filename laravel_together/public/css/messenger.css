@@ -116,9 +116,9 @@
         }
         /* 모달 헤더 스크롤 고정 */
         .tabs {
-            position: sticky;
+            /* position: sticky;
             top: 0px;
-            z-index: 10;
+            z-index: 10; */
         }
 
         .tab {
@@ -359,7 +359,7 @@ button {
 }
 .friend-Modal-content {
     position: absolute;
-    background-color: var(--m-requestcancel-btn);
+    background-color: rgba(0, 0, 0, 0.7);
     width: 420px;
     height: 155px;
     top: 50%;

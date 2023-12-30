@@ -4,16 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- <script src="{{asset('js/app.js')}}" defer></script> -->
-  @yield('gantt_link', '') {{-- 12/12 민주 gantt css 개별 링크용--}}
   {{-- 부트스트랩 --}}
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/project_individual.css">
-  
   @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
   <title>@yield('title', 'Laravel Board')</title>
+
+  <style>
+    /* 프로그레스바 배경색 변경 */
+    .progress {
+      background-color: rgba(0, 0, 0, 0.356) 
+    }
+   /* 프로그레스바 바 내부 색상 변경 */
+   .progress-bar {
+      background-color: rgba(255, 255, 255, 0.945);
+      color: rgb(0, 0, 0);
+      font-weight: bold;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
  
@@ -71,7 +81,7 @@
         @forelse ($project0title as $item)
         <a class="sidebar-project-name" href="{{route('individual.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
         @empty
-            프로젝트 없음
+        <p style="margin-top: 14px;" class="empty-msg">프로젝트 없음</p>
         @endforelse
        </div>
       </div>
@@ -81,7 +91,7 @@
         @forelse ($project1title as $item)
         <a class="sidebar-project-name" href="{{route('team.get',['id' => $item->id])}}"><div style="background-color: {{$item->data_content_name}}" class="project-box"></div>{{$item->project_title}}</a>
         @empty
-            프로젝트 없음
+        <p style="margin-top: 14px;" class="empty-msg">프로젝트 없음</p>
         @endforelse
        </div>
       </div>
@@ -105,6 +115,5 @@
   <script src="https://cpwebassets.codepen.io/assets/common/browser_support-2c1a3d31dbc6b5746fb7dacdbc81dd613906db219f13147c66864a6c3448246c.js"></script>
   {{-- js --}}
   <script src="/js/common.js"></script>
-  @yield('project_css','')
 </body>
 </html>

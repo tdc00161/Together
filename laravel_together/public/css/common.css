@@ -17,12 +17,22 @@ body {
     width: 35px;
     height: auto;
 }
+a:hover {
+    text-decoration: none;
+}
 
  /* 헤더 - 활성화된 버튼에 대한 스타일 */
  .activee {
     filter: invert(100%);
     color: black;
     font-weight: bold;
+}
+/* empty msg */
+.empty-msg {
+    font-size: 12px;
+    color: #cecece;
+    text-align: center;
+    margin-top: 74px;
 }
 /* 대시보드 - 공지 커스텀 */
 .carousel-inner {
@@ -45,9 +55,9 @@ text-align: center;
 .dashboard-project-notice {
     display: block;
     margin: 17px;
-   text-align: center;
-   width: 100%;
-   height: 10px;
+    text-align: center;
+    /* width: 100%; */
+    height: 10px;
 }
 .dashboard-project-color-box {
 display: inline-block;
@@ -75,6 +85,7 @@ margin-left: 5px;
 .project-progress-project-title-div {
     display: flex;
     height: 20px;
+    margin-bottom: 4px;
 }
 
 /* 대시보드 - 프로그레스 - 프로젝트명 */
@@ -95,10 +106,47 @@ a {
     font-weight: lighter;
 }
 
+/* 대시보드 그래프 */
 #chartcanvas2 {
     box-sizing: border-box;
     width: 100%;
 }
+
+/* 상태 문구 */
+.color_set1 {
+    padding-left: 25%;
+}
+
+.color_div1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.project_color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    /* background-color: beige; */
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* 마감 */
+.dash_dday {
+    font-weight: bold;
+    margin-bottom: 10px;
+    /* display: inline-block; */
+}
+
+.dash_dday_grid {
+    display: grid;
+    grid-template-columns: 0.2fr 1.5fr;
+    margin: 5px 0;
+}
+
+
 .common-button {
     border: none;
     background: transparent;
@@ -171,6 +219,7 @@ a {
     border-radius: 3px;
     margin-right: 7px;
     content: '';
+    margin-top: 2px;
 }
 
 :root {
@@ -662,7 +711,7 @@ box-sizing: border-box;
     width: 100%;
     flex-wrap: wrap;
     height: 100%;
- margin-top: 30px;
+ margin-top: 16px;
  display: flex;
  flex-direction: column;
  &-title {
@@ -674,8 +723,8 @@ box-sizing: border-box;
  .content-section-2 {
    margin-left: 7px;
    margin-top: 7px;
-    width: 75%;
-    height: 78.5%;
+    width: 74%;
+    height: 74%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -991,7 +1040,7 @@ box-sizing: border-box;
 .app-card1 {
    
     width: calc(33.3% - 90px);
-    height: 100%;
+    height: 94.5%;
     font-size: 16px;
     background-color: var(--content-bg);
     border-radius: 14px;
@@ -999,7 +1048,7 @@ box-sizing: border-box;
     padding: 10px;
     transition: 0.3s ease;
     padding-top: 50px;
-    min-width: 300px;
+    /* min-width: 300px; */
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);
@@ -1009,7 +1058,7 @@ box-sizing: border-box;
 .app-card2 {
     margin-left: 7px;
     display: block;
-    width: 74.5%;
+    width: 73.5%;
     height: 20%;
     font-size: 16px;
     background-color: var(--content-bg);
@@ -1037,6 +1086,7 @@ box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
     transition: 0.3s ease;
+    overflow-y: scroll;
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);
@@ -1053,7 +1103,10 @@ box-sizing: border-box;
     border-radius: 14px;
     border: 1px solid var(--theme-bg-color);
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     transition: 0.3s ease;
+    overflow-y: scroll;
     &:hover {
      transform: scale(1.02);
      background-color: var(--theme-bg-color);
@@ -1062,6 +1115,7 @@ box-sizing: border-box;
 
 /* 4  */
 .app-card4 {
+    overflow: auto;
     margin-left: 7px;
     display: block;
     flex-direction: column;

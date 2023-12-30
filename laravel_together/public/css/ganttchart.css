@@ -8,58 +8,143 @@
 /* 피드 공통 헤더 */
 .first_menu {
     display: grid;
-    grid-template-columns: 1.7fr 2.3fr;
+    grid-template-columns: 2.2fr 1.8fr;
 }
 
 .menu_title {
     display: grid;
-    grid-template-columns: 0.5fr 3.5fr;
+    grid-template-rows: 1.5fr 1.5fr;
+}
+
+.title_bar {
+    display: flex;
+    align-items: center
+}
+
+.statuscolor {
+    border-radius: 10px;
+    width: 80%;
+    height: 60%;
+    margin: 0 auto;
 }
 
 .project_color {
     display: inline-block;
-    width: 60px;
-    height: 60px;
-    background-color: beige;
+    width: 20px;
+    height: 20px;
+    /* background-color: beige; */
     border-radius: 5px;
     margin-right: 10px;
 }
 
-.menu_title div input {
+.title:not(.detail_title) {
     display: inline-block;
-    width: 260px;
+    width: 70%;
     height: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
     border-radius: 5px;
     border: none;
     background-color: transparent;
 }
 
-.menu_title div textarea {
-    display: inline-block;
-    width: 260px;
-    height: 40px;
-    border-radius: 5px;
+.title_rightgrid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.title_img {
+    display: flex;
+    justify-content: flex-end;
+    /* margin-bottom: 10px; */
+}
+
+.title_img2 {
+    width: 25px;
+    height: 25px;
+}
+
+.project_title {
+    width: 100%;
     border: none;
+    resize: none;
     background-color: transparent;
-	resize: none;
+}
+
+.project_title:hover {
+    border: 1px solid white;
+}
+
+.project_content {
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    font-size: 1rem;
+    border: none;
+    resize: none;
+    background-color: transparent;
+}
+
+.project_content:hover {
+    border: 1px solid white;
+}
+
+.dday {
+    font-size: 1.5rem;
+}
+
+.tabset {
+    width: 100%;
+    height: 50px;
+    display: grid;
+    grid-template-columns: 0.8fr 0.8fr 2.4fr;
+    align-items: center;
+    color: white;
+    font-weight: 800;
+}
+
+.tabmenu {
+    display: inline-block;
+    width: 100%;
+    height: 50%;
+    /* margin: 0 5px 0 0; */
+    padding: 0;
+    font-weight: 400;
+    border: none;
+    background-color: rgba(255, 255, 255,30%);
+    text-align: center;
+}
+
+.tabmenu.active {
+    width: 100%;
+    color: white;
+    font-weight: 500;
+    display: inline-block;
+    background-color: rgba(0, 0, 0,50%);
+    /* border-bottom: 2pax solid #6b6b6b; */
 }
 
 .date_set {
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    justify-items: center;
+    align-items: end;
+    color: black;
+    /* margin-bottom: 20px */
 }
 
-.date {
+.project_date {
     width: 70%;
+    text-align: center;
     height: 30px;
     padding-left: 10px;
     border: none;
+    color: black;
     background-color: transparent;
 }
 
-.date_set label {
-    margin-right: 5px;
-    width: 200px;
+.project_label {
+    width: 97%;
     height: 30px;
     background-color: white;
     border-radius: 3px;
@@ -67,47 +152,67 @@
     font-weight: 600;
     padding-left: 10px;
     line-height: 30px;
+    text-align: center;
     font-size: 1em;
 }
 
-.tabset {
+/* 모달창 */
+
+#deleteModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
-    justify-items: center;
-    color: white;
-    font-weight: 800;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
 }
 
-.tab_menu {
-    display: inline-block;
+.deletemodal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
     width: 50%;
-    font-weight: 800;
-    border: none;
-    background-color: transparent;
-    text-align: center;
+    height: 20%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
 }
 
-.gantt-tabmenu.active {
-    width: 100%;
+.deletespan {
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+}
+
+.deletebutton {
     color: white;
-    font-weight: 800;
-    border-bottom: 2px solid var(--inactive-color);
-    display: inline-block;
-    background-color: transparent;
-    /* border-bottom: 2pax solid #6b6b6b; */
+    width: 62px;
+    height: 27px;
+    margin-right: 10px;
+    background-color: #04A5FF;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
 }
 
-/* .hr {
-    width: 100%;
-    height: 2px;
-    border: 1px solid white;
-    margin: 5px 0;
-} */
-.gantt-tabmenu {
-	color: #fff;
+.closebutton {
+    color: white;
+    width: 62px;
+    height: 27px;
+    margin-right: 10px;
+    background-color: #919191;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
 }
+
+
 
 /* 수정 완료 시 팝업 창 */
 .gantt-update-modal {
@@ -140,7 +245,7 @@
 	background-color: var(--theme-bg-color);
 	/* background-color: #fff; */
 	/* color: #000; */
-	height: auto;
+	height: 100%;
 	margin: -40px -40px 0 -40px;
 	position: relative;
 	top: 40px;
@@ -150,12 +255,12 @@
 /* 검색, 드롭박스, 업무추가버튼 영역 */
 .gantt-btn-wrap {
 	border-bottom: 1px solid var(--inactive-color);
-	padding: 5px;
-	display: flex;
+    padding: 5px;
+    display: flex;
     justify-content: space-between;
-	/* height: 6%; */
-	background-color: rgba(23, 24, 29, 0.4);
-	margin: 0px -40px;
+    /* height: 6%; */
+    /* background-color: rgba(23, 24, 29, 0.4); */
+    margin: 10px -40px 0px -40px;
 }
 
 .gantt-search {
@@ -185,6 +290,13 @@
 	border: 1px solid #F9B31F;
     background-color: #f9b31f66;
 }
+
+/* .gantt-dropdown-check-list .gantt-span > span {
+	display: inline-block;
+    padding: 2px 0px;
+} */
+
+
 
 /* .gantt-dropdown-check-list .gantt-span:after {
 	position: absolute;
@@ -261,7 +373,7 @@
 	background-color: #64C139;
 }
 .gantt-status-color {
-	padding: 0px 15px;
+	/* padding: 0px 15px; */
     border-radius: 15px;
     height: 25px;
 }
@@ -332,6 +444,7 @@
 	display: flex;
     justify-content: space-between;
 	/* height: 6%; */
+	position: relative;
 }
 
 .gantt-task input {
@@ -439,7 +552,8 @@
 .gantt-detail {
 	display: none;
 	position: absolute;
-	left: 30px;
+	left: 13px;
+	top: 32px;
     background-color: rgba(151, 86, 255, 0.9);
     width: auto;
     padding: 5px;
@@ -456,7 +570,10 @@
 	position: relative;
 	display: inline-block;
 	width: 90%;
+	height: 100%;
+	text-align: center;
 }
+
 .statusDropdown {
 	display: none;
 	position: absolute;
@@ -555,6 +672,7 @@
 	border-right: 1px solid var(--inactive-color);
 	width: 85px;
 	color: #fff;
+	height: 30px;
 }
 /* .task {
 	background-color: #2196F3;
@@ -570,6 +688,6 @@
 }
 
 .scroll-style::-webkit-scrollbar-thumb {
-	position: fixed;
+	/* position: fixed; */
 	background-color: white;
 }
