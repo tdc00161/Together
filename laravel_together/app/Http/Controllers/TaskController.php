@@ -132,7 +132,7 @@ class TaskController extends Controller
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',0)
-                    ->whereNull('deleted_at')
+                    ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -144,7 +144,7 @@ class TaskController extends Controller
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',1)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -156,7 +156,7 @@ class TaskController extends Controller
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',2)
-                    ->whereNull('deleted_at')
+                    ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -168,7 +168,7 @@ class TaskController extends Controller
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',3)
-                    ->whereNull('deleted_at')
+                    ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -202,7 +202,7 @@ class TaskController extends Controller
                     ->where('tk.task_depth', '0') //상위업무만 출력
                     ->where('bd.data_title_code','3')
                     ->where('tk.category_id','0')
-                    ->whereNull('deleted_at')
+                    ->whereNull('tk.deleted_at')
                     ->orderBy('dday','desc')
                     ->get();
 
@@ -257,7 +257,7 @@ class TaskController extends Controller
         ->where('project_users.member_id',$user->id)
         ->where('tasks.category_id',0)
         ->where('tasks.task_status_id',0)
-        ->whereNull('deleted_at')
+        ->whereNull('tasks.deleted_at')
         ->groupBy('tasks.task_status_id')
         ->get();
 
@@ -269,7 +269,7 @@ class TaskController extends Controller
             ->where('project_users.member_id',$user->id)
             ->where('tasks.category_id',0)
             ->where('tasks.task_status_id',1)
-            ->whereNull('deleted_at')
+            ->whereNull('tasks.deleted_at')
             ->groupBy('tasks.task_status_id')
             ->get();
 
@@ -281,7 +281,7 @@ class TaskController extends Controller
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',2)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -293,7 +293,7 @@ class TaskController extends Controller
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',3)
-                ->whereNull('deleted_at')
+                ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
