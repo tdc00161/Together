@@ -621,7 +621,8 @@ class TaskController extends Controller
             $responseData["code"] = "U01";
             $responseData["msg"] = $id." updated";
             $responseData['data']['task'] = $result;
-            $responseData['data']['names'] = ['task_status_name' => $request->task_status_id];
+            $responseData['data']['names']['task_status_name'] = $request->task_status_id;
+            $responseData['data']['names']['task_responsible_name'] = $request->task_responsible_id;
         }
 
         return $responseData;

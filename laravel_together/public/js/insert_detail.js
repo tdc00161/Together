@@ -309,7 +309,7 @@ function createTask() {
 		"title": INSERT_TITLE.value,
 		"content": INSERT_CONTENT.value,
 		"project_id": thisProjectId,
-		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0 
+		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0
 	}
 	console.log(postData);
 	if (TaskNoticeFlg === 0) {
@@ -368,7 +368,7 @@ function createTask() {
 				add_under_task.setAttribute('onclick', 'addSubTask(event,' + data.data.id + ')')
 				responsibleName_element.textContent = data.names.task_responsible_name
 				statusName_element.textContent = data.names.task_status_name
-				statusName_element.setAttribute('data-status',data.names.task_status_name) 
+				statusName_element.setAttribute('data-status', data.names.task_status_name)
 				statusColorAutoPainting(data.names.task_status_name, statusName_element)
 				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
 				// ganttDetailChange()
@@ -519,12 +519,57 @@ function updateTask() {
 		.then(data => {
 			console.log(data);
 			closeTaskModal(0)
-			if(GANTT_LEFT[0]){
-				let refreshTarget = document.querySelector('#gantt-task-'+now_task_id)
+			if (GANTT_LEFT[0]) {
+				// 해당 간트 row
+				let refreshTarget = document.querySelector('#gantt-task-' + now_task_id)
+				// console.log(refreshTarget);
+				// 해당 간트 상태
 				let refreshStatus = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild
-				refreshStatus.setAttribute('data-status',data.data.names.task_status_name)
+				// console.log(refreshStatus);
+				refreshStatus.setAttribute('data-status', data.data.names.task_status_name)
+				// console.log(refreshStatus.firstElementChild);
 				refreshStatus.firstElementChild.textContent = data.data.names.task_status_name
 				statusColorAutoPainting(data.data.names.task_status_name, refreshStatus)
+				// 해당 간트 담당자
+				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild
+				refreshResponsible.textContent = data.data.names.task_responsible_name
+				// 해당 간트 제목
+				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+				refreshTitle.textContent = data.data.task.title
+				// 해당 간트 시작일				
+				let refreshStart = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+				refreshStart.value = data.data.task.start_date
+				// 해당 간트 마감일
+				let refreshEnd = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
+				refreshEnd.value = data.data.task.end_date
+
+				let refreshRightGanttChart = document.querySelector('#gantt-chart-' + now_task_id)
+				let chartDateList = refreshRightGanttChart.children
+				for (let index = 0; index < chartDateList.length; index++) {
+					const element = chartDateList[index];
+					// console.log(element);
+					element.firstChild ? element.removeChild(element.firstChild) : ''
+					let date = element.id.match(/-(\d+)/)[1]
+					// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
+					let gantt_start = data.data.task.start_date.replace(/-/g, '')
+					// console.log(gantt_start);
+					let gantt_end = data.data.task.end_date.replace(/-/g, '')
+					// console.log(gantt_end);
+					// console.log(date);
+					if (gantt_start <= date && gantt_end >= date) {
+						// console.log(date + '유효한 날짜');
+						let create_1 = document.createElement('div')
+						create_1.classList.add('bk-row')
+						create_1.setAttribute('data-row-num', data.data.id)
+						if (gantt_start == date) {
+							create_1.textContent = '시작일: ' + gantt_start
+						} else if (gantt_end == date) {
+							create_1.textContent = '마감일: ' + gantt_end
+						}
+
+						element.append(create_1)
+					}
+				}
 			}
 			openTaskModal(1, TaskNoticeFlg, now_task_id)
 		})
@@ -554,7 +599,7 @@ function closeMoreModal() {
 
 // 업무상태 색삽입 모듈
 function statusColorAutoPainting(switching, paintTo) {
-// console.log(switching);
+	// console.log(switching);
 	switch (switching) {
 		case '시작전':
 			paintTo.style.backgroundColor = '#B1B1B1';
@@ -1247,10 +1292,10 @@ function deleteTask() {
 		});
 }
 
-function updateStatusColor(data) { 
+function updateStatusColor(data) {
 	// console.log(data);
 	// TODO: checked값 초기화
-	document.querySelectorAll('.status_val') ? document.querySelectorAll('.status_val')[0].setAttribute('id','') : ''
+	document.querySelectorAll('.status_val') ? document.querySelectorAll('.status_val')[0].setAttribute('id', '') : ''
 	let status_val = document.querySelectorAll('.status_val')
 	let element_for_painting = null;
 	for (let index = 0; index < status_val.length; index++) {
