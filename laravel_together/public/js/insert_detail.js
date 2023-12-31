@@ -169,7 +169,8 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		document.querySelector('.insert_title').value = ''
 		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
-		if (document.querySelectorAll('.insert_responsible_one') ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false) {
+		// 담당자가 있으면 지우기
+		if (document.querySelectorAll('.insert_responsible_one').length === 0 ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
 		} // 작성되어있는 첫번째 담당자 삭제
 		START_DATE[0].value = ''
@@ -225,7 +226,9 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (a === 1) {
 		if (document.querySelector('.insert_modal').style.display != 'none') {
 			if (confirm("변경사항이 저장되지 않을 수 있습니다.") == true) {    //확인
+				alert('확인')
 			} else {   //취소
+				alert('취소')
 			}
 		}
 
@@ -351,7 +354,7 @@ function createTask() {
 				let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				let taskKey_element = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
-				let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+				let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
 				let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
 				let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
 				let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
