@@ -20,11 +20,10 @@ class ProjectController extends Controller
 {
   // 프로젝트 생성 화면 출력
   public function tableget() {
-      if (Auth::check()) {
-        return view('project_create');
-      } else {
-          return redirect('/user/login');
-      }
+    
+    $start_date = now()->format("Y-m-d");
+
+    return view('project_create');
 
   }
 
@@ -206,6 +205,7 @@ class ProjectController extends Controller
                             , DB::raw('TIMESTAMPDIFF(DAY, curdate(), tk.end_date) as dday'))
                     ->where('bd.data_title_code','0')
                     ->where('tk.project_id',$result->id)
+                    ->where('tk.task_status_id','!=','3')
                     ->whereNull('tk.deleted_at')
                     ->orderBy('dday','asc')
                     ->get();
