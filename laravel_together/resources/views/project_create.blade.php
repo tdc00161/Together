@@ -44,11 +44,11 @@
                 <div>
                     <div class="div_date">
                         <div class="div_font">시작일</div>
-                        <input class="input_date" name="start_date" id="start_date" type="date" required>
+                        <input class="input_date" name="start_date" id="start_date" type="date" min="{{minstart}}" required>
                     </div>
                     <div class="div_date">
                         <div class="div_font">마감일</div>
-                        <input class="input_date" name="end_date" type="date" id="end_date" min="start_date" required>
+                        <input class="input_date" name="end_date" type="date" id="end_date" min="{{minend}}" required>
                     </div>
                 </div>
                 <br>
