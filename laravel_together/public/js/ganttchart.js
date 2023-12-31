@@ -17,6 +17,29 @@ for (let i = 0; i < checkLists.length; i++) {
   }
 }
 
+// ********** 새 업무 추가 문구 : 새 업무 추가되면 지우기
+// gantt-task-body 안에 있는 모든 gantt-task 요소를 찾습니다.
+// document.addEventListener("DOMContentLoaded", function() {
+//   const ganttTasks = document.querySelectorAll('.gantt-task-body .gantt-task:not(.d-none)');
+//   if (ganttTasks.length > 0) {
+//       const newTaskAddPlease = document.querySelector('.new-task-add-please');
+//       if (newTaskAddPlease) {
+//           newTaskAddPlease.remove();
+//       }
+//   }
+// });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const ganttTaskBody = document.querySelector('.gantt-task-body');
+  const newTaskAddPlease = document.querySelector('.new-task-add-please');
+  const ganttTasks = ganttTaskBody.querySelectorAll('.gantt-task:not(.d-none)');
+
+  if (ganttTasks.length === 0) {
+      newTaskAddPlease.style.display = 'block';
+  } else if (ganttTasks.length > 0){
+      newTaskAddPlease.style.display = 'none';
+  }
+});
 
 // ************* 검색 기능
 // 검색창에서 업무명, 업무번호 검색 시 바로 보이기
@@ -597,8 +620,8 @@ function addSubTask(event, mainId) {
         console.log(newChart);
         
         // 시작일 종료일 날짜 설정
-        const chartStartDate = new Date('2023-12-01');
-        const chartEndDate = new Date('2023-12-31');
+        const chartStartDate = new Date('2024-01-01');
+        const chartEndDate = new Date('2024-03-31');
 
         // chartStartDate를 클론하여 chartNewStartDate에 할당
         const chartNewStartDate = new Date(chartStartDate);
@@ -941,7 +964,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const headerScroll = document.querySelector('.gantt-header-scroll');
 
 // 예시 데이터 - 날짜
-const startDate = new Date('2023-12-01');
+const startDate = new Date('2024-01-01');
 const endDate = new Date('2024-03-31');
 
 // 날짜를 헤더에 추가하는 함수
@@ -1211,5 +1234,8 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     showPopupMessage('수정 완료!');
   });
 });
+
+
+
 
 

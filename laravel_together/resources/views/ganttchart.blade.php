@@ -134,6 +134,12 @@
             <p class="gantt-modal-content-p" id="ganttPopupMessage"></p>
         </div>
     </div>
+    {{-- 새 업무 추가 문구 --}}
+    <div class="new-task-add-please">
+        <div class="new-task-add">
+            <p class="new-task-add-p">새 업무를 추가해주세요.</p>
+        </div>
+    </div>
     <div class="gantt-content-wrap">
         <section class="gantt-all-task scroll-style-parent">
             <div class="gantt-task-wrap">
@@ -247,7 +253,7 @@
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
-                                    $startDate = new DateTime('2023-12-01');
+                                    $startDate = new DateTime('2024-01-01');
                                     $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -258,7 +264,7 @@
                             @forelse ($item->depth_1 as $item2)
                                 <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                     @php
-                                        $startDate = new DateTime('2023-12-01');
+                                        $startDate = new DateTime('2024-01-01');
                                         $endDate = new DateTime('2024-03-31');
 
                                         for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -272,7 +278,7 @@
                         @empty
                         <div class="gantt-chart" id="gantt-chart-000">
                             @php
-                                $startDate = new DateTime('2023-12-01');
+                                $startDate = new DateTime('2024-01-01');
                                 $endDate = new DateTime('2023-03-31');
 
                                 for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
