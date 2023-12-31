@@ -280,10 +280,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_status = document.querySelectorAll('.gantt-task');
     const ganttChartContainer_status = document.querySelector('.gantt-chart-container');
-    sortedTasks_status_child.forEach(task_status => {
-      const taskId_status = task_status.getAttribute('id').split('-')[2];
+    totallySortedTasks_status.forEach(tasks_status => {
+      const taskId_status = tasks_status.getAttribute('id').split('-')[2];
       const ganttChartItem_status = document.getElementById(`gantt-chart-${taskId_status}`);
       ganttChartContainer_status.appendChild(ganttChartItem_status);
     });
@@ -354,10 +355,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_start = document.querySelectorAll('.gantt-task');
     const ganttChartContainer_start = document.querySelector('.gantt-chart-container');
-    sortedTasks_start_child.forEach(task_start => {
-      const taskId_start = task_start.getAttribute('id').split('-')[2];
+    totallySortedTasks_start.forEach(tasks_start => {
+      const taskId_start = tasks_start.getAttribute('id').split('-')[2];
       const ganttChartItem_start = document.getElementById(`gantt-chart-${taskId_start}`);
       ganttChartContainer_start.appendChild(ganttChartItem_start);
     });
@@ -429,10 +431,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_end = document.querySelectorAll('.gantt-task');
     const ganttChartContainer_end = document.querySelector('.gantt-chart-container');
-    sortedTasks_end_child.forEach(task_end => {
-      const taskId_end = task_end.getAttribute('id').split('-')[2];
+    totallySortedTasks_end.forEach(tasks_end => {
+      const taskId_end = tasks_end.getAttribute('id').split('-')[2];
       const ganttChartItem_end = document.getElementById(`gantt-chart-${taskId_end}`);
       ganttChartContainer_end.appendChild(ganttChartItem_end);
     });
@@ -532,7 +535,7 @@ function addSubTask(event, mainId) {
   addTaskName.classList.add('taskName', 'editable-title');
   addTaskName.setAttribute('spellcheck', 'false');
   addTaskName.setAttribute('contenteditable', 'true');
-  // addTaskName.setAttribute('placeholder', '하위업무명');
+  addTaskName.setAttribute('placeholder', '하위업무명');
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
   console.log('addChildTask');
