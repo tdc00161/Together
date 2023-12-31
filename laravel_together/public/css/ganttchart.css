@@ -698,3 +698,7 @@
 	/* position: fixed; */
 	background-color: white;
 }
+
+[contenteditable="true"]:empty:before {
+	content: attr(placeholder);
+}
