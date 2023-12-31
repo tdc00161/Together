@@ -3,10 +3,10 @@
     <link rel="stylesheet" href="/css/ganttchart.css">
     <script src="/js/ganttchart.js" defer></script>
     {{-- 헤더 js --}}
-    {{-- <script src="/js/project.js" defer></script> --}}
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
+    {{-- <script src="/js/project.js" defer></script> --}}
 @endsection
 @section('title', '간트차트')
 @section('main')
@@ -36,7 +36,15 @@
         {{-- <div class="dday">D-{{$result->dday}}</div> --}}
         <div class="date_set">
             <label for="dday">
-                <div class="dday" id="dday">D-{{$result->dday}}</div>
+                <div class="dday" id="dday">
+                    @if($result->dday === 0)
+                        <div class="dday">D-day</div>
+                    @elseif($result->dday > 0)
+                        <div class="dday">D-{{$result->dday}}</div>
+                    @else
+                        
+                    @endif
+                </div>
             </label>
             <label class="project_label" for="start_date"> 시작일
                 {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
@@ -134,6 +142,12 @@
             <p class="gantt-modal-content-p" id="ganttPopupMessage"></p>
         </div>
     </div>
+    {{-- 새 업무 추가 문구 --}}
+    <div class="new-task-add-please" style="display: none">
+        <div class="new-task-add">
+            <p class="new-task-add-p">새 업무를 추가해주세요.</p>
+        </div>
+    </div>
     <div class="gantt-content-wrap">
         <section class="gantt-all-task scroll-style-parent">
             <div class="gantt-task-wrap">
@@ -170,6 +184,7 @@
                                     <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
                                 </div>     
                                 <div class="taskKey" style="display: none">{{$item->task_number}}</div>
+                                <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
                             <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->res_name}}</span></div>
@@ -218,6 +233,7 @@
                                     <button class="gantt-detail-btn" onclick="addSubTask(event, 000)">하위업무 추가</button>
                                 </div>     
                                 <div class="taskKey" style="display: none">000</div>
+                                <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true"></div>
                             </div>
                             <div class="responName gantt-update-dropdown"><span id="responNameSpan"></span></div>
@@ -245,7 +261,7 @@
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
-                                    $startDate = new DateTime('2023-12-01');
+                                    $startDate = new DateTime('2024-01-01');
                                     $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -256,7 +272,7 @@
                             @forelse ($item->depth_1 as $item2)
                                 <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                     @php
-                                        $startDate = new DateTime('2023-12-01');
+                                        $startDate = new DateTime('2024-01-01');
                                         $endDate = new DateTime('2024-03-31');
 
                                         for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -270,7 +286,7 @@
                         @empty
                         <div class="gantt-chart" id="gantt-chart-000">
                             @php
-                                $startDate = new DateTime('2023-12-01');
+                                $startDate = new DateTime('2024-01-01');
                                 $endDate = new DateTime('2023-03-31');
 
                                 for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {

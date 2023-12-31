@@ -213,33 +213,6 @@
 }
 
 
-
-/* 수정 완료 시 팝업 창 */
-.gantt-update-modal {
-	display: none;
-	position: fixed;
-	top: 10%;
-	left: 50%;
-	width: 8%;
-	/* height: 0%; */
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 9999;
-}
-.gantt-modal-content {
-	position: absolute;
-    /* top: 50%; */
-    /* left: 44%; */
-    transform: translate(-50%, -50%);
-    background-color: #9656FF;
-    padding: 10px 30px;
-    border-radius: 15px;
-    border: 1px solid #fff;
-}
-.gantt-modal-content-p {
-	color: #fff;
-	margin: 0px;
-}
-
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
@@ -402,7 +375,7 @@
 .gantt-task-wrap {
 	width: 45%;
 	/* height: 100%; */
-	border-right: 1px solid var(--inactive-color);
+	/* border-right: 1px solid var(--inactive-color); */
 	text-align: center;
 	/* overflow-x: scroll; */
 }
@@ -697,4 +670,60 @@
 .scroll-style::-webkit-scrollbar-thumb {
 	/* position: fixed; */
 	background-color: white;
+}
+
+/* 업무명 div에 placeholder */
+[contenteditable="true"]:empty:before {
+	content: attr(placeholder);
+}
+
+
+/* 수정 완료 시 팝업 창 */
+.gantt-update-modal {
+	display: none;
+	position: fixed;
+	top: 10%;
+	left: 50%;
+	width: 8%;
+	/* height: 0%; */
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+}
+.gantt-modal-content {
+	position: absolute;
+    /* top: 50%; */
+    /* left: 44%; */
+    transform: translate(-50%, -50%);
+    background-color: #9656FF;
+    padding: 10px 30px;
+    border-radius: 15px;
+    border: 1px solid #fff;
+}
+.gantt-modal-content-p {
+	color: #fff;
+	margin: 0px;
+}
+
+/* 새 업무 추가 문구 */
+.new-task-add-please {
+	/* display: none; */
+	position: fixed;
+    top: 38%;
+    left: 50%;
+    width: 20%;
+    /* height: 0%; */
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    z-index: 1;
+}
+.new-task-add {
+	position: absolute;
+	background-color: #9656FF;
+    padding: 10px 30px;
+    border-radius: 15px;
+    /* border: 1px solid #fff; */
+}
+.new-task-add-p {
+	color: #fff;
+	margin: 0px;
+	font-size: large;
 }

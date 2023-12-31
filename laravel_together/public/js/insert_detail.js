@@ -169,7 +169,8 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		document.querySelector('.insert_title').value = ''
 		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
-		if (document.querySelectorAll('.insert_responsible_one') ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false) {
+		// 담당자가 있으면 지우기
+		if (document.querySelectorAll('.insert_responsible_one').length === 0 ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false) {
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
 		} // 작성되어있는 첫번째 담당자 삭제
 		START_DATE[0].value = ''
@@ -223,6 +224,16 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 	// 상세 모달 띄우기
 	if (a === 1) {
+		if (document.querySelector('.insert_modal').style.display != 'none') {
+			if (confirm("변경사항이 저장되지 않을 수 있습니다.") == true) {    //확인
+				// alert('확인')
+				closeTaskModal(0)
+			} else {   //취소
+				// alert('취소')
+				return false
+			}
+		}
+
 		// 작성모달 모서리 둥글게
 		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 
@@ -345,7 +356,7 @@ function createTask() {
 				let start_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				let end_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				let taskKey_element = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling
-				let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+				let taskName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
 				let responsibleName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling
 				let statusName_element = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling
 				let statusName_element_textContent = refreshCloneLeftGanttChart.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.nextElementSibling.firstElementChild
@@ -534,7 +545,8 @@ function updateTask() {
 				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild
 				refreshResponsible.textContent = data.data.names.task_responsible_name
 				// 해당 간트 제목
-				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+				console.log(refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling);
+				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
 				refreshTitle.textContent = data.data.task.title
 				// 해당 간트 시작일				
 				let refreshStart = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild

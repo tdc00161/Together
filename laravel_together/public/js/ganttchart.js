@@ -17,6 +17,26 @@ for (let i = 0; i < checkLists.length; i++) {
   }
 }
 
+// ********** 새 업무 추가 문구 : 새 업무 추가되면 지우기
+
+document.addEventListener('DOMContentLoaded', function() {
+  const ganttTaskBody = document.querySelector('.gantt-task-body');
+  const newTaskAddPlease = document.querySelector('.new-task-add-please');
+  const ganttAddBtn = document.querySelector('.gantt-add-btn');
+  const ganttTasks = ganttTaskBody.querySelectorAll('.gantt-task:not(.d-none)');
+
+  // 초기에 gantt-task 유무를 확인하고 new-task-add-please 요소의 표시 여부를 설정
+  if (ganttTasks.length === 0) {
+      newTaskAddPlease.style.display = 'block';
+  } else if(ganttTasks.length > 0) {
+      newTaskAddPlease.style.display = 'none';
+  }
+
+  // 업무추가 버튼에 클릭 이벤트 리스너 추가
+  ganttAddBtn.addEventListener('click', function() {
+    newTaskAddPlease.style.display = 'none';
+  });
+});
 
 // ************* 검색 기능
 // 검색창에서 업무명, 업무번호 검색 시 바로 보이기
@@ -79,51 +99,58 @@ document.addEventListener('DOMContentLoaded', function () {
     } else{
       icon_title.src = '/img/table.png';
     }
-    // // 자식 정렬
-    // const tasks_title_child = document.querySelectorAll('.gantt-child-task');
+    // 자식 정렬
+    const tasks_title_child = document.querySelectorAll('.gantt-child-task');
 
-    // const sortedTasks_title_child = Array.from(tasks_title_child).sort(function (a, b) {
-    //   const taskNameA_title = a.querySelector('.taskName').textContent.toUpperCase();
-    //   const taskNameB_title = b.querySelector('.taskName').textContent.toUpperCase();
+    const sortedTasks_title_child = Array.from(tasks_title_child).sort(function (a, b) {
+      const taskNameA_title = a.querySelector('.taskName').textContent.toUpperCase();
+      const taskNameB_title = b.querySelector('.taskName').textContent.toUpperCase();
 
-    //   if (sortingOrder_title === 0) {
-    //     return (taskNameA_title < taskNameB_title) ? -1 : (taskNameA_title > taskNameB_title) ? 1 : 0;
-    //   } else if (sortingOrder_title === 1) {
-    //     return (taskNameA_title > taskNameB_title) ? -1 : (taskNameA_title < taskNameB_title) ? 1 : 0;
-    //   } else if (sortingOrder_title === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
-    //     const taskIdA_title = parseInt(a.querySelector('.taskKey').textContent);
-    //     const taskIdB_title = parseInt(b.querySelector('.taskKey').textContent);
-    //     return taskIdA_title - taskIdB_title;
-    //   }
-    // })
+      if (sortingOrder_title === 0) {
+        return (taskNameA_title < taskNameB_title) ? -1 : (taskNameA_title > taskNameB_title) ? 1 : 0;
+      } else if (sortingOrder_title === 1) {
+        return (taskNameA_title > taskNameB_title) ? -1 : (taskNameA_title < taskNameB_title) ? 1 : 0;
+      } else if (sortingOrder_title === 2) { // 세 번째 클릭 시 'taskKey'를 기준으로 오름차순 정렬
+        const taskIdA_title = parseInt(a.querySelector('.taskKey').textContent);
+        const taskIdB_title = parseInt(b.querySelector('.taskKey').textContent);
+        return taskIdA_title - taskIdB_title;
+      }
+    })
 
-    // // 배치
-    // for (let index = tasks_title_child.length; index > 0; index--) {
-    //   const element = tasks_title_child[index - 1];
-    //   let ganttParentValue = element.getAttribute('parent')
-    //   const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
-    //   ganttParentElement.after(element)
-    // }
+    // 배치
+    for (let index = tasks_title_child.length; index > 0; index--) {
+      const element = tasks_title_child[index - 1];
+      let ganttParentValue = element.getAttribute('parent')
+      const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
+      ganttParentElement.after(element)
+    }
 
         
 
     
-    
     // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
-    const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
-    sortedTasks_title.forEach(tasks_title => {
-      const taskId_title = tasks_title.getAttribute('id').split('-')[2];
-      const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
-      ganttChartContainer_title.appendChild(ganttChartItem_title);
-    });
-
+    // const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
+    // sortedTasks_title.forEach(tasks_title => {
+    //   const taskId_title = tasks_title.getAttribute('id').split('-')[2];
+    //   const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
+    //   ganttChartContainer_title.appendChild(ganttChartItem_title);
+    // });
+    
     // sortedTasks_title_child.forEach(tasks_title => {
     //   const taskId_title = tasks_title.getAttribute('id').split('-')[2];
     //   const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
     //   ganttChartContainer_title.appendChild(ganttChartItem_title);
     // });
-
     
+    
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_title를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_title = document.querySelectorAll('.gantt-task');
+    const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
+    totallySortedTasks_title.forEach(tasks_title => {
+      const taskId_title = tasks_title.getAttribute('id').split('-')[2];
+      const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
+      ganttChartContainer_title.appendChild(ganttChartItem_title);
+    });
 
   });
 });
@@ -153,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const ganttTaskBody_respon = document.querySelector('.gantt-task-body');
-    sortedTasks_respon.forEach(task_respon => ganttTaskBody_respon.appendChild(task_respon));
+    sortedTasks_respon.forEach(tasks_respon => ganttTaskBody_respon.appendChild(tasks_respon));
     sortingOrder_respon = (sortingOrder_respon + 1) % 3; // 클릭 수에 따라 순서 변경
 
      // 이미지 변경
@@ -191,13 +218,23 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
-    const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
-    sortedTasks_respon_child.forEach(task_respon => {
-      const taskId_respon = task_respon.getAttribute('id').split('-')[2];
-      const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
-      ganttChartContainer_respon.appendChild(ganttChartItem_respon);
-    });
+    // // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
+    // sortedTasks_respon_child.forEach(task_respon => {
+    //   const taskId_respon = task_respon.getAttribute('id').split('-')[2];
+    //   const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
+    //   ganttChartContainer_respon.appendChild(ganttChartItem_respon);
+    // });
+
+      // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+      const totallySortedTasks_respon = document.querySelectorAll('.gantt-task');
+      const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
+      totallySortedTasks_respon.forEach(tasks_respon => {
+        const taskId_respon = tasks_respon.getAttribute('id').split('-')[2];
+        const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
+        ganttChartContainer_respon.appendChild(ganttChartItem_respon);
+      });
+
   });
 });
 
@@ -263,10 +300,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_status = document.querySelectorAll('.gantt-task');
     const ganttChartContainer_status = document.querySelector('.gantt-chart-container');
-    sortedTasks_status_child.forEach(task_status => {
-      const taskId_status = task_status.getAttribute('id').split('-')[2];
+    totallySortedTasks_status.forEach(tasks_status => {
+      const taskId_status = tasks_status.getAttribute('id').split('-')[2];
       const ganttChartItem_status = document.getElementById(`gantt-chart-${taskId_status}`);
       ganttChartContainer_status.appendChild(ganttChartItem_status);
     });
@@ -337,10 +375,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_start = document.querySelectorAll('.gantt-task');
     const ganttChartContainer_start = document.querySelector('.gantt-chart-container');
-    sortedTasks_start_child.forEach(task_start => {
-      const taskId_start = task_start.getAttribute('id').split('-')[2];
+    totallySortedTasks_start.forEach(tasks_start => {
+      const taskId_start = tasks_start.getAttribute('id').split('-')[2];
       const ganttChartItem_start = document.getElementById(`gantt-chart-${taskId_start}`);
       ganttChartContainer_start.appendChild(ganttChartItem_start);
     });
@@ -412,10 +451,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+    const totallySortedTasks_end = document.querySelectorAll('.gantt-task');
     const ganttChartContainer_end = document.querySelector('.gantt-chart-container');
-    sortedTasks_end_child.forEach(task_end => {
-      const taskId_end = task_end.getAttribute('id').split('-')[2];
+    totallySortedTasks_end.forEach(tasks_end => {
+      const taskId_end = tasks_end.getAttribute('id').split('-')[2];
       const ganttChartItem_end = document.getElementById(`gantt-chart-${taskId_end}`);
       ganttChartContainer_end.appendChild(ganttChartItem_end);
     });
@@ -513,9 +553,9 @@ function addSubTask(event, mainId) {
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
-  addTaskName.setAttribute("spellcheck", "false");
-  addTaskName.setAttribute("contenteditable", "true");
-  addTaskName.textContent = '하위업무명';
+  addTaskName.setAttribute('spellcheck', 'false');
+  addTaskName.setAttribute('contenteditable', 'true');
+  addTaskName.setAttribute('placeholder', '하위업무명');
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
   console.log('addChildTask');
@@ -577,8 +617,8 @@ function addSubTask(event, mainId) {
         console.log(newChart);
         
         // 시작일 종료일 날짜 설정
-        const chartStartDate = new Date('2023-12-01');
-        const chartEndDate = new Date('2023-12-31');
+        const chartStartDate = new Date('2024-01-01');
+        const chartEndDate = new Date('2024-03-31');
 
         // chartStartDate를 클론하여 chartNewStartDate에 할당
         const chartNewStartDate = new Date(chartStartDate);
@@ -796,30 +836,30 @@ function addSubTask(event, mainId) {
   doMGanttChart.after(newChart);
 
   // 시작일 종료일 날짜 설정
-  const chartStartDate = new Date('2023-12-01');
-  const chartEndDate = new Date('2023-12-31');
+  // const chartStartDate = new Date('2023-12-01');
+  // const chartEndDate = new Date('2023-12-31');
 
-  // chartStartDate를 클론하여 chartNewStartDate에 할당
-  const chartNewStartDate = new Date(chartStartDate);
+  // // chartStartDate를 클론하여 chartNewStartDate에 할당
+  // const chartNewStartDate = new Date(chartStartDate);
 
-  // 요소 생성 배치
-  // end가 start보다 이전인지 확인
-  while (chartNewStartDate <= chartEndDate) {
-    // 날짜 yyyymmdd 변경
-    const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
+  // // 요소 생성 배치
+  // // end가 start보다 이전인지 확인
+  // while (chartNewStartDate <= chartEndDate) {
+  //   // 날짜 yyyymmdd 변경
+  //   const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
 
-    // gantt-chart안에 들어갈 새로운 div
-    const ganttChartRow = document.createElement('div');
-    ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
+  //   // gantt-chart안에 들어갈 새로운 div
+  //   const ganttChartRow = document.createElement('div');
+  //   // ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
 
-    // 다음 날짜 이동
-    chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
+  //   // 다음 날짜 이동
+  //   chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
 
-    // <div class="gantt-chart" id="ganbtt-chart-800">
-    //    <div id="row800-(231201~231231)"></div>
-    // </div> 생성
-    newChart.appendChild(ganttChartRow);
-  }
+  //   // <div class="gantt-chart" id="ganbtt-chart-800">
+  //   //    <div id="row800-(231201~231231)"></div>
+  //   // </div> 생성
+  //   newChart.appendChild(ganttChartRow);
+  // }
 
   // addEventListener 로 하는 방법
   //
@@ -912,16 +952,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-
-
-
 // ************* 차트영역 헤더에 날짜 추가
 const headerScroll = document.querySelector('.gantt-header-scroll');
 
 // 예시 데이터 - 날짜
-const startDate = new Date('2023-12-01');
+const startDate = new Date('2024-01-01');
 const endDate = new Date('2024-03-31');
 
 // 날짜를 헤더에 추가하는 함수
@@ -1011,66 +1046,6 @@ function test(rowNum) {
   }
 }
 
-// 기존 것인데 다음달이 넘어가면 차트바가 표시안됨
-// function test(rowNum) {
-//   console.log('***** test() Start *****');
-//   // 해당 시작일, 종료일 요소 습득
-//   const start = document.getElementById('start-row' + rowNum).value;
-//   const end = document.getElementById('end-row' + rowNum).value;
-
-
-//   console.log(start);
-//   console.log(end);
-
-//   if (start && end) {
-//     // 추가 할 bk-row div의 데이트 포멧 변경 : yyyy-mm-dd >> yyyymmdd
-//     let startAt = parseInt(start.replace(/-/g, ''), 10); // - 제거
-//     let endAt = parseInt(end.replace(/-/g, ''), 10);
-//     // console.log(endAt);
-
-//     // 기존 bk-row div 삭제
-//     const existingBkRowList = document.querySelectorAll('.bk-row[data-row-num="' + rowNum + '"]');
-
-//     // console.log(existingBkRowList);
-//     existingBkRowList.forEach(function (item) {
-//       item.parentNode.removeChild(item);
-//     });
-
-//     // bk-row div 추가
-//     for (let currentDate = startAt; currentDate <= endAt; currentDate++) {
-//       const dateString = currentDate.toString();
-//       const year = dateString.substring(0, 4);
-//       const month = dateString.substring(4, 6);
-//       const day = dateString.substring(6, 8);
-//       const formattedDate = year + month + day;
-//       // console.log(endAt);
-
-//       const target = document.getElementById('row' + rowNum + '-' + formattedDate); // ex) row1-231201
-//       // console.log(target);
-
-
-//       // bk-row div 요소 생성
-//       const div = document.createElement('div');
-//       div.classList = 'bk-row';
-//       div.dataset.rowNum = rowNum; // 해당 rowNum을 데이터로 저장
-//       div.textContent = '';
-
-//       // 타겟에 bk-row div 추가
-//       target.appendChild(div);
-
-//       // 첫 번째와 마지막 bk-row에 시작일과 종료일 추가
-
-//       if (currentDate === startAt) {
-//         div.textContent = '시작일: ' + formattedDate;
-//       }
-
-
-//       if (currentDate === endAt) {
-//         div.textContent = '마감일: ' + formattedDate;
-//       }
-//     }
-//   }
-// }
 
 // ************* 업무추가 버튼클릭 시 상위업무 추가
 
@@ -1121,7 +1096,7 @@ function showPopupMessage(message) {
     event.stopPropagation();
   });
 
-  // 일정 시간(여기서는 3초) 후 팝업 창 닫기
+  // 일정 시간(여기서는 1초) 후 팝업 창 닫기
   setTimeout(() => {
     closePopup();
   }, 1000);
@@ -1191,5 +1166,152 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     showPopupMessage('수정 완료!');
   });
 });
+
+
+// ********* 엔터쳤을 때 줄바꿈 막기
+const editableDivs = document.querySelectorAll('.taskName');
+
+editableDivs.forEach(function(editDiv) {
+  editDiv.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 기본 동작 막기
+      return false;
+    }
+  });
+});
+
+
+
+// ********** 프로젝트 수정/삭제/d-day : project.js 에서 따옴
+
+let OrginalendValue = document.getElementById('end_date').value;
+let Orginalend = document.getElementById('end_date');
+
+
+// 프로젝트 명, 컨텐츠 업데이트
+const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+function titleupdate(project_pk) {
+
+   let Updatetitle = document.getElementById('project_title').value;
+   let Updatecontent = document.getElementById('project_content').value;
+   let Updatetitlemax = 17;
+   let Updatecontentmax = 45;
+
+   if(Updatetitle.length > Updatetitlemax){
+      alert('텍스트 길이를 초과하였습니다.')
+   }
+   if(Updatetitlemax.length > Updatecontentmax){
+      alert('텍스트 길이를 초과하였습니다.')
+   }
+   let Updatestart = document.getElementById('start_date').value;
+   let Updateend = document.getElementById('end_date').value;
+   
+   // console.log(Updatetitle)
+
+   let dday = document.getElementById("dday");
+      today = new Date();
+      start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
+      console.log(start_day);
+      end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
+      // 시작일보다 마감일이 이전일 경우 DB에 저장하지 않고 에러띄우기 및 d-day 설정 지우기
+      if(end_day < start_day) {
+         Dday.innerHTML = '';
+         alert('마감일자 입력을 다시 해주세요');
+         return false;
+      }
+      console.log(end_day);
+      gap = today - end_day;
+      if(gap > 0) {
+         dday.innerHTML = '';
+         return false;
+      }
+      else if(gap === 0) {
+         dday.innerHTML = D-day;
+      }
+      
+      console.log(gap);
+      result = Math.floor(gap / (1000 * 60 * 60 * 24));
+
+      dday.innerHTML = 'D' + result;
+
+
+    // Fetch를 사용하여 서버에 put 요청 보내기
+    fetch('/update/' +project_pk, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken_project,
+            // 필요에 따라 다른 헤더들 추가 가능
+         },
+         body: JSON.stringify({
+            "Updatetitle": Updatetitle,
+            "Updatecontent":Updatecontent,
+            "Updatestart": Updatestart,
+            "Updateend":Updateend,
+         })
+         // body: JSON.stringify({project_title: project_title})
+   })
+   .then((response) => {
+      console.log(response);
+      return response.json();
+   })
+   .then(data => {
+      console.log(data);
+         document.getElementsByClassId('project_title').value = data.project_title;
+         document.getElementsByClassId('project_content').value = data.project_content;
+         document.getElementsByClassId('start_date').value = data.start_date;
+         document.getElementsByClassId('end_date').value = data.end_date;
+   })
+   .catch(error => {
+         // 오류 처리
+         console.error('error', error);
+   });
+
+}
+
+
+// 프로젝트 설명 클릭시 초기값 삭제
+// let UPDATECONTENTSET = document.getElementById('project_content');
+// UPDATECONTENTSET.addEventListener('click',deleteContent)
+
+// function deleteContent () {
+//    this.value = "";
+// }
+
+
+//삭제 모달창 open
+function openDeleteModal() {
+   document.getElementById('deleteModal').style.display = 'block';
+}
+
+//삭제 모달창 close
+function closeDeleteModal() {
+   document.getElementById('deleteModal').style.display = 'none';
+}
+
+//삭제버튼시 삭제
+const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+function deleteProject(project_pk) {
+   // 전달할 데이터 정보(메모 정보)
+   //    let Id = {
+   //       user_pk : user_pk
+   //   }
+   // console.log(document.querySelector('.csrf_token'));
+   // 삭제 ajax
+   fetch('/delete/' + project_pk, {
+      method: 'DELETE',
+      // body : JSON.stringify(Id),
+      headers: {
+         "Content-Type": "application/json",
+         'X-CSRF-TOKEN': csrfToken_project
+      },
+   }).then((response) => 
+      console.log(response))
+      // response.json()
+     .then(() => {
+         window.location.href = '/dashboard'; // 메인화면으로 이동
+   }).catch(error => console.log(error));
+}
+
 
 

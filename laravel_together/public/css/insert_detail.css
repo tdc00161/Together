@@ -1086,3 +1086,25 @@ span.project_detail {
       transform: scale(1.2); /* 1.2배 */
     }
   }
+
+.task_modal input[type='date'] {
+	/* // 캘린더 아이콘을 클릭해야만 달력이 보이기 때문에 이 영역 자체를 제어하기 위해 설정  */
+	position: relative;
+	/* padding: 10px; */
+	/* // 배경에 커스텀 아이콘을 넣어주자! x축은 오른쪽에서부터 10px 떨어지게 하고, y축은 가운데 정렬하고, width 35px에 height auto라는 크기를 부여한다. */
+	/* background: url(../../../assets/Calendar.svg) no-repeat right 10px center / 35px auto; */
+}
+
+.task_modal input[type='date']::-webkit-calendar-picker-indicator {
+	position: absolute;
+	/* // 이를 설정하기 위해 사전에 relative를 설정한 것이다. */
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	/* // 배경은 투명하게, */
+	color: transparent;
+	/* // 글자도 투명하게! 이 두 설정을 통해 캘린더 아이콘을 사라지게 만든다. */
+	cursor: pointer;
+}
