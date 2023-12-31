@@ -39,7 +39,6 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $user->id)
         ->where('t.category_id','=', 1)
         ->whereNull('p.deleted_at')
-        ->whereNull('t.deleted_at')
         ->get();
         // -------- 대시보드 공지 출력 끝 ------------
 
@@ -201,15 +200,15 @@ class TaskController extends Controller
                     ->join('basedata as bd', function($basedata){
                         $basedata->on('bd.data_content_code','=','pj.color_code_pk');
                     })
-                    ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd.data_content_name',DB::raw('tk.end_date - date(NOW()) as dday'))
+                    ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd.data_content_name',DB::raw('timestampdiff(day,tk.end_date,NOW()+interval -1 day) as dday'))
                     ->where('pu.member_id',$user->id)
                     ->where('tk.task_depth', '0') //상위업무만 출력
                     ->where('bd.data_title_code','3')
                     ->where('tk.category_id','0')
                     ->whereNull('tk.deleted_at')
-                    ->whereNull('pj.deleted_at')
                     ->orderBy('dday','desc')
                     ->get();
+    // dd($dday_data);
 
                     
     //d-day기준 업무 그룹화

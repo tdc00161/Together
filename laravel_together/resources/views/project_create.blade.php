@@ -37,9 +37,9 @@
             <br>
             <div>프로젝트를 어떻게 만들지 선택해보세요</div>
             <br>
-                <input class="fontcolor" type="text" name="project_title" placeholder="프로젝트명을 입력하세요" required>
+                <input class="fontcolor" type="text" name="project_title" placeholder="프로젝트명을 16자이내로 입력하세요" maxlength="16" required>
                 <br><br>
-                <textarea name="project_content" cols="30" rows="10" placeholder="프로젝트에 관한 설명 입력(선택)"></textarea>
+                <textarea name="project_content" cols="30" rows="10" placeholder="프로젝트에 관한 설명을 44자이내로 입력하세요(선택)" maxlength="44"></textarea>
                 <br><br>
                 <div>
                     <div class="div_date">
