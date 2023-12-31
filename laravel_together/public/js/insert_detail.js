@@ -540,7 +540,8 @@ function updateTask() {
 				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild
 				refreshResponsible.textContent = data.data.names.task_responsible_name
 				// 해당 간트 제목
-				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+				console.log(refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling);
+				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
 				refreshTitle.textContent = data.data.task.title
 				// 해당 간트 시작일				
 				let refreshStart = refreshTarget.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
