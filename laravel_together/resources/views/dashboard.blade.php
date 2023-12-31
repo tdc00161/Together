@@ -1,4 +1,7 @@
 @extends('layout.layout')
+@section('link')
+<link rel="stylesheet" href="/css/project_individual.css">
+@endsection
 @section('title', '대시보드')
 @section('main')
     {{-- 컨텐츠 헤더 --}}

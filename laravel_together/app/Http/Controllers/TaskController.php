@@ -105,6 +105,7 @@ class TaskController extends Controller
             ->where('t.project_id', '=', $projectId)
             ->where('b.data_title_code', '=', 3)
             ->where('t.category_id',0)
+            ->whereNull('t.deleted_at')
             ->groupBy('b.data_content_name','p.project_title')
             ->get();
 
@@ -120,6 +121,7 @@ class TaskController extends Controller
                 ->where('t.project_id', '=', $projectId)
                 ->where('b.data_title_code', '=', 3)
                 ->where('t.category_id',0)
+                ->whereNull('t.deleted_at')
                 ->groupBy('b.data_content_name','p.project_title')
                 ->get();
 
