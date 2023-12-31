@@ -816,30 +816,30 @@ function addSubTask(event, mainId) {
   doMGanttChart.after(newChart);
 
   // 시작일 종료일 날짜 설정
-  const chartStartDate = new Date('2023-12-01');
-  const chartEndDate = new Date('2023-12-31');
+  // const chartStartDate = new Date('2023-12-01');
+  // const chartEndDate = new Date('2023-12-31');
 
-  // chartStartDate를 클론하여 chartNewStartDate에 할당
-  const chartNewStartDate = new Date(chartStartDate);
+  // // chartStartDate를 클론하여 chartNewStartDate에 할당
+  // const chartNewStartDate = new Date(chartStartDate);
 
-  // 요소 생성 배치
-  // end가 start보다 이전인지 확인
-  while (chartNewStartDate <= chartEndDate) {
-    // 날짜 yyyymmdd 변경
-    const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
+  // // 요소 생성 배치
+  // // end가 start보다 이전인지 확인
+  // while (chartNewStartDate <= chartEndDate) {
+  //   // 날짜 yyyymmdd 변경
+  //   const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
 
-    // gantt-chart안에 들어갈 새로운 div
-    const ganttChartRow = document.createElement('div');
-    ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
+  //   // gantt-chart안에 들어갈 새로운 div
+  //   const ganttChartRow = document.createElement('div');
+  //   // ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
 
-    // 다음 날짜 이동
-    chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
+  //   // 다음 날짜 이동
+  //   chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
 
-    // <div class="gantt-chart" id="ganbtt-chart-800">
-    //    <div id="row800-(231201~231231)"></div>
-    // </div> 생성
-    newChart.appendChild(ganttChartRow);
-  }
+  //   // <div class="gantt-chart" id="ganbtt-chart-800">
+  //   //    <div id="row800-(231201~231231)"></div>
+  //   // </div> 생성
+  //   newChart.appendChild(ganttChartRow);
+  // }
 
   // addEventListener 로 하는 방법
   //
