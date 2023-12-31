@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const ganttTaskBody_respon = document.querySelector('.gantt-task-body');
-    sortedTasks_respon.forEach(task_respon => ganttTaskBody_respon.appendChild(task_respon));
+    sortedTasks_respon.forEach(tasks_respon => ganttTaskBody_respon.appendChild(tasks_respon));
     sortingOrder_respon = (sortingOrder_respon + 1) % 3; // 클릭 수에 따라 순서 변경
 
      // 이미지 변경
@@ -198,13 +198,23 @@ document.addEventListener('DOMContentLoaded', function () {
       ganttParentElement.after(element)
     }
 
-    // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
-    const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
-    sortedTasks_respon_child.forEach(task_respon => {
-      const taskId_respon = task_respon.getAttribute('id').split('-')[2];
-      const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
-      ganttChartContainer_respon.appendChild(ganttChartItem_respon);
-    });
+    // // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
+    // const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
+    // sortedTasks_respon_child.forEach(task_respon => {
+    //   const taskId_respon = task_respon.getAttribute('id').split('-')[2];
+    //   const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
+    //   ganttChartContainer_respon.appendChild(ganttChartItem_respon);
+    // });
+
+      // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
+      const totallySortedTasks_respon = document.querySelectorAll('.gantt-task');
+      const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
+      totallySortedTasks_respon.forEach(tasks_respon => {
+        const taskId_respon = tasks_respon.getAttribute('id').split('-')[2];
+        const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
+        ganttChartContainer_respon.appendChild(ganttChartItem_respon);
+      });
+
   });
 });
 
@@ -520,9 +530,9 @@ function addSubTask(event, mainId) {
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
-  addTaskName.setAttribute("spellcheck", "false");
-  addTaskName.setAttribute("contenteditable", "true");
-  addTaskName.textContent = '하위업무명';
+  addTaskName.setAttribute('spellcheck', 'false');
+  addTaskName.setAttribute('contenteditable', 'true');
+  // addTaskName.setAttribute('placeholder', '하위업무명');
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
   console.log('addChildTask');

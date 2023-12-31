@@ -170,6 +170,7 @@
                                     <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
                                 </div>     
                                 <div class="taskKey" style="display: none">{{$item->task_number}}</div>
+                                <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
                             <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->res_name}}</span></div>
