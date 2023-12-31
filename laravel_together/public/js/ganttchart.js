@@ -18,27 +18,24 @@ for (let i = 0; i < checkLists.length; i++) {
 }
 
 // ********** 새 업무 추가 문구 : 새 업무 추가되면 지우기
-// gantt-task-body 안에 있는 모든 gantt-task 요소를 찾습니다.
-// document.addEventListener("DOMContentLoaded", function() {
-//   const ganttTasks = document.querySelectorAll('.gantt-task-body .gantt-task:not(.d-none)');
-//   if (ganttTasks.length > 0) {
-//       const newTaskAddPlease = document.querySelector('.new-task-add-please');
-//       if (newTaskAddPlease) {
-//           newTaskAddPlease.remove();
-//       }
-//   }
-// });
 
 document.addEventListener('DOMContentLoaded', function() {
   const ganttTaskBody = document.querySelector('.gantt-task-body');
   const newTaskAddPlease = document.querySelector('.new-task-add-please');
+  const ganttAddBtn = document.querySelector('.gantt-add-btn');
   const ganttTasks = ganttTaskBody.querySelectorAll('.gantt-task:not(.d-none)');
 
+  // 초기에 gantt-task 유무를 확인하고 new-task-add-please 요소의 표시 여부를 설정
   if (ganttTasks.length === 0) {
       newTaskAddPlease.style.display = 'block';
-  } else if (ganttTasks.length > 0){
+  } else if(ganttTasks.length > 0) {
       newTaskAddPlease.style.display = 'none';
   }
+
+  // 업무추가 버튼에 클릭 이벤트 리스너 추가
+  ganttAddBtn.addEventListener('click', function() {
+    newTaskAddPlease.style.display = 'none';
+  });
 });
 
 // ************* 검색 기능

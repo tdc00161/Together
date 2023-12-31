@@ -135,7 +135,7 @@
         </div>
     </div>
     {{-- 새 업무 추가 문구 --}}
-    <div class="new-task-add-please">
+    <div class="new-task-add-please" style="display: none">
         <div class="new-task-add">
             <p class="new-task-add-p">새 업무를 추가해주세요.</p>
         </div>
