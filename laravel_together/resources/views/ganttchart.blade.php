@@ -3,10 +3,10 @@
     <link rel="stylesheet" href="/css/ganttchart.css">
     <script src="/js/ganttchart.js" defer></script>
     {{-- 헤더 js --}}
-    {{-- <script src="/js/project.js" defer></script> --}}
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
+    {{-- <script src="/js/project.js" defer></script> --}}
 @endsection
 @section('title', '간트차트')
 @section('main')
@@ -36,7 +36,15 @@
         {{-- <div class="dday">D-{{$result->dday}}</div> --}}
         <div class="date_set">
             <label for="dday">
-                <div class="dday" id="dday">D-{{$result->dday}}</div>
+                <div class="dday" id="dday">
+                    @if($result->dday === 0)
+                        <div class="dday">D-day</div>
+                    @elseif($result->dday > 0)
+                        <div class="dday">D-{{$result->dday}}</div>
+                    @else
+                        
+                    @endif
+                </div>
             </label>
             <label class="project_label" for="start_date"> 시작일
                 {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
