@@ -223,6 +223,12 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 	// 상세 모달 띄우기
 	if (a === 1) {
+		if (document.querySelector('.insert_modal').style.display != 'none') {
+			if (confirm("변경사항이 저장되지 않을 수 있습니다.") == true) {    //확인
+			} else {   //취소
+			}
+		}
+
 		// 작성모달 모서리 둥글게
 		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
 
