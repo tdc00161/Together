@@ -226,9 +226,11 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (a === 1) {
 		if (document.querySelector('.insert_modal').style.display != 'none') {
 			if (confirm("변경사항이 저장되지 않을 수 있습니다.") == true) {    //확인
-				alert('확인')
+				// alert('확인')
+				closeTaskModal(0)
 			} else {   //취소
-				alert('취소')
+				// alert('취소')
+				return false
 			}
 		}
 
