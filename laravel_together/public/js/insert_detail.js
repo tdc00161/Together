@@ -366,6 +366,7 @@ function createTask() {
 				let gantt_more_modal_btn = refreshCloneLeftGanttChart.firstElementChild.firstElementChild
 				// console.log();
 				let more_view = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
+				let more_view_onclick = refreshCloneLeftGanttChart.firstElementChild.firstElementChild
 				let add_under_task = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling
 				let gantt_more_modal = refreshCloneLeftGanttChart.firstElementChild.firstElementChild.nextElementSibling
 				// console.log(gantt_more_modal);
@@ -385,6 +386,7 @@ function createTask() {
 				statusName_element.setAttribute('data-status', data.names.task_status_name)
 				statusColorAutoPainting(data.names.task_status_name, statusName_element)
 				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
+				more_view_onclick.setAttribute('onclick','')
 				// ganttDetailChange()
 
 				gantt_more_modal_btn.addEventListener('click', function () {
@@ -398,6 +400,44 @@ function createTask() {
 						// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
 					}
 				})
+
+				// '...'버튼 닫기 조건
+				// let ganttDetailList = document.querySelectorAll('.gantt-detail');
+				// let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
+
+				// ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
+				// 	taskDetailClick.addEventListener('click', function(event) {
+				// 		ganttDetailList.forEach(function(detail, i) {
+				// 			if (i !== index) {
+				// 				detail.style.display = 'none';
+				// 			}
+				// 		});
+				// 		ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
+				// 	});
+				// });
+
+				// ganttDetailList.forEach(function(detail) {
+				// 	detail.addEventListener('click', function(event) {
+				// 		event.stopPropagation();
+				// 	});
+				// });
+
+				// document.addEventListener('click', function(event) {
+				// 	ganttDetailList.forEach(function(detail) {
+				// 		if (!event.target.closest('.gantt-editable-div')) {
+				// 			detail.style.display = 'none';
+				// 		}
+				// 	});
+				// });
+
+				// let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
+				// ganttDetailButtons.forEach(function(button) {
+				// 	button.addEventListener('click', function(event) {
+				// 		ganttDetailList.forEach(function(detail) {
+				// 			detail.style.display = 'none';
+				// 		});
+				// 	});
+				// });
 
 
 				// 우 간트
