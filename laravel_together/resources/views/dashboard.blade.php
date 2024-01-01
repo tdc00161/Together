@@ -69,7 +69,7 @@
                             </div>
 
                             {{-- 다음 캐러샐 --}}
-                            @foreach ($dashboardNotice as $notice)
+                            @foreach ($dashboardNotice->slice(1) as $notice)
                                 <div class="carousel-item">
                                     {{-- 프로젝트명 --}}
                                     <p class="dashboard-project-name">{{ $notice->project_title }}</p>

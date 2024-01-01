@@ -109,7 +109,7 @@ let OrginalendValue = document.getElementById('end_date').value;
 let Orginalend = document.getElementById('end_date');
 
 
-// 프로젝트 명, 컨텐츠 업데이트
+// 프로젝트 명, 컨텐츠 업데이트 // 240101 전체 수정(catch 까지)
 const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function titleupdate(project_pk) {
 
@@ -136,7 +136,7 @@ function titleupdate(project_pk) {
       end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
       // 시작일보다 마감일이 이전일 경우 DB에 저장하지 않고 에러띄우기 및 d-day 설정 지우기
       if(end_day < start_day) {
-         Dday.innerHTML = '';
+         dday.innerHTML = ''; // 240101 오타 수정
          alert('마감일자 입력을 다시 해주세요');
          return false;
       }
