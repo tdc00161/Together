@@ -515,3 +515,13 @@
   text-decoration: none;
   cursor: pointer;
 } */
+
+.goFeed {
+	width: fit-content;
+    padding: 5px 15px;
+}
+
+.goGantt {
+	width: fit-content;
+    padding: 5px 15px;
+}

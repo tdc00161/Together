@@ -58,8 +58,8 @@
     </div>
 </div>
 <div class="tabset">
-    <a href="{{ route('individual.get', ['id' => $result->id]) }}">피드</a>
-    <a href="">간트차트</a>
+    <a class="goFeed" href="{{ route('individual.get', ['id' => $result->id]) }}">피드</a>
+    <a class="goGantt" href="">간트차트</a>
     {{-- <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
     <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button> --}}
 </div>
