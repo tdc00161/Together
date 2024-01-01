@@ -402,42 +402,57 @@ function createTask() {
 				})
 
 				// '...'버튼 닫기 조건
-				// let ganttDetailList = document.querySelectorAll('.gantt-detail');
-				// let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
-
-				// ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
-				// 	taskDetailClick.addEventListener('click', function(event) {
-				// 		ganttDetailList.forEach(function(detail, i) {
-				// 			if (i !== index) {
-				// 				detail.style.display = 'none';
-				// 			}
-				// 		});
-				// 		ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
-				// 	});
-				// });
-
-				// ganttDetailList.forEach(function(detail) {
-				// 	detail.addEventListener('click', function(event) {
-				// 		event.stopPropagation();
-				// 	});
-				// });
-
-				// document.addEventListener('click', function(event) {
-				// 	ganttDetailList.forEach(function(detail) {
-				// 		if (!event.target.closest('.gantt-editable-div')) {
-				// 			detail.style.display = 'none';
-				// 		}
-				// 	});
-				// });
-
-				// let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
-				// ganttDetailButtons.forEach(function(button) {
-				// 	button.addEventListener('click', function(event) {
-				// 		ganttDetailList.forEach(function(detail) {
-				// 			detail.style.display = 'none';
-				// 		});
-				// 	});
-				// });
+				let ganttDetailList = document.querySelectorAll('.gantt-detail');
+				let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
+				console.log(ganttDetailList);
+				console.log(ganttTaskDetailClickList);
+				ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
+					console.log(taskDetailClick);
+					console.log(index);
+					taskDetailClick.addEventListener('click', function(event) {
+						ganttDetailList.forEach(function(detail, i) {
+							console.log(detail);
+							console.log(i);
+							if (i !== index) {
+								console.log(i !== index);
+								detail.style.display = 'none';
+							}
+						});
+						ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
+						console.log(ganttDetailList[index]);
+					});
+				});
+				
+				ganttDetailList.forEach(function(detail) {
+					console.log(detail);
+					detail.addEventListener('click', function(event) {
+						console.log(event);
+						event.stopPropagation();
+					});
+				});
+				
+				document.addEventListener('click', function(event) {
+					console.log(event);
+					ganttDetailList.forEach(function(detail) {
+						console.log(detail);
+						if (!event.target.closest('.gantt-editable-div')) {
+							console.log(!event.target.closest('.gantt-editable-div'));
+							detail.style.display = 'none';
+						}
+					});
+				});
+				
+				let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
+				console.log(ganttDetailButtons);
+				ganttDetailButtons.forEach(function(button) {
+					console.log(button);
+					button.addEventListener('click', function(event) {
+						ganttDetailList.forEach(function(detail) {
+							console.log(detail);
+							detail.style.display = 'none';
+						});
+					});
+				});
 
 
 				// 우 간트
