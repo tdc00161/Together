@@ -208,36 +208,39 @@ class TaskController extends Controller
         ];
 
     //대시보드 d-day기준 업무 출력(내림차순)
-    // $dday_data = DB::table('tasks as tk')
-    //                 ->join('project_users as pu', function($project_users){
-    //                     $project_users->on('pu.project_id','=','tk.project_id');
-    //                 })
-    //                 ->join('projects as pj', function($projects){
-    //                     $projects->on('pj.id','=','tk.project_id');
-    //                 })
-    //                 ->join('basedata as bd1', function($basedata){
-    //                     $basedata->on('bd1.data_content_code','=','pj.color_code_pk');
-    //                 })
-    //                 ->join('basedata as bd2', function($basedata){
-    //                     $basedata->on('bd2.data_content_code','=','tk.task_status_id');
-    //                 })
-    //                 ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd.data_content_name',DB::raw('timestampdiff(day,tk.end_date,NOW()+interval -1 day) as dday'))
-    //                 ->where('pu.member_id',$user->id)
-    //                 ->where('tk.task_depth', '0') //상위업무만 출력
-    //                 ->where('bd.data_title_code','3')
-    //                 ->where('tk.category_id','0')
-    //                 ->where('tk.task_status_id','!=','3')
-    //                 ->whereNull('tk.deleted_at')
-    //                 ->orderBy('dday','desc')
-    //                 ->get();
+    $dday_data = DB::table('tasks as tk')
+                    ->join('project_users as pu', function($project_users){
+                        $project_users->on('pu.project_id','=','tk.project_id');
+                    })
+                    ->join('projects as pj', function($projects){
+                        $projects->on('pj.id','=','tk.project_id');
+                    })
+                    ->join('basedata as bd1', function($basedata){
+                        $basedata->on('bd1.data_content_code','=','pj.color_code_pk');
+                    })
+                    ->join('basedata as bd2', function($basedata){
+                        $basedata->on('bd2.data_content_code','=','tk.task_status_id');
+                    })
+                    ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd1.data_content_name as project_color', 'bd2.data_content_name as task_color',DB::raw('timestampdiff(day,tk.end_date,NOW()+interval -1 day) as dday')) // (수정) 240101 마감리스트 출력: 김관호
+                    ->where('pu.member_id',$user->id)
+                    ->where('tk.task_depth', '0') //상위업무만 출력
+                    ->where('bd1.data_title_code','3') // (수정) 240101 마감리스트 출력: 김관호
+                    ->where('bd2.data_title_code','3') // 240101 마감리스트 출력: 김관호
+                    ->where('tk.category_id','0')
+                    ->where('tk.task_status_id','!=','3')
+                    ->whereNull('pu.deleted_at') // 240101 마감리스트 출력: 김관호
+                    ->whereNull('pj.deleted_at') // 240101 마감리스트 출력: 김관호
+                    ->whereNull('tk.deleted_at')
+                    ->orderBy('dday','desc')
+                    ->get();
 
     // dd($dday_data);
 
                     
     //d-day기준 업무 그룹화
-    // $group_dday = $dday_data->groupBy(function($item){
-    //     return $item->dday;
-    // });
+    $group_dday = $dday_data->groupBy(function($item){
+        return $item->dday;
+    });
     // $group_dday2
     // foreach ($group_dday as $key => $value) {
     //     if($key<=-7){
@@ -260,8 +263,8 @@ class TaskController extends Controller
                 'IndividualcompletionPercentages' => $IndividualcompletionPercentages,
                 'TeamcompletionPercentages' => $TeamcompletionPercentages,
                 'statuslist' => $statuslist,
-                // 'dday_data' => $dday_data,
-                // 'group_dday' =>$group_dday,
+                'dday_data' => $dday_data,
+                'group_dday' =>$group_dday,
             ]);
         } else {
             return redirect('/user/login');

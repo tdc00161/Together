@@ -44,14 +44,12 @@
                 <div>
                     <div class="div_date">
                         <div class="div_font">시작일</div>
-                        <input class="input_date" name="start_date" id="start_date" type="date" required>
+                        <input class="input_date" name="start_date" id="start_date" type="date"  required> {{-- min="{{minstart}}" --}}
                     </div>
-                    {{--  min="{{minstart}}" input에 들어가있던 것 에러 나서 일단 빼둠 --}}
                     <div class="div_date">
                         <div class="div_font">마감일</div>
-                        <input class="input_date" name="end_date" type="date" id="end_date" required>
+                        <input class="input_date" name="end_date" type="date" id="end_date"  required> {{-- min="{{minend}}" --}}
                     </div>
-                    {{--  min="{{minend}}" input에 들어가있던 것 에러 나서 일단 빼둠 --}}
                 </div>
                 <br>
                 <button type="submit" class="project_button">프로젝트 생성</button>

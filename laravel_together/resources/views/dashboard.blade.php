@@ -173,14 +173,14 @@
                 <span class="app-card-title">
                     마감
                 </span>
-                {{-- @forelse ($group_dday as $dday => $item)
+                @forelse ($group_dday as $dday => $item)
                     <div class="dash_dday">
                         @if ($dday === 1 || $dday === -1)
                             <div style="color:rgb(212, 14, 0); font-weight:bold;">D{{ $dday < 0 ? $dday : '+' . $dday }}
                             </div>
                             @forelse ($item as $ddayitem)
                             <div class="dash_dday_grid">
-                                <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}">
+                                <div class="project_color" style="background-color:{{$ddayitem->project_color}}">
                                 </div>
                                 <div class="dash_ddaytitle" style="">{{ Str::limit($ddayitem->title, 15, '...') }}
                                 </div>
@@ -192,7 +192,7 @@
                             </div>
                             @forelse ($item as $ddayitem)
                             <div class="dash_dday_grid">
-                                <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}">
+                                <div class="project_color" style="background-color:{{$ddayitem->project_color}}">
                                 </div>
                                 <div class="dash_ddaytitle" style="">{{ Str::limit($ddayitem->title, 15, '...') }}
                                 </div>
@@ -204,7 +204,7 @@
                             </div>
                             @forelse ($item as $ddayitem)
                             <div class="dash_dday_grid">
-                                <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}">
+                                <div class="project_color" style="background-color:{{$ddayitem->project_color}}">
                                 </div>
                                 <div class="dash_ddaytitle" style="">{{ Str::limit($ddayitem->title, 15, '...') }}
                                 </div>
@@ -216,7 +216,7 @@
                             </div>
                             @forelse ($item as $ddayitem)
                             <div class="dash_dday_grid">
-                                <div class="project_color" style="background-color:{{$ddayitem->data_content_name}}">
+                                <div class="project_color" style="background-color:{{$ddayitem->project_color}}">
                                 </div>
                                 <div class="dash_ddaytitle" style="">{{ Str::limit($ddayitem->title, 15, '...') }}
                                 </div>
@@ -228,7 +228,7 @@
                         @endif
                     </div>
 				@empty
-                @endforelse --}}
+                @endforelse
             </div>
         </div>
     </div>
