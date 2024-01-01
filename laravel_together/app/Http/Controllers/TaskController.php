@@ -242,9 +242,9 @@ class TaskController extends Controller
                 'project0title' => $project0title,
                 'project1title' => $project1title,
                 'IndividualcompletionPercentages' => $IndividualcompletionPercentages,
+                'TeamcompletionPercentages' => $TeamcompletionPercentages,
                 'statuslist' => $statuslist,
                 // 'dday_data' => $dday_data,
-                'TeamcompletionPercentages' => $TeamcompletionPercentages,
                 // 'group_dday' =>$group_dday,
             ]);
         } else {
