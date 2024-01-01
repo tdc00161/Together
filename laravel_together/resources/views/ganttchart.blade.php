@@ -287,7 +287,7 @@
                         <div class="gantt-chart" id="gantt-chart-000">
                             @php
                                 $startDate = new DateTime('2024-01-01');
-                                $endDate = new DateTime('2023-03-31');
+                                $endDate = new DateTime('2024-03-31');
 
                                 for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
                                     echo "<div id='row"."-" . $date->format('Ymd') . "' class='d-none'></div>";
