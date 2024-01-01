@@ -66,7 +66,7 @@
     {{-- <div class="hr"></div> --}}
     {{-- 피드공통 헤더끝 --}}
     <div class="gantt-btn-wrap">
-        <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="   업무명, 담당자, 상태 검색">
+        <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="업무명, 담당자, 상태 검색">
         <div>
             <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
