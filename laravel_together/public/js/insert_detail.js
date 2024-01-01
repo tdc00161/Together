@@ -1356,7 +1356,10 @@ function deleteTask() {
 					}
 				}
 
-				if (!document.querySelectorAll('.gantt-task')[1]) {
+				let isAnnyoneInTheField = document.querySelectorAll('.gantt-task')[0] ? document.querySelectorAll('.gantt-task')[0].classList.contains('d-none') ? document.querySelectorAll('.gantt-task').length - 1 : document.querySelectorAll('.gantt-task').length : 0
+				
+				// console.log(a);
+				if (isAnnyoneInTheField === 0) {
 					document.querySelector('.new-task-add-please').style.display = 'block'
 					document.querySelector('.gantt-chart') ? document.querySelector('.gantt-chart').classList.remove('d-none') : ''
 				}
