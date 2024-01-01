@@ -728,3 +728,13 @@
 	margin: 0px;
 	font-size: large;
 }
+
+.goFeed {
+	width: fit-content;
+    padding: 5px 15px;
+}
+
+.goGantt {
+	width: fit-content;
+    padding: 5px 15px;
+}

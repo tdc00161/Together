@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', function() {
           }
       });
   });
-
+  
   let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
   ganttDetailButtons.forEach(function(button) {
       button.addEventListener('click', function(event) {
