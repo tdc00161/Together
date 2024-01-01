@@ -178,7 +178,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		END_DATE[0].value = ''
 		END_DATE[0].placeholder = '마감일'
 		DEAD_LINE[0].classList.remove('d-none')
-		console.log('remove');
+		// console.log('remove');
 		if (!document.querySelectorAll('.insert_priority_one')[0].classList.contains('d-none')) {
 			PRIORITY[0].removeChild(document.querySelectorAll('.insert_priority_one')[0])
 		}
@@ -322,7 +322,7 @@ function createTask() {
 		"project_id": thisProjectId,
 		"category_id": document.querySelectorAll('.property')[0].classList.contains('d-none') ? 1 : 0
 	}
-	console.log(postData);
+	// console.log(postData);
 	if (TaskNoticeFlg === 0) {
 		postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
 		postData.task_status_name = ''
@@ -333,7 +333,7 @@ function createTask() {
 		postData.priority_id = document.querySelectorAll('.priority_val')[0].textContent
 		postData.priority_name = ''
 	}
-	console.log(postData);
+	// console.log(postData);
 	fetch('/task', {
 		method: 'POST',
 		headers: {
@@ -416,13 +416,15 @@ function createTask() {
 					// console.log(gantt_end);
 					// console.log(date);
 					if (gantt_start <= date && gantt_end >= date) {
-						// console.log(date + '유효한 날짜');
+						console.log(date + '유효한 날짜');
 						let create_1 = document.createElement('div')
 						create_1.classList.add('bk-row')
 						create_1.setAttribute('data-row-num', data.data.id)
 						if (gantt_start == date) {
+							console.log('시작일: ' + gantt_start);
 							create_1.textContent = '시작일: ' + gantt_start
 						} else if (gantt_end == date) {
+							console.log('마감일: ' + gantt_end);
 							create_1.textContent = '마감일: ' + gantt_end
 						}
 
