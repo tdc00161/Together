@@ -45,12 +45,14 @@ function enterkeySearch() {
   let ganttTask = document.getElementsByClassName('gantt-task');
 
   for (let i = 0; i < ganttTask.length; i++) {
-    taskKey = ganttTask[i].getElementsByClassName('taskKey');
+    responName = ganttTask[i].getElementsByClassName('responName');
+    statusName = ganttTask[i].getElementsByClassName('statusName');
     taskName = ganttTask[i].getElementsByClassName('taskName');
     let ganttChart = document.getElementsByClassName('gantt-chart')[i]; // 해당 인덱스의 차트 가져오기
 
     if (
-      taskKey[0].innerHTML.toLowerCase().includes(search) ||
+      responName[0].innerHTML.toLowerCase().includes(search) ||
+      statusName[0].innerHTML.toLowerCase().includes(search) ||
       taskName[0].innerHTML.toLowerCase().includes(search)
     ) {
       ganttTask[i].style.display = 'flex';
