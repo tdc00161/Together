@@ -19,10 +19,19 @@ class User extends Authenticatable // 유저
  
 
      //belongsToMany를 사용하여 사용자 간의 다대다 관계를 정의
-    public function friends()
-    {
-        return $this->belongsToMany(User::class, 'friendlists', 'user_id', 'friend_id');
-    }
+     public function friends()
+     
+     {
+         $userId = $this->id;
+     
+         return $this->belongsToMany(User::class, 'friendlists', 'user_id', 'friend_id')
+             ->where(function ($query) use ($userId) {
+                 $query->where('friend_id', $userId)
+                     ->orWhere('user_id', $userId);
+             })
+             ->whereNull('friendlists.deleted_at');
+     }
+     
 
     // 특정 사용자에게 보낸 친구 요청이 있는지 확인
     public function hasPendingFriendRequestTo(User $user)
