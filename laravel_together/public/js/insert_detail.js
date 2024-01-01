@@ -386,7 +386,7 @@ function createTask() {
 				statusName_element.setAttribute('data-status', data.names.task_status_name)
 				statusColorAutoPainting(data.names.task_status_name, statusName_element)
 				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
-				more_view_onclick.setAttribute('onclick','')
+				more_view_onclick.setAttribute('onclick', '')
 				// ganttDetailChange()
 
 				gantt_more_modal_btn.addEventListener('click', function () {
@@ -402,56 +402,19 @@ function createTask() {
 				})
 
 				// '...'버튼 닫기 조건
+				let mainContainer = document.querySelector('.main-container');
 				let ganttDetailList = document.querySelectorAll('.gantt-detail');
 				let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
-				console.log(ganttDetailList);
-				console.log(ganttTaskDetailClickList);
-				ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
-					console.log(taskDetailClick);
-					console.log(index);
-					taskDetailClick.addEventListener('click', function(event) {
-						ganttDetailList.forEach(function(detail, i) {
-							console.log(detail);
-							console.log(i);
-							if (i !== index) {
-								console.log(i !== index);
-								detail.style.display = 'none';
-							}
-						});
-						ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
-						console.log(ganttDetailList[index]);
-					});
-				});
-				
-				ganttDetailList.forEach(function(detail) {
-					console.log(detail);
-					detail.addEventListener('click', function(event) {
-						console.log(event);
-						event.stopPropagation();
-					});
-				});
-				
-				document.addEventListener('click', function(event) {
-					console.log(event);
-					ganttDetailList.forEach(function(detail) {
-						console.log(detail);
-						if (!event.target.closest('.gantt-editable-div')) {
-							console.log(!event.target.closest('.gantt-editable-div'));
-							detail.style.display = 'none';
-						}
-					});
-				});
-				
+				let ganttTaskDetailClickSpanList = document.querySelectorAll('.gantt-task-detail-click-span');
 				let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
-				console.log(ganttDetailButtons);
-				ganttDetailButtons.forEach(function(button) {
-					console.log(button);
-					button.addEventListener('click', function(event) {
-						ganttDetailList.forEach(function(detail) {
-							console.log(detail);
-							detail.style.display = 'none';
-						});
-					});
+				mainContainer.addEventListener('click', function (event) {
+					if(!event.target.contains(ganttTaskDetailClickSpanList) && !event.target.contains(ganttTaskDetailClickList)){
+						let a = document.querySelectorAll('.gantt-detail')
+						for (let index = 0; index < a.length; index++) {
+							const element = a[index];
+							element.style.display = 'none'
+						}
+					}
 				});
 
 
@@ -1372,13 +1335,13 @@ function deleteTask() {
 				}
 
 				let isAnnyoneInTheField = document.querySelectorAll('.gantt-task')[0] ? document.querySelectorAll('.gantt-task')[0].classList.contains('d-none') ? document.querySelectorAll('.gantt-task').length - 1 : document.querySelectorAll('.gantt-task').length : 0
-				
+
 				// console.log(a);
 				if (isAnnyoneInTheField === 0) {
 					document.querySelector('.new-task-add-please').style.display = 'block'
 					document.querySelector('.gantt-chart') ? document.querySelector('.gantt-chart').classList.remove('d-none') : ''
 				}
-				
+
 			} else {
 				document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''
 				document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''
