@@ -31,41 +31,41 @@ class TaskController extends Controller
 
         // -------- 대시보드 공지 출력 ------------
         $dashboardNotice = DB::table('tasks as t')
-        ->join('projects as p','p.id','=','t.project_id')
-        ->join('project_users as pu','pu.project_id','=','p.id')
-        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
-        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
-        ->where('b.data_title_code', '=', 3)
-        ->where('pu.member_id', '=', $user->id)
-        ->where('t.category_id','=', 1)
-        ->whereNull('p.deleted_at')
-        ->get();
+            ->join('projects as p', 'p.id', '=', 't.project_id')
+            ->join('project_users as pu', 'pu.project_id', '=', 'p.id')
+            ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+            ->select('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+            ->where('b.data_title_code', '=', 3)
+            ->where('pu.member_id', '=', $user->id)
+            ->where('t.category_id', '=', 1)
+            ->whereNull('p.deleted_at')
+            ->get();
         // -------- 대시보드 공지 출력 끝 ------------
 
         // ------------ 사이드바 출력 -----------
         $userId = Auth::id();
 
         $project0title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 0)
-        ->where('b.data_title_code', '=', 3)
-        ->whereNull('p.deleted_at')
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+            ->join('project_users as pu', 'p.id', '=', 'pu.project_id')
+            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+            ->select('p.project_title', 'b.data_content_name', 'p.id')
+            ->where('pu.member_id', '=', $userId)
+            ->where('p.flg', '=', 0)
+            ->where('b.data_title_code', '=', 3)
+            ->whereNull('p.deleted_at')
+            ->orderBy('p.created_at', 'asc')
+            ->get();
 
         $project1title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 1)
-        ->where('b.data_title_code', '=', 3)
-        ->whereNull('p.deleted_at')
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+            ->join('project_users as pu', 'p.id', '=', 'pu.project_id')
+            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+            ->select('p.project_title', 'b.data_content_name', 'p.id')
+            ->where('pu.member_id', '=', $userId)
+            ->where('p.flg', '=', 1)
+            ->where('b.data_title_code', '=', 3)
+            ->whereNull('p.deleted_at')
+            ->orderBy('p.created_at', 'asc')
+            ->get();
 
         // ---------- 사이드바 출력 끝 -----------------
 
@@ -73,21 +73,21 @@ class TaskController extends Controller
 
         // 개인 프로젝트
         $projectIndividualIdData = DB::table('project_users as pu')
-        ->join('projects as p', 'p.id', '=', 'pu.project_id')
-        ->select('pu.project_id')
-        ->where('member_id', '=', $userId)
-        ->where('p.flg', 0)
-        ->whereNull('p.deleted_at')
-        ->get();
+            ->join('projects as p', 'p.id', '=', 'pu.project_id')
+            ->select('pu.project_id')
+            ->where('member_id', '=', $userId)
+            ->where('p.flg', 0)
+            ->whereNull('p.deleted_at')
+            ->get();
 
         // 팀 프로젝트
         $projectTeamIdData = DB::table('project_users as pu')
-        ->join('projects as p', 'p.id', '=', 'pu.project_id')
-        ->select('pu.project_id')
-        ->where('member_id', '=', $userId)
-        ->where('p.flg', 1)
-        ->whereNull('p.deleted_at')
-        ->get();
+            ->join('projects as p', 'p.id', '=', 'pu.project_id')
+            ->select('pu.project_id')
+            ->where('member_id', '=', $userId)
+            ->where('p.flg', 1)
+            ->whereNull('p.deleted_at')
+            ->get();
 
         $projectIndividualIds = $projectIndividualIdData->pluck('project_id')->toArray(); // 개인 프로젝트 아이디 배열로 변환
         $projectTeamIds = $projectTeamIdData->pluck('project_id')->toArray(); // 팀 프로젝트 아이디 배열로 변환
@@ -98,15 +98,15 @@ class TaskController extends Controller
         // 개인
         foreach ($projectIndividualIds as $projectId) {
             $IndividualcompletionPercentage = DB::table('tasks as t')
-            ->join('projects as p', 't.project_id', '=', 'p.id')
-            ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
-            ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
-            ->where('t.project_id', '=', $projectId)
-            ->where('b.data_title_code', '=', 3)
-            ->where('t.category_id',0)
-            ->whereNull('t.deleted_at')
-            ->groupBy('b.data_content_name','p.project_title')
-            ->get();
+                ->join('projects as p', 't.project_id', '=', 'p.id')
+                ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+                ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
+                ->where('t.project_id', '=', $projectId)
+                ->where('b.data_title_code', '=', 3)
+                ->where('t.category_id', 0)
+                ->whereNull('t.deleted_at')
+                ->groupBy('b.data_content_name', 'p.project_title')
+                ->get();
 
             $IndividualcompletionPercentages[$projectId] = $IndividualcompletionPercentage;
         }
@@ -119,9 +119,9 @@ class TaskController extends Controller
                 ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
                 ->where('t.project_id', '=', $projectId)
                 ->where('b.data_title_code', '=', 3)
-                ->where('t.category_id',0)
+                ->where('t.category_id', 0)
                 ->whereNull('t.deleted_at')
-                ->groupBy('b.data_content_name','p.project_title')
+                ->groupBy('b.data_content_name', 'p.project_title')
                 ->get();
 
             $TeamcompletionPercentages[$projectId] = $TeamcompletionPercentage;
@@ -129,69 +129,69 @@ class TaskController extends Controller
         // --------- 프로젝트 진척률 출력 끝 ------------
 
         // 대시보드 전체 업무 상태별 개수 출력
-        $before =DB::table('tasks')
-                    ->join('project_users', function($join){
-                        $join->on('project_users.project_id','=','tasks.project_id');
-                    })
-                    ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
-                        $join->on('projects.id','=','tasks.project_id'); 
-                    })
-                    ->selectRaw('count(tasks.task_status_id) as cnt')
-                    ->where('project_users.member_id',$user->id)
-                    ->where('tasks.category_id',0)
-                    ->where('tasks.task_status_id',0)
-                    ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
-                    ->whereNull('tasks.deleted_at')
-                    ->groupBy('tasks.task_status_id')
-                    ->get();
+        $before = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->join('projects', function ($join) { // 240101 업무상태현황 카운트 확인: 김관호
+                $join->on('projects.id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 0)
+            ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
 
-        $ing =DB::table('tasks')
-                ->join('project_users', function($join){
-                    $join->on('project_users.project_id','=','tasks.project_id');
-                })
-                ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
-                    $join->on('projects.id','=','tasks.project_id'); 
-                })
-                ->selectRaw('count(tasks.task_status_id) as cnt')
-                ->where('project_users.member_id',$user->id)
-                ->where('tasks.category_id',0)
-                ->where('tasks.task_status_id',1)
-                ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
-                ->whereNull('tasks.deleted_at')
-                ->groupBy('tasks.task_status_id')
-                ->get();
+        $ing = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->join('projects', function ($join) { // 240101 업무상태현황 카운트 확인: 김관호
+                $join->on('projects.id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 1)
+            ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
 
-        $feedback =DB::table('tasks')
-                    ->join('project_users', function($join){
-                        $join->on('project_users.project_id','=','tasks.project_id');
-                    })
-                    ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
-                        $join->on('projects.id','=','tasks.project_id'); 
-                    })
-                    ->selectRaw('count(tasks.task_status_id) as cnt')
-                    ->where('project_users.member_id',$user->id)
-                    ->where('tasks.category_id',0)
-                    ->where('tasks.task_status_id',2)
-                    ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
-                    ->whereNull('tasks.deleted_at')
-                    ->groupBy('tasks.task_status_id')
-                    ->get();
+        $feedback = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->join('projects', function ($join) { // 240101 업무상태현황 카운트 확인: 김관호
+                $join->on('projects.id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 2)
+            ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
 
-        $complete =DB::table('tasks')
-                    ->join('project_users', function($join){
-                        $join->on('project_users.project_id','=','tasks.project_id');
-                    })
-                    ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
-                        $join->on('projects.id','=','tasks.project_id'); 
-                    })
-                    ->selectRaw('count(tasks.task_status_id) as cnt')
-                    ->where('project_users.member_id',$user->id)
-                    ->where('tasks.category_id',0)
-                    ->where('tasks.task_status_id',3)
-                    ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
-                    ->whereNull('tasks.deleted_at')
-                    ->groupBy('tasks.task_status_id')
-                    ->get();
+        $complete = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->join('projects', function ($join) { // 240101 업무상태현황 카운트 확인: 김관호
+                $join->on('projects.id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 3)
+            ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
 
         //데이터 담을 빈 객체 생성
         $baseObj = new \stdClass();
@@ -201,53 +201,53 @@ class TaskController extends Controller
 
         //상태별 삼항연산자로 비교 후 데이터 출력
         $statuslist = [
-        'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
-        'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
-        'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
-        'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
+            'before' => count($before) === 0 ? collect([$baseObj]) : $before,
+            'ing' => count($ing) === 0 ? collect([$baseObj]) : $ing,
+            'feedback' => count($feedback) === 0 ? collect([$baseObj]) : $feedback,
+            'complete' => count($complete) === 0 ? collect([$baseObj]) : $complete
         ];
 
-    //대시보드 d-day기준 업무 출력(내림차순)
-    $dday_data = DB::table('tasks as tk')
-                    ->join('project_users as pu', function($project_users){
-                        $project_users->on('pu.project_id','=','tk.project_id');
-                    })
-                    ->join('projects as pj', function($projects){
-                        $projects->on('pj.id','=','tk.project_id');
-                    })
-                    ->join('basedata as bd1', function($basedata){
-                        $basedata->on('bd1.data_content_code','=','pj.color_code_pk');
-                    })
-                    ->join('basedata as bd2', function($basedata){
-                        $basedata->on('bd2.data_content_code','=','tk.task_status_id');
-                    })
-                    ->select('tk.title', 'tk.end_date','pj.color_code_pk','bd1.data_content_name as project_color', 'bd2.data_content_name as task_color',DB::raw('timestampdiff(day,tk.end_date,NOW()+interval -1 day) as dday')) // (수정) 240101 마감리스트 출력: 김관호
-                    ->where('pu.member_id',$user->id)
-                    ->where('tk.task_depth', '0') //상위업무만 출력
-                    ->where('bd1.data_title_code','3') // (수정) 240101 마감리스트 출력: 김관호
-                    ->where('bd2.data_title_code','3') // 240101 마감리스트 출력: 김관호
-                    ->where('tk.category_id','0')
-                    ->where('tk.task_status_id','!=','3')
-                    ->whereNull('pu.deleted_at') // 240101 마감리스트 출력: 김관호
-                    ->whereNull('pj.deleted_at') // 240101 마감리스트 출력: 김관호
-                    ->whereNull('tk.deleted_at')
-                    ->orderBy('dday','desc')
-                    ->get();
+        //대시보드 d-day기준 업무 출력(내림차순)
+        $dday_data = DB::table('tasks as tk')
+            ->join('project_users as pu', function ($project_users) {
+                $project_users->on('pu.project_id', '=', 'tk.project_id');
+            })
+            ->join('projects as pj', function ($projects) {
+                $projects->on('pj.id', '=', 'tk.project_id');
+            })
+            ->join('basedata as bd1', function ($basedata) {
+                $basedata->on('bd1.data_content_code', '=', 'pj.color_code_pk');
+            })
+            ->join('basedata as bd2', function ($basedata) {
+                $basedata->on('bd2.data_content_code', '=', 'tk.task_status_id');
+            })
+            ->select('tk.title', 'tk.end_date', 'pj.color_code_pk', 'bd1.data_content_name as project_color', 'bd2.data_content_name as task_color', DB::raw('timestampdiff(day,tk.end_date,NOW()+interval -1 day) as dday')) // (수정) 240101 마감리스트 출력: 김관호
+            ->where('pu.member_id', $user->id)
+            ->where('tk.task_depth', '0') //상위업무만 출력
+            ->where('bd1.data_title_code', '3') // (수정) 240101 마감리스트 출력: 김관호
+            ->where('bd2.data_title_code', '3') // 240101 마감리스트 출력: 김관호
+            ->where('tk.category_id', '0')
+            ->where('tk.task_status_id', '!=', '3')
+            ->whereNull('pu.deleted_at') // 240101 마감리스트 출력: 김관호
+            ->whereNull('pj.deleted_at') // 240101 마감리스트 출력: 김관호
+            ->whereNull('tk.deleted_at')
+            ->orderBy('dday', 'desc')
+            ->get();
 
-    // dd($dday_data);
+        // dd($dday_data);
 
-                    
-    //d-day기준 업무 그룹화
-    $group_dday = $dday_data->groupBy(function($item){
-        return $item->dday;
-    });
-    // $group_dday2
-    // foreach ($group_dday as $key => $value) {
-    //     if($key<=-7){
 
-    //     }
-    // }
-    // dd($group_dday);
+        //d-day기준 업무 그룹화
+        $group_dday = $dday_data->groupBy(function ($item) {
+            return $item->dday;
+        });
+        // $group_dday2
+        // foreach ($group_dday as $key => $value) {
+        //     if($key<=-7){
+
+        //     }
+        // }
+        // dd($group_dday);
 
 
         // ***************************   데이터 리턴  ************************** 
@@ -264,7 +264,7 @@ class TaskController extends Controller
                 'TeamcompletionPercentages' => $TeamcompletionPercentages,
                 'statuslist' => $statuslist,
                 'dday_data' => $dday_data,
-                'group_dday' =>$group_dday,
+                'group_dday' => $group_dday,
             ]);
         } else {
             return redirect('/user/login');
@@ -273,59 +273,60 @@ class TaskController extends Controller
     // ***************************************************************************
 
     //대시보드 원형그래프 데이터 js 전송
-    public function board_graph_data(Request $request) {
+    public function board_graph_data(Request $request)
+    {
 
         //로그인한 유저 정보 출력
         $user = Auth::user();
 
         //업무 상태별 개수 출력
-        $before =DB::table('tasks')
-        ->join('project_users', function($join){
-            $join->on('project_users.project_id','=','tasks.project_id');
-        })
-        ->selectRaw('count(tasks.task_status_id) as cnt')
-        ->where('project_users.member_id',$user->id)
-        ->where('tasks.category_id',0)
-        ->where('tasks.task_status_id',0)
-        ->whereNull('tasks.deleted_at')
-        ->groupBy('tasks.task_status_id')
-        ->get();
-
-        $ing =DB::table('tasks')
-            ->join('project_users', function($join){
-                $join->on('project_users.project_id','=','tasks.project_id');
+        $before = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
             })
             ->selectRaw('count(tasks.task_status_id) as cnt')
-            ->where('project_users.member_id',$user->id)
-            ->where('tasks.category_id',0)
-            ->where('tasks.task_status_id',1)
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 0)
             ->whereNull('tasks.deleted_at')
             ->groupBy('tasks.task_status_id')
             ->get();
 
-        $feedback =DB::table('tasks')
-                ->join('project_users', function($join){
-                    $join->on('project_users.project_id','=','tasks.project_id');
-                })
-                ->selectRaw('count(tasks.task_status_id) as cnt')
-                ->where('project_users.member_id',$user->id)
-                ->where('tasks.category_id',0)
-                ->where('tasks.task_status_id',2)
-                ->whereNull('tasks.deleted_at')
-                ->groupBy('tasks.task_status_id')
-                ->get();
+        $ing = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 1)
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
 
-        $complete =DB::table('tasks')
-                ->join('project_users', function($join){
-                    $join->on('project_users.project_id','=','tasks.project_id');
-                })
-                ->selectRaw('count(tasks.task_status_id) as cnt')
-                ->where('project_users.member_id',$user->id)
-                ->where('tasks.category_id',0)
-                ->where('tasks.task_status_id',3)
-                ->whereNull('tasks.deleted_at')
-                ->groupBy('tasks.task_status_id')
-                ->get();
+        $feedback = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 2)
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
+
+        $complete = DB::table('tasks')
+            ->join('project_users', function ($join) {
+                $join->on('project_users.project_id', '=', 'tasks.project_id');
+            })
+            ->selectRaw('count(tasks.task_status_id) as cnt')
+            ->where('project_users.member_id', $user->id)
+            ->where('tasks.category_id', 0)
+            ->where('tasks.task_status_id', 3)
+            ->whereNull('tasks.deleted_at')
+            ->groupBy('tasks.task_status_id')
+            ->get();
 
         //데이터 담을 빈 객체 생성
         $baseObj = new \stdClass();
@@ -335,16 +336,16 @@ class TaskController extends Controller
 
         //데이터 삼항연산자로 비교 후 출력
         $statuslist = [
-          'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
-          'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
-          'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
-          'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
+            'before' => count($before) === 0 ? collect([$baseObj]) : $before,
+            'ing' => count($ing) === 0 ? collect([$baseObj]) : $ing,
+            'feedback' => count($feedback) === 0 ? collect([$baseObj]) : $feedback,
+            'complete' => count($complete) === 0 ? collect([$baseObj]) : $complete
         ];
 
         //데이터 common.js로 json으로 변환하여 전송
         return response()->json($statuslist);
 
-      }
+    }
 
     // 태스크 전체 조회 (수정이전)
     public function index()
@@ -352,10 +353,10 @@ class TaskController extends Controller
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
         $project = Project::project_depth();
-        foreach ($project as $key => $value) {            
-            $value->depth_0 = Task::depth_pj(0,$value->id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
-            foreach ($value->depth_0 as $key2 => $value2) {            
-                $value2->depth_1 = Task::depth_tsk(1,$value2->id);
+        foreach ($project as $key => $value) {
+            $value->depth_0 = Task::depth_pj(0, $value->id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+            foreach ($value->depth_0 as $key2 => $value2) {
+                $value2->depth_1 = Task::depth_tsk(1, $value2->id);
                 $data[] = $project[$key];
             }
         }
@@ -366,57 +367,66 @@ class TaskController extends Controller
         // --- 유저 정보
         $user = Auth::user();
 
-        $user_data = project::where('user_pk',$user->id)
-        ->select('id'
-                ,'user_pk'
-                ,'color_code_pk'
-                ,'project_title'
-                ,'project_content'
-                ,'start_date'
-                ,'end_date'
-                ,'created_at'
-                ,'flg'
-                )
-        ->get();
+        $user_data = project::where('user_pk', $user->id)
+            ->select(
+                'id'
+                ,
+                'user_pk'
+                ,
+                'color_code_pk'
+                ,
+                'project_title'
+                ,
+                'project_content'
+                ,
+                'start_date'
+                ,
+                'end_date'
+                ,
+                'created_at'
+                ,
+                'flg'
+            )
+            ->get();
 
         // --- 대시보드 공지 출력
         $dashboardNotice = DB::table('tasks as t')
-        ->join('projects as p','p.id','=','t.project_id')
-        ->join('project_users as pu','pu.project_id','=','p.id')
-        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
-        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
-        ->where('b.data_title_code', '=', 3)
-        ->where('pu.member_id', '=', $user->id)
-        ->get();
+            ->join('projects as p', 'p.id', '=', 't.project_id')
+            ->join('project_users as pu', 'pu.project_id', '=', 'p.id')
+            ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+            ->select('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+            ->where('b.data_title_code', '=', 3)
+            ->where('pu.member_id', '=', $user->id)
+            ->get();
 
         // --- 사이드바 출력
         $userId = Auth::id();
 
         $project0title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 0)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+            ->join('project_users as pu', 'p.id', '=', 'pu.project_id')
+            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+            ->select('p.project_title', 'b.data_content_name', 'p.id')
+            ->where('pu.member_id', '=', $userId)
+            ->where('p.flg', '=', 0)
+            ->where('b.data_title_code', '=', 3)
+            ->orderBy('p.created_at', 'asc')
+            ->get();
 
         $project1title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 1)
-        ->where('b.data_title_code', '=', 3)
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+            ->join('project_users as pu', 'p.id', '=', 'pu.project_id')
+            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+            ->select('p.project_title', 'b.data_content_name', 'p.id')
+            ->where('pu.member_id', '=', $userId)
+            ->where('p.flg', '=', 1)
+            ->where('b.data_title_code', '=', 3)
+            ->orderBy('p.created_at', 'asc')
+            ->get();
 
         return view('modal.modalgantt')
-        ->with('data', $data)
-        ->with('project0title', $project0title)
-        ->with('project1title', $project1title)
-        ->with('user', Session::get('user'));
+            ->with('data', $data)
+            ->with('project0title', $project0title)
+            ->with('project1title', $project1title)
+            ->with('user', Session::get('user'));
     }
 
     // 프로젝트별 간트차트
@@ -425,10 +435,10 @@ class TaskController extends Controller
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
         $data['project'] = Project::find($id);
-        $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+        $depth_0 = Task::depth_pj(0, $id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
         // $data = $depth_0;
-        foreach ($depth_0 as $key => $value) {            
-            $value->depth_1 = Task::where('task_depth',1)->where('task_parent',$value->id)->get()->toArray();
+        foreach ($depth_0 as $key => $value) {
+            $value->depth_1 = Task::where('task_depth', 1)->where('task_parent', $value->id)->get()->toArray();
         }
         $data['task'] = $depth_0;
         dd($data);
@@ -467,58 +477,58 @@ class TaskController extends Controller
         // 입력받은 데이터로 pk(id) 추출
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
-        if($request['task_status_id']){            
+        if ($request['task_status_id']) {
             $sta = DB::table('basedata')
-            ->where('data_title_code', 0)
-            ->where('data_content_name', $request['task_status_id'])
-            ->select('data_content_code','data_content_name')
-            ->get();
-        } else if($request->task_status_id){            
+                ->where('data_title_code', 0)
+                ->where('data_content_name', $request['task_status_id'])
+                ->select('data_content_code', 'data_content_name')
+                ->get();
+        } else if ($request->task_status_id) {
             $sta = DB::table('basedata')
-            ->where('data_title_code', 0)
-            ->where('data_content_name', $request->task_status_id)
-            ->select('data_content_code','data_content_name')
-            ->get();
-        } 
+                ->where('data_title_code', 0)
+                ->where('data_content_name', $request->task_status_id)
+                ->select('data_content_code', 'data_content_name')
+                ->get();
+        }
         // Log::debug('상태: ' , $sta->toArray());
-        if($request['priority_id']){   
+        if ($request['priority_id']) {
             $pri = DB::table('basedata')
                 ->where('data_title_code', 1)
                 ->where('data_content_name', $request['priority_id'])
-                ->select('data_content_code','data_content_name')
+                ->select('data_content_code', 'data_content_name')
                 ->get();
-        } else if($request->priority_id){ 
+        } else if ($request->priority_id) {
             $pri = DB::table('basedata')
-            ->where('data_title_code', 1)
-            ->where('data_content_name', $request->priority_id)
-            ->select('data_content_code','data_content_name')
-            ->get();
+                ->where('data_title_code', 1)
+                ->where('data_content_name', $request->priority_id)
+                ->select('data_content_code', 'data_content_name')
+                ->get();
         }
         // Log::debug('순위: ' , $pri->toArray());
-        if($request['task_responsible_id']){   
+        if ($request['task_responsible_id']) {
             $res = DB::table('users')
                 ->where('name', $request['task_responsible_id'])
-                ->select('id','name')
+                ->select('id', 'name')
                 ->get();
-        } else if($request->task_responsible_id){ 
+        } else if ($request->task_responsible_id) {
             $res = DB::table('users')
                 ->where('name', $request->task_responsible_id)
-                ->select('id','name')
+                ->select('id', 'name')
                 ->get();
         }
         // Log::debug('user_id: ' , $res->toArray());
-        if($request['project_id']){   
+        if ($request['project_id']) {
             $tsk_num = DB::table('tasks')
                 ->where('project_id', $request['project_id'])
                 ->where('category_id', $request['category_id'])
                 ->orderBy('task_number', 'desc')
                 ->first();
-        } else if($request->project_id){ 
+        } else if ($request->project_id) {
             $tsk_num = DB::table('tasks')
-            ->where('project_id', $request->project_id)
-            ->where('category_id', $request->category_id)
-            ->orderBy('task_number', 'desc')
-            ->first();
+                ->where('project_id', $request->project_id)
+                ->where('category_id', $request->category_id)
+                ->orderBy('task_number', 'desc')
+                ->first();
         }
         // if($request['start_date']){   
         //     $start = DB::table('tasks')
@@ -544,7 +554,7 @@ class TaskController extends Controller
 
         // 이메일 추가 시 대비
         // $eml = DB::table('users')->where('email', $request['email'])->first();
-        
+
         // 입력 컨텐츠 유효성 검사
         // $tit = $request['title']; // TODO: 유효성 처리 추가
         // $con = $request['content']; // TODO: 유효성 처리 추가
@@ -552,7 +562,7 @@ class TaskController extends Controller
         // $request['content'] = $con;
 
         // nullable
-        if(!empty($sta[0])){
+        if (!empty($sta[0])) {
             $request['task_status_id'] = $sta[0]->data_content_code;
             $responseData['names']['task_status_name'] = $sta[0]->data_content_name;
         } else {
@@ -561,18 +571,18 @@ class TaskController extends Controller
         }
         Log::debug('1-1');
         // Log::debug($res);
-        if(!empty($res[0])){
+        if (!empty($res[0])) {
             $request['task_responsible_id'] = $res[0]->id;
-            if(isset($responseData['names'])){
+            if (isset($responseData['names'])) {
                 $responseData['names']['task_responsible_name'] = $res[0]->name;
             }
         } else {
             $request['task_responsible_name'] = null;
         }
         Log::debug('1-2');
-        if(!empty($pri[0])){
+        if (!empty($pri[0])) {
             $request['priority_id'] = $pri[0]->data_content_code;
-            if(isset($responseData['names'])){
+            if (isset($responseData['names'])) {
                 $responseData['names']['priority_name'] = $pri[0]->data_content_name;
             }
         } else {
@@ -583,7 +593,7 @@ class TaskController extends Controller
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
         // $request['category_id'] = ;
-        if(isset($tsk_num)){        
+        if (isset($tsk_num)) {
             $request['task_number'] = $tsk_num->task_number + 1;
         } else {
             $request['task_number'] = 1;
@@ -591,7 +601,7 @@ class TaskController extends Controller
         // if(isset($request['task_parent'])){
         //     $result['task_parent'] = $request['task_parent'];
         // }
-        
+
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
         Log::debug($request);
@@ -627,13 +637,13 @@ class TaskController extends Controller
             $responseData["code"] = "E01";
             $responseData["msg"] = "No Data.";
         } else {
-            if($request['task_responsible_id'] !== null) {
+            if ($request['task_responsible_id'] !== null) {
                 $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
-            } else if($request->task_responsible_id !== null){
+            } else if ($request->task_responsible_id !== null) {
                 $res = DB::table('users')->where('name', $request->task_responsible_id)->first();
             }
-            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
-            $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
+            $sta = DB::table('basedata')->where('data_title_code', 0)->where('data_content_name', $request['task_status_id'])->first();
+            $pri = DB::table('basedata')->where('data_title_code', 1)->where('data_content_name', $request['priority_id'])->first();
             // Log::debug('$request :' . $request);
             // Log::debug('$res :' . $res->id);
             // Log::debug('$sta :' . $sta->data_content_code);
@@ -658,7 +668,7 @@ class TaskController extends Controller
             $result->save();
 
             $responseData["code"] = "U01";
-            $responseData["msg"] = $id." updated";
+            $responseData["msg"] = $id . " updated";
             $responseData['data']['task'] = $result;
             $responseData['data']['names']['task_status_name'] = $request->task_status_id;
             $responseData['data']['names']['task_responsible_name'] = $request->task_responsible_id;
@@ -673,20 +683,20 @@ class TaskController extends Controller
             "code" => "E01",
             "msg" => "no data"
         ];
-        
-        Log::debug('---------------------------------------'.$id);
+
+        Log::debug('---------------------------------------' . $id);
         $result = Task::find($id);
         Log::debug('$request :' . $request);
         Log::debug('$result :' . $result);
         foreach ($request->value as $key => $updatedData) {
-            if($updatedData != ''){
-                Log::debug($updatedData.": 들어온 ".$key."값입니다");
-                Log::debug($result->$key.'안에 값이 있습니다');
+            if ($updatedData != '') {
+                Log::debug($updatedData . ": 들어온 " . $key . "값입니다");
+                Log::debug($result->$key . '안에 값이 있습니다');
                 $result->$key = $updatedData;
                 $result->save();
 
                 $responseData["code"] = "U01";
-                $responseData["msg"] = $id." updated";
+                $responseData["msg"] = $id . " updated";
                 $responseData['data'] = $result;
             }
         }
@@ -702,8 +712,9 @@ class TaskController extends Controller
             "code" => "0",
             "msg" => ""
         ];
-        
+
         $result = Task::where('id', $id)->delete();
+        $result_child = Task::where('task_parent', $id)->whereNull('deleted_at') ? Task::where('task_parent', $id)->whereNull('deleted_at')->delete() : '';
 
         if (!$result) {
             $responseData['code'] = 'E01';
@@ -712,6 +723,9 @@ class TaskController extends Controller
             $responseData['code'] = 'D01';
             $responseData['msg'] = 'task : ' . $id . '->deleted.';
             $responseData['data'] = $id;
+            if($result_child){                
+                $responseData['msg'] = 'task : ' . $id . ' and children is deleted.';
+            }
         }
 
         return $responseData;
