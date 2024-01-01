@@ -347,6 +347,9 @@ function createTask() {
 			console.log(data);
 			if (GANTT_LEFT[0]) {
 
+				// 240101 ganttchart.js-> : 35 line | 업무 추가 fetch 후 처리
+				document.querySelector('.new-task-add-please') ? document.querySelector('.new-task-add-please').style.display = 'none' : ''
+
 				let refreshCloneLeftGanttChart = GANTT_LEFT[0].cloneNode(true)
 				let refreshCloneRightGanttChart = GANTT_RIGHT[0].cloneNode(true)
 

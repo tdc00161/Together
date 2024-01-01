@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
       newTaskAddPlease.style.display = 'none';
   }
 
-  // 업무추가 버튼에 클릭 이벤트 리스너 추가
-  ganttAddBtn.addEventListener('click', function() {
-    newTaskAddPlease.style.display = 'none';
-  });
+  // 업무추가 버튼에 클릭 이벤트 리스너 추가 // 240101 ->insert_detail.js: 350 line | 업무 추가 fetch 후 처리
+  // ganttAddBtn.addEventListener('click', function() {
+  //   newTaskAddPlease.style.display = 'none';
+  // });
 });
 
 // ************* 검색 기능
