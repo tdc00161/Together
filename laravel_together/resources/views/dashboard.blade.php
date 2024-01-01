@@ -173,7 +173,7 @@
                 <span class="app-card-title">
                     마감
                 </span>
-                @forelse ($group_dday as $dday => $item)
+                {{-- @forelse ($group_dday as $dday => $item)
                     <div class="dash_dday">
                         @if ($dday === 1 || $dday === -1)
                             <div style="color:rgb(212, 14, 0); font-weight:bold;">D{{ $dday < 0 ? $dday : '+' . $dday }}
@@ -228,7 +228,7 @@
                         @endif
                     </div>
 				@empty
-                @endforelse
+                @endforelse --}}
             </div>
         </div>
     </div>
