@@ -419,15 +419,15 @@ function createTask() {
 					// console.log(gantt_end);
 					// console.log(date);
 					if (gantt_start <= date && gantt_end >= date) {
-						console.log(date + '유효한 날짜');
+						// console.log(date + '유효한 날짜');
 						let create_1 = document.createElement('div')
 						create_1.classList.add('bk-row')
 						create_1.setAttribute('data-row-num', data.data.id)
 						if (gantt_start == date) {
-							console.log('시작일: ' + gantt_start);
+							// console.log('시작일: ' + gantt_start);
 							create_1.textContent = '시작일: ' + gantt_start
 						} else if (gantt_end == date) {
-							console.log('마감일: ' + gantt_end);
+							// console.log('마감일: ' + gantt_end);
 							create_1.textContent = '마감일: ' + gantt_end
 						}
 
@@ -1295,20 +1295,57 @@ function deleteTask() {
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
+			TestMutationObserver()
 
 			document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
 			document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
+			document.querySelector('.gantt-chart').classList.remove('d-none')
 
 			document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''
 			document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''
 
 			closeTaskModal(1)
+
+			console.log('after deleting');
 		})
 		.catch(err => {
 			console.log(err.message)
 		});
 }
 
+// mutation 연습
+function TestMutationObserver(){
+	// console.log('observer start');
+	var target = document.querySelector('.content-wrapper')
+	var config = {
+		attribute: true,
+		childList: true,
+		subtree: true
+	}
+
+	var backcall = function(mutationList){
+		for(var mutation of mutationList){
+			// console.log('start backcall loop');
+			// console.log(mutationList);
+			// console.log(mutation);
+			// console.log(mutation.target);
+			// console.log(mutation.target.children);
+			if(mutation.type === 'childList'){
+				// console.log("mutation.type === 'childList'");
+			}
+		}
+		// console.log('end loop');
+		if(mutationList[0].target.children.length === 1 && mutationList[1].target.children.length){
+			document.querySelector('.new-task-add-please').style.display = 'block'
+		}
+	}
+
+	var obZzuber = new MutationObserver(backcall)
+
+	obZzuber.observe(target, config)
+}
+
+// 업데이트용 컬러적용
 function updateStatusColor(data) {
 	// console.log(data);
 	// TODO: checked값 초기화
