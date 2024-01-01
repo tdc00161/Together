@@ -1295,54 +1295,45 @@ function deleteTask() {
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
-			TestMutationObserver()
+			console.log(document.querySelectorAll('.gantt-child-task'));
 
-			document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
-			document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
-			document.querySelector('.gantt-chart').classList.remove('d-none')
+			if (GANTT_LEFT[0]) {
+				document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
+				document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
 
-			document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''
-			document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''
+				if (document.querySelectorAll('.gantt-child-task')[0]) {
+					let childIndependence = document.querySelectorAll('.gantt-child-task')
+
+					for (let child of childIndependence) {
+						console.log(child);
+						console.log(child.getAttribute('parent'));
+						console.log(child.getAttribute('id'));
+						if (!document.querySelector('#gantt-task-' + child.getAttribute('parent'))) {
+							console.log('independence child');
+							child.remove()
+							document.querySelector('#gantt-chart-' + child.getAttribute('id').match(/\d+/)[0]).remove()
+						}
+					}
+				}
+
+				if (!document.querySelectorAll('.gantt-task')[1]) {
+					document.querySelector('.new-task-add-please').style.display = 'block'
+					document.querySelector('.gantt-chart') ? document.querySelector('.gantt-chart').classList.remove('d-none') : ''
+				}
+				
+			} else {
+				document.querySelector('.update-' + data.data) ? document.querySelector('.update-layout-' + data.data).remove() : ''
+				document.querySelector('.notice-' + data.data) ? document.querySelector('.notice-layout-' + data.data).remove() : ''
+			}
 
 			closeTaskModal(1)
 
-			console.log('after deleting');
+			// console.log('after deleting')
 		})
 		.catch(err => {
 			console.log(err.message)
+			console.log(err.stack)
 		});
-}
-
-// mutation 연습
-function TestMutationObserver(){
-	// console.log('observer start');
-	var target = document.querySelector('.content-wrapper')
-	var config = {
-		attribute: true,
-		childList: true,
-		subtree: true
-	}
-
-	var backcall = function(mutationList){
-		for(var mutation of mutationList){
-			// console.log('start backcall loop');
-			// console.log(mutationList);
-			// console.log(mutation);
-			// console.log(mutation.target);
-			// console.log(mutation.target.children);
-			if(mutation.type === 'childList'){
-				// console.log("mutation.type === 'childList'");
-			}
-		}
-		// console.log('end loop');
-		if(mutationList[0].target.children.length === 1 && mutationList[1].target.children.length){
-			document.querySelector('.new-task-add-please').style.display = 'block'
-		}
-	}
-
-	var obZzuber = new MutationObserver(backcall)
-
-	obZzuber.observe(target, config)
 }
 
 // 업데이트용 컬러적용
