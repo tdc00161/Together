@@ -133,10 +133,14 @@ class TaskController extends Controller
                     ->join('project_users', function($join){
                         $join->on('project_users.project_id','=','tasks.project_id');
                     })
+                    ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
+                        $join->on('projects.id','=','tasks.project_id'); 
+                    })
                     ->selectRaw('count(tasks.task_status_id) as cnt')
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',0)
+                    ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                     ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
@@ -145,10 +149,14 @@ class TaskController extends Controller
                 ->join('project_users', function($join){
                     $join->on('project_users.project_id','=','tasks.project_id');
                 })
+                ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
+                    $join->on('projects.id','=','tasks.project_id'); 
+                })
                 ->selectRaw('count(tasks.task_status_id) as cnt')
                 ->where('project_users.member_id',$user->id)
                 ->where('tasks.category_id',0)
                 ->where('tasks.task_status_id',1)
+                ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
@@ -157,10 +165,14 @@ class TaskController extends Controller
                     ->join('project_users', function($join){
                         $join->on('project_users.project_id','=','tasks.project_id');
                     })
+                    ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
+                        $join->on('projects.id','=','tasks.project_id'); 
+                    })
                     ->selectRaw('count(tasks.task_status_id) as cnt')
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',2)
+                    ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                     ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
@@ -169,10 +181,14 @@ class TaskController extends Controller
                     ->join('project_users', function($join){
                         $join->on('project_users.project_id','=','tasks.project_id');
                     })
+                    ->join('projects', function($join){ // 240101 업무상태현황 카운트 확인: 김관호
+                        $join->on('projects.id','=','tasks.project_id'); 
+                    })
                     ->selectRaw('count(tasks.task_status_id) as cnt')
                     ->where('project_users.member_id',$user->id)
                     ->where('tasks.category_id',0)
                     ->where('tasks.task_status_id',3)
+                    ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                     ->whereNull('tasks.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
