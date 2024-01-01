@@ -21,9 +21,13 @@ class ProjectController extends Controller
   // 프로젝트 생성 화면 출력
   public function tableget() {
     
-    $start_date = now()->format("Y-m-d");
+    $startMinDate = Carbon::now();// 240101 디데이 현재일자 설정
+    $endMinDate = Carbon::now()->addDays(1);// 240101 시작일부터 1일 후 일자부터 가능하게 설정
 
-    return view('project_create');
+    return view('project_create',[
+      'startMinDate'=>$startMinDate, // 240101 디데이 현재일자 설정
+      'endMinDate'=>$endMinDate, // 240101 시작일부터 1일 후 일자부터 가능하게 설정
+    ]);
 
   }
 
@@ -110,7 +114,7 @@ class ProjectController extends Controller
 
     //프로젝트 dday 출력
     foreach ($result as $items) {
-      $start = Carbon::now();
+      $start = Carbon::now()->addDays(-1); // 240101 디데이 현재일자 설정
       $end = Carbon::create($result['end_date']);
       $result['dday'] = $start->diffInDays($end); // data에 dday 추가
     }
