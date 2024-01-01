@@ -708,7 +708,7 @@
 .new-task-add-please {
 	/* display: none; */
 	position: fixed;
-    top: 38%;
+    top: 39%;
     left: 50%;
     width: 20%;
     /* height: 0%; */
@@ -717,8 +717,8 @@
 }
 .new-task-add {
 	position: absolute;
-	background-color: #9656FF;
-    padding: 10px 30px;
+    background-color: #2c1717;
+    /* padding: 10px 30px; */
     border-radius: 15px;
     /* border: 1px solid #fff; */
 }
