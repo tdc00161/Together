@@ -39,6 +39,7 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $user->id)
         ->where('t.category_id','=', 1)
         ->whereNull('p.deleted_at')
+        ->whereNull('t.deleted_at')
         ->get();
         // -------- 대시보드 공지 출력 끝 ------------
 
