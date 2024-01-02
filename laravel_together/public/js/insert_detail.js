@@ -575,7 +575,10 @@ function updateTask() {
 				// console.log(refreshStatus);
 				refreshStatus.setAttribute('data-status', data.data.names.task_status_name)
 				// console.log(refreshStatus.firstElementChild);
-				refreshStatus.firstElementChild ? refreshStatus.firstElementChild.textContent : refreshStatus.textContent = data.data.names.task_status_name
+				console.log(data.data.names.task_status_name);
+				console.log(refreshStatus.firstElementChild);
+				console.log(refreshStatus.firstElementChild.textContent);
+				refreshStatus.firstElementChild ? refreshStatus.firstElementChild.textContent = data.data.names.task_status_name : refreshStatus.textContent = data.data.names.task_status_name
 				statusColorAutoPainting(data.data.names.task_status_name, refreshStatus)
 				// 해당 간트 담당자
 				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild
@@ -599,9 +602,9 @@ function updateTask() {
 					element.firstChild ? element.removeChild(element.firstChild) : ''
 					let date = element.id.match(/-(\d+)/)[1]
 					// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
-					let gantt_start = data.data.task.start_date.replace(/-/g, '')
+					let gantt_start = data.data.task.start_date ? data.data.task.start_date.replace(/-/g, '') : ''
 					// console.log(gantt_start);
-					let gantt_end = data.data.task.end_date.replace(/-/g, '')
+					let gantt_end = data.data.task.end_date ? data.data.task.end_date.replace(/-/g, '') : ''
 					// console.log(gantt_end);
 					// console.log(date);
 					if (gantt_start <= date && gantt_end >= date) {
