@@ -247,6 +247,7 @@ class ProjectController extends Controller
         ->with('update_data',$update_data)
         ->with('deadline_data',$deadline_data)
         ->with('statuslist',$statuslist)
+        ->with('projectDday',$projectDday)
         ->with('user',Auth::id())
         ->with('project0title', $project0title)
         ->with('project1title', $project1title)
