@@ -748,12 +748,12 @@
 	width: fit-content;
     padding: 5px 15px;
     border: none;
-    color:white;
+    color:black;
 }
 
 .goGantt {
 	width: fit-content;
     padding: 5px 15px;
 	border: none;
-    color:black;
+	color:white;
 }
