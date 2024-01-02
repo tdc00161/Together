@@ -231,12 +231,8 @@ class GanttChartController extends Controller
                         ->get();
         // dd($color_code);
 
-        // dday 호출
-        foreach ($result as $items) {
-            $start = Carbon::now();
-            $end = Carbon::create($result['end_date']);
-            $result['dday'] = $start->diffInDays($end); // data에 dday 추가
-          }
+        //프로젝트 dday 출력 240101 수정
+        $projectDday = Carbon::now()->addDays(-1)->diffInDays($result->end_date);
 
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
@@ -255,7 +251,8 @@ class GanttChartController extends Controller
         ->with('project1title',$project1title)
         // ->with('project_id', $project_id)
         ->with('color_code',$color_code)
-        ->with('result',$result);
+        ->with('result',$result)
+        ->with('projectDday',$projectDday);
     }
 
     // 상세 업무/공지 조회

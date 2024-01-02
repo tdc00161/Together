@@ -116,6 +116,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',0)
+                ->where('task_depth','0')
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
@@ -126,6 +127,7 @@ class ProjectController extends Controller
             ->where('project_id',$id)
             ->where('category_id',0)
             ->where('task_status_id',1)
+            ->where('task_depth','0')
             ->whereNull('tasks.deleted_at')
             ->groupBy('task_status_id')
             ->get();
@@ -135,6 +137,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',2)
+                ->where('task_depth','0')
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
@@ -144,6 +147,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',3)
+                ->where('task_depth','0')
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
@@ -189,7 +193,7 @@ class ProjectController extends Controller
     $deadline_data = DB::table('tasks as tk')
                     ->join('projects as pj','pj.id','tk.project_id')
                     ->join('basedata as bd','bd.data_content_code','tk.task_status_id')
-                    ->join('users as us','us.id','tk.task_responsible_id') //담당자 수정완료
+                    ->leftJoin('users as us','us.id','tk.task_responsible_id') //담당자 수정완료
                     ->select('tk.id'
                             ,'tk.title'
                             ,'tk.task_responsible_id'
@@ -200,6 +204,7 @@ class ProjectController extends Controller
                     ->where('bd.data_title_code','0')
                     ->where('tk.project_id',$result->id)
                     ->where('tk.task_status_id','!=','3')
+                    ->where('task_depth','0')
                     ->whereNull('tk.deleted_at')
                     ->orderBy('dday','asc')
                     ->get();
@@ -269,6 +274,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',0)
+                ->where('task_depth','0')
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
@@ -278,6 +284,7 @@ class ProjectController extends Controller
             ->where('project_id',$id)
             ->where('category_id',0)
             ->where('task_status_id',1)
+            ->where('task_depth','0')
             ->whereNull('tasks.deleted_at')
             ->groupBy('tasks.task_status_id')
             ->get();
@@ -287,6 +294,7 @@ class ProjectController extends Controller
                   ->where('project_id',$id)
                   ->where('category_id',0)
                   ->where('task_status_id',2)
+                  ->where('task_depth','0')
                   ->whereNull('tasks.deleted_at')
                   ->groupBy('tasks.task_status_id')
                   ->get();
@@ -296,6 +304,7 @@ class ProjectController extends Controller
                 ->where('project_id',$id)
                 ->where('category_id',0)
                 ->where('task_status_id',3)
+                ->where('task_depth','0')
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
