@@ -575,13 +575,13 @@ function updateTask() {
 				// console.log(refreshStatus);
 				refreshStatus.setAttribute('data-status', data.data.names.task_status_name)
 				// console.log(refreshStatus.firstElementChild);
-				console.log(data.data.names.task_status_name);
-				console.log(refreshStatus.firstElementChild);
-				console.log(refreshStatus.firstElementChild.textContent);
+				// console.log(data.data.names.task_status_name);
+				// console.log(refreshStatus.firstElementChild);
+				// console.log(refreshStatus.firstElementChild.textContent);
 				refreshStatus.firstElementChild ? refreshStatus.firstElementChild.textContent = data.data.names.task_status_name : refreshStatus.textContent = data.data.names.task_status_name
 				statusColorAutoPainting(data.data.names.task_status_name, refreshStatus)
 				// 해당 간트 담당자
-				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild
+				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling ? refreshTarget.firstElementChild.nextElementSibling : refreshTarget.firstElementChild.nextElementSibling.firstElementChild
 				refreshResponsible.textContent = data.data.names.task_responsible_name
 				// 해당 간트 제목
 				console.log(refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling);
