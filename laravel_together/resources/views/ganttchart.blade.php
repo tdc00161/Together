@@ -36,15 +36,16 @@
         {{-- <div class="dday">D-{{$result->dday}}</div> --}}
         <div class="date_set">
             <label for="dday">
-                <div class="dday" id="dday">
-                    @if($result->dday === 0)
-                        <div class="dday">D-day</div>
-                    @elseif($result->dday > 0)
-                        <div class="dday">D-{{$result->dday}}</div>
-                    @else
-                        
-                    @endif
-                </div>
+                    {{-- 240101 수정 --}}
+                    <div class="dday" id="dday">
+                        @if($projectDday === 0)
+                            <div class="dday">D-day</div>
+                        @elseif($projectDday > 0)
+                            <div class="dday">D-{{$projectDday}}</div>
+                        @elseif($projectDday < 0)
+                            
+                        @endif
+                    </div>
             </label>
             <label class="project_label" for="start_date"> 시작일
                 {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}

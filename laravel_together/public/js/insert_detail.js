@@ -170,7 +170,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
 		// 담당자가 있으면 지우기
-		if (document.querySelectorAll('.insert_responsible_one').length === 0 ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false) {
+		if (document.querySelectorAll('.insert_responsible_one').length !== 1) { // ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
 		} // 작성되어있는 첫번째 담당자 삭제
 		START_DATE[0].value = ''
@@ -301,18 +301,18 @@ function closeTaskModal(a) {
 	}
 }
 
-// // 모달 작성에 쓰일 => 간트업무 더보기 모달
-function ganttDetailChange(ganttDetail) {
-	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
-		ganttDetail[0].style.display = 'block';
-		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
-		// button.style.color = 'rgb(151, 87, 255)';
-	} else {
-		ganttDetail[0].style.display = 'none';
-		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
-		// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
-	}
-}
+// // 모달 작성에 쓰일 => 간트업무 더보기 모달 // 2024 gantt_more_modal_btn.addEventListener로 대체
+// function ganttDetailChange(ganttDetail) {
+// 	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
+// 		ganttDetail[0].style.display = 'block';
+// 		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+// 		// button.style.color = 'rgb(151, 87, 255)';
+// 	} else {
+// 		ganttDetail[0].style.display = 'none';
+// 		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+// 		// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+// 	}
+// }
 
 // 모달 작성
 function createTask() {
@@ -385,8 +385,7 @@ function createTask() {
 				statusName_element.textContent = data.names.task_status_name
 				statusName_element.setAttribute('data-status', data.names.task_status_name)
 				statusColorAutoPainting(data.names.task_status_name, statusName_element)
-				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
-				more_view_onclick.setAttribute('onclick', '')
+				// gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
 				// ganttDetailChange()
 
 				gantt_more_modal_btn.addEventListener('click', function () {
@@ -404,18 +403,32 @@ function createTask() {
 				// '...'버튼 닫기 조건
 				let mainContainer = document.querySelector('.main-container');
 				let ganttDetailList = document.querySelectorAll('.gantt-detail');
-				let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
-				let ganttTaskDetailClickSpanList = document.querySelectorAll('.gantt-task-detail-click-span');
+				// let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
+				// let ganttTaskDetailClickSpanList = document.querySelectorAll('.gantt-task-detail-click-span');
 				let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
 				mainContainer.addEventListener('click', function (event) {
-					if(!event.target.contains(ganttTaskDetailClickSpanList) && !event.target.contains(ganttTaskDetailClickList)){
+					let ganttTaskDetailClickList = event.target.closest('.gantt-task-detail-click');
+					let ganttTaskDetailClickSpanList = event.target.closest('.gantt-task-detail-click-span');
+					// console.log(ganttTaskDetailClickList);
+					// console.log(ganttTaskDetailClickSpanList);
+					if (!ganttTaskDetailClickList || !ganttTaskDetailClickSpanList) {
+						// console.log('No ganttTaskDetailClickList');
 						let a = document.querySelectorAll('.gantt-detail')
 						for (let index = 0; index < a.length; index++) {
 							const element = a[index];
 							element.style.display = 'none'
 						}
 					}
+					// if(!event.target.contains(ganttTaskDetailClickSpanList) && !event.target.contains(ganttTaskDetailClickList)){
+					// 	let a = document.querySelectorAll('.gantt-detail')
+					// 	for (let index = 0; index < a.length; index++) {
+					// 		const element = a[index];
+					// 		element.style.display = 'none'
+					// 	}
+					// }
 				});
+
+
 
 
 				// 우 간트
@@ -562,7 +575,7 @@ function updateTask() {
 				// console.log(refreshStatus);
 				refreshStatus.setAttribute('data-status', data.data.names.task_status_name)
 				// console.log(refreshStatus.firstElementChild);
-				refreshStatus.firstElementChild.textContent = data.data.names.task_status_name
+				refreshStatus.firstElementChild ? refreshStatus.firstElementChild.textContent : refreshStatus.textContent = data.data.names.task_status_name
 				statusColorAutoPainting(data.data.names.task_status_name, refreshStatus)
 				// 해당 간트 담당자
 				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild

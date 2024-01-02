@@ -156,6 +156,20 @@
     font-size: 1em;
 }
 
+.goGantt {
+	width: fit-content;
+    padding: 5px 15px;
+    border: none;
+    color: white;
+}
+
+.goFeed {
+	width: fit-content;
+    padding: 5px 15px;
+    border: none;
+    color:black;
+}
+
 /* 모달창 */
 
 #deleteModal {
@@ -720,7 +734,7 @@
 .new-task-add {
 	position: absolute;
     background-color: #2c1717;
-    /* padding: 10px 30px; */
+    padding: 3px;
     border-radius: 15px;
     /* border: 1px solid #fff; */
 }
