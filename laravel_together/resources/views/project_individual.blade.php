@@ -44,9 +44,9 @@
                     <div class="dday" id="dday">
                         @if($projectDday === 0)
                             <div class="dday">D-day</div>
-                        @elseif($projectDday < 0)
-                            <div class="dday">D{{$projectDday}}</div>
                         @elseif($projectDday > 0)
+                            <div class="dday">D-{{$projectDday}}</div>
+                        @elseif($projectDday < 0)
                             
                         @endif
                     </div>
