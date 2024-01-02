@@ -317,7 +317,7 @@ function displayFriendRequests(friendRequests) {
             acceptbtn.textContent = '수락'
 
             acceptbtn.addEventListener('click', function () {
-                
+                friendList();
                 var requestId = this.value;
                 noticecount.innerHTML = noticecount.innerHTML - 1;
 
@@ -333,7 +333,9 @@ function displayFriendRequests(friendRequests) {
 
                     // 친구 목록에 '추가된 유저' 표시
                     if(friendRequest.id == requestId) {
-                    friendList();
+                        friendList();
+                        var friendlistdiv = document.getElementById('friend-list-div');
+                        var emptyfrienddiv = document.getElementById('emptyfrienddiv');
                     emptyfrienddiv.style.display = 'none';
                     var addfriendlistdiv = document.createElement('div');
                     friendlistdiv.appendChild(addfriendlistdiv);
@@ -641,7 +643,7 @@ function friendList() {
             var useUserId = data.useUserId;
             // 0 :
             if (friendList.length === 0) {
-                emptyfrienddiv.style.display = 'block';
+                // emptyfrienddiv.style.display = 'block';
                 emptyfrienddiv.appendChild(emptyfriendMsg);
                 emptyfriendMsg.innerHTML = '친구 목록 없음';
                 emptyfriendMsg.classList.add('empty-msg-css');
@@ -677,6 +679,10 @@ function displayResults(results) {
 }
 // 친구 목록 출력
 function displayFriendlist(friendList, useUserId) {
+
+    var friendlistdiv = document.getElementById('friend-list-div');
+    var emptyfrienddiv = document.getElementById('emptyfrienddiv');
+    var emptyfriendMsg = document.createElement('p');
     // 기존 내용 초기화
     friendlistdiv.innerHTML = '';
     
@@ -723,15 +729,19 @@ function displayFriendlist(friendList, useUserId) {
 
             // 삭제 버튼 클릭시
             fdeletebtn.addEventListener('click', function () {
+
                 friendList.length = friendList.length-1;
                 var deletefriendId = this.value;
 
                 if(friendList.length === 0) {
+                    var friendlistdiv = document.getElementById('friend-list-div');
+                    var emptyfrienddiv = document.getElementById('emptyfrienddiv');
+                    var emptyfriendMsg = document.createElement('p');
                     emptyfrienddiv.style.display='block';
                     emptyfrienddiv.appendChild(emptyfriendMsg);
-                    emptyfriendMsg.classList.add('empty-msg-css');
-                    emptyfriendMsg.innerHTML = '친구 목록 없음';
-                    emptyfriendMsg.style.marginTop = '50px';
+                    // emptyfriendMsg.classList.add('empty-msg-css');
+                    // emptyfriendMsg.innerHTML = '친구 목록 없음';
+                    // emptyfriendMsg.style.marginTop = '50px';
                 }
                 // AJAX 요청 수행
                 fetch('/friendDelete', {
