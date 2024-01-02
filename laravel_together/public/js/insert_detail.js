@@ -403,17 +403,29 @@ function createTask() {
 				// '...'버튼 닫기 조건
 				let mainContainer = document.querySelector('.main-container');
 				let ganttDetailList = document.querySelectorAll('.gantt-detail');
-				let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
-				let ganttTaskDetailClickSpanList = document.querySelectorAll('.gantt-task-detail-click-span');
+				// let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
+				// let ganttTaskDetailClickSpanList = document.querySelectorAll('.gantt-task-detail-click-span');
 				let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
 				mainContainer.addEventListener('click', function (event) {
-					if(!event.target.contains(ganttTaskDetailClickSpanList) && !event.target.contains(ganttTaskDetailClickList)){
+					let ganttTaskDetailClickList = event.target.closest('.gantt-task-detail-click');
+					let ganttTaskDetailClickSpanList = event.target.closest('.gantt-task-detail-click-span');
+					// console.log(ganttTaskDetailClickList);
+					// console.log(ganttTaskDetailClickSpanList);
+					if (!ganttTaskDetailClickList || !ganttTaskDetailClickSpanList) {
+						// console.log('No ganttTaskDetailClickList');
 						let a = document.querySelectorAll('.gantt-detail')
 						for (let index = 0; index < a.length; index++) {
 							const element = a[index];
 							element.style.display = 'none'
 						}
 					}
+					// if(!event.target.contains(ganttTaskDetailClickSpanList) && !event.target.contains(ganttTaskDetailClickList)){
+					// 	let a = document.querySelectorAll('.gantt-detail')
+					// 	for (let index = 0; index < a.length; index++) {
+					// 		const element = a[index];
+					// 		element.style.display = 'none'
+					// 	}
+					// }
 				});
 
 
