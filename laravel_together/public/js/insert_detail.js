@@ -301,18 +301,18 @@ function closeTaskModal(a) {
 	}
 }
 
-// // 모달 작성에 쓰일 => 간트업무 더보기 모달
-function ganttDetailChange(ganttDetail) {
-	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
-		ganttDetail[0].style.display = 'block';
-		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
-		// button.style.color = 'rgb(151, 87, 255)';
-	} else {
-		ganttDetail[0].style.display = 'none';
-		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
-		// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
-	}
-}
+// // 모달 작성에 쓰일 => 간트업무 더보기 모달 // 2024 gantt_more_modal_btn.addEventListener로 대체
+// function ganttDetailChange(ganttDetail) {
+// 	if (ganttDetail[0].style.display === 'none' || ganttDetail[0].style.display === '') {
+// 		ganttDetail[0].style.display = 'block';
+// 		// gantt-detail 요소가 보일 때 버튼 색상을 변경합니다.
+// 		// button.style.color = 'rgb(151, 87, 255)';
+// 	} else {
+// 		ganttDetail[0].style.display = 'none';
+// 		// gantt-detail 요소가 숨겨질 때 버튼 색상을 초기화
+// 		// button.style.color = ''; // 초기 색상으로 변경하거나 ''로 설정
+// 	}
+// }
 
 // 모달 작성
 function createTask() {
@@ -385,8 +385,7 @@ function createTask() {
 				statusName_element.textContent = data.names.task_status_name
 				statusName_element.setAttribute('data-status', data.names.task_status_name)
 				statusColorAutoPainting(data.names.task_status_name, statusName_element)
-				gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
-				more_view_onclick.setAttribute('onclick', '')
+				// gantt_more_modal_btn.setAttribute('onclick', 'ganttDetailChange(' + gantt_more_modal + ')')
 				// ganttDetailChange()
 
 				gantt_more_modal_btn.addEventListener('click', function () {
@@ -416,6 +415,8 @@ function createTask() {
 						}
 					}
 				});
+
+
 
 
 				// 우 간트
