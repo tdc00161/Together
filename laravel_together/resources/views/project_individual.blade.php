@@ -40,11 +40,12 @@
             {{-- <div class="dday">D-{{$result->dday}}</div> --}}
             <div class="date_set">
                 <label for="dday">
+                    {{-- 240101 수정 --}}
                     <div class="dday" id="dday">
-                        @if($result->dday === 0)
+                        @if($projectDday === 0)
                             <div class="dday">D-day</div>
-                        @elseif($result->dday > 0)
-                            <div class="dday">D-{{$result->dday}}</div>
+                        @elseif($projectDday > 0)
+                            <div class="dday">D-{{$projectDday}}</div>
                         @else
                             
                         @endif

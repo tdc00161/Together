@@ -97,6 +97,16 @@ document.addEventListener('DOMContentLoaded', function() {
  });
 
 
+// 240101 생성페이지 마감일자 기준 설정
+function create(){
+   let start = document.getElementById('creates').value;
+   let end = document.getElementById('createe').value;
+   if(end<start){
+      alert('마감일자를 다시 확인해주세요');
+   }
+}
+
+
 // 프로젝트 명 클릭시 초기값 삭제
 // let UPDATETITLESET = document.getElementById('project_title');
 // UPDATETITLESET.addEventListener('click',deleteTitle)
