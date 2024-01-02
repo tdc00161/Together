@@ -596,29 +596,32 @@ function updateTask() {
 
 				let refreshRightGanttChart = document.querySelector('#gantt-chart-' + now_task_id)
 				let chartDateList = refreshRightGanttChart.children
-				for (let index = 0; index < chartDateList.length; index++) {
-					const element = chartDateList[index];
-					// console.log(element);
-					element.firstChild ? element.removeChild(element.firstChild) : ''
-					let date = element.id.match(/-(\d+)/)[1]
-					// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
-					let gantt_start = data.data.task.start_date ? data.data.task.start_date.replace(/-/g, '') : ''
-					// console.log(gantt_start);
-					let gantt_end = data.data.task.end_date ? data.data.task.end_date.replace(/-/g, '') : ''
-					// console.log(gantt_end);
-					// console.log(date);
-					if (gantt_start <= date && gantt_end >= date) {
-						// console.log(date + '유효한 날짜');
-						let create_1 = document.createElement('div')
-						create_1.classList.add('bk-row')
-						create_1.setAttribute('data-row-num', data.data.id)
-						if (gantt_start == date) {
-							create_1.textContent = '시작일: ' + gantt_start
-						} else if (gantt_end == date) {
-							create_1.textContent = '마감일: ' + gantt_end
-						}
+				
+				if(data.data.task.start_date !== null && data.data.task.end_date !== null){
+					for (let index = 0; index < chartDateList.length; index++) {
+						const element = chartDateList[index];
+						// console.log(element);
+						element.firstChild ? element.removeChild(element.firstChild) : ''
+						let date = element.id.match(/-(\d+)/)[1]
+						// data.data.start_date.replace(/-/g, '') <= date >= data.data.end_date.replace(/-/g, '') 비교
+						let gantt_start = data.data.task.start_date ? data.data.task.start_date.replace(/-/g, '') : ''
+						// console.log(gantt_start);
+						let gantt_end = data.data.task.end_date ? data.data.task.end_date.replace(/-/g, '') : ''
+						// console.log(gantt_end);
+						// console.log(date);
+						if (gantt_start <= date && gantt_end >= date) {
+							// console.log(date + '유효한 날짜');
+							let create_1 = document.createElement('div')
+							create_1.classList.add('bk-row')
+							create_1.setAttribute('data-row-num', data.data.id)
+							if (gantt_start == date) {
+								create_1.textContent = '시작일: ' + gantt_start
+							} else if (gantt_end == date) {
+								create_1.textContent = '마감일: ' + gantt_end
+							}
 
-						element.append(create_1)
+							element.append(create_1)
+						}
 					}
 				}
 			}
