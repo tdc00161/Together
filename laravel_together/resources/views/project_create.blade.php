@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="/js/project.js" defer></script>
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/project_create.css">
   <title>project-create</title>
@@ -44,11 +45,11 @@
                 <div>
                     <div class="div_date">
                         <div class="div_font">시작일</div>
-                        <input class="input_date" name="start_date" id="creates" type="date"  required> {{-- min="{{minstart}}" --}}
+                        <input class="input_date" name="start_date" id="creates" type="date" required>
                     </div>
                     <div class="div_date">
                         <div class="div_font">마감일</div>
-                        <input class="input_date" name="end_date" type="date" id="createe" onchange="create()"  required> {{-- min="{{minend}}" --}}
+                        <input class="input_date" name="end_date" id="createe"  type="date" onchange="createPage()" required>
                     </div>
                 </div>
                 <br>

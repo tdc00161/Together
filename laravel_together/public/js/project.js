@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // 240101 생성페이지 마감일자 기준 설정
-function create(){
+function createPage(){
    let start = document.getElementById('creates').value;
    let end = document.getElementById('createe').value;
    if(end<start){
