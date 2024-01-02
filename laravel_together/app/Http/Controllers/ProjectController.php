@@ -200,6 +200,7 @@ class ProjectController extends Controller
                     ->where('bd.data_title_code','0')
                     ->where('tk.project_id',$result->id)
                     ->where('tk.task_status_id','!=','3')
+                    ->where('tk.start_date','<=',now()) // 오늘날짜기준 이전 시작일 출력(수정)
                     ->whereNull('tk.deleted_at')
                     ->orderBy('dday','asc')
                     ->get();

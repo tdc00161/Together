@@ -98,11 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // 240101 생성페이지 마감일자 기준 설정
-function create(){
+function createPage(){
    let start = document.getElementById('creates').value;
    let end = document.getElementById('createe').value;
    if(end<start){
       alert('마감일자를 다시 확인해주세요');
+      createbtn.setAttribute('disabled','disabled');
+   }else{
+      createbtn.removeAttribute('disabled');
    }
 }
 
