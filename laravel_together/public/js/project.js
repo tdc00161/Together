@@ -106,6 +106,30 @@ function createPage(){
    }
 }
 
+function submitbtn(){
+   let start = document.getElementById('creates').value;
+   let end = document.getElementById('createe').value;
+   let createbtn = document.getElementById('submintbtn');
+   if(end<start){
+      createbtn.removeAttribute('disabled','disabled');
+      alert('마감일자를 다시 확인해주세요')
+   }
+}
+// 생성페이지 유효성 검사
+// let formChk = document.getElementById('createform').click('input',function(){
+
+//    const pjstart = document.getElementById('creates').value;
+//    const pjend = document.getElementById('createe').value;
+
+//    if(pjend>pjstart) {
+//       createbtn.removeAttribute('disabled');
+//    } else {
+//       createbtn.setAttribute('disabled','disabled');
+//       alert('마감일자를 다시 확인해주세요')
+//    }
+   
+// })
+
 
 // 프로젝트 명 클릭시 초기값 삭제
 // let UPDATETITLESET = document.getElementById('project_title');

@@ -193,7 +193,7 @@ class ProjectController extends Controller
     $deadline_data = DB::table('tasks as tk')
                     ->join('projects as pj','pj.id','tk.project_id')
                     ->join('basedata as bd','bd.data_content_code','tk.task_status_id')
-                    ->join('users as us','us.id','tk.task_responsible_id') //담당자 수정완료
+                    ->leftjoin('users as us','us.id','tk.task_responsible_id') //담당자 수정완료
                     ->select('tk.id'
                             ,'tk.title'
                             ,'tk.task_responsible_id'

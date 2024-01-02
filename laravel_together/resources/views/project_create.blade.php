@@ -10,7 +10,7 @@
   <title>project-create</title>
 </head>
 <body>
-    <form action="{{route('create.post')}}" method="POST">
+    <form action="{{route('create.post')}}" method="POST"id="createform">
         @csrf
         <div class="container">
         <input type="hidden" name="user_pk">
@@ -45,7 +45,7 @@
                 <div>
                     <div class="div_date">
                         <div class="div_font">시작일</div>
-                        <input class="input_date" name="start_date" id="creates" type="date" required>
+                        <input class="input_date" name="start_date" id="creates" type="date" min="now()->format('Y-m-d')" required>
                     </div>
                     <div class="div_date">
                         <div class="div_font">마감일</div>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <br>
-                <button type="submit" class="project_button">프로젝트 생성</button>
+                <button type="submit" class="project_button" id="createbtn">프로젝트 생성</button>
                 </div>
         </div>
         <!-- {{-- 다크모드 --}} -->
