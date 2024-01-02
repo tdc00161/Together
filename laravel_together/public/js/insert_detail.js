@@ -1344,8 +1344,8 @@ function deleteTask() {
 						console.log(child.getAttribute('id'));
 						if (!document.querySelector('#gantt-task-' + child.getAttribute('parent'))) {
 							console.log('independence child');
-							child.remove()
 							document.querySelector('#gantt-chart-' + child.getAttribute('id').match(/\d+/)[0]).remove()
+							child.remove()
 						}
 					}
 				}
