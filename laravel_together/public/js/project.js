@@ -103,7 +103,9 @@ function createPage(){
    let end = document.getElementById('createe').value;
    if(end<start){
       alert('마감일자를 다시 확인해주세요');
-      createbtn.setAttribute('disabled','disabled').alert('마감일자를 다시 확인해주세요');
+      createbtn.setAttribute('disabled','disabled');
+   }else{
+      createbtn.removeAttribute('disabled');
    }
 }
 

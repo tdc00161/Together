@@ -24,7 +24,6 @@
     margin: 0 auto;
 }
 
-
 .project_color {
     display: inline-block;
     width: 20px;
@@ -519,9 +518,13 @@
 .goFeed {
 	width: fit-content;
     padding: 5px 15px;
+    border: none;
+    color:white;
 }
 
 .goGantt {
 	width: fit-content;
     padding: 5px 15px;
+    border: none;
+    color:black;
 }
