@@ -45,14 +45,14 @@ function enterkeySearch() {
   let ganttTask = document.getElementsByClassName('gantt-task');
 
   for (let i = 0; i < ganttTask.length; i++) {
-    responName = ganttTask[i].getElementsByClassName('responName');
-    statusName = ganttTask[i].getElementsByClassName('statusName');
+    // responName = ganttTask[i].getElementsByClassName('responName');
+    // statusName = ganttTask[i].getElementsByClassName('statusName');
     taskName = ganttTask[i].getElementsByClassName('taskName');
     let ganttChart = document.getElementsByClassName('gantt-chart')[i]; // 해당 인덱스의 차트 가져오기
 
     if (
-      responName[0].innerHTML.toLowerCase().includes(search) ||
-      statusName[0].innerHTML.toLowerCase().includes(search) ||
+      // responName[0].innerHTML.toLowerCase().includes(search) ||
+      // statusName[0].innerHTML.toLowerCase().includes(search) ||
       taskName[0].innerHTML.toLowerCase().includes(search)
     ) {
       ganttTask[i].style.display = 'flex';
@@ -504,7 +504,7 @@ function addSubTask(event, mainId) {
 
   // 새로운 gantt-task 요소 생성(최상위)
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
-  const newTask = document.createElement('div');
+  let newTask = document.createElement('div');
   newTask.classList.add('gantt-task', 'gantt-child-task');
   // newTask.id = 'gantt-task-'; // 밑에서
   newTask.setAttribute('parent', gantt_modal_id[0])
@@ -851,8 +851,34 @@ function addSubTask(event, mainId) {
 
 // })
 
+// 하위업무 추가 = document.querySelector()로 잡은 하위업무추가 버튼 엘리먼트
+// 자식들 => 업무들 중 부모값이 나인 엘리먼트들(배열)?
+// let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
+// childrenTasks === this.id.match(/\d+/);
+// 새자식 => document.create()로 만든 업무 엘리먼트
+
+
+//   let doubleAddUnderTask = document.querySelector('.gantt-detail-btn');
+//  let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
+// //   let childrenTasks = [];
+//   // newTask = 0;
+
+//   doubleAddUnderTask.addEventListener('click', function(event) {
+//     let ganttTaskList = document.querySelectorAll('.gantt-task')
+//     for (let index = 0; index < ganttTaskList.length; index++) {
+//       const element = ganttTaskList[index];
+//       if(element.getAttribute('parent') === this.id.match(/\d+/)[0]){
+//         childrenTasks.push(element)
+//       }
+//     }
+//     childrenTasks[childrenTasks.length-1].after(newTask)
+
+//  })
+
+
 
   // 원래 자리 다음에 생성
+
   // document.querySelector('')
   doMGanttTask.after(newTask);
 
@@ -867,6 +893,8 @@ function addSubTask(event, mainId) {
 
   // 원래있던 부모 다음에 자식 생성
   doMGanttChart.after(newChart);
+
+    // --- 차트 부분 생성 완
 
   console.log(1);
   //
@@ -905,48 +933,6 @@ function addSubTask(event, mainId) {
           });
       });
   });
-
-  // console.log(2);
-
-  // 시작일 종료일 날짜 설정
-  // const chartStartDate = new Date('2023-12-01');
-  // const chartEndDate = new Date('2023-12-31');
-
-  // // chartStartDate를 클론하여 chartNewStartDate에 할당
-  // const chartNewStartDate = new Date(chartStartDate);
-
-  // // 요소 생성 배치
-  // // end가 start보다 이전인지 확인
-  // while (chartNewStartDate <= chartEndDate) {
-  //   // 날짜 yyyymmdd 변경
-  //   const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
-
-  //   // gantt-chart안에 들어갈 새로운 div
-  //   const ganttChartRow = document.createElement('div');
-  //   // ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
-
-  //   // 다음 날짜 이동
-  //   chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
-
-  //   // <div class="gantt-chart" id="ganbtt-chart-800">
-  //   //    <div id="row800-(231201~231231)"></div>
-  //   // </div> 생성
-  //   newChart.appendChild(ganttChartRow);
-  // }
-
-  // addEventListener 로 하는 방법
-  //
-  // const eventSubStartDate = document.getElementById(addTaskStartDate.id);
-  // const eventSubEndDate = document.getElementById(addTaskEndDate.id);
-  // eventSubStartDate.addEventListener('change', e => test('000'));
-  // console.log(eventSubStartDate.getAttribute('onchange'));
-  // eventSubEndDate.addEventListener('change', e => test('000'));
-  // console.log(eventSubEndDate.getAttribute('onchange'));
-
-
-  // --- 차트 부분 생성 완
-
-
 
 }
 
