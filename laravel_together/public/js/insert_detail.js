@@ -170,7 +170,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		document.querySelector('.insert_content').value = ''
 		document.querySelectorAll('.status_val')[0].id = 'checked'
 		// 담당자가 있으면 지우기
-		if (document.querySelectorAll('.insert_responsible_one').length !== 1) { // ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false
+		if (document.querySelectorAll('.insert_responsible_one').length > 1) { // ? !document.querySelectorAll('.insert_responsible_one')[0].classList.contains('d-none') : false
 			RESPONSIBLE[0].removeChild(document.querySelectorAll('.insert_responsible_one')[0])
 		} // 작성되어있는 첫번째 담당자 삭제
 		START_DATE[0].value = ''
