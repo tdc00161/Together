@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\FriendRequest;
 use App\Models\Friendlist;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FriendRequestController extends Controller
 {
@@ -53,7 +54,23 @@ class FriendRequestController extends Controller
         }
 
          // 이미 친구인지 확인
-        if ($sender->isFriendWith($receiver)) {
+
+         
+        $userId = Auth::id();
+        $friendId = User::where('email', $receiverEmail)->value('id');
+
+         $dupfriendlist = Friendlist::select('user_id', 'friend_id', 'deleted_at')
+         ->where(function ($query) use ($userId, $friendId) {
+             $query->where(function ($subQuery) use ($userId, $friendId) {
+                 $subQuery->where('user_id', $userId)->where('friend_id', $friendId);
+             })->orWhere(function ($subQuery) use ($userId, $friendId) {
+                 $subQuery->where('user_id', $friendId)->where('friend_id', $userId);
+             });
+         })
+         ->whereNull('deleted_at')
+         ->get();
+         
+        if ($dupfriendlist->isNotEmpty()) {
             return response()->json([
                 'success' => false, 
                 'message' => '이미 친구입니다.']);
