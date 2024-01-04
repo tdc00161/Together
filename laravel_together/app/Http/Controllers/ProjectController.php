@@ -451,17 +451,27 @@ class ProjectController extends Controller
 
 
     // 프로젝트 나가기
-    public function exit_project(Request $request)
+    public function exit_project(Request $request, $id)
     {
         Log::debug("id 확인요청 : ". $id);
-        $user = Project::find($id);
+        $project = Project::find($id);
+        $user = auth::user();
+        $member = DB::table('project_users as pu')
+                    ->join('projects as pj', 'pj.id', 'pu.project_id')
+                    ->join('user as us', 'us.id', 'pj.user_pk')
+                    ->select('pj.id','pu.member_id','')
+                    ->where('pj.project_id',$id)
+                    ->where('pu.member_id', $user->id)
+                    ->get(); 
+
+        // dd($member);
         Log::debug("id 확인완료");
     
         if(!$user) {
           return response()->json(['errer' => 'item not found'], 404);
         }
         Log::debug("user 에러");
-        $user->delete();
+        $member->delete();
         Log::debug("user 삭제");
         return response()->json();
         Log::debug("화면전달");

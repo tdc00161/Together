@@ -30,7 +30,7 @@
                 <div></div>
                 @forelse ($authoritychk as $item)
                     {{-- <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
-                    @if ($item->authority_id == '1')
+                    @if ($item->authority_id == '0')
                         <div><button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button></div>
                             {{-- 나가기 모달창 --}}
                             <div id="exitModal">
@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                             </div>
-                    @elseif ($item->authority_id == '0')
+                    @elseif ($item->authority_id == '1')
                         <div><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
                         {{-- 삭제 모달창 --}}
                         <div id="deleteModal">

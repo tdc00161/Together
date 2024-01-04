@@ -254,9 +254,9 @@ function closeExitModal() {
 
 //나가기버튼시 삭제
 const csrfToken_project2 = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-function deleteProject(project_pk) {
+function exitProject(project_pk) {
 
-   fetch('/delete/' + project_pk, {
+   fetch('/exit/' + project_pk, {
       method: 'DELETE',
       // body : JSON.stringify(Id),
       headers: {
