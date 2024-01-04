@@ -496,6 +496,7 @@ function addSubTask(event, mainId) {
   // $item2->id :   
   const doMGanttTask = event.target.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
+  // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   console.log(gantt_modal_id[0]);
   // 차트 부분
@@ -520,6 +521,14 @@ function addSubTask(event, mainId) {
   // <button class="gantt-task-detail-click"></button>
   const addGanttDetailClick = document.createElement('button');
   addGanttDetailClick.classList.add('gantt-task-detail-click');
+  addGanttDetailClick.addEventListener('click', function (event) {
+    console.log(this);
+    console.log(event.target.parentNode.nextElementSibling);
+    if(this.contains(event.target)){
+      event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
+    }
+      // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
+  });
 
   // gantt-task 안 첫번째 div 안 첫번째 btn 안 span
   const addGanttDetailClickSpan = document.createElement('span');
@@ -538,6 +547,8 @@ function addSubTask(event, mainId) {
   addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
   // addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttModalId})`); // 밑에서 처리
+
+  // after
 
   // gantt-task 안 첫번째 div 안 세번째 div 
   // <div class="taskKey">{{$item->task_number}}</div>
@@ -744,7 +755,7 @@ function addSubTask(event, mainId) {
   // <span id="responNameSpan">{{$item->name}}</span>
   const addUserNamespan = document.createElement('span');
   addUserNamespan.id = 'responNameSpan';
-  addUserNamespan.textContent = '담당자';
+  // addUserNamespan.textContent = '담당자';
 
   // gantt-task 안 세번째 div
   // <div class="gantt-status-name"></div>
@@ -762,7 +773,7 @@ function addSubTask(event, mainId) {
   // <span>{{$item->task_status_name}}</span>
   const addStatusColorSpan = document.createElement('span');
   addStatusColorSpan.id = 'statusNameSpan';
-  addStatusColorSpan.textContent = '시작전';
+  // addStatusColorSpan.textContent = '시작전';
 
 
   // gantt-task 안 네번째 div
@@ -795,8 +806,7 @@ function addSubTask(event, mainId) {
   addTaskEndDate.id = 'end-row000'  //위에서
   addTaskEndDate.setAttribute('onchange', 'test(000);'); // 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   // addTaskEndDate.value = '2023-12-05';
-
-
+  
   // gantt-task 안에 첫번째
   newTask.appendChild(addGanttEditableDiv);
   addGanttEditableDiv.appendChild(addGanttDetailClick);
@@ -825,7 +835,10 @@ function addSubTask(event, mainId) {
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
   // 원래 자리 다음에 생성
+  // document.querySelector('')
   doMGanttTask.after(newTask);
+
+
 
   // ------------- 왼쪽 업무부분 생성 완
 
@@ -834,8 +847,50 @@ function addSubTask(event, mainId) {
   newChart.id = 'gantt-chart-000'; //위에서
   newChart.setAttribute('parent', gantt_modal_id[0])
 
-  // 원래있던 282 다음에 800 생성
+  // 원래있던 부모 다음에 자식 생성
   doMGanttChart.after(newChart);
+
+  console.log(1);
+  //
+  let ganttDetailList = document.querySelectorAll('.gantt-detail');
+  let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
+
+  ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
+    // console.log(ganttTaskDetailClickList);
+      taskDetailClick.addEventListener('click', function(event) {
+          ganttDetailList.forEach(function(detail, i) {
+            console.log(i);
+            console.log(index);
+            console.log(i !== index);
+              if (i !== index) {
+                  detail.style.display = 'none';
+              }
+          });
+          // ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
+          // console.log(ganttDetailList[index]);
+      });
+  });
+
+  document.addEventListener('click', function(event) {
+      ganttDetailList.forEach(function(detail) {
+          if (!event.target.closest('.gantt-editable-div')) {
+              detail.style.display = 'none';
+          }
+      });
+      // console.log(666);
+  });
+  
+  let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
+  // console.log(ganttDetailButtons);
+  ganttDetailButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+          ganttDetailList.forEach(function(detail) {
+              detail.style.display = 'none';
+          });
+      });
+  });
+
+  // console.log(2);
 
   // 시작일 종료일 날짜 설정
   // const chartStartDate = new Date('2023-12-01');
@@ -913,7 +968,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // ************* 버튼에 클릭 시 gantt-detail 요소 드롭다운 보이기
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
@@ -928,11 +983,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-  ganttDetailList.forEach(function(detail) {
-      detail.addEventListener('click', function(event) {
-          event.stopPropagation();
-      });
-  });
+  // ganttDetailList.forEach(function(detail) {
+  //   detail.addEventListener('click', function(event) {
+  //       event.stopPropagation();
+  //   });
+  // });
 
   document.addEventListener('click', function(event) {
       ganttDetailList.forEach(function(detail) {
