@@ -522,8 +522,10 @@ function addSubTask(event, mainId) {
   const addGanttDetailClick = document.createElement('button');
   addGanttDetailClick.classList.add('gantt-task-detail-click');
   addGanttDetailClick.addEventListener('click', function (event) {
-    console.log(this);
-    console.log(event.target.parentNode.nextElementSibling);
+    // console.log(this);
+    // console.log(event.target.parentNode.nextElementSibling); 더보기 버튼의 부모의 다음 형제
+
+    // gantt-detail 이 none 이면 blck
     if(this.contains(event.target)){
       event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
     }
@@ -834,6 +836,22 @@ function addSubTask(event, mainId) {
   newTask.appendChild(addTaskEndDateDiv);
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
+// let 하위업무추가 = ''
+// let 자식들 = []
+// let 새자식 = 0
+// 하위업무추가.addEventListener('click', function(event){
+//   let 간트리스트 = document.querySelectorAll('.gantt-task')
+//   for (let index = 0; index < 간트리스트.length; index++) {
+//     const element = 간트리스트[index];
+//     if(element.getAttribute('parent') === this.id.match(/\d+/)[0]){
+//       자식들.push(element)
+//     }
+//   }
+//   자식들[자식들.length-1].after(새자식)
+
+// })
+
+
   // 원래 자리 다음에 생성
   // document.querySelector('')
   doMGanttTask.after(newTask);
@@ -866,8 +884,6 @@ function addSubTask(event, mainId) {
                   detail.style.display = 'none';
               }
           });
-          // ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
-          // console.log(ganttDetailList[index]);
       });
   });
 
