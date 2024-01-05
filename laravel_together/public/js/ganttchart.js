@@ -17,6 +17,48 @@ for (let i = 0; i < checkLists.length; i++) {
   }
 }
 
+// ********* 엔터쳤을 때 줄바꿈 막기
+const editableDivs = document.querySelectorAll('.taskName');
+
+editableDivs.forEach(function(editDiv) {
+  editDiv.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 기본 동작 막기
+      return false;
+    }
+  });
+});
+
+// ************* 업무상태 색상
+document.addEventListener('DOMContentLoaded', function () {
+  var elements = document.querySelectorAll('.gantt-status-color');
+
+  elements.forEach(function (element) {
+    var status = element.getAttribute('data-status');
+    var backgroundColor;
+
+    switch (status) {
+      case '시작전':
+        backgroundColor = '#B1B1B1';
+        break;
+      case '진행중':
+        backgroundColor = '#04A5FF';
+        break;
+      case '피드백':
+        backgroundColor = '#F34747';
+        break;
+      case '완료':
+        backgroundColor = '#64C139';
+        break;
+      default:
+        backgroundColor = '#FFFFFF'; // 기본값 설정
+        break;
+    }
+
+    element.style.backgroundColor = backgroundColor;
+  });
+});
+
 // ********** 새 업무 추가 문구 : 새 업무 추가되면 지우기
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -473,9 +515,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ************* 상태값 드롭다운 선택
 // 드롭박스 클릭 후 선택 수정
+// function ganttToggleDropdown(event) {
+//   console.log(event.target.parentNode.nextElementSibling);
+//   let statusMenu = event.target.parentNode.nextElementSibling
+//     // if (statusMenu.style.display === 'none' || statusMenu.style.display === '') {
+//   statusMenu.style.display = 'block';
+//     // } else {
+//     //   statusMenu.style.display = 'none';
+//     // }
+//     // 1. 다른 곳을 클릭했을 때 닫게
+//     // 어떻게? 제생각엔 엘리먼트.contains(event.target)를 적절히 사용하기...(야매)
+//   }
+
+// function ganttChangeStatus(event, newStatus) {
+//     statusSpan.innerText = newStatus;
+//     statusMenu.style.display = 'none';
+// }
 
 
-// 드롭박스 클릭 후 선택 수정
 
 
 
@@ -570,7 +627,7 @@ function addSubTask(event, mainId) {
   addTaskName.classList.add('taskName', 'editable-title');
   addTaskName.setAttribute('spellcheck', 'false');
   addTaskName.setAttribute('contenteditable', 'true');
-  addTaskName.setAttribute('placeholder', '하위업무명');
+  addTaskName.setAttribute('placeholder', '하위업무명을 입력하세요.');
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   console.log();
   console.log('addChildTask');
@@ -757,7 +814,7 @@ function addSubTask(event, mainId) {
   // <span id="responNameSpan">{{$item->name}}</span>
   const addUserNamespan = document.createElement('span');
   addUserNamespan.id = 'responNameSpan';
-  // addUserNamespan.textContent = '담당자';
+  addUserNamespan.textContent = '담당자';
 
   // gantt-task 안 세번째 div
   // <div class="gantt-status-name"></div>
@@ -775,7 +832,7 @@ function addSubTask(event, mainId) {
   // <span>{{$item->task_status_name}}</span>
   const addStatusColorSpan = document.createElement('span');
   addStatusColorSpan.id = 'statusNameSpan';
-  // addStatusColorSpan.textContent = '시작전';
+  addStatusColorSpan.textContent = '시작전';
 
 
   // gantt-task 안 네번째 div
@@ -836,21 +893,45 @@ function addSubTask(event, mainId) {
   newTask.appendChild(addTaskEndDateDiv);
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
-// let 하위업무추가 = ''
-// let 자식들 = []
-// let 새자식 = 0
-// 하위업무추가.addEventListener('click', function(event){
-//   let 간트리스트 = document.querySelectorAll('.gantt-task')
-//   for (let index = 0; index < 간트리스트.length; index++) {
-//     const element = 간트리스트[index];
-//     if(element.getAttribute('parent') === this.id.match(/\d+/)[0]){
-//       자식들.push(element)
-//     }
-//   }
-//   자식들[자식들.length-1].after(새자식)
-
-// })
-
+// let 하위업무추가 = doubleAddUnderTask
+// let doubleAddUnderTask = document.querySelectorAll('.gantt-detail-btn')
+// let 자식들 = myChildren
+let myChildren = []
+// let 새자식 = newTask
+let ganttChildTaskList = document.querySelectorAll('.gantt-child-task')
+const newChart = document.createElement('div');
+newChart.classList.add('gantt-chart', 'gantt-child-chart');
+newChart.id = 'gantt-chart-000'; 
+newChart.setAttribute('parent', gantt_modal_id[0])
+for (let index = 0; index < ganttChildTaskList.length; index++) {
+  const element = ganttChildTaskList[index];
+  // console.log(element);
+  let thisId = event.target.parentNode.parentNode.parentNode // gantt-task 아이디 찾기
+  // console.log(thisId.id.match(/\d+/)[0]);
+  // console.log(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]);
+  if(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]){
+    myChildren.push(element)
+    // console.log('add'+[element]);
+  }
+}
+if(myChildren[myChildren.length-1].getAttribute('id') !== null){
+  if(myChildren.length !== 0){
+    // console.log(myChildren);
+    // console.log(myChildren[myChildren.length-1]);
+    myChildren[myChildren.length-1].after(newTask) // 내 자식들 마지막에 추가
+    // console.log(myChildren[myChildren.length-1].getAttribute('id') === null);
+    let chartNum = myChildren[myChildren.length-1].id.match(/\d+/)[0] // 내 자식들 마지막 아이디의 숫자
+    let previousChart = document.querySelector('#gantt-chart-'+chartNum)
+    // console.log(previousChart);
+    previousChart.after(newChart);
+  } else {
+    doMGanttTask.after(newTask); // <-240105 자식분기하위추가 else로 편입
+    // 원래있던 부모 다음에 자식 생성
+    doMGanttChart.after(newChart);
+  }
+}
+  
+  
 // 하위업무 추가 = document.querySelector()로 잡은 하위업무추가 버튼 엘리먼트
 // 자식들 => 업무들 중 부모값이 나인 엘리먼트들(배열)?
 // let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
@@ -880,23 +961,27 @@ function addSubTask(event, mainId) {
   // 원래 자리 다음에 생성
 
   // document.querySelector('')
-  doMGanttTask.after(newTask);
+  // doMGanttTask.after(newTask); // ->240105 자식분기하위추가 else로 편입
 
 
 
   // ------------- 왼쪽 업무부분 생성 완
 
-  const newChart = document.createElement('div');
-  newChart.classList.add('gantt-chart', 'gantt-child-chart');
-  newChart.id = 'gantt-chart-000'; //위에서
-  newChart.setAttribute('parent', gantt_modal_id[0])
 
-  // 원래있던 부모 다음에 자식 생성
-  doMGanttChart.after(newChart);
+  // --------------->240105 자식분기하위추가 else로 편입
+  // const newChart = document.createElement('div');
+  // newChart.classList.add('gantt-chart', 'gantt-child-chart');
+  // newChart.id = 'gantt-chart-000'; //위에서
+  // newChart.setAttribute('parent', gantt_modal_id[0])
+
+  // // 원래있던 부모 다음에 자식 생성
+  // doMGanttChart.after(newChart);
+// ----------------->240105 자식분기하위추가 else로 편입
+
 
     // --- 차트 부분 생성 완
 
-  console.log(1);
+  // console.log(1);
   //
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
@@ -938,35 +1023,7 @@ function addSubTask(event, mainId) {
 
 
 
-// ************* 업무상태 색상
-document.addEventListener('DOMContentLoaded', function () {
-  var elements = document.querySelectorAll('.gantt-status-color');
 
-  elements.forEach(function (element) {
-    var status = element.getAttribute('data-status');
-    var backgroundColor;
-
-    switch (status) {
-      case '시작전':
-        backgroundColor = '#B1B1B1';
-        break;
-      case '진행중':
-        backgroundColor = '#04A5FF';
-        break;
-      case '피드백':
-        backgroundColor = '#F34747';
-        break;
-      case '완료':
-        backgroundColor = '#64C139';
-        break;
-      default:
-        backgroundColor = '#FFFFFF'; // 기본값 설정
-        break;
-    }
-
-    element.style.backgroundColor = backgroundColor;
-  });
-});
 
 
 // ************* 버튼에 클릭 시 gantt-detail 요소 드롭다운 보이기
@@ -1227,17 +1284,6 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
 });
 
 
-// ********* 엔터쳤을 때 줄바꿈 막기
-const editableDivs = document.querySelectorAll('.taskName');
-
-editableDivs.forEach(function(editDiv) {
-  editDiv.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // 기본 동작 막기
-      return false;
-    }
-  });
-});
 
 
 

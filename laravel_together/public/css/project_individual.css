@@ -66,14 +66,16 @@
 }
 
 .project_title {
-    width: 100%;
+    /* width: 100%; */
     border: none;
     resize: none;
     background-color: transparent;
+    font-size: 15px;
 }
 
 .project_title:hover {
-    border: 1px solid white;
+    background-color: rgba(110, 110, 110, 0.32);
+    border-radius: 5px;
 }
 
 .project_content {
@@ -506,9 +508,9 @@
 }
 
 /* 클릭 가능 */
-.project_title {
+/* .project_title {
     cursor: pointer;
-}
+} */
 
 .box_ul {
     padding: 4px 0;

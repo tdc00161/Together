@@ -67,7 +67,7 @@
     {{-- <div class="hr"></div> --}}
     {{-- 피드공통 헤더끝 --}}
     <div class="gantt-btn-wrap">
-        <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="업무명, 담당자, 상태 검색">
+        <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="업무명 검색">
         <div>
             <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
@@ -153,15 +153,15 @@
         <section class="gantt-all-task scroll-style-parent">
             <div class="gantt-task-wrap">
                 <div class="gantt-task-header">
-                    <div class="gantt-task-header-div" style="width: 30%">
+                    <div class="gantt-task-header-div" style="width: 34%">
                         <span class="gantt-order">업무명</span>
                         <button type="button"><img src="/img/table4.png" alt=""></button>
                     </div>
-                    <div class="gantt-task-header-div" style="width: 16%">
+                    <div class="gantt-task-header-div" style="width: 14%">
                         <span class="gantt-order">담당자</span>
                         <button type="button"><img src="/img/table4.png" alt=""></button>
                     </div>
-                    <div class="gantt-task-header-div" style="width: 18%">
+                    <div class="gantt-task-header-div" style="width: 16%">
                         <span class="gantt-order">상태</span>
                         <button type="button"><img src="/img/table4.png" alt=""></button>
                     </div>
@@ -188,9 +188,17 @@
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="responName"><span id="responNameSpan">{{$item->res_name}}</span></div>
                             <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->status_name}}"><span id="statusNameSpan">{{$item->status_name}}</span></div>
+                                <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
+                                    <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>
+                                </div>
+                                <div class="gantt-status-menu" id="statusMenu">
+                                    <div class="gantt-status-select" onclick="ganttChangeStatus(event, '시작전')"><span>시작전</span></div>
+                                    <div class="gantt-status-select" onclick="ganttChangeStatus(event, '진행중')"><span>진행중</span></div>
+                                    <div class="gantt-status-select" onclick="ganttChangeStatus(event, '피드백')"><span>피드백</span></div>
+                                    <div class="gantt-status-select" onclick="ganttChangeStatus(event, '완료')"><span>완료</span></div>
+                                </div>
                             </div>
                             <div class="gantt-task-4">
                                 <input type="date" class="start-date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
