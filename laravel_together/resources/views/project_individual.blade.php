@@ -15,15 +15,16 @@
 
 @section('main')
     <input type="hidden" id="user" value="{{$user}}">
-    {{-- 상단바 --}}
+    {{-- 헤더 --}}
     <div class="first_menu">
-        <div class="menu_title">
+        {{-- <div class="menu_title"> --}}
             <div class="title_bar">
                 <div class="project_color" style="background-color:{{$color_code[0]->data_content_name}}"></div>
                 <input class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
+            
             </div>
-            <textarea class="project_content" name="project_content" id="project_content" placeholder="설명" onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
-        </div>
+            {{-- <textarea class="project_content" name="project_content" id="project_content" placeholder="설명" onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea> --}}
+        {{-- </div> --}}
 
         <div class="title_rightgrid">
             <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
@@ -65,9 +66,9 @@
     <div class="tabset">
         <a class="goFeed" href="">피드</a>
         <a class="goGantt" href="{{ route('gantt.index', ['id' => $result->id]) }}">간트차트</a>
-        {{-- <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
-        <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button> --}}
     </div>
+{{-- 헤더 끝 --}}
+
 {{-- 피드안에 정보 --}}
 <div class="tabcontent" id="field" style="display: block">
     <div class="grid_div">
