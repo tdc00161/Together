@@ -11,8 +11,10 @@ use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\FriendlistController;
 use App\Http\Controllers\BaseDataController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\InviteController;
 use App\Models\User;
 use App\Events\TestEvent as TE;
+
 
 
 /*
@@ -49,12 +51,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/myfriendlist', [FriendlistController::class, 'myfriendList']); // 친구 목록
     Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
     Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
-    Route::get('/create', [ProjectController::class,'tableget'])->name('create.get');
-    Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post');
-    Route::get('/individual', [ProjectController::class,'mainindex']);
-    Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get');
-    Route::get('/team', [ProjectController::class,'mainindex']);
-    Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
+    Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성
+    Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post'); //프로젝트 생성정보 처리
+    Route::get('/individual', [ProjectController::class,'mainindex']); //페이지 비활성화
+    Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get'); //개인 프로젝트 출력
+    Route::get('/team', [ProjectController::class,'mainindex']); //페이지 비활성화
+    Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get'); //팀 프로젝트 출력
     Route::middleware('auth')->get('/task', [TaskController::class, 'index']); // 전체 업무 조회 / page
     Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정
     Route::get('/test1', function () {
@@ -83,7 +85,4 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 });
 
-
- 
-
-
+Route::get('/invite/{token}',  [InviteController::class,'sendInvite'])->name('invite'); //  초대링크

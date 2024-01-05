@@ -154,6 +154,7 @@
                     <div>이메일로 추가</div>
                     <div>친구에서 추가</div>
                     <div>초대 링크로 추가</div>
+                    <input type="text" style="color: black"; value="{{$inviteLink}}"><button type="button" class="copy-btn" onclick="copyUrl()">ㅁㅁ</button>
                 </div>
             </div>
             

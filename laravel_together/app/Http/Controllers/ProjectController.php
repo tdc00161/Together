@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
+use App\Http\Controllers\style;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\BaseData;
 use App\Models\Friendlist;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\style;
-use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -253,6 +255,14 @@ class ProjectController extends Controller
                             ->orderBy('p.created_at','asc')
                             ->get();
 
+      // 초대 토큰
+      $token = Str::random(30);
+      $time = now()->addMinute(2);
+  
+      $inviteLink = URL::signedRoute('user.login.get', ['token' => $token, 'time' => $time]);
+      // ProjectRequest::create(['to_user_email' => $inviteLink]);
+
+
     //개인,팀 화면에 정보 출력 , 로그인 안 한 유저일 경우 login 화면으로 이동
     if (Auth::check()) {
         return view('project_individual')
@@ -267,7 +277,9 @@ class ProjectController extends Controller
         ->with('project0title', $project0title)
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
-        ->with('authoritychk',$authoritychk);
+        ->with('authoritychk',$authoritychk)
+        ->with('inviteLink',$inviteLink)
+        ->with('token',$token);
     } else {
         return redirect('/user/login');
     }
@@ -453,30 +465,23 @@ class ProjectController extends Controller
     // 프로젝트 나가기
     public function exit_project(Request $request, $id)
     {
-        Log::debug("id 확인요청 : ". $id);
-        $project = Project::find($id);
         $user = auth::user();
-        $member = DB::table('project_users as pu')
-                    ->join('projects as pj', 'pj.id', 'pu.project_id')
-                    ->join('user as us', 'us.id', 'pj.user_pk')
-                    ->select('pj.id','pu.member_id','')
-                    ->where('pj.project_id',$id)
-                    ->where('pu.member_id', $user->id)
-                    ->get(); 
-
-        // dd($member);
-        Log::debug("id 확인완료");
-    
+        Log::debug("user 확인요청 : ". $user);
         if(!$user) {
           return response()->json(['errer' => 'item not found'], 404);
         }
-        Log::debug("user 에러");
-        $member->delete();
-        Log::debug("user 삭제");
+        //구성원 나가기 기능
+        $member = ProjectUser::where('project_users.project_id',$id)
+                            ->where('project_users.member_id', $user->id)
+                            ->join('projects as pj', 'pj.id', 'project_users.project_id')
+                            ->join('users as us', 'us.id', 'pj.user_pk')
+                            ->select('project_users.*')
+                            ->delete();
+
         return response()->json();
+        
         Log::debug("화면전달");
     }
-  
 
 }
 

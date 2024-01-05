@@ -271,6 +271,23 @@ function exitProject(project_pk) {
    }).catch(error => console.log(error));
 }
 
+// 초대링크 클릭시 서버로 요청
+
+// const link = document.getElementById('invite-Link').addEventListener('click',function(){
+//    window.location.href = '{{ $inviteLink }}';
+// })
+
+// 링크 복사
+
+
+function copyUrl(){
+   let nowUrl = window.location.href;
+   
+   navigator.clipboard.writeText(nowUrl)
+   .then(res=>{
+      alert("주소가 복사되었습니다!");
+   })
+}
 
 // tab 기능
 
