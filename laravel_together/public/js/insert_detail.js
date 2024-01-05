@@ -715,6 +715,7 @@ function addResponsible(a) {
 	}
 	ADD_RESPONSIBLE_MODAL.append(cloneResponsibleModal)
 
+	// 담당자 리스트 확인용 통신
 	fetch('/project/user/' + thisProjectId, {
 		method: 'GET',
 		headers: {
