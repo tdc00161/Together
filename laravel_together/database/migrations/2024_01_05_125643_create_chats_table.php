@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id(); // pk
-            $table->unsignedBigInteger('chat_room_id'); // 채팅방 pk
+            $table->char('flg',1); // 0 => 1대1, 1 => 그룹
             $table->unsignedBigInteger('sender_id'); // 보낸사람 pk
+            $table->unsignedBigInteger('receiver_id'); // 받는 사람/그룹 pk
             $table->string('content',500); // 채팅내용 500자
             $table->timestamps(); // 작성일/수정일
             $table->softDeletes(); // 삭제일
