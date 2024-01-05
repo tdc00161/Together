@@ -836,21 +836,45 @@ function addSubTask(event, mainId) {
   newTask.appendChild(addTaskEndDateDiv);
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
-// let 하위업무추가 = ''
-// let 자식들 = []
-// let 새자식 = 0
-// 하위업무추가.addEventListener('click', function(event){
-//   let 간트리스트 = document.querySelectorAll('.gantt-task')
-//   for (let index = 0; index < 간트리스트.length; index++) {
-//     const element = 간트리스트[index];
-//     if(element.getAttribute('parent') === this.id.match(/\d+/)[0]){
-//       자식들.push(element)
-//     }
-//   }
-//   자식들[자식들.length-1].after(새자식)
-
-// })
-
+// let 하위업무추가 = doubleAddUnderTask
+// let doubleAddUnderTask = document.querySelectorAll('.gantt-detail-btn')
+// let 자식들 = myChildren
+let myChildren = []
+// let 새자식 = newTask
+let ganttChildTaskList = document.querySelectorAll('.gantt-child-task')
+const newChart = document.createElement('div');
+newChart.classList.add('gantt-chart', 'gantt-child-chart');
+newChart.id = 'gantt-chart-000'; //위에서
+newChart.setAttribute('parent', gantt_modal_id[0])
+for (let index = 0; index < ganttChildTaskList.length; index++) {
+  const element = ganttChildTaskList[index];
+  console.log(element);
+  let thisId = event.target.parentNode.parentNode.parentNode
+  console.log(thisId.id.match(/\d+/)[0]);
+  console.log(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]);
+  if(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]){
+    myChildren.push(element)
+    console.log('add'+[element]);
+  }
+}
+if(myChildren[myChildren.length-1].getAttribute('id') !== null){
+  if(myChildren.length !== 0){
+    console.log(myChildren);
+    console.log(myChildren[myChildren.length-1]);
+    myChildren[myChildren.length-1].after(newTask)
+    // console.log(myChildren[myChildren.length-1].getAttribute('id') === null);
+    let chartNum = myChildren[myChildren.length-1].id.match(/\d+/)[0]
+    let previousChart = document.querySelector('#gantt-chart-'+chartNum)
+    // console.log(previousChart);
+    previousChart.after(newChart);
+  } else {
+    doMGanttTask.after(newTask); // <-240105 자식분기하위추가 else로 편입
+    // 원래있던 부모 다음에 자식 생성
+    doMGanttChart.after(newChart);
+  }
+}
+  
+  
 // 하위업무 추가 = document.querySelector()로 잡은 하위업무추가 버튼 엘리먼트
 // 자식들 => 업무들 중 부모값이 나인 엘리먼트들(배열)?
 // let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
@@ -880,23 +904,27 @@ function addSubTask(event, mainId) {
   // 원래 자리 다음에 생성
 
   // document.querySelector('')
-  doMGanttTask.after(newTask);
+  // doMGanttTask.after(newTask); // ->240105 자식분기하위추가 else로 편입
 
 
 
   // ------------- 왼쪽 업무부분 생성 완
 
-  const newChart = document.createElement('div');
-  newChart.classList.add('gantt-chart', 'gantt-child-chart');
-  newChart.id = 'gantt-chart-000'; //위에서
-  newChart.setAttribute('parent', gantt_modal_id[0])
 
-  // 원래있던 부모 다음에 자식 생성
-  doMGanttChart.after(newChart);
+  // --------------->240105 자식분기하위추가 else로 편입
+  // const newChart = document.createElement('div');
+  // newChart.classList.add('gantt-chart', 'gantt-child-chart');
+  // newChart.id = 'gantt-chart-000'; //위에서
+  // newChart.setAttribute('parent', gantt_modal_id[0])
+
+  // // 원래있던 부모 다음에 자식 생성
+  // doMGanttChart.after(newChart);
+// ----------------->240105 자식분기하위추가 else로 편입
+
 
     // --- 차트 부분 생성 완
 
-  console.log(1);
+  // console.log(1);
   //
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
