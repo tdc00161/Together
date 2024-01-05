@@ -226,13 +226,37 @@ function closeDeleteModal() {
 //삭제버튼시 삭제
 const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function deleteProject(project_pk) {
-   // 전달할 데이터 정보(메모 정보)
-   //    let Id = {
-   //       user_pk : user_pk
-   //   }
-   // console.log(document.querySelector('.csrf_token'));
-   // 삭제 ajax
+   
    fetch('/delete/' + project_pk, {
+      method: 'DELETE',
+      // body : JSON.stringify(Id),
+      headers: {
+         "Content-Type": "application/json",
+         'X-CSRF-TOKEN': csrfToken_project
+      },
+   }).then((response) => 
+      console.log(response))
+      // response.json()
+     .then(() => {
+         window.location.href = '/dashboard'; // 메인화면으로 이동
+   }).catch(error => console.log(error));
+}
+
+//나가기 모달창 open
+function openExitModal() {
+   document.getElementById('exitModal').style.display = 'block';
+}
+
+//나가기 모달창 close
+function closeExitModal() {
+   document.getElementById('exitModal').style.display = 'none';
+}
+
+//나가기버튼시 삭제
+const csrfToken_project2 = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+function exitProject(project_pk) {
+
+   fetch('/exit/' + project_pk, {
       method: 'DELETE',
       // body : JSON.stringify(Id),
       headers: {

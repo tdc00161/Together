@@ -45,14 +45,14 @@ function enterkeySearch() {
   let ganttTask = document.getElementsByClassName('gantt-task');
 
   for (let i = 0; i < ganttTask.length; i++) {
-    responName = ganttTask[i].getElementsByClassName('responName');
-    statusName = ganttTask[i].getElementsByClassName('statusName');
+    // responName = ganttTask[i].getElementsByClassName('responName');
+    // statusName = ganttTask[i].getElementsByClassName('statusName');
     taskName = ganttTask[i].getElementsByClassName('taskName');
     let ganttChart = document.getElementsByClassName('gantt-chart')[i]; // 해당 인덱스의 차트 가져오기
 
     if (
-      responName[0].innerHTML.toLowerCase().includes(search) ||
-      statusName[0].innerHTML.toLowerCase().includes(search) ||
+      // responName[0].innerHTML.toLowerCase().includes(search) ||
+      // statusName[0].innerHTML.toLowerCase().includes(search) ||
       taskName[0].innerHTML.toLowerCase().includes(search)
     ) {
       ganttTask[i].style.display = 'flex';
@@ -496,6 +496,7 @@ function addSubTask(event, mainId) {
   // $item2->id :   
   const doMGanttTask = event.target.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
+  // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   console.log(gantt_modal_id[0]);
   // 차트 부분
@@ -503,7 +504,7 @@ function addSubTask(event, mainId) {
 
   // 새로운 gantt-task 요소 생성(최상위)
   // <div class="gantt-task" id="gantt-task-{{$item->id}}"></div>
-  const newTask = document.createElement('div');
+  let newTask = document.createElement('div');
   newTask.classList.add('gantt-task', 'gantt-child-task');
   // newTask.id = 'gantt-task-'; // 밑에서
   newTask.setAttribute('parent', gantt_modal_id[0])
@@ -520,6 +521,16 @@ function addSubTask(event, mainId) {
   // <button class="gantt-task-detail-click"></button>
   const addGanttDetailClick = document.createElement('button');
   addGanttDetailClick.classList.add('gantt-task-detail-click');
+  addGanttDetailClick.addEventListener('click', function (event) {
+    // console.log(this);
+    // console.log(event.target.parentNode.nextElementSibling); 더보기 버튼의 부모의 다음 형제
+
+    // gantt-detail 이 none 이면 blck
+    if(this.contains(event.target)){
+      event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
+    }
+      // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
+  });
 
   // gantt-task 안 첫번째 div 안 첫번째 btn 안 span
   const addGanttDetailClickSpan = document.createElement('span');
@@ -538,6 +549,8 @@ function addSubTask(event, mainId) {
   addDetailButton.classList.add('gantt-detail-btn');
   addDetailButton.textContent = '자세히보기';
   // addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttModalId})`); // 밑에서 처리
+
+  // after
 
   // gantt-task 안 첫번째 div 안 세번째 div 
   // <div class="taskKey">{{$item->task_number}}</div>
@@ -744,7 +757,7 @@ function addSubTask(event, mainId) {
   // <span id="responNameSpan">{{$item->name}}</span>
   const addUserNamespan = document.createElement('span');
   addUserNamespan.id = 'responNameSpan';
-  addUserNamespan.textContent = '담당자';
+  // addUserNamespan.textContent = '담당자';
 
   // gantt-task 안 세번째 div
   // <div class="gantt-status-name"></div>
@@ -762,7 +775,7 @@ function addSubTask(event, mainId) {
   // <span>{{$item->task_status_name}}</span>
   const addStatusColorSpan = document.createElement('span');
   addStatusColorSpan.id = 'statusNameSpan';
-  addStatusColorSpan.textContent = '시작전';
+  // addStatusColorSpan.textContent = '시작전';
 
 
   // gantt-task 안 네번째 div
@@ -795,8 +808,7 @@ function addSubTask(event, mainId) {
   addTaskEndDate.id = 'end-row000'  //위에서
   addTaskEndDate.setAttribute('onchange', 'test(000);'); // 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   // addTaskEndDate.value = '2023-12-05';
-
-
+  
   // gantt-task 안에 첫번째
   newTask.appendChild(addGanttEditableDiv);
   addGanttEditableDiv.appendChild(addGanttDetailClick);
@@ -824,58 +836,131 @@ function addSubTask(event, mainId) {
   newTask.appendChild(addTaskEndDateDiv);
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
+// let 하위업무추가 = doubleAddUnderTask
+// let doubleAddUnderTask = document.querySelectorAll('.gantt-detail-btn')
+// let 자식들 = myChildren
+let myChildren = []
+// let 새자식 = newTask
+let ganttChildTaskList = document.querySelectorAll('.gantt-child-task')
+const newChart = document.createElement('div');
+newChart.classList.add('gantt-chart', 'gantt-child-chart');
+newChart.id = 'gantt-chart-000'; //위에서
+newChart.setAttribute('parent', gantt_modal_id[0])
+for (let index = 0; index < ganttChildTaskList.length; index++) {
+  const element = ganttChildTaskList[index];
+  console.log(element);
+  let thisId = event.target.parentNode.parentNode.parentNode
+  console.log(thisId.id.match(/\d+/)[0]);
+  console.log(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]);
+  if(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]){
+    myChildren.push(element)
+    console.log('add'+[element]);
+  }
+}
+if(myChildren[myChildren.length-1].getAttribute('id') !== null){
+  if(myChildren.length !== 0){
+    console.log(myChildren);
+    console.log(myChildren[myChildren.length-1]);
+    myChildren[myChildren.length-1].after(newTask)
+    // console.log(myChildren[myChildren.length-1].getAttribute('id') === null);
+    let chartNum = myChildren[myChildren.length-1].id.match(/\d+/)[0]
+    let previousChart = document.querySelector('#gantt-chart-'+chartNum)
+    // console.log(previousChart);
+    previousChart.after(newChart);
+  } else {
+    doMGanttTask.after(newTask); // <-240105 자식분기하위추가 else로 편입
+    // 원래있던 부모 다음에 자식 생성
+    doMGanttChart.after(newChart);
+  }
+}
+  
+  
+// 하위업무 추가 = document.querySelector()로 잡은 하위업무추가 버튼 엘리먼트
+// 자식들 => 업무들 중 부모값이 나인 엘리먼트들(배열)?
+// let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
+// childrenTasks === this.id.match(/\d+/);
+// 새자식 => document.create()로 만든 업무 엘리먼트
+
+
+//   let doubleAddUnderTask = document.querySelector('.gantt-detail-btn');
+//  let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
+// //   let childrenTasks = [];
+//   // newTask = 0;
+
+//   doubleAddUnderTask.addEventListener('click', function(event) {
+//     let ganttTaskList = document.querySelectorAll('.gantt-task')
+//     for (let index = 0; index < ganttTaskList.length; index++) {
+//       const element = ganttTaskList[index];
+//       if(element.getAttribute('parent') === this.id.match(/\d+/)[0]){
+//         childrenTasks.push(element)
+//       }
+//     }
+//     childrenTasks[childrenTasks.length-1].after(newTask)
+
+//  })
+
+
+
   // 원래 자리 다음에 생성
-  doMGanttTask.after(newTask);
+
+  // document.querySelector('')
+  // doMGanttTask.after(newTask); // ->240105 자식분기하위추가 else로 편입
+
+
 
   // ------------- 왼쪽 업무부분 생성 완
 
-  const newChart = document.createElement('div');
-  newChart.classList.add('gantt-chart', 'gantt-child-chart');
-  newChart.id = 'gantt-chart-000'; //위에서
-  newChart.setAttribute('parent', gantt_modal_id[0])
 
-  // 원래있던 282 다음에 800 생성
-  doMGanttChart.after(newChart);
+  // --------------->240105 자식분기하위추가 else로 편입
+  // const newChart = document.createElement('div');
+  // newChart.classList.add('gantt-chart', 'gantt-child-chart');
+  // newChart.id = 'gantt-chart-000'; //위에서
+  // newChart.setAttribute('parent', gantt_modal_id[0])
 
-  // 시작일 종료일 날짜 설정
-  // const chartStartDate = new Date('2023-12-01');
-  // const chartEndDate = new Date('2023-12-31');
+  // // 원래있던 부모 다음에 자식 생성
+  // doMGanttChart.after(newChart);
+// ----------------->240105 자식분기하위추가 else로 편입
 
-  // // chartStartDate를 클론하여 chartNewStartDate에 할당
-  // const chartNewStartDate = new Date(chartStartDate);
 
-  // // 요소 생성 배치
-  // // end가 start보다 이전인지 확인
-  // while (chartNewStartDate <= chartEndDate) {
-  //   // 날짜 yyyymmdd 변경
-  //   const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
+    // --- 차트 부분 생성 완
 
-  //   // gantt-chart안에 들어갈 새로운 div
-  //   const ganttChartRow = document.createElement('div');
-  //   // ganttChartRow.id = 'row000' + '-' + chartFormatDate; // 위에서
-
-  //   // 다음 날짜 이동
-  //   chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
-
-  //   // <div class="gantt-chart" id="ganbtt-chart-800">
-  //   //    <div id="row800-(231201~231231)"></div>
-  //   // </div> 생성
-  //   newChart.appendChild(ganttChartRow);
-  // }
-
-  // addEventListener 로 하는 방법
+  // console.log(1);
   //
-  // const eventSubStartDate = document.getElementById(addTaskStartDate.id);
-  // const eventSubEndDate = document.getElementById(addTaskEndDate.id);
-  // eventSubStartDate.addEventListener('change', e => test('000'));
-  // console.log(eventSubStartDate.getAttribute('onchange'));
-  // eventSubEndDate.addEventListener('change', e => test('000'));
-  // console.log(eventSubEndDate.getAttribute('onchange'));
+  let ganttDetailList = document.querySelectorAll('.gantt-detail');
+  let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
+  ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
+    // console.log(ganttTaskDetailClickList);
+      taskDetailClick.addEventListener('click', function(event) {
+          ganttDetailList.forEach(function(detail, i) {
+            console.log(i);
+            console.log(index);
+            console.log(i !== index);
+              if (i !== index) {
+                  detail.style.display = 'none';
+              }
+          });
+      });
+  });
 
-  // --- 차트 부분 생성 완
-
-
+  document.addEventListener('click', function(event) {
+      ganttDetailList.forEach(function(detail) {
+          if (!event.target.closest('.gantt-editable-div')) {
+              detail.style.display = 'none';
+          }
+      });
+      // console.log(666);
+  });
+  
+  let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
+  // console.log(ganttDetailButtons);
+  ganttDetailButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+          ganttDetailList.forEach(function(detail) {
+              detail.style.display = 'none';
+          });
+      });
+  });
 
 }
 
@@ -913,7 +998,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // ************* 버튼에 클릭 시 gantt-detail 요소 드롭다운 보이기
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
@@ -928,11 +1013,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-  ganttDetailList.forEach(function(detail) {
-      detail.addEventListener('click', function(event) {
-          event.stopPropagation();
-      });
-  });
+  // ganttDetailList.forEach(function(detail) {
+  //   detail.addEventListener('click', function(event) {
+  //       event.stopPropagation();
+  //   });
+  // });
 
   document.addEventListener('click', function(event) {
       ganttDetailList.forEach(function(detail) {

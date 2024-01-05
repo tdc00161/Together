@@ -91,11 +91,20 @@ class ProjectController extends Controller
 
     //프로젝트 id 출력
     $result = project::find($id);
-    // dd($result);
+    // dump($result);
 
     if(!$result){
       return redirect()->route('dashboard.show');
     }
+
+    $authoritychk = DB::table('project_users as pu')
+                      ->join('projects as pj','pj.id','pu.project_id')
+                      ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
+                      ->where('pu.project_id',$result->id)
+                      ->where('pu.member_id',$result->user_pk)
+                      ->get();
+
+    // dd($authoritychk);
 
     //프로젝트 색상 출력
     $color_code = DB::table('projects as pj')
@@ -257,7 +266,8 @@ class ProjectController extends Controller
         ->with('user',Auth::id())
         ->with('project0title', $project0title)
         ->with('project1title', $project1title)
-        ->with('projectmemberdata',$projectmemberdata); // (jueunyang08) 프로젝트 구성원 출력
+        ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
+        ->with('authoritychk',$authoritychk);
     } else {
         return redirect('/user/login');
     }
@@ -438,6 +448,35 @@ class ProjectController extends Controller
     return response()->json();
     Log::debug("화면전달");
   }
-}
 
+
+    // 프로젝트 나가기
+    public function exit_project(Request $request, $id)
+    {
+        Log::debug("id 확인요청 : ". $id);
+        $project = Project::find($id);
+        $user = auth::user();
+        $member = DB::table('project_users as pu')
+                    ->join('projects as pj', 'pj.id', 'pu.project_id')
+                    ->join('user as us', 'us.id', 'pj.user_pk')
+                    ->select('pj.id','pu.member_id','')
+                    ->where('pj.project_id',$id)
+                    ->where('pu.member_id', $user->id)
+                    ->get(); 
+
+        // dd($member);
+        Log::debug("id 확인완료");
+    
+        if(!$user) {
+          return response()->json(['errer' => 'item not found'], 404);
+        }
+        Log::debug("user 에러");
+        $member->delete();
+        Log::debug("user 삭제");
+        return response()->json();
+        Log::debug("화면전달");
+    }
+  
+
+}
 

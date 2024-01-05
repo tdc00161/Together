@@ -200,27 +200,27 @@
                             </div>
                         </div>
                         @forelse ($item->depth_1 as $item2)
-                        <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
-                            <div class="gantt-editable-div editable">
-                                <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                <div class="gantt-detail" style="display: none">
-                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
-                                </div>     
-                                <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
-                                <div class="taskChildPosition"></div>
-                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
+                            <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
+                                <div class="gantt-editable-div editable">
+                                    <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                    <div class="gantt-detail" style="display: none">
+                                        <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
+                                    </div>     
+                                    <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
+                                    <div class="taskChildPosition"></div>
+                                    <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
+                                </div>
+                                <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item2->res_name}}</span></div>
+                                <div class="gantt-status-name">
+                                    <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item2->status_name}}"><span id="statusNameSpan">{{$item2->status_name}}</span></div>
+                                </div>
+                                <div class="gantt-task-4">
+                                    <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
+                                </div>
+                                <div class="gantt-task-5">
+                                    <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
+                                </div>
                             </div>
-                            <div class="responName gantt-update-dropdown"><span id="responNameSpan">{{$item2->res_name}}</span></div>
-                            <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item2->status_name}}"><span id="statusNameSpan">{{$item2->status_name}}</span></div>
-                            </div>
-                            <div class="gantt-task-4">
-                                <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
-                            </div>
-                            <div class="gantt-task-5">
-                                <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
-                            </div>
-                        </div>
                         @empty
                             
                         @endforelse

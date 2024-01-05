@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TestEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\FriendlistController;
 use App\Http\Controllers\BaseDataController;
 use App\Http\Controllers\CommentController;
 use App\Models\User;
+use App\Events\TestEvent as TE;
 
 
 /*
@@ -55,12 +57,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get');
     Route::middleware('auth')->get('/task', [TaskController::class, 'index']); // 전체 업무 조회 / page
     Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정
+    Route::get('/test1', function () {
+        event(new TE('테스트메시지'));
+    });
+    Route::get('/test2', function () {
+        return view('chatTest');
+    });
 });
 Route::middleware('auth.api')->group(function () {
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
     Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
     Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
     Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
+    Route::get('/exit/{id}', [ProjectController::class,'exit_project']); // 방나가기
     Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함) / api
     Route::post('/task',[TaskController::class,'store']); // 업무 작성 / api
     Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정 / api

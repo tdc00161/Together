@@ -27,17 +27,39 @@
         {{-- </div> --}}
 
         <div class="title_rightgrid">
-            <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
-                {{-- 삭제 모달창 --}}
-                <div id="deleteModal">
-                    <div class="deletemodal-content">
-                        <p class="deletespan">정말로 삭제하시겠습니까?</p>
-                        <div class="gridbutton">
-                            <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
-                            <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+            <div class="img_grid">
+                <div></div>
+                @forelse ($authoritychk as $item)
+                    {{-- <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
+                    @if ($item->authority_id == '0')
+                        <div><button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button></div>
+                            {{-- 나가기 모달창 --}}
+                            <div id="exitModal">
+                                <div class="deletemodal-content">
+                                    <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
+                                    <div class="gridbutton">
+                                        <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
+                                        <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                                    </div>
+                                </div>
+                            </div>
+                    @elseif ($item->authority_id == '1')
+                        <div><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
+                        {{-- 삭제 모달창 --}}
+                        <div id="deleteModal">
+                            <div class="deletemodal-content">
+                                <p class="deletespan">정말로 삭제하시겠습니까?</p>
+                                <div class="gridbutton">
+                                    <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                                    <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    @endif
+
+                @empty
+                @endforelse 
+            </div>
             {{-- <div class="dday">D-{{$result->dday}}</div> --}}
             <div class="date_set">
                 <label for="dday">
@@ -76,7 +98,7 @@
             {{-- 업무상태 현황 --}}
             <div class="status_box"> 
                 <div class="status_title">업무상태 현황</div>
-                <canvas id="chartcanvas" width="800" height="800"></canvas>
+                <canvas id="chartcanvas" width="900" height="900"></canvas>
                 <div class="color_div">
                         <div class="color_set">
                             <div class="color_box1"></div>
@@ -86,6 +108,8 @@
                             <div class="color_box2"></div>
                             <div class="color_name">진행중:{{$statuslist['ing'][0]->cnt}}</div>
                         </div>
+                </div>
+                <div class="color_div">
                         <div class="color_set">
                             <div class="color_box3"></div>
                             <div class="color_name">피드백:{{$statuslist['feedback'][0]->cnt}}</div>
@@ -99,14 +123,25 @@
 
             {{-- 구성원 --}}
             <div class="invite_box">
-                {{-- 프로젝트 구성원 초대 --}}
-                @if($result->flg === "0")
+                <div class="m_first">
+                    <div class="m_title">구성원</div>
+                    @if($result->flg === "0")
 
-                @elseif($result->flg === "1")
-                    <button onclick="projectMemberAddOpenModal()" id="projectmemberadd" class="invite-btn"><img class="invite-img" src="/img/Group 115.png" alt=""></button>
-                @endif
+                    @elseif($result->flg === "1")
+                        <button onclick="projectMemberAddOpenModal()" id="projectmemberadd" class="member_titbtn">+</button>
+                    @endif
+                </div>
+                {{-- 프로젝트 구성원 초대 --}}
                 @forelse ($projectmemberdata as $item)
-                    <div id="{{'project_num'.$item->project_id.'_user'.$item->member_id}}" class="invite-member-div"><img class="invite-img" src="/img/Group 114.png" alt=""><div class="member_name">{{$item->name}}</div></div>
+                    <div class="invite_grid">
+                        <div id="{{'project_num'.$item->project_id.'_user'.$item->member_id}}" class="invite_member_div">
+                            <img class="invite-img" src="/img/Group 114.png" alt="">
+                        </div>
+                        <div class="name_total">
+                            <div class="member_name1">{{$item->name}}</div>
+                            <div class="member_name1">admin@naver.com</div>
+                        </div>
+                    </div>
                 @empty
                     
                 @endforelse 
