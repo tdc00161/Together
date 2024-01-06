@@ -19,7 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('sender_id'); // 보낸사람 pk
             $table->unsignedBigInteger('receiver_id'); // 받는 사람/그룹 pk
             $table->string('content',500); // 채팅내용 500자
-            $table->timestamps(); // 작성일/수정일
+            // $table->timestamps('created_at')->useCurrent(); // 작성일
+            // $table->timestamps('updated_at'); // 수정일
+            $table->timestamps(); // 수정일
             $table->softDeletes(); // 삭제일
         });
     }

@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('chat_rooms', function (Blueprint $table) {
             $table->id(); // pk
             $table->string('chat_room_name',30); // 채팅방 이름
+            // $table->timestamps('created_at')->useCurrent(); // 작성일
+            // $table->timestamps('updated_at'); // 수정일
             $table->timestamps(); // 작성일/수정일
             $table->softDeletes(); // 삭제일
         });
