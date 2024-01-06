@@ -17,6 +17,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\BaseData;
 use App\Models\Friendlist;
+use App\Models\ProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -255,13 +256,14 @@ class ProjectController extends Controller
                             ->orderBy('p.created_at','asc')
                             ->get();
 
-      // 초대 토큰
-      $token = Str::random(30);
-      $time = now()->addMinute(2);
-  
-      $inviteLink = URL::signedRoute('user.login.get', ['token' => $token, 'time' => $time]);
-      // ProjectRequest::create(['to_user_email' => $inviteLink]);
+    // 초대 토큰
+    $invitation = ProjectRequest::create([
+      'invite_token' => Str::random(32),
+      'from_user_id' => $user->id,
+      'project_id' => $result->id,
+    ]);
 
+    $inviteLink = URL::signedRoute('invite', ['token'=> $invitation->invite_token]);
 
     //개인,팀 화면에 정보 출력 , 로그인 안 한 유저일 경우 login 화면으로 이동
     if (Auth::check()) {
@@ -278,12 +280,26 @@ class ProjectController extends Controller
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
         ->with('authoritychk',$authoritychk)
-        ->with('inviteLink',$inviteLink)
-        ->with('token',$token);
+        ->with('inviteLink',$inviteLink);
     } else {
         return redirect('/user/login');
     }
   }
+
+  //초대 응했을 때 들어오는 링크
+  public function acceptInvite(Request $request) {
+
+    $token = $request->input('token');
+    $invite = ProjectRequest::where('invite_token',$token)->first();
+
+    if (!$request->hasValidSignature()) {
+        abort(403);
+    }
+
+    return redirect()->route('user.login.get')->with('invite',$invite);
+
+  }
+
 
 
   public function project_graph_data(Request $request, $id) {

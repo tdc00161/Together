@@ -14,10 +14,14 @@ class ProjectRequestFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    protected $model = ProjectRequest::class;
+
     public function definition()
     {
         return [
-            //
+            'invite_token' => Str::random(32),
+            'from_user_id'=>User::Factory(),
         ];
     }
 }

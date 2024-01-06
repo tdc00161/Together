@@ -12,8 +12,11 @@ class ProjectRequest extends Model
 
     protected $fillable = [
         'project_id',
+        'flg',
         'from_user_id',
         'to_user_id',
+        'to_user_email',
+        'invite_token',
         'status',
     ];
 }

@@ -87,4 +87,4 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 });
 
-Route::get('/invite/{token}',  [InviteController::class,'sendInvite'])->name('invite'); //  초대링크
+Route::get('/invite',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
