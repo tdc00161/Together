@@ -109,7 +109,7 @@ class GanttChartController extends Controller
                 ->where('base1.data_title_code','0')
                 ->orderby('tasks.id')
                 ->get();
-
+                    // dd($firstTask);
 
             //하위 테이블
             foreach ($firstTask as $fristItem) {
@@ -143,7 +143,7 @@ class GanttChartController extends Controller
                     ->orderby('tasks.id')
                     ->get();
                     // echo $fristItem->id, $fristItem->project_id;
-                    // dd($secondTask);
+                    // dd($fristItem);
                 foreach ($secondTask as $secondItem) {
                     array_push($tempData['task'],(array)$secondItem);
                     // $item['task'][] = $secondItem;
