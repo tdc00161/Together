@@ -840,3 +840,150 @@ function toggleDeletePanel(userDiv) {
     }
 }
 // ---------------------------- 친구 목록 끝----------------------------
+
+// ----------------------- 240107 김관호 채팅 js 시작 -----------------------
+
+// 채팅방에 리스트가 들어가면 이벤트 적용 with MutationObserver
+function chatListCheck() {
+    // 1. 주기적으로 감지할 대상 요소 선정
+    const target = document.querySelector('.chat-layout');
+    
+    // 2. 옵저버 콜백 생성
+    const callback = (mutationList, observer) => {
+        console.log(mutationList);
+        // console.log(mutationList[0].addedNodes[0]);
+        // mutationList[0].addedNodes[0].addEventListener('click', (event) => event.target.parentNode.style.display = 'none')
+        mutationList.forEach((mutation, index) => {
+            // if(mutation.type === 'childList') {
+            if(mutation.addedNodes.length !== 0) {
+                mutation.addedNodes.forEach((addedNode, index) => {
+                    console.log(addedNode);
+                    addedNode.addEventListener('click', () => {
+                        // console.log(addedNode.getAttribute('chat-room-id'));
+                        // 클릭하면 채팅창이 켜지고 해당 채팅방의 id로 fetch
+                        document.querySelector('.chat-layout').style.display = 'none'
+                        document.querySelector('.chat-window').style.display = 'block'
+
+                        // 채팅방 id를 불러서 최신내용 호출
+                        fetch('/chat/'+ addedNode.getAttribute('chat-room-id'), {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            // body: JSON.stringify({ deletefriendId: deletefriendId }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('error with print chatting list.');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // 성공 응답 받았을 때 처리
+                            console.log(data);          
+                        })
+                        .catch(error => {
+                            // 실패 응답 또는 네트워크 오류 발생 시 처리
+                            console.log(error.stack);
+                        });
+                    })
+                })
+            }
+            // console.log(mutation.type);
+            // console.log(mutation.addNode);
+        })
+    };
+    
+    // 3. 옵저버 인스턴스 생성
+    const observer = new MutationObserver(callback); // 타겟에 변화가 일어나면 콜백함수를 실행하게 된다.
+    
+    // 4. DOM의 어떤 부분을 감시할지를 옵션 설정
+    const config = { 
+        // attributes: true, // 속성 변화 할때 감지
+        childList: true, // 자식노드 추가/제거 감지
+        characterData: true // 데이터 변경전 내용 기록
+    };
+    
+    // 5. 감지 시작
+    observer.observe(target, config);
+}
+
+// 옵저버 실행
+chatListCheck();
+
+// 뒤로가기 버튼 적용
+document.querySelector('.chat-back').addEventListener('click',() => {
+    document.querySelector('.chat-window').style.display = 'none'
+    document.querySelector('.chat-layout').style.display = 'block'
+})
+
+// 화면 열 때 채팅리스트 불러오기
+fetch('/chatlist', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken,
+    },
+    // body: JSON.stringify({ deletefriendId: deletefriendId }),
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('error with print chatting list.');
+    }
+    return response.json();
+})
+.then(data => {
+    // 성공 응답 받았을 때 처리
+    // console.log(data);
+
+    // 새로운 chat-layout 요소 생성
+    // var chatLayout = document.createElement('div'); // blade->chatLayout 사용
+    var chatLayout = document.querySelector('.chat-layout');
+    chatLayout.className = 'chat-layout';
+    
+    data.forEach((chatOne, index) => {
+        console.log(chatOne);
+
+        // 새로운 chat-room 요소 생성
+        var chatRoom = document.createElement('div');
+        chatRoom.className = 'chat-room';
+        chatRoom.setAttribute('chat-room-id', chatOne.chat_room_id);
+        chatLayout.appendChild(chatRoom);
+        
+        // chat-icon 요소 생성 및 chat-room에 추가
+        var chatIcon = document.createElement('div');
+        chatIcon.className = 'chat-icon';
+        chatRoom.appendChild(chatIcon);
+        
+        // chat-middle 요소 생성 및 chat-room에 추가
+        var chatMiddle = document.createElement('div');
+        chatMiddle.className = 'chat-middle';
+        chatRoom.appendChild(chatMiddle);
+        
+        // chat-name 요소 생성, 속성 추가, chat-middle에 추가
+        var chatName = document.createElement('div');
+        chatName.className = 'chat-name';
+        chatName.setAttribute('alarm-count', ''); // 속성 추가
+        chatName.textContent = chatOne.chat_room_name ? chatOne.chat_room_name : '';
+        chatMiddle.appendChild(chatName);
+        
+        // chat-content 요소 생성, chat-middle에 추가
+        var chatContent = document.createElement('div');
+        chatContent.className = 'chat-content';
+        chatContent.textContent = chatOne.last_chat; // 길이조절
+        chatMiddle.appendChild(chatContent);
+        
+        // chat-time 요소 생성 및 chat-room에 추가
+        var chatTime = document.createElement('div');
+        chatTime.className = 'chat-time';
+        chatTime.textContent = chatOne.updated_at; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
+        chatRoom.appendChild(chatTime);                
+    })
+    // document.querySelector('.tab-content').appendChild(chatLayout); // blade->chatLayout 사용
+})
+.catch(error => {
+    // 실패 응답 또는 네트워크 오류 발생 시 처리
+    console.error('Error:', error.message);
+    console.log(error.stack);
+});

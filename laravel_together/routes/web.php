@@ -66,7 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/test2', function () {
         return view('chatTest');
     });
-    Route::get('/test3', [MessengerController::class,'a']);
 });
 Route::middleware('auth.api')->group(function () {
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
@@ -85,6 +84,8 @@ Route::middleware('auth.api')->group(function () {
     Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id / api
     Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id / api
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
+    Route::get('/chatlist', [MessengerController::class,'chatlist']);
+    Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });
 
 Route::get('/invite',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락

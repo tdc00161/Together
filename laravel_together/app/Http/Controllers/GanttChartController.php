@@ -18,152 +18,156 @@ class GanttChartController extends Controller
     // 태스크 전체 조회 (수정이전)
     public function ganttIndex()
     {
-        // --- 유저 정보
-        $user = Auth::user();
-        // dd($user);
+    //     // --- 유저 정보
+    //     $user = Auth::user();
+    //     // dd($user);
 
-        $user_data = project::where('user_pk',$user->id)
-                                ->select('id'
-                                        ,'user_pk'
-                                        ,'color_code_pk'
-                                        ,'project_title'
-                                        ,'project_content'
-                                        ,'start_date'
-                                        ,'end_date'
-                                        ,'created_at'
-                                        ,'flg'
-                                        )
-                                ->get();
-        // dd($user_data);
+    //     $user_data = DB::table('projects as p')
+    //         ->join('project_users as pu','pu.project_id','p.id')
+    //         ->where('pu.member_id',$user->id)
+    //         ->select(
+    //             'p.id'
+    //             ,'p.user_pk'
+    //             ,'p.color_code_pk'
+    //             ,'p.project_title'
+    //             ,'p.project_content'
+    //             ,'p.flg'
+    //             ,'p.start_date'
+    //             ,'p.end_date'
+    //             ,'p.created_at'
+    //         )
+    //         ->get();
+    //     // dd($user_data);
 
-        $userId = Auth::id();
+    //     $userId = Auth::id();
 
-        $project0title = DB::table('projects as p')
-                            ->join('project_users as pu', 'p.id','=','pu.project_id')
-                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-                            ->select('p.project_title', 'b.data_content_name', 'p.id')
-                            ->where('pu.member_id', '=', $userId)
-                            ->where('p.flg','=', 0)
-                            ->where('b.data_title_code', '=', 3)
-                            ->whereNull('p.deleted_at')
-                            ->orderBy('p.created_at', 'asc')
-                            ->get();
+    //     $project0title = DB::table('projects as p')
+    //                         ->join('project_users as pu', 'p.id','=','pu.project_id')
+    //                         ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+    //                         ->select('p.project_title', 'b.data_content_name', 'p.id')
+    //                         ->where('pu.member_id', '=', $userId)
+    //                         ->where('p.flg','=', 0)
+    //                         ->where('b.data_title_code', '=', 3)
+    //                         ->whereNull('p.deleted_at')
+    //                         ->orderBy('p.created_at', 'asc')
+    //                         ->get();
+    //                         dd($project0title);
 
-        $project1title = DB::table('projects as p')
-                            ->join('project_users as pu', 'p.id','=','pu.project_id')
-                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-                            ->select('p.project_title', 'b.data_content_name', 'p.id')
-                            ->where('pu.member_id', '=', $userId)
-                            ->where('p.flg','=', 1)
-                            ->where('b.data_title_code', '=', 3)
-                            ->whereNull('p.deleted_at')
-                            ->orderBy('p.created_at', 'asc')
-                            ->get();
+    //     $project1title = DB::table('projects as p')
+    //                         ->join('project_users as pu', 'p.id','=','pu.project_id')
+    //                         ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+    //                         ->select('p.project_title', 'b.data_content_name', 'p.id')
+    //                         ->where('pu.member_id', '=', $userId)
+    //                         ->where('p.flg','=', 1)
+    //                         ->where('b.data_title_code', '=', 3)
+    //                         ->whereNull('p.deleted_at')
+    //                         ->orderBy('p.created_at', 'asc')
+    //                         ->get();
 
-        // 담당자 이름 출력
-        $managername = DB::table('tasks')
-                        ->join('users', function($user) {
-                            $user->on('tasks.task_responsible_id','=','users.id');
-                        })
-                        ->join('projects', function($projects) {
-                            $projects->on('tasks.project_id','=','projects.id');
-                        })
-                        ->select('users.name','tasks.project_id','projects.user_pk')
-                        ->where('projects.user_pk',$user)
-                        ->get();
-        // dd($managername);
+    //     // 담당자 이름 출력
+    //     $managername = DB::table('tasks')
+    //                     ->join('users', function($user) {
+    //                         $user->on('tasks.task_responsible_id','=','users.id');
+    //                     })
+    //                     ->join('projects', function($projects) {
+    //                         $projects->on('tasks.project_id','=','projects.id');
+    //                     })
+    //                     ->select('users.name','tasks.project_id','projects.user_pk')
+    //                     ->where('projects.user_pk',$user)
+    //                     ->get();
+    //     // dd($managername);
 
-        $returnData = [];
+    //     $returnData = [];
 
-        foreach ($user_data as $item) {
-            $tempData = $item->getAttributes();
-            // dd($tempData);
-            $tempData['task'] = [];
-            // 상위 테이블
-            $firstTask = DB::table('tasks')
-                ->join('users', function($user) {
-                    $user->on('tasks.task_responsible_id','=','users.id');
-                })
-                ->join('projects', function($projects) {
-                    $projects->on('tasks.project_id','=','projects.id');
-                })
-                ->join('basedata as base1', function($base1) {
-                    $base1->on('tasks.task_status_id','=','base1.data_content_code');
-                })
-                ->select(
-                    'tasks.id'
-                    ,'tasks.project_id'
-                    ,'tasks.title'
-                    ,'tasks.task_responsible_id'
-                    ,'users.name'
-                    ,'tasks.start_date'
-                    ,'tasks.end_date'
-                    ,'tasks.task_status_id'
-                    ,'base1.data_content_name'
-                    ,'tasks.task_depth'
-                    ,'tasks.task_parent'
-                )
-                ->where('projects.user_pk',$user->id)
-                ->where('projects.id',$item->id)
-                ->where('tasks.task_depth','0')
-                ->where('base1.data_title_code','0')
-                ->orderby('tasks.id')
-                ->get();
+    //     foreach ($user_data as $item) {
+    //         $tempData = $item->getAttributes();
+    //         // dd($tempData);
+    //         $tempData['task'] = [];
+    //         // 상위 테이블
+    //         $firstTask = DB::table('tasks')
+    //             ->join('users', function($user) {
+    //                 $user->on('tasks.task_responsible_id','=','users.id');
+    //             })
+    //             ->join('projects', function($projects) {
+    //                 $projects->on('tasks.project_id','=','projects.id');
+    //             })
+    //             ->join('basedata as base1', function($base1) {
+    //                 $base1->on('tasks.task_status_id','=','base1.data_content_code');
+    //             })
+    //             ->select(
+    //                 'tasks.id'
+    //                 ,'tasks.project_id'
+    //                 ,'tasks.title'
+    //                 ,'tasks.task_responsible_id'
+    //                 ,'users.name'
+    //                 ,'tasks.start_date'
+    //                 ,'tasks.end_date'
+    //                 ,'tasks.task_status_id'
+    //                 ,'base1.data_content_name'
+    //                 ,'tasks.task_depth'
+    //                 ,'tasks.task_parent'
+    //             )
+    //             ->where('projects.user_pk',$user->id)
+    //             ->where('projects.id',$item->id)
+    //             ->where('tasks.task_depth','0')
+    //             ->where('base1.data_title_code','0')
+    //             ->orderby('tasks.id')
+    //             ->get();
 
 
-            //하위 테이블
-            foreach ($firstTask as $fristItem) {
-                array_push($tempData['task'],(array)$fristItem);
-                $secondTask = DB::table('tasks')
-                    ->join('users', function($user) {
-                        $user->on('tasks.task_responsible_id','=','users.id');
-                    })
-                    ->join('projects', function($projects) {
-                        $projects->on('tasks.project_id','=','projects.id');
-                    })
-                    ->join('basedata as base1', function($base1) {
-                        $base1->on('tasks.task_status_id','=','base1.data_content_code');
-                    })
-                    ->select(
-                        'tasks.id'
-                        ,'tasks.title'
-                        ,'tasks.task_responsible_id'
-                        ,'users.name'
-                        ,'tasks.start_date'
-                        ,'tasks.end_date'
-                        ,'tasks.task_status_id'
-                        ,'base1.data_content_name'
-                        ,'tasks.task_depth'
-                        ,'tasks.task_parent'
-                    )
-                    ->where('projects.id',$fristItem->project_id)
-                    ->where('tasks.task_parent',$fristItem->id)
-                    ->where('base1.data_title_code','0')
-                    ->where('tasks.task_depth','1')
-                    ->orderby('tasks.id')
-                    ->get();
-                    // echo $fristItem->id, $fristItem->project_id;
-                    // dd($secondTask);
-                foreach ($secondTask as $secondItem) {
-                    array_push($tempData['task'],(array)$secondItem);
-                    // $item['task'][] = $secondItem;
-                }
-            }
+    //         //하위 테이블
+    //         foreach ($firstTask as $fristItem) {
+    //             array_push($tempData['task'],(array)$fristItem);
+    //             $secondTask = DB::table('tasks')
+    //                 ->leftJoin('users', function($user) {
+    //                     $user->on('tasks.task_responsible_id','=','users.id');
+    //                 })
+    //                 ->join('projects', function($projects) {
+    //                     $projects->on('tasks.project_id','=','projects.id');
+    //                 })
+    //                 ->leftJoin('basedata as base1', function($base1) {
+    //                     $base1->on('tasks.task_status_id','=','base1.data_content_code');
+    //                 })
+    //                 ->select(
+    //                     'tasks.id'
+    //                     ,'tasks.title'
+    //                     ,'tasks.task_responsible_id'
+    //                     ,'users.name'
+    //                     ,'tasks.start_date'
+    //                     ,'tasks.end_date'
+    //                     ,'tasks.task_status_id'
+    //                     ,'base1.data_content_name'
+    //                     ,'tasks.task_depth'
+    //                     ,'tasks.task_parent'
+    //                 )
+    //                 ->where('projects.id',$fristItem->project_id)
+    //                 ->where('tasks.task_parent',$fristItem->id)
+    //                 ->where('base1.data_title_code','0')
+    //                 ->where('tasks.task_depth','1')
+    //                 ->orderby('tasks.id')
+    //                 ->get();
+    //                 // echo $fristItem->id, $fristItem->project_id;
+    //                 dd($secondTask);
+    //             foreach ($secondTask as $secondItem) {
+    //                 array_push($tempData['task'],(array)$secondItem);
+    //                 // $item['task'][] = $secondItem;
+    //             }
+    //         }
 
-            $returnData[] = $tempData;
-        }
+    //         $returnData[] = $tempData;
+    //     }
     //  dd($returnData);
    
-        if(Auth::check()) {
-            return view('ganttchart-all')
-            ->with('user_data',$user_data)
-            ->with('managername',$managername)
-            ->with('listdata',$returnData)
-            ->with('project0title',$project0title)
-            ->with('project1title',$project1title);
-        } else {
-            return redirect('/user/login');
-        }
+    //     if(Auth::check()) {
+    //         return view('ganttchart-all')
+    //         ->with('user_data',$user_data)
+    //         ->with('managername',$managername)
+    //         ->with('listdata',$returnData)
+    //         ->with('project0title',$project0title)
+    //         ->with('project1title',$project1title);
+    //     } else {
+    //         return redirect('/user/login');
+    //     }
     }
 
 
