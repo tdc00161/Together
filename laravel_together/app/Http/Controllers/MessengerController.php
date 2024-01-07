@@ -3,23 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class MessengerController extends Controller
 {
-    public function a() {
+	// 자신이 참여한 채팅방들을 가져옴
+    public function chatlist() {
 
-		// $userId = Auth::id();
+		$userId = Auth::id();
+		
+		$myChatRooms = DB::table('chat_rooms as cr')
+			->join('chat_users as cu','cu.chat_room_id','cr.id')
+			->where('cu.user_id',$userId)
+			->get()
+			->toArray();
+			
+    	return $myChatRooms;
+    }
 
-		// // $result = DB::table('chats')->where('flg','0')->where('receiver_id', $userId)->get();
-		// $result = DB::table('chat_users as cu')
-		// 	->join('projects as p','p.id','=','cu.chat_room_id')
-		// 	->where('user_id', $userId)->get();
-		// // dd($result);
+	// 한 채팅방의 채팅내역을 불러옴
+    public function chatRoomRecords($chatRoomId) {
 
-    	// return $result;
-    	return true;
+		// 채팅방 id로 채팅 내역을 검색
+		$chatRecords = DB::table('chats as c')
+			->join('users as u','u.id','c.sender_id')
+			->where('receiver_id',$chatRoomId)
+			->select(
+				'c.id',
+				'c.sender_id',
+				'u.name',
+				'c.receiver_id',
+				'c.content',
+				'c.created_at',
+				'c.updated_at',
+				)
+			->get()
+			->toArray();
+		Log::debug($chatRecords);
+			
+    	return $chatRecords;
     }
 }

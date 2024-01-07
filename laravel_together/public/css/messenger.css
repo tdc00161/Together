@@ -484,3 +484,123 @@ button {
 .fdeletebtn.visible {
     right: 0;
 }
+
+/* ---------------------- 240107 김관호 채팅리스트, 채팅방 css ---------------------- */
+.m-modal-content .tab-content {
+    padding: 20px;
+}
+
+.m-modal-content .chat-layout {
+}
+
+.m-modal-content .chat-room {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    /* background-color:rgba(48, 48, 48, 0.144); */
+    border-radius: 15px;
+}
+
+.m-modal-content .chat-room:hover {
+    background-color:rgba(12, 12, 12, 0.829); 
+}
+
+.m-modal-content .chat-room:not(:first-child) {
+    margin-top: 8px;
+}
+
+.m-modal-content .chat-icon {
+    width: 54px;
+    height: 54px;
+    background-image: url('/img/profile-img.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    scale: 96%;
+}
+
+.m-modal-content .chat-middle {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.m-modal-content .chat-name {
+    font-size: 17px;
+    position: relative;
+}
+
+.m-modal-content .chat-name::after{
+    content: attr(alarm-count);
+    background-color: #a11212;
+    padding: 0px 5px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-left: 5px;
+    position: absolute;
+    top: 5px;
+}
+
+.m-modal-content .chat-content{
+    /* overflow: hidden;
+    height: 40px;
+    text-overflow: ellipsis; */
+}
+
+.m-modal-content .chat-time{
+    text-align: center;
+}
+
+.m-modal-content .chat-window {
+    width: 419px;
+    height: 576px;
+}
+
+.m-modal-content .chat-back {
+    width: 22px;
+    height: 39px;
+    background-image: url(/img/icon-leftarrow.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.m-modal-content .messages-field {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+}
+
+.m-modal-content .chat-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.m-modal-content .send-chat {
+    width: 18%;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+}
+
+.m-modal-content .send-chat:hover {
+    background-color: rgba(12, 12, 12, 0.829); 
+}
+
+.m-modal-content #chatting-input {
+    width: 80%;
+    resize: none;
+    border-radius: 7px;
+}
+
+.m-modal-content .chat-room, 
+.m-modal-content .chat-back, 
+.m-modal-content .send-chat {
+    cursor: pointer;
+}
