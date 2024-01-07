@@ -114,7 +114,7 @@
                 <div class="gantt-task-body">
                     @forelse($listdata as $projectitem)
                         <div class="gantt-task" id="gantt-task-{{$projectitem['id']}}">
-                            <div class="gantt-editable-div editable">{{$projectitem['project_title']}}</div>
+                            <div class="gantt-project-title">{{$projectitem['project_title']}}</div>
                             @forelse ($projectitem['task'] as $taskitem)
                                 {{-- @if($taskitem['task_depth'] = "0") --}}
                                     <div class="gantt-task" id="gantt-task-{{$taskitem['id']}}">

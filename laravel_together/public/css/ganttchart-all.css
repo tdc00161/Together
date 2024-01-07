@@ -363,8 +363,14 @@
 }
 .gantt-status-color {
 	/* padding: 0px 15px; */
-    border-radius: 15px;
-    height: 25px;
+	border-radius: 18px;
+	height: 25px;
+	/* margin: 0px; */
+	margin-top: 8px;
+	/* padding: 9px; */
+	/* text-align: left; */
+	line-height: 25px;
+	/* display: inline-block; */
 }
 
 .gantt-rank {
@@ -427,6 +433,10 @@
 .gantt-task-body {
 
 }
+.gantt-project-title {
+	border-bottom: 1px solid;
+	width: 100%;
+}
 .gantt-task {
 	border-bottom: 1px solid #fff;
     /* padding: 3px; */
@@ -450,12 +460,13 @@
 
 .gantt-task>div {
 	border-right: 1px solid var(--inactive-color);
-	/* border-bottom: 1px solid var(--inactive-color); */
-	/* padding: 10px 5px; */
-	height: 43.5px;
-	/* text-overflow: ellipsis; */
-  	overflow: hidden;
-  	white-space: nowrap;
+    /* border-bottom: 1px solid var(--inactive-color); */
+    /* padding: 3px 0px; */
+    height: 43.5px;
+    /* text-overflow: ellipsis; */
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 43.5px;
 }
 
 /*  업무 부분 너비 조절 */
@@ -478,7 +489,7 @@
 /* 업무명 수정 가능 */
 .editable {
 	/* border: 1px solid #ccc; */
-	padding: 5px;
+	/* padding: 5px; */
 	cursor: pointer;
 }
 /*  */
