@@ -260,6 +260,7 @@ class ProjectController extends Controller
     $invitation = ProjectRequest::create([
       'invite_token' => Str::random(32),
       'from_user_id' => $user->id,
+      'to_user_id' => auth::user()->id,
       'project_id' => $result->id,
     ]);
 
@@ -295,6 +296,8 @@ class ProjectController extends Controller
     if (!$request->hasValidSignature()) {
         abort(403);
     }
+
+
 
     return redirect()->route('user.login.get')->with('invite',$invite);
 

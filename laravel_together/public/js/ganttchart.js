@@ -87,14 +87,10 @@ function enterkeySearch() {
   let ganttTask = document.getElementsByClassName('gantt-task');
 
   for (let i = 0; i < ganttTask.length; i++) {
-    // responName = ganttTask[i].getElementsByClassName('responName');
-    // statusName = ganttTask[i].getElementsByClassName('statusName');
     taskName = ganttTask[i].getElementsByClassName('taskName');
     let ganttChart = document.getElementsByClassName('gantt-chart')[i]; // 해당 인덱스의 차트 가져오기
 
     if (
-      // responName[0].innerHTML.toLowerCase().includes(search) ||
-      // statusName[0].innerHTML.toLowerCase().includes(search) ||
       taskName[0].innerHTML.toLowerCase().includes(search)
     ) {
       ganttTask[i].style.display = 'flex';
@@ -105,6 +101,34 @@ function enterkeySearch() {
     }
   }
 }
+
+
+// ************* 필터링 기능
+function is_checked(event) {
+  // let statusCheckbox = document.querySelectorAll('statuscheck');
+  // let isChecked = statusCheckbox.checked;
+  let ganttTask = document.getElementsByClassName('gantt-task');
+  let statusCheckbox = document.querySelectorAll('statusInput').value;
+  // console.log(statusCheckbox);
+  
+  for (let i = 0; i < ganttTask.length; i++) {
+    taskStatusSpan = ganttTask[i].getElementsByClassName('status-name-span');
+    console.log(taskStatusSpan);
+    let ganttChart = document.getElementsByClassName('gantt-chart')[i];
+    
+    if (event.target.checked || statusCheckbox === taskStatusSpan[0].innerHTML) {
+      // console.log(event.target.checked);
+      ganttTask[i].style.display = 'flex';
+      ganttChart.style.display = 'flex';
+    } else {
+      ganttTask[i].style.display = 'none';
+      ganttChart.style.display = 'none';
+    }
+  }
+
+}
+
+
 
 // ************* 오름차순, 내림차순 정렬
 // 업무명 기준
@@ -515,6 +539,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ************* 상태값 드롭다운 선택
 // 드롭박스 클릭 후 선택 수정
+// function ganttToggleDropdown() {
+//   let statusMenus = document.querySelectorAll('.gantt-status-menu');
+//   statusMenus.forEach((statusMenu) => {
+//     if (statusMenu.style.display === 'none' || statusMenu.style.display === '') {
+//       statusMenu.style.display = 'block';
+//     } else {
+//       statusMenu.style.display = 'none';
+//     }
+//   });
+// }
+
+
+// function ganttChangeStatus(newStatus) {
+//   let statusSpan = document.querySelectorAll('.status-name-span');
+//   statusSpan.forEach((statusSpan) => {
+//     statusSpan.innerText = newStatus;
+//   })
+//   let statusMenu = document.querySelectorAll('.gantt-status-menu');
+//   statusMenu.forEach((statusMenu) => {
+//     statusMenu.style.display = 'none';
+//   })
+// }
+
+
+
 // function ganttToggleDropdown(event) {
 //   console.log(event.target.parentNode.nextElementSibling);
 //   let statusMenu = event.target.parentNode.nextElementSibling
