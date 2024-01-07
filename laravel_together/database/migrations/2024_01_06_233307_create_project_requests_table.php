@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('from_user_id'); // 요청 보낸 유저 pk
             $table->bigInteger('to_user_id'); // 요청 받는 유저 pk
             $table->string('to_user_email',255); // 요청 받는 유저 이메일
+            $table->string('invite_token')->unique();//초대시 생성토큰
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending'); // 현재 요청 상태 [대기중/ 수락됌/ 거절됌 -> 기본값 : 대기중]
             $table->timestamps();
         });

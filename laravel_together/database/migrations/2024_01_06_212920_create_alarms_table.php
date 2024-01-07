@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chat_rooms', function (Blueprint $table) {
+        Schema::create('alarms', function (Blueprint $table) {
             $table->id(); // pk
-            $table->string('chat_room_name',30); // 채팅방 이름
-            // $table->timestamps('created_at')->useCurrent(); // 작성일
-            // $table->timestamps('updated_at'); // 수정일
-            $table->timestamps(); // 작성일/수정일
-            $table->softDeletes(); // 삭제일
+            $table->unsignedBigInteger('listener_id'); // 받는사람 pk
+            $table->string('content'); // 알림 내용
+            $table->timestamp('created_at')->useCurrent(); // 생성일
+            $table->softDeletes(); // 확인일
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_rooms');
+        Schema::dropIfExists('alarms');
     }
 };

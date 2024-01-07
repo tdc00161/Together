@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\TestEvent;
+use App\Http\Controllers\MessengerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -65,6 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/test2', function () {
         return view('chatTest');
     });
+    Route::get('/test3', [MessengerController::class,'a']);
 });
 Route::middleware('auth.api')->group(function () {
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
@@ -85,4 +87,4 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
 });
 
-Route::get('/invite/{token}',  [InviteController::class,'sendInvite'])->name('invite'); //  초대링크
+Route::get('/invite',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락

@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ChatUser extends Model
+class Alarm extends Model
 {
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'chat_room_id',
-        'user_id',
+        'listener_id',
+        'content',
+        'created_at',
     ];
+
+    public $timestamps = ["created_at"];
 }
