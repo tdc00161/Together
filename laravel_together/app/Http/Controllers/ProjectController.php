@@ -38,16 +38,17 @@ class ProjectController extends Controller
     //데이터 전달(post)
     $data= $request
             ->only('user_pk','color_code_pk','project_title', 'project_content', 'flg', 'start_date', 'end_date');
-    
+
     //data에 로그인한 유저 id 추가
     $data['user_pk'] = $user_id;
 
     //color_code 랜덤으로 추가   
     $data['color_code_pk'] = (string)rand(0,4);
 
+    // $data['start_data'] = str_replace('-', '/', $data['start_date']);
+    
     //DB 저장
     $result = Project::create($data);
-
 
     //----project_users 테이블 데이터 추가
 

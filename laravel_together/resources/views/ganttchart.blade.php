@@ -11,61 +11,88 @@
 @section('title', '간트차트')
 @section('main')
 <input type="hidden" id="user" value="{{$user}}">
-{{-- 상단바 --}}
-<div class="first_menu">
-    <div class="menu_title">
+ {{-- 헤더 --}}
+ <div class="first_menu">
+    <div class="project-header">
+        {{-- 프로젝트컬러, 명 --}}
         <div class="title_bar">
-            <div class="project_color" style="background-color:{{$color_code[0]->data_content_name}}"></div>
-            <input class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
+            <div class="project_color" style="background-color:{{$color_code[0]->data_content_name}}"></div>   
+            <input autocomplete="off" class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
         </div>
-        <textarea class="project_content" name="project_content" id="project_content" placeholder="설명" onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
-    </div>
 
-    <div class="title_rightgrid">
-        <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div>
-            {{-- 삭제 모달창 --}}
-            <div id="deleteModal">
-                <div class="deletemodal-content">
-                    <p class="deletespan">정말로 삭제하시겠습니까?</p>
-                    <div class="gridbutton">
-                        <button class="deletebutton" type="button" onclick="closeDeleteModal()">취소</button>
-                        <button class="closebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
-                    </div>
-                </div>
-            </div>
-        {{-- <div class="dday">D-{{$result->dday}}</div> --}}
+        {{-- 프로젝트 날짜 --}}
         <div class="date_set">
             <label for="dday">
-                    {{-- 240101 수정 --}}
-                    <div class="dday" id="dday">
-                        @if($projectDday === 0)
-                            <div class="dday">D-day</div>
-                        @elseif($projectDday > 0)
-                            <div class="dday">D-{{$projectDday}}</div>
-                        @elseif($projectDday < 0)
-                            
-                        @endif
-                    </div>
+                {{-- 240101 수정 --}}
+                <div class="dday" id="dday">
+                    @if($projectDday === 0)
+                        {{-- <div class="dday">D-day</div> --}}
+                        D-day
+                    @elseif($projectDday > 0)
+                        {{-- <div class="dday">D-{{$projectDday}}</div> --}}
+                        D-{{$projectDday}}
+                    @elseif($projectDday < 0)
+                    @endif
+                </div>
             </label>
-            <label class="project_label" for="start_date"> 시작일
-                {{-- <input class="date" type="date" name="start_date" id="start_date" onchange="total()" value="{{$result->start_date}}"> --}}
+            <label class="project_label" for="start_date"> 
                 <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
             </label>
-            <label class="project_label" for="end_date"> 마감일
+            <span class="project_date_ing">~</span>
+            <label class="project_label" for="end_date">
                 {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
                 <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
             </label>
         </div>
+
+        {{-- 버튼 공간 --}}
+        <div class="project-header-btn-section">
+            {{-- 버튼 --}}
+            @forelse ($authoritychk as $item)
+            {{-- <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
+            @if ($item->authority_id == '0')
+                <div><button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button></div>
+                    {{-- 나가기 모달창 --}}
+                    <div id="exitModal">
+                        <div class="deletemodal-content">
+                            <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
+                            <div class="gridbutton">
+                                <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
+                                <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                            </div>
+                        </div>
+                    </div>
+            @elseif ($item->authority_id == '1')
+                <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button>
+                {{-- 삭제 모달창 --}}
+                <div id="deleteModal">
+                    <div class="deletemodal-content">
+                        <p class="deletespan">정말로 삭제하시겠습니까?</p>
+                        <div class="gridbutton">
+                            <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                            <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @empty
+        @endforelse 
+        </div>
+    </div>
+    <textarea class="project_content" name="project_content" id="project_content" placeholder="설명을 입력하세요." onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
+</div>
+
+<div class="tabset">
+    <div class="feeddiv">
+        <a class="goFeed" href="{{ route('individual.get', ['id' => $result->id]) }}">피드</a>
+    </div>
+    <div class="ganttdiv">
+        <a class="goGantt" href="{{ route('gantt.index', ['id' => $result->id]) }}">간트차트</a>
     </div>
 </div>
-<div class="tabset">
-    <a class="goFeed" href="{{ route('individual.get', ['id' => $result->id]) }}">피드</a>
-    <a class="goGantt" href="">간트차트</a>
-    {{-- <button class="tabmenu active" onclick="openTab(event,field)">피드</button>
-    <button class="tabmenu" onclick="openTab(event,gantt)">간트차트</button> --}}
-</div>
-    {{-- <div class="hr"></div> --}}
-    {{-- 피드공통 헤더끝 --}}
+{{-- 헤더 끝 --}}
+<div class="grid_div">
+
     <div class="gantt-btn-wrap">
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="업무명 검색">
         <div>
@@ -317,7 +344,7 @@
             </div>
         </section>
     </div>
-
+</div>
     @include('modal.insert') 
     {{-- include 순서 중요: 작성/상세 --}}
     @include('modal.detail')

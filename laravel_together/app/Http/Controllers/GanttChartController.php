@@ -238,6 +238,13 @@ class GanttChartController extends Controller
         //프로젝트 dday 출력 240101 수정
         $projectDday = Carbon::now()->addDays(-1)->diffInDays($result->end_date);
 
+        $authoritychk = DB::table('project_users as pu')
+                      ->join('projects as pj','pj.id','pu.project_id')
+                      ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
+                      ->where('pu.project_id',$result->id)
+                      ->where('pu.member_id',$result->user_pk)
+                      ->get();
+
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
         $data['project'] = Project::find($id);
@@ -253,6 +260,7 @@ class GanttChartController extends Controller
         ->with('user', Session::get('user'))
         ->with('project0title',$project0title)
         ->with('project1title',$project1title)
+        ->with('authoritychk',$authoritychk)
         // ->with('project_id', $project_id)
         ->with('color_code',$color_code)
         ->with('result',$result)
