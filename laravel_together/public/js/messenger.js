@@ -861,8 +861,8 @@ function chatListCheck() {
                     addedNode.addEventListener('click', () => {
                         // console.log(addedNode.getAttribute('chat-room-id'));
                         // 클릭하면 채팅창이 켜지고 해당 채팅방의 id로 fetch
-                        document.querySelector('.chat-layout').style.display = 'none'
-                        document.querySelector('.chat-window').style.display = 'block'
+                        document.querySelector('.chat-layout').style.display = 'none';
+                        document.querySelector('.chat-window').style.display = 'block';
 
                         // 채팅방 id를 불러서 최신내용 호출
                         fetch('/chat/'+ addedNode.getAttribute('chat-room-id'), {
@@ -914,8 +914,8 @@ chatListCheck();
 
 // 뒤로가기 버튼 적용
 document.querySelector('.chat-back').addEventListener('click',() => {
-    document.querySelector('.chat-window').style.display = 'none'
-    document.querySelector('.chat-layout').style.display = 'block'
+    document.querySelector('.chat-window').style.display = 'none';
+    document.querySelector('.chat-layout').style.display = 'block';
 })
 
 // 화면 열 때 채팅리스트 불러오기
@@ -987,3 +987,10 @@ fetch('/chatlist', {
     console.error('Error:', error.message);
     console.log(error.stack);
 });
+
+// 채팅방 입력창 버튼 이벤트
+var send_chat = document.querySelector('.send-chat')
+send_chat.addEventListener('click', () => {
+    var input = document.querySelector('#chatting-input');
+
+})
