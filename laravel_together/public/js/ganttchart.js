@@ -1783,5 +1783,9 @@ function deleteProject(project_pk) {
    }).catch(error => console.log(error));
 }
 
+function changeStyle(element) {
+  // div에 clicked 클래스 추가
+  element.classList.toggle('gantt-span-focus');
+}
 
 
