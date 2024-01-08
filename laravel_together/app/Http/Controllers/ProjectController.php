@@ -308,7 +308,9 @@ class ProjectController extends Controller
     // dump($id);
     // dd($member_id);
 
-    if(ProjectUser::check($member_id)){
+    $invite_member = ProjectUser::where('member_id',$member_id)->first();
+
+    if(!$invite_member){
         //초대 구성원 추가
         $invite_user = ProjectUser::create([
           'project_id' => $id,
@@ -506,27 +508,30 @@ class ProjectController extends Controller
 
 
     // 프로젝트 나가기
-    public function exit_project(Request $request, $id)
+    public function exit_project($id)
     {
-        $user = auth::user();
-        Log::debug("user 확인요청 : ". $user);        
+      $user = auth::user();
+      // dump($user);
+      Log::debug("user 확인요청 : ". $user);        
+      $pu = ProjectUser::find($id);
+      // dd($pu);
 
-        if(!$user) {
-          return response()->json(['errer' => 'item not found'], 404);
-        }
-        //구성원 나가기 기능
-        $member = ProjectUser::where('project_users.project_id',$id)
-                            ->join('projects as pj', 'pj.id', 'project_users.project_id')
-                            ->join('users as us', 'us.id', 'pj.user_pk')
-                            ->select('project_users.*')
-                            ->where('pj.authority_id',1)
-                            ->where('project_users.member_id',$user->id)
-                            ->delete();
+      if(!$user) {
+        return response()->json(['errer' => 'item not found'], 404);
+      }
+      //구성원 나가기 기능
+      $member = ProjectUser::select('project_users.member_id','project_users.project_id')
+                          ->join('projects as pj', 'pj.id', 'project_users.project_id')
+                          ->join('users as us', 'us.id', 'project_users.member_id')
+                          ->where('project_users.project_id',$id)
+                          ->where('project_users.authority_id',1)
+                          ->where('project_users.member_id',$user->id)
+                          ->delete();
 
-        return response()->json();
-        
-        Log::debug("화면전달");
-    }
+      return response()->json();
+      
+      Log::debug("화면전달");
+  }
 
 }
 

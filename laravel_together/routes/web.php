@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
     Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
     Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성
+    Route::get('/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
     Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post'); //프로젝트 생성정보 처리
     Route::get('/individual', [ProjectController::class,'mainindex']); //페이지 비활성화
     Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get'); //개인 프로젝트 출력
@@ -88,5 +89,3 @@ Route::middleware('auth.api')->group(function () {
     Route::post('/chat', [MessengerController::class,'store']);
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });
-
-Route::get('/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
