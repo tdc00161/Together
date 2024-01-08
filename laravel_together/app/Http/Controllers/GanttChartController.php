@@ -245,6 +245,7 @@ class GanttChartController extends Controller
             ->where('auth.data_title_code','4')
             ->whereNull('p.deleted_at')
             ->whereNull('pu.deleted_at')
+            ->orderBy('p.created_at')
             ->select(
                 // 'p.id as projects_id',
                 'p.user_pk',
@@ -281,6 +282,7 @@ class GanttChartController extends Controller
                 ->where('t.task_depth','0')
                 ->whereNull('t.deleted_at')
                 ->whereNull('pu.deleted_at')
+                ->orderBy('t.created_at')
                 ->select(
                     't.id as task_id',
                     't.project_id',
@@ -326,6 +328,7 @@ class GanttChartController extends Controller
                 ->where('t.task_depth','1')
                 ->whereNull('t.deleted_at')
                 ->whereNull('pu.deleted_at')
+                ->orderBy('t.created_at')
                 ->select(
                     't.id as task_id',
                     't.project_id',
@@ -366,7 +369,7 @@ class GanttChartController extends Controller
                 }
             }
         }
-        dd($project);
+        // dd($project);
 
         // $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
         // $data = $depth_0;
@@ -376,13 +379,13 @@ class GanttChartController extends Controller
         // $data['task'] = $depth_0;
         // dd($data);
         // dd($data['task'][0]->id);
-        return view('ganttchart')->with('data', $project)
+        return view('ganttchart-all')->with('data', $project)
         ->with('user', Session::get('user'))
         ->with('project0title',$project0title)
         ->with('project1title',$project1title);
         // ->with('project_id', $project_id)
         // ->with('color_code',$color_code)
-        // ->with('result',$result)
+        // ->with('result',$result);
         // ->with('projectDday',$projectDday);
     }
 

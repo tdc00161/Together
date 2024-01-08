@@ -48,9 +48,9 @@
                 </div>
                 <ul class="gantt-items">
                     {{-- @foreach (array_unique(array_column($data, 'name')) as $itemName) --}}
-                    @foreach ($managername as $item)
-                        <li><input type="checkbox" onclick="getCheckboxValue()"><span class="gantt-item">{{ $item->name }}</span></li>
-                    @endforeach
+                    {{-- @foreach ($project as $item)
+                        <li><input type="checkbox" onclick="getCheckboxValue()"><span class="gantt-item">{{ $item->res_name }}</span></li>
+                    @endforeach --}}
                 </ul>
             </div>
             <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
@@ -112,8 +112,8 @@
                 </div>
                 {{-- 데이터 시작 --}}
                 <div class="gantt-task-body">
-                    @forelse($listdata as $projectitem)
-                        <div class="gantt-task" id="gantt-task-{{$projectitem['id']}}">
+                    @forelse($data as $key => $projectitem)
+                        <div class="gantt-task" id="gantt-task-{{$projectitem['project_id']}}">
                             <div class="gantt-project-title">{{$projectitem['project_title']}}</div>
                             @forelse ($projectitem['task'] as $taskitem)
                                 {{-- @if($taskitem['task_depth'] = "0") --}}
