@@ -50,7 +50,7 @@ class ProjectController extends Controller
     // dd($data);
 
     //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->to('/')."/".Str::random(20);
+    $data['invite'] = url()->to('/')."/invite/".Str::random(20);
     // dd($data);
 
     // $data['start_data'] = str_replace('-', '/', $data['start_date']);
