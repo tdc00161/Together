@@ -888,10 +888,19 @@ function chatListCheck() {
                             // 수신 받은 채팅내역을 필드에 출력
                             var messageField = document.querySelector('.messages-field')
                             data.forEach(msg => {
-                                var msgBox = document.createElement('div');
-                                var icon = document.createElement('div');
-                                msgBox.textContent = msg;
-                                messageField.append(msgBox);
+                                console.log(msg);
+                                var chatMsgBox = document.createElement('div');
+                                chatMsgBox.className = 'chat-msg-box';
+                                chatMsgBox.setAttribute('chat-id',msg.id);
+                                var chatUserIcon = document.createElement('div');
+                                chatUserIcon.className = 'chat-user-icon';
+                                var chatUserIconAfter = document.createElement('div');
+                                chatUserIconAfter.className = 'chat-user-icon-after';
+                                var chatUserName = document.createElement('div');
+                                chatUserName.className = 'chat-user-name'
+                                var chatContent = document.createElement('div');
+                                
+                                messageField.append(chatMsgBox);
                             })
                         })
                         .catch(error => {
