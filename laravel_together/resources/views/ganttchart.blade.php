@@ -94,12 +94,12 @@
 <div class="grid_div">
 
     <div class="gantt-btn-wrap">
-        <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="업무명 검색">
-        <div>
-            <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
+        <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
+        <div class="filter-div">
+            <div onclick="changeStyle(this)" id="list1" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
+                    <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span>상태</span>
-                    <img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
                 </div>
                 <ul class="gantt-items">
                     <li><input id="statusAll" type="radio" name="status" value="전체" checked onclick="is_checked_status(event)">
@@ -121,8 +121,8 @@
             </div>
             <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
-                    <span>우선순위</span>
-                    <img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
+                    <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
+                    <span>중요도</span>
                 </div>
                 <ul class="gantt-items">
                     <li><input id="priorityAll" type="radio" name="priority" value="priorityAll">
@@ -147,8 +147,8 @@
             </div>
             <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
+                    <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span>담당자</span>
-                    <img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
                 </div>
                 <ul class="gantt-items">
                     <li><input id="resAll" type="radio"><label class="gantt-item" for="resAll">전체</label></li>
@@ -160,8 +160,8 @@
             </div>
             <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
+                    <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span>시작일</span>
-                    <img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
                 </div>
                 <ul class="gantt-items">
                     <li><input name="start" type="radio" id="start1" checked onclick="is_checked_start(event)">
@@ -180,8 +180,8 @@
             </div>
             <div id="list5" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
+                    <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span>마감일</span>
-                    <img class="gantt-filter" src="/img/gantt-filter.png" alt="filter">
                 </div>
                 <ul class="gantt-items">
                     <li><input name="end" type="radio" id="end1" checked onclick="is_checked_end(event)">
@@ -198,10 +198,13 @@
                     </li>
                 </ul>
             </div>
+        </div>
+            <div class="add-btn-section">
             <button class="gantt-add-btn" onclick="openTaskModal(0)">업무추가</button>
+            </div>
             {{-- <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button> --}}
         </div>
-    </div>
+    
     <!-- 팝업 모달 창 -->
     <div id="ganttPopupModal" class="gantt-update-modal">
         <div class="gantt-modal-content">
