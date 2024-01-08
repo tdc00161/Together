@@ -23,6 +23,7 @@ return new class extends Migration
             $table->char('flg',1); // 조직구분
             $table->date('start_date'); // 시작일자
             $table->date('end_date'); // 마감일자
+            $table->string('invite',255); // 초대링크
             // $table->foreign('user_id')->references('id')->on('users'); // users 테이블과 연결
             // $table->foreign('color_code')->references('id')->on('base_data'); // user테이블과 연결
             $table->timestamps(); // 가입일
