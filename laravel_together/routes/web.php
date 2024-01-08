@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
     Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
     Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성
-    Route::get('/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
+    // Route::get('/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
     Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post'); //프로젝트 생성정보 처리
     Route::get('/individual', [ProjectController::class,'mainindex']); //페이지 비활성화
     Route::get('/individual/{id}', [ProjectController::class,'mainshow'])->name('individual.get'); //개인 프로젝트 출력
@@ -85,7 +85,7 @@ Route::middleware('auth.api')->group(function () {
     Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id / api
     Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id / api
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
-    Route::get('/chatlist', [MessengerController::class,'chatlist']);
-    Route::post('/chat', [MessengerController::class,'store']);
+    Route::get('/chatlist', [MessengerController::class,'chatlist']); // 채팅 리스트 출력
+    Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });

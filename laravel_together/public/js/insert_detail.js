@@ -344,7 +344,7 @@ function createTask() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
+			// console.log(data);
 			if (GANTT_LEFT[0]) {
 
 				// 240101 ganttchart.js-> : 35 line | 업무 추가 fetch 후 처리
@@ -477,7 +477,7 @@ function createTask() {
 			} else {
 				let Notice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list') : firstCloneNotice
 				let Update = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list') : firstCloneUpdate
-				console.log('1');
+				// console.log('1');
 
 				let cloneNotice = document.querySelector('.project_task_notice_list') ? document.querySelector('.project_task_notice_list').cloneNode(true) : firstCloneNotice.cloneNode(true)
 				let cloneUpdate = document.querySelector('.project_task_update_list') ? document.querySelector('.project_task_update_list').cloneNode(true) : firstCloneUpdate.cloneNode(true)
@@ -488,24 +488,24 @@ function createTask() {
 				// console.log(cloneNotice.firstElementChild);
 				cloneUpdate.firstElementChild.firstElementChild.textContent = '공지'
 				cloneUpdate.firstElementChild.firstElementChild.style = "color:rgb(255, 196, 0);"
-				console.log('1-1');
+				// console.log('1-1');
 				cloneUpdate.firstElementChild.nextElementSibling.textContent = data.data.title
 				// console.log(cloneUpdate.firstElementChild.nextElementSibling);
 				cloneUpdate.firstElementChild.nextElementSibling.setAttribute('onclick', 'openTaskModal(1,1,' + data.data.id + ')')
 				cloneUpdate.firstElementChild.classList.add('update-' + data.data.id)
 				cloneUpdate.classList.add('update-layout-' + data.data.id)
-				console.log('2');
+				// console.log('2');
 
 				let NoticeParent = document.querySelector('.project_task_notice_list_parent')
 				let UpdateParent = document.querySelector('.project_task_update_list_parent')
-				console.log('3');
+				// console.log('3');
 
 				NoticeParent.firstChild.before(cloneNotice)
 				UpdateParent.firstChild.before(cloneUpdate)
-				console.log('4');
+				// console.log('4');
 
 				closeTaskModal(0)
-				console.log('5');
+				// console.log('5');
 			}
 		})
 		.catch(err => {
