@@ -50,7 +50,7 @@ class ProjectController extends Controller
     // dd($data);
 
     //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->full();
+    $data['invite'] = url()->to('/')."/".Str::random(20);
     // dd($data);
 
     // $data['start_data'] = str_replace('-', '/', $data['start_date']);
@@ -266,11 +266,6 @@ class ProjectController extends Controller
                             ->orderBy('p.created_at','asc')
                             ->get();
 
-    //해당 링크서버
-    // $url = url()->to('/');
-    
-    // $inviteUrl = $url."/".$result->invite;
-    // dd($inviteUrl);
 
     //개인,팀 화면에 정보 출력 , 로그인 안 한 유저일 경우 login 화면으로 이동
     if (Auth::check()) {
@@ -302,6 +297,19 @@ class ProjectController extends Controller
                 ->where('invite',$url)
                 ->get();
     // dd($project);
+
+    $id = $project[0]->id;
+    $member_id = $project[0]->user_pk;
+    // dump($id);
+    // dd($member_id);
+
+    //초대 구성원 추가
+    $invite_user = ProjectUser::create([
+      'project_id' => $id,
+      'authority_id' => '1',
+      'member_id' => $member_id,
+    ]);
+
 
     if(!Auth::check()){
       return redirect()->route('user.login.get');
