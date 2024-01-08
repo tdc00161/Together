@@ -28,6 +28,7 @@ class Project extends Model // 프로젝트
         'start_date',
         'end_date',
         'depth_0',
+        'invite',
     ];
 
 

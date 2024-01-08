@@ -37,13 +37,17 @@ class ProjectController extends Controller
 
     //데이터 전달(post)
     $data= $request
-            ->only('user_pk','color_code_pk','project_title', 'project_content', 'flg', 'start_date', 'end_date');
+            ->only('user_pk','color_code_pk','project_title', 'project_content', 'flg', 'start_date', 'end_date','invite');
     
     //data에 로그인한 유저 id 추가
     $data['user_pk'] = $user_id;
 
     //color_code 랜덤으로 추가   
     $data['color_code_pk'] = (string)rand(0,4);
+
+    //프로젝트별 랜덤 고유 토큰 추가
+    $data['invite'] = url()->full();
+    // dd($data);
 
     //DB 저장
     $result = Project::create($data);
@@ -94,7 +98,8 @@ class ProjectController extends Controller
 
     //프로젝트 id 출력
     $result = project::find($id);
-    // dump($result);
+    // dd($result);
+
 
     if(!$result){
       return redirect()->route('dashboard.show');
@@ -256,15 +261,6 @@ class ProjectController extends Controller
                             ->orderBy('p.created_at','asc')
                             ->get();
 
-    // 초대 토큰
-    $invitation = ProjectRequest::create([
-      'invite_token' => Str::random(32),
-      'from_user_id' => $user->id,
-      'to_user_id' => auth::user()->id,
-      'project_id' => $result->id,
-    ]);
-
-    $inviteLink = URL::signedRoute('invite', ['token'=> $invitation->invite_token]);
 
     //개인,팀 화면에 정보 출력 , 로그인 안 한 유저일 경우 login 화면으로 이동
     if (Auth::check()) {
@@ -280,29 +276,36 @@ class ProjectController extends Controller
         ->with('project0title', $project0title)
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
-        ->with('authoritychk',$authoritychk)
-        ->with('inviteLink',$inviteLink);
+        ->with('authoritychk',$authoritychk);
+        // ->with('inviteLink',$inviteLink);
     } else {
         return redirect('/user/login');
     }
   }
 
   //초대 응했을 때 들어오는 링크
-  public function acceptInvite(Request $request) {
+  public function acceptInvite($a) {
+    dump($request);
 
-    $token = $request->input('token');
-    $invite = ProjectRequest::where('invite_token',$token)->first();
+    $token = $request->input('token'); // 유저 토큰
+    dump($token);
+    $url = $request->fullurl(); // 해당 링크url
+    dump($url);
+    $invite = ProjectRequest::where('invite_token',$token)->first(); // 디비 토큰
+    dd($invite);
 
     if (!$request->hasValidSignature()) {
         abort(403);
     }
 
-
-
-    return redirect()->route('user.login.get')->with('invite',$invite);
-
+    if(auth::check()){
+      return redirect()->to($invite->$token);
+    }elseif(!auth::check()){
+      return redirect()->route('user.login.get')->with('token',$token);
+    }else{
+      abort(404);
+    }
   }
-
 
 
   public function project_graph_data(Request $request, $id) {
