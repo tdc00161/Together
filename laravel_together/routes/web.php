@@ -85,7 +85,8 @@ Route::middleware('auth.api')->group(function () {
     Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id / api
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
     Route::get('/chatlist', [MessengerController::class,'chatlist']);
+    Route::post('/chat', [MessengerController::class,'store']);
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });
 
-Route::get('/invite/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
+Route::get('/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락

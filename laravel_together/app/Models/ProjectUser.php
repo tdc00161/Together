@@ -22,7 +22,6 @@ class ProjectUser extends Model // 프로젝트 참여자
         'project_id',
         'authority_id',
         'member_id',
-        'created_at'
     ];
 
 

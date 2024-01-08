@@ -46,11 +46,11 @@ class ProjectController extends Controller
     $data['color_code_pk'] = (string)rand(0,4);
 
     //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->full();
+    $data['invite'] = url()->to('/')."/".Str::random(20);
     // dd($data);
 
     //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->full();
+    $data['invite'] = url()->to('/')."/".Str::random(20);
     // dd($data);
 
     // $data['start_data'] = str_replace('-', '/', $data['start_date']);
@@ -282,33 +282,43 @@ class ProjectController extends Controller
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
         ->with('authoritychk',$authoritychk);
-        // ->with('inviteLink',$inviteLink);
+        // ->with('inviteUrl',$inviteUrl);
     } else {
         return redirect('/user/login');
     }
   }
 
   //초대 응했을 때 들어오는 링크
-  public function acceptInvite($a) {
-    dump($request);
+  public function acceptInvite(Request $request) {
 
-    $token = $request->input('token'); // 유저 토큰
-    dump($token);
-    $url = $request->fullurl(); // 해당 링크url
-    dump($url);
-    $invite = ProjectRequest::where('invite_token',$token)->first(); // 디비 토큰
-    dd($invite);
+    $url = url()->current();
 
-    if (!$request->hasValidSignature()) {
-        abort(403);
-    }
+    $project = DB::table('projects')
+                ->where('invite',$url)
+                ->get();
+    // dd($project);
 
-    if(auth::check()){
-      return redirect()->to($invite->$token);
-    }elseif(!auth::check()){
-      return redirect()->route('user.login.get')->with('token',$token);
+    $id = $project[0]->id;
+    $member_id = $project[0]->user_pk;
+    // dump($id);
+    // dd($member_id);
+
+    //초대 구성원 추가
+    $invite_user = ProjectUser::create([
+      'project_id' => $id,
+      'authority_id' => '1',
+      'member_id' => $member_id,
+    ]);
+
+
+    if(!Auth::check()){
+      return redirect()->route('user.login.get');
     }else{
-      abort(404);
+      if($project[0]->flg === '0'){
+        return redirect()->route('individual.get',['id' => $project[0]->id]);
+      }elseif($project[0]->flg === '1'){
+        return redirect()->route('team.get',['id' => $project[0]->id]);
+      }
     }
   }
 
