@@ -366,7 +366,7 @@ class GanttChartController extends Controller
                 }
             }
         }
-        // dd($project);
+        dd($project);
 
         // $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
         // $data = $depth_0;
