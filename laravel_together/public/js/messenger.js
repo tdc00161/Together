@@ -989,8 +989,36 @@ fetch('/chatlist', {
 });
 
 // 채팅방 입력창 버튼 이벤트
+// 전송버튼
 var send_chat = document.querySelector('.send-chat')
 send_chat.addEventListener('click', () => {
+    // 입력창
     var input = document.querySelector('#chatting-input');
 
+    // api 작성 통신
+    let postData = {
+		"chat_input": input.value
+	}
+	fetch('/chat', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': csrfToken_insert_detail,
+		},
+		body: JSON.stringify(postData),
+	})
+        .then(response => {
+            // 응답이 성공적인지 확인
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // JSON 형식으로 변환하여 반환
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(error.stack);
+        });
 })
