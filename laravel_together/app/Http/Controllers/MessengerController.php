@@ -47,4 +47,13 @@ class MessengerController extends Controller
 			
     	return $chatRecords;
     }
+
+	// 채팅전송
+    public function store(Request $request) {
+
+		$userId = Auth::id();
+						
+    	return $request;
+    	// return $myChatRooms;
+    }
 }
