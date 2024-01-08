@@ -9,11 +9,11 @@ window.onload = function() {
       url: '/chart-data/'+parseInt(pathname.match(/\d+/)[0]),
       type: 'GET',
       success: function (response) {
-         console.log('***** Ajax Success *****');
-         console.log(response);
+         // console.log('***** Ajax Success *****');
+         // console.log(response);
 
-         var dataArray = response.data;
-         console.log(dataArray);
+         // var dataArray = response.data;
+         // console.log(dataArray);
 
          // 차트 생성
          var canvas = document.getElementById("chartcanvas");
@@ -24,7 +24,7 @@ window.onload = function() {
 
          // 프로젝트 상태별 데이터
          var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
-         console.log(data);
+         // console.log(data);
 
          // 프로젝트 상태별 적용 색상
          var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
@@ -118,31 +118,42 @@ function createPage(){
 //    UPDATETITLESET.removeAttribute('value');
 // }
 
+function updateDateFormat(selectedDate) {
+   const dateObject = new Date(selectedDate);
+   const year = dateObject.getFullYear();
+   const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+   const day = dateObject.getDate().toString().padStart(2, '0');
+   
+   const formattedDate = `${year}/${month}/${day}`;
+   
+   // var startDate = document.getElementById('start_date');
+   document.getElementById('start_date').value = formattedDate;
+ }
+
+
 let OrginalendValue = document.getElementById('end_date').value;
 let Orginalend = document.getElementById('end_date');
 
 
 // 프로젝트 명, 컨텐츠 업데이트 // 240101 전체 수정(catch 까지)
 const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-function titleupdate(project_pk) {
-
-   let Updatetitle = document.getElementById('project_title').value;
-   let Updatecontent = document.getElementById('project_content').value;
-   let Updatetitlemax = 17;
-   let Updatecontentmax = 45;
-
-   if(Updatetitle.length > Updatetitlemax){
-      alert('텍스트 길이를 초과하였습니다.')
-   }
-   if(Updatetitlemax.length > Updatecontentmax){
-      alert('텍스트 길이를 초과하였습니다.')
-   }
-   let Updatestart = document.getElementById('start_date').value;
-   let Updateend = document.getElementById('end_date').value;
    
-   // console.log(Updatetitle)
+   function titleupdate(project_pk) {
 
-   let dday = document.getElementById("dday");
+      let Updatetitle = document.getElementById('project_title').value;
+      let Updatecontent = document.getElementById('project_content').value;
+      let Updatetitlemax = 17;
+      let Updatecontentmax = 45;
+
+      if(Updatetitle.length > Updatetitlemax){
+         alert('텍스트 길이를 초과하였습니다.')
+      }
+      if(Updatetitlemax.length > Updatecontentmax){
+         alert('텍스트 길이를 초과하였습니다.')
+      }
+      let Updatestart = document.getElementById('start_date').value;
+      let Updateend = document.getElementById('end_date').value;
+      let dday = document.getElementById("dday");
       today = new Date();
       start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
       console.log(start_day);
@@ -169,38 +180,37 @@ function titleupdate(project_pk) {
       dday.innerHTML = 'D' + result;
 
 
-    // Fetch를 사용하여 서버에 put 요청 보내기
-    fetch('/update/' +project_pk, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken_project,
-            // 필요에 따라 다른 헤더들 추가 가능
-         },
-         body: JSON.stringify({
-            "Updatetitle": Updatetitle,
-            "Updatecontent":Updatecontent,
-            "Updatestart": Updatestart,
-            "Updateend":Updateend,
-         })
-         // body: JSON.stringify({project_title: project_title})
-   })
-   .then((response) => {
-      console.log(response);
-      return response.json();
-   })
-   .then(data => {
-      console.log(data);
-         document.getElementsByClassId('project_title').value = data.project_title;
-         document.getElementsByClassId('project_content').value = data.project_content;
-         document.getElementsByClassId('start_date').value = data.start_date;
-         document.getElementsByClassId('end_date').value = data.end_date;
-   })
-   .catch(error => {
-         // 오류 처리
-         console.error('error', error);
-   });
-
+      // Fetch를 사용하여 서버에 put 요청 보내기
+      fetch('/update/' +project_pk, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'X-CSRF-TOKEN': csrfToken_project,
+               // 필요에 따라 다른 헤더들 추가 가능
+            },
+            body: JSON.stringify({
+               "Updatetitle": Updatetitle,
+               "Updatecontent":Updatecontent,
+               "Updatestart": Updatestart,
+               "Updateend":Updateend,
+            })
+            // body: JSON.stringify({project_title: project_title})
+      })
+      .then((response) => {
+         console.log(response);
+         return response.json();
+      })
+      .then(data => {
+         console.log(data);
+            document.getElementsByClassId('project_title').value = data.project_title;
+            document.getElementsByClassId('project_content').value = data.project_content;
+            document.getElementsByClassId('start_date').value = data.start_date;
+            document.getElementsByClassId('end_date').value = data.end_date;
+      })
+      .catch(error => {
+            // 오류 처리
+            console.error('error', error);
+      });
 }
 
 

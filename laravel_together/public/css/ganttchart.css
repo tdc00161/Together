@@ -7,13 +7,36 @@
 
 /* 피드 공통 헤더 */
 .first_menu {
-    display: grid;
-    grid-template-columns: 2.2fr 1.8fr;
+    display: flex;
+    flex-direction: column;
 }
 
+.grid_div {
+	background-color: rgba(0, 0, 0, 0.514);
+    border-radius: 0 10px 10px 10px;
+    width: 100%;
+    height: 620px;
+}
+
+/* 
 .menu_title {
     display: grid;
     grid-template-rows: 1.5fr 1.5fr;
+} */
+
+.tabcontent {
+    background-color: rgba(0, 0, 0, 0.514);
+    border-radius: 0 10px 10px 10px;
+}
+
+.project-header-btn-section {
+    /* margin-left: auto; */
+    display: flex;
+}
+
+.project-header {
+	display: flex;
+    align-items: center
 }
 
 .title_bar {
@@ -65,42 +88,67 @@
 }
 
 .project_title {
-    width: 100%;
     border: none;
     resize: none;
     background-color: transparent;
+    width: 185px;
+    overflow: auto;
+    font-size: 14px;
+    padding-left: 5px;
+    height: 30px;
 }
 
 .project_title:hover {
-    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 5px;
+}
+.project_title:focus {
+    background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 5px;
+    border: #ffffff 1px solid;
 }
 
 .project_content {
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    font-size: 1rem;
+	display: inline-block;
     border: none;
     resize: none;
     background-color: transparent;
+    color: rgb(219, 219, 219);
+    width: 360px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    height: 30px;
 }
 
 .project_content:hover {
-    border: 1px solid white;
+	background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 6px;
+}
+.project_content:focus {
+    background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 6px;
+    border: #ffffff 1px solid;
 }
 
 .dday {
-    font-size: 1.5rem;
+	font-size: 13px;
+    background-color: rgb(14, 14, 14,0.73);
+    border-radius: 5px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    /* margin-left: 10px; */
+    margin-right: 20px;
+    padding-left: 9px;
+    padding-right: 9px;
 }
 
 .tabset {
+    display: flex;
     width: 100%;
-    height: 50px;
-    display: grid;
-    grid-template-columns: 0.8fr 0.8fr 2.4fr;
-    align-items: center;
+    height: 30px;
     color: white;
-    font-weight: 800;
+    line-height: 30px;
 }
 
 .tabmenu {
@@ -125,49 +173,57 @@
 }
 
 .date_set {
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr;
-    justify-items: center;
-    align-items: end;
-    color: black;
-    /* margin-bottom: 20px */
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+ }
+ .project_date_ing {
+	 margin: 5px;
+ }
+
+ .project_date {
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    height: 25px;
+    line-height: 25px;
 }
 
-.project_date {
-    width: 70%;
-    text-align: center;
-    height: 30px;
-    padding-left: 10px;
-    border: none;
-    color: black;
-    background-color: transparent;
-}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* 색상 반전 */
+  }
 
 .project_label {
-    width: 97%;
-    height: 30px;
-    background-color: white;
-    border-radius: 3px;
-    color: black;
-    font-weight: 600;
-    padding-left: 10px;
-    line-height: 30px;
+    width: 120px;
+    background-color: rgb(14, 14, 14,0.73);
     text-align: center;
-    font-size: 1em;
+    font-size: 13px;
+    border-radius: 5px;
 }
 
-.goGantt {
-	width: fit-content;
-    padding: 5px 15px;
+.feeddiv {
+    text-align: center;
     border: none;
-    color: white;
+	background-color: rgba(0, 0, 0, 0.253);
+    border-radius: 5px 5px 0 0;
+    color:white;
 }
-
+.ganttdiv {
+    text-align: center;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.514);
+    border-radius: 5px 5px 0 0;
+    color:white;
+}
 .goFeed {
-	width: fit-content;
-    padding: 5px 15px;
-    border: none;
-    color:black;
+    padding: 6px 40px;
+}
+.goGantt {
+    padding: 6px 30px;
+}
+
+a:hover {
+    color: white;
 }
 
 /* 모달창 */
@@ -230,13 +286,9 @@
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
-	/* background-color: #fff; */
-	/* color: #000; */
-	height: 100%;
-	margin: -40px -40px 0 -40px;
-	position: relative;
-	top: 40px;
+	height: 575px;
 	overflow: auto;
+	border-radius: 0 0 10px 10px;
 }
 
 /* 검색, 드롭박스, 업무추가버튼 영역 */
@@ -247,7 +299,7 @@
     justify-content: space-between;
     /* height: 6%; */
     /* background-color: rgba(23, 24, 29, 0.4); */
-    margin: 10px -40px 0px -40px;
+    /* margin: 10px -40px 0px -40px; */
 }
 
 .gantt-search {
@@ -724,18 +776,4 @@
 	color: #fff;
 	margin: 0px;
 	font-size: large;
-}
-
-.goFeed {
-	width: fit-content;
-    padding: 5px 15px;
-    border: none;
-    color:black;
-}
-
-.goGantt {
-	width: fit-content;
-    padding: 5px 15px;
-	border: none;
-	color:white;
 }
