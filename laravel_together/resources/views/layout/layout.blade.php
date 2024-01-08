@@ -67,7 +67,7 @@
           <img src="/img/dashboard_icon.svg" alt="" style="width: 22px; margin-right:7px;">
           <span>대시보드</span>
         </a>
-        <a href=""> {{-- {{ route('ganttall.index') }} --}}
+        <a href="{{ route('ganttall.index') }}"> {{-- {{ route('ganttall.index') }} --}}
           <img src="/img/gangchart_icon.svg" alt="" style="width: 22px; margin-right:7px;">
          <span>간트차트</span>
          {{-- <span class="notification-number updates">3</span> --}}
