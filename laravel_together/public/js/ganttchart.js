@@ -103,30 +103,344 @@ function enterkeySearch() {
 }
 
 
-// ************* 필터링 기능
-function is_checked(event) {
-  // let statusCheckbox = document.querySelectorAll('statuscheck');
-  // let isChecked = statusCheckbox.checked;
-  let ganttTask = document.getElementsByClassName('gantt-task');
-  let statusCheckbox = document.querySelectorAll('statusInput').value;
-  // console.log(statusCheckbox);
-  
-  for (let i = 0; i < ganttTask.length; i++) {
-    taskStatusSpan = ganttTask[i].getElementsByClassName('status-name-span');
-    console.log(taskStatusSpan);
-    let ganttChart = document.getElementsByClassName('gantt-chart')[i];
-    
-    if (event.target.checked || statusCheckbox === taskStatusSpan[0].innerHTML) {
-      // console.log(event.target.checked);
-      ganttTask[i].style.display = 'flex';
-      ganttChart.style.display = 'flex';
-    } else {
-      ganttTask[i].style.display = 'none';
-      ganttChart.style.display = 'none';
-    }
-  }
+// ************* 상태 필터링 (체크박스일 때)
+// function is_checked_status() {
+//   // let statusCheckbox = document.querySelectorAll('statuscheck');
+//   // let isChecked = statusCheckbox.checked;
+//   let statusAllCheck = 'input[name="status"]:checked';
+//   let selectedEls = document.querySelectorAll(statusAllCheck);
 
+//   let checkedResult = '';
+//   selectedEls.forEach((el) => {
+//     checkedResult += el.value + ' ';
+//   });
+//   console.log(checkedResult); // checked 된 상태만 출력
+
+//   // gantt-task들에 대한 처리
+//   let ganttTasks = document.querySelectorAll('.gantt-task');
+//   ganttTasks.forEach(task => {
+//     let statusNameSpan = task.querySelector('.status-name-span');
+//     if (statusNameSpan) {
+//       let taskStatus = statusNameSpan.textContent.trim();
+
+//       // 선택된 체크박스의 값과 gantt-task의 statusNameSpan 값 비교
+//       if (checkedResult.includes(taskStatus)) {
+//         task.style.display = 'flex'; // 값이 일치하면 보이도록 설정
+//       } else {
+//         task.style.display = 'none'; // 값이 일치하지 않으면 숨기도록 설정
+//       }
+
+//       // gantt-task의 ID를 추출합니다.
+//       let taskId = task.getAttribute('id').split('-')[2];
+
+//       // gantt-chart 요소를 가져옵니다.
+//       let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+
+//       // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+//       if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+//         if (checkedResult.includes(taskStatus)) {
+//            ganttChart.style.display = 'flex'; // 값이 일치하면 보이도록 설정
+//         } else {
+//            ganttChart.style.display = 'none'; // 값이 일치하지 않으면 숨기도록 설정
+//         }
+//       }
+//     }
+//   });
+// }
+// ************* 상태 필터링 (라디오 일 때)
+function is_checked_status(event) {
+  let statusRadioId = event.target.id;
+  let statusAllCheck = 'label[for="'+ statusRadioId +'"]';
+  let statusValues = document.querySelector(statusAllCheck).innerText;
+  console.log(statusValues);
+
+  let ganttTasks = document.querySelectorAll('.gantt-task');
+  ganttTasks.forEach(task => {
+    let statusNameSpan = task.querySelector('.status-name-span');
+    if (statusNameSpan) {
+      let taskStatus = statusNameSpan.textContent.trim();
+      console.log(taskStatus);
+
+      if (statusValues === '전체') {
+        if (taskStatus.includes(task)) {
+          task.style.display = 'none';
+        } else {
+          task.style.display = 'flex';
+        }
+      } else if (statusValues === '시작전') {
+        if (taskStatus === statusValues) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (statusValues === '진행중') {
+        if (taskStatus === statusValues) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (statusValues === '피드백') {
+        if (taskStatus === statusValues) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (statusValues === '완료') {
+        if (taskStatus === statusValues) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      }
+
+      // gantt-task의 ID를 추출합니다.
+      let taskId = task.getAttribute('id').split('-')[2];
+
+      // gantt-chart 요소를 가져옵니다.
+      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+
+      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+        if (statusValues === '전체') {
+          if (taskStatus.includes(task)) {
+            ganttChart.style.display = 'none';
+          } else {
+            ganttChart.style.display = 'flex';
+          }
+        } else if (statusValues === '시작전') {
+          if (taskStatus === statusValues) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (statusValues === '진행중') {
+          if (taskStatus === statusValues) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (statusValues === '피드백') {
+          if (taskStatus === statusValues) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (statusValues === '완료') {
+          if (taskStatus === statusValues) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        }
+      }
+    }
+  });
+} 
+
+
+// ************* 시작일 필터링 
+function is_checked_start(event) {
+  let startRadioId = event.target.id;
+  let startCheck = 'label[for="'+ startRadioId +'"]';
+  let startText = document.querySelector(startCheck).innerText;
+  // console.log(startText); // 전체, 오늘, 이번주, 이번달 각각 출력
+
+  // 오늘 날짜 구하기
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); // January는 0으로 시작하므로 +1
+  let yyyy = today.getFullYear();
+  let formattedToday = yyyy + '-' + mm + '-' + dd;
+
+  // 이번 주 날짜 
+  // let today = new Date();
+  let dayOfWeek = today.getDay(); // 0은 일요일, 1은 월요일, ... 6은 토요일
+  let startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (dayOfWeek - 2));
+  let endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (8 - dayOfWeek));
+  let formattedStartOfWeek = startOfWeek.toISOString().slice(0, 10);
+  let formattedEndOfWeek = endOfWeek.toISOString().slice(0, 10);
+
+  // 이번 달 날짜
+  let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  let formattedFirstDayOfMonth = firstDayOfMonth.toISOString().slice(0, 10);
+  let formattedLastDayOfMonth = lastDayOfMonth.toISOString().slice(0, 10);
+
+   // gantt-task들에 대한 처리
+  let ganttTasks = document.querySelectorAll('.gantt-task');
+  ganttTasks.forEach(task => {
+    let startDateInput = task.querySelector('.start-date');
+    if (startDateInput) {
+      let taskStart = startDateInput.value;
+      console.log(task);
+      console.log(taskStart); // 시작일의 value 값 출력
+
+      if (startText === '전체') {
+        if (taskStart.includes(task)) {
+          task.style.display = 'none';
+        } else {
+          task.style.display = 'flex';
+        }
+      } else if (startText === '오늘') {
+        if (taskStart.includes(formattedToday)) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (startText === '이번주') {
+        if (taskStart >= formattedStartOfWeek && taskStart <= formattedEndOfWeek) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (startText === '이번달') {
+        if (taskStart >= formattedFirstDayOfMonth && taskStart <= formattedLastDayOfMonth) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      }
+
+      // gantt-task의 ID를 추출합니다.
+      let taskId = task.getAttribute('id').split('-')[2];
+
+      // gantt-chart 요소를 가져옵니다.
+      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+
+      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+        if (startText === '전체') {
+          if (taskStart.includes(task)) {
+            ganttChart.style.display = 'none';
+          } else {
+            ganttChart.style.display = 'flex';
+          }
+        } else if (startText === '오늘') {
+          if (taskStart.includes(formattedToday)) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (startText === '이번주') {
+          if (taskStart >= formattedStartOfWeek && taskStart <= formattedEndOfWeek) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (startText === '이번달') {
+          if (taskStart >= formattedFirstDayOfMonth && taskStart <= formattedLastDayOfMonth) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        }
+      }
+    }
+  });
 }
+
+// ************* 마감일 필터링 
+function is_checked_end(event) {
+  let endRadioId = event.target.id;
+  let endCheck = 'label[for="'+ endRadioId +'"]';
+  let endText = document.querySelector(endCheck).innerText;
+  // console.log(endText); // 전체, 오늘, 이번주, 이번달 각각 출력
+
+  // 오늘 날짜 구하기
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); // January는 0으로 시작하므로 +1
+  let yyyy = today.getFullYear();
+  let formattedToday = yyyy + '-' + mm + '-' + dd;
+
+  // 이번 주 날짜 
+  // let today = new Date();
+  let dayOfWeek = today.getDay(); // 0은 일요일, 1은 월요일, ... 6은 토요일
+  let startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (dayOfWeek - 2));
+  let endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (8 - dayOfWeek));
+  let formattedStartOfWeek = startOfWeek.toISOString().slice(0, 10);
+  let formattedEndOfWeek = endOfWeek.toISOString().slice(0, 10);
+
+  // 이번 달 날짜
+  let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  let formattedFirstDayOfMonth = firstDayOfMonth.toISOString().slice(0, 10);
+  let formattedLastDayOfMonth = lastDayOfMonth.toISOString().slice(0, 10);
+
+   // gantt-task들에 대한 처리
+  let ganttTasks = document.querySelectorAll('.gantt-task');
+  ganttTasks.forEach(task => {
+    let endDateInput = task.querySelector('.end-date');
+    if (endDateInput) {
+      let taskEnd = endDateInput.value;
+      console.log(task);
+      console.log(taskEnd); // 시작일의 value 값 출력
+
+      if (endText === '전체') {
+        if (taskEnd.includes(task)) {
+          task.style.display = 'none';
+        } else {
+          task.style.display = 'flex';
+        }
+      } else if (endText === '오늘') {
+        if (taskEnd.includes(formattedToday)) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (endText === '이번주') {
+        if (taskEnd >= formattedStartOfWeek && taskEnd <= formattedEndOfWeek) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (endText === '이번달') {
+        if (taskEnd >= formattedFirstDayOfMonth && taskEnd <= formattedLastDayOfMonth) {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      }
+
+      // gantt-task의 ID를 추출합니다.
+      let taskId = task.getAttribute('id').split('-')[2];
+
+      // gantt-chart 요소를 가져옵니다.
+      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+
+      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+        if (endText === '전체') {
+          if (taskEnd.includes(task)) {
+            ganttChart.style.display = 'none';
+          } else {
+            ganttChart.style.display = 'flex';
+          }
+        } else if (endText === '오늘') {
+          if (taskEnd.includes(formattedToday)) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (endText === '이번주') {
+          if (taskEnd >= formattedStartOfWeek && taskEnd <= formattedEndOfWeek) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (endText === '이번달') {
+          if (taskEnd >= formattedFirstDayOfMonth && taskEnd <= formattedLastDayOfMonth) {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        }
+      }
+    }
+  });
+}
+
+// ************* 모든 필터링 중복 적용?
 
 
 
@@ -194,7 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
         
-
     
     // 해당 업무들을 표시하는 차트 부분도 같은 순서로 재배치합니다.
     // const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
@@ -855,9 +1168,9 @@ function addSubTask(event, mainId) {
     });
   }
   // gantt-task 안 두번째 div
-  // <div class="responName gantt-update-dropdown"></div>
+  // <div class="responName"></div>
   const addUserName = document.createElement('div');
-  addUserName.classList.add('responName', 'gantt-update-dropdown');
+  addUserName.classList.add('responName');
 
   // gantt-task 안 두번째 div 안 span
   // <span id="responNameSpan">{{$item->name}}</span>
@@ -871,9 +1184,9 @@ function addSubTask(event, mainId) {
   addStatusColorDiv.classList.add('gantt-status-name');
 
   // gantt-task 안 세번째 div 안 div
-  // <div class="statusName gantt-status-color gantt-update-dropdown" data-status="{{$item->task_status_name}}"></div>
+  // <div class="statusName gantt-status-color" data-status="{{$item->task_status_name}}"></div>
   const addStatusColor = document.createElement('div');
-  addStatusColor.classList.add('statusName', 'gantt-status-color', 'gantt-update-dropdown');
+  addStatusColor.classList.add('statusName', 'gantt-status-color');
   addStatusColor.setAttribute('data-status', '시작전');
   // addStatusColor.dataset.status = '시작전';
 
@@ -881,6 +1194,7 @@ function addSubTask(event, mainId) {
   // <span>{{$item->task_status_name}}</span>
   const addStatusColorSpan = document.createElement('span');
   addStatusColorSpan.id = 'statusNameSpan';
+  addStatusColorSpan.classList = 'status-name-span';
   addStatusColorSpan.textContent = '시작전';
 
 
@@ -963,7 +1277,9 @@ for (let index = 0; index < ganttChildTaskList.length; index++) {
     // console.log('add'+[element]);
   }
 }
-if(myChildren[myChildren.length-1].getAttribute('id') !== null){
+console.log(myChildren);
+console.log(myChildren.length !== 0);
+if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') !== null : true){
   if(myChildren.length !== 0){
     // console.log(myChildren);
     // console.log(myChildren[myChildren.length-1]);
