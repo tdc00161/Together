@@ -168,6 +168,225 @@ class GanttChartController extends Controller
     //     } else {
     //         return redirect('/user/login');
     //     }
+    //  $result = project::find($id);
+        $user = Auth::user();
+
+        // $project_id = $id; 
+
+        $user_data = project::where('user_pk',$user->id)
+        ->select('id'
+                ,'user_pk'
+                ,'color_code_pk'
+                ,'project_title'
+                ,'project_content'
+                ,'start_date'
+                ,'end_date'
+                ,'created_at'
+                ,'flg'
+                )
+        ->get();
+
+        // --- 대시보드 공지 출력
+        $dashboardNotice = DB::table('tasks as t')
+        ->join('projects as p','p.id','=','t.project_id')
+        ->join('project_users as pu','pu.project_id','=','p.id')
+        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+        ->where('b.data_title_code', '=', 3)
+        ->where('pu.member_id', '=', $user->id)
+        ->get();
+
+        $userId = Auth::id();
+        
+        $project0title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
+        ->orderBy('p.created_at', 'asc')
+        ->get();
+
+        // $color_code = DB::table('projects as pj')
+        //                 ->join('basedata as bd','bd.data_content_code','pj.color_code_pk')
+        //                 ->select('pj.id', 'bd.data_content_name')
+        //                 ->where('pj.id',$result->id)
+        //                 ->where('bd.data_title_code','3')
+        //                 ->whereNull('pj.deleted_at')
+        //                 ->get();
+        // dd($color_code);
+
+        //프로젝트 dday 출력 240101 수정
+        // $projectDday = Carbon::now()->addDays(-1)->diffInDays($result->end_date);
+
+        $data = [];
+        // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
+        // 자신이 포함된 프로젝트 나열
+        // $data['project'] = Project::find($id);
+        $project = DB::table('projects as p')
+            ->join('project_users as pu','pu.project_id','p.id')
+            ->join('basedata as pj_clr','pj_clr.data_content_code','p.color_code_pk')
+            ->join('basedata as auth','auth.data_content_code','pu.authority_id')
+            ->where('pu.member_id',$userId)
+            ->where('pj_clr.data_title_code','3')
+            ->where('auth.data_title_code','4')
+            ->whereNull('p.deleted_at')
+            ->whereNull('pu.deleted_at')
+            ->orderBy('p.created_at')
+            ->select(
+                // 'p.id as projects_id',
+                'p.user_pk',
+                'p.color_code_pk',
+                'pj_clr.data_content_name as color_code',
+                'p.project_title',
+                'p.flg',
+                'p.created_at as project_created_at',
+                'pu.id as project_users_id',
+                'pu.project_id',
+                'pu.authority_id',
+                'auth.data_content_name as authority_name',
+                'pu.created_at as project_user_created_at',
+                )
+            ->get();
+        // dd($project);
+        // dd(url()->to('/'));
+        $depth_0 = DB::table('tasks as t')
+                ->join('project_users as pu','pu.project_id','t.project_id')
+                ->leftJoin('users as res','res.id','t.task_responsible_id')
+                ->join('users as wri','wri.id','t.task_writer_id')
+                ->join('basedata as sta','sta.data_content_code','t.task_status_id')
+                // ->leftJoin('basedata as pri','pri.data_content_code','t.priority_id')
+                ->leftJoin('basedata as pri', function ($join) {
+                    $join->on('pri.data_content_code', '=', 't.priority_id')
+                         ->where('pri.data_title_code', '=', '1');
+                })
+                ->join('basedata as cat','cat.data_content_code','t.category_id')
+                ->where('pu.member_id',$userId)
+                ->where('sta.data_title_code','0')
+                // ->where('pri.data_title_code','1')
+                ->where('cat.data_title_code','2')
+                ->where('t.category_id',0)
+                ->where('t.task_depth','0')
+                ->whereNull('t.deleted_at')
+                ->whereNull('pu.deleted_at')
+                ->orderBy('t.created_at')
+                ->select(
+                    't.id as task_id',
+                    't.project_id',
+                    't.task_responsible_id',
+                    'res.name as res_name',
+                    't.task_writer_id',
+                    'wri.name as wri_name',
+                    't.task_status_id',
+                    'sta.data_content_name as sta_name',
+                    't.priority_id',
+                    'pri.data_content_name as pri_name',
+                    't.category_id',
+                    'cat.data_content_name as cat_name',
+                    't.task_number',
+                    't.task_parent',
+                    't.task_depth',
+                    't.title',
+                    't.start_date',
+                    't.end_date',
+                    't.created_at as task_created_at',
+                    't.updated_at as task_updated_at',
+                    'pu.id as project_user_id',
+                    'pu.authority_id',
+                )
+                ->get();
+                // dd($depth_0);
+        $depth_1 = DB::table('tasks as t')
+                ->join('project_users as pu','pu.project_id','t.project_id')
+                ->leftJoin('users as res','res.id','t.task_responsible_id')
+                ->join('users as wri','wri.id','t.task_writer_id')
+                ->join('basedata as sta','sta.data_content_code','t.task_status_id')
+                // ->leftJoin('basedata as pri','pri.data_content_code','t.priority_id')
+                ->leftJoin('basedata as pri', function ($join) {
+                    $join->on('pri.data_content_code', '=', 't.priority_id')
+                        ->where('pri.data_title_code', '=', '1');
+                })
+                ->join('basedata as cat','cat.data_content_code','t.category_id')
+                ->where('pu.member_id',$userId)
+                ->where('sta.data_title_code','0')
+                // ->where('pri.data_title_code','1')
+                ->where('cat.data_title_code','2')
+                ->where('t.category_id',0)
+                ->where('t.task_depth','1')
+                ->whereNull('t.deleted_at')
+                ->whereNull('pu.deleted_at')
+                ->orderBy('t.created_at')
+                ->select(
+                    't.id as task_id',
+                    't.project_id',
+                    't.task_responsible_id',
+                    'res.name as res_name',
+                    't.task_writer_id',
+                    'wri.name as wri_name',
+                    't.task_status_id',
+                    'sta.data_content_name as sta_name',
+                    't.priority_id',
+                    'pri.data_content_name as pri_name',
+                    't.category_id',
+                    'cat.data_content_name as cat_name',
+                    't.task_number',
+                    't.task_parent',
+                    't.task_depth',
+                    't.title',
+                    't.start_date',
+                    't.end_date',
+                    't.created_at as task_created_at',
+                    't.updated_at as task_updated_at',
+                    'pu.id as project_user_id',
+                    'pu.authority_id',
+                )
+                ->get();
+                // dd($depth_1);
+        foreach ($depth_0 as $key => $value_0) {
+            foreach ($depth_1 as $key => $value_1) {
+                if($value_1->task_parent === $value_0->task_id){
+                    $value_0->depth_1[] = $value_1;
+                }
+            }
+        }
+        foreach ($project as $key => $value_p) {    
+            foreach ($depth_0 as $key => $value_0) {
+                if($value_0->project_id === $value_p->project_id){
+                    $value_p->depth_0[] = $value_0;
+                }
+            }
+        }
+        // dd($project);
+
+        // $depth_0 = Task::depth_pj(0,$id); // 모델에서 만들어 놓은 쿼리로 하위 업무 각자 가져옴
+        // $data = $depth_0;
+        // foreach ($depth_0 as $key => $value) {            
+        //     $value->depth_1 = Task::depth_tsk(1,$value->id);
+        // }
+        // $data['task'] = $depth_0;
+        // dd($data);
+        // dd($data['task'][0]->id);
+        return view('ganttchart-all')->with('data', $project)
+        ->with('user', Session::get('user'))
+        ->with('project0title',$project0title)
+        ->with('project1title',$project1title);
+        // ->with('project_id', $project_id)
+        // ->with('color_code',$color_code)
+        // ->with('result',$result);
+        // ->with('projectDday',$projectDday);
     }
 
 
@@ -238,6 +457,13 @@ class GanttChartController extends Controller
         //프로젝트 dday 출력 240101 수정
         $projectDday = Carbon::now()->addDays(-1)->diffInDays($result->end_date);
 
+        $authoritychk = DB::table('project_users as pu')
+                      ->join('projects as pj','pj.id','pu.project_id')
+                      ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
+                      ->where('pu.project_id',$result->id)
+                      ->where('pu.member_id',$result->user_pk)
+                      ->get();
+
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
         $data['project'] = Project::find($id);
@@ -253,6 +479,7 @@ class GanttChartController extends Controller
         ->with('user', Session::get('user'))
         ->with('project0title',$project0title)
         ->with('project1title',$project1title)
+        ->with('authoritychk',$authoritychk)
         // ->with('project_id', $project_id)
         ->with('color_code',$color_code)
         ->with('result',$result)
