@@ -966,71 +966,69 @@ document.querySelector('.chat-back').addEventListener('click',() => {
 })
 
 // 화면 열 때 채팅리스트 불러오기
-fetch('/chatlist', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken,
-    },
-    // body: JSON.stringify({ deletefriendId: deletefriendId }),
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('error with print chatting list.');
-    }
-    return response.json();
-})
-.then(data => {
-    // 성공 응답 받았을 때 처리
-    // console.log(data);
+// fetch('/chatlist', {
+//     method: 'GET',
+//     headers: {
+//         'Content-Type': 'application/json',
+//         'X-CSRF-TOKEN': csrfToken,
+//     },
+//     // body: JSON.stringify({ deletefriendId: deletefriendId }),
+// })
+// .then(response => {
+//     if (!response.ok) {
+//         throw new Error('error with print chatting list.');
+//     }
+//     return response.json();
+// })
+// .then(data => {
+//     // 성공 응답 받았을 때 처리
+//     // console.log(data);
 
-    // 새로운 chat-layout 요소 생성
-    // var chatLayout = document.createElement('div'); // blade->chatLayout 사용
-    var chatLayout = document.querySelector('.chat-layout');
-    chatLayout.className = 'chat-layout';
+//     // 새로운 chat-layout 요소 생성
+//     // var chatLayout = document.createElement('div'); // blade->chatLayout 사용
+//     var chatLayout = document.querySelector('.chat-layout');
+//     chatLayout.className = 'chat-layout';
     
-    data.forEach((chatOne, index) => {
-        // console.log(chatOne);
+//     data.forEach((chatOne, index) => {
+//         // console.log(chatOne);
 
-        // 새로운 chat-room 요소 생성
-        var chatRoom = document.createElement('div');
-        chatRoom.className = 'chat-room';
-        chatRoom.setAttribute('chat-room-id', chatOne.chat_room_id);
-        chatLayout.appendChild(chatRoom);
+//         // 새로운 chat-room 요소 생성
+//         var chatRoom = document.createElement('div');
+//         chatRoom.className = 'chat-room';
+//         chatRoom.setAttribute('chat-room-id', chatOne.chat_room_id);
+//         chatLayout.appendChild(chatRoom);
         
-        // chat-icon 요소 생성 및 chat-room에 추가
-        var chatIcon = document.createElement('div');
-        chatIcon.className = 'chat-icon';
-        chatRoom.appendChild(chatIcon);
+//         // chat-icon 요소 생성 및 chat-room에 추가
+//         var chatIcon = document.createElement('div');
+//         chatIcon.className = 'chat-icon';
+//         chatRoom.appendChild(chatIcon);
         
-        // chat-middle 요소 생성 및 chat-room에 추가
-        var chatMiddle = document.createElement('div');
-        chatMiddle.className = 'chat-middle';
-        chatRoom.appendChild(chatMiddle);
+//         // chat-middle 요소 생성 및 chat-room에 추가
+//         var chatMiddle = document.createElement('div');
+//         chatMiddle.className = 'chat-middle';
+//         chatRoom.appendChild(chatMiddle);
         
-        // chat-name 요소 생성, 속성 추가, chat-middle에 추가
-        var chatName = document.createElement('div');
-        chatName.className = 'chat-name';
-        chatName.setAttribute('alarm-count', ''); // 속성 추가
-        chatName.textContent = chatOne.chat_room_name ? chatOne.chat_room_name : '';
-        chatMiddle.appendChild(chatName);
+//         // chat-name 요소 생성, 속성 추가, chat-middle에 추가
+//         var chatName = document.createElement('div');
+//         chatName.className = 'chat-name';
+//         chatName.setAttribute('alarm-count', ''); // 속성 추가
+//         chatName.textContent = chatOne.chat_room_name ? chatOne.chat_room_name : '';
+//         chatMiddle.appendChild(chatName);
         
-        // chat-content 요소 생성, chat-middle에 추가
-        var chatContent = document.createElement('div');
-        chatContent.className = 'chat-content';
-        chatContent.textContent = chatOne.last_chat; // 길이조절
-        chatMiddle.appendChild(chatContent);
+//         // chat-content 요소 생성, chat-middle에 추가
+//         var chatContent = document.createElement('div');
+//         chatContent.className = 'chat-content';
+//         chatContent.textContent = chatOne.last_chat; // 길이조절
+//         chatMiddle.appendChild(chatContent);
         
-        // chat-time 요소 생성 및 chat-room에 추가
-        var chatTime = document.createElement('div');
-        chatTime.className = 'chat-time';
-        chatTime.textContent = chatOne.updated_at; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
-        chatRoom.appendChild(chatTime);                
-    })
-    // document.querySelector('.tab-content').appendChild(chatLayout); // blade->chatLayout 사용
-})
-.catch(error => {
-    // 실패 응답 또는 네트워크 오류 발생 시 처리
-    console.error('Error:', error.message);
-    console.log(error.stack);
-});
+//         // chat-time 요소 생성 및 chat-room에 추가
+//         var chatTime = document.createElement('div');
+//         chatTime.className = 'chat-time';
+//         chatTime.textContent = chatOne.updated_at; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
+//         chatRoom.appendChild(chatTime);                
+//     })
+//     // document.querySelector('.tab-content').appendChild(chatLayout); // blade->chatLayout 사용
+// })
+// .catch(error => {
+//     console.log(error.stack);
+// });
