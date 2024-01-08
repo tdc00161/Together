@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,15 @@ class MessengerController extends Controller
 
 		$userId = Auth::id();
 						
+		Log::debug($request);
+
+		// chat 채팅내역에 새로운 채팅을 저장 (필요: sender_id, receiver_id(chat_rooms 채팅방 join), content)
+		$request['sender_id'] = $userId;
+		$request['receiver_id'];
+		// $request['content'];
+
+		// Chat::create($request->toArray());
+
     	return $request;
     	// return $myChatRooms;
     }
