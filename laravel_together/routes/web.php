@@ -88,4 +88,4 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });
 
-Route::get('/invite',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
+Route::get('/invite/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
