@@ -860,14 +860,15 @@ function chatListCheck() {
                     // console.log(addedNode);
                     addedNode.addEventListener('click', (event) => {
                         // console.log(addedNode.getAttribute('chat-room-id'));
+                        var now_chat_id = addedNode.getAttribute('chat-room-id')
                         // 클릭하면 채팅창이 켜지고 해당 채팅방의 id로 fetch
                         document.querySelector('.chat-layout').style.display = 'none';
                         document.querySelector('.chat-window').style.display = 'block';
                         // console.log(addedNode);
-                        document.querySelector('.chat-window').setAttribute('chat-room-id',addedNode.getAttribute('chat-room-id'));
+                        document.querySelector('.chat-window').setAttribute('chat-room-id',now_chat_id);
 
                         // 채팅방 id를 불러서 최신내용 호출
-                        fetch('/chat/'+ addedNode.getAttribute('chat-room-id'), {
+                        fetch('/chat/'+ now_chat_id, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -883,7 +884,15 @@ function chatListCheck() {
                         })
                         .then(data => {
                             // 성공 응답 받았을 때 처리
-                            console.log(data);          
+                            console.log(data);   
+                            // 수신 받은 채팅내역을 필드에 출력
+                            var messageField = document.querySelector('.messages-field')
+                            data.forEach(msg => {
+                                var msgBox = document.createElement('div');
+                                var icon = document.createElement('div');
+                                msgBox.textContent = msg;
+                                messageField.append(msgBox);
+                            })
                         })
                         .catch(error => {
                             // 실패 응답 또는 네트워크 오류 발생 시 처리
@@ -899,7 +908,8 @@ function chatListCheck() {
 
                             // api 작성 통신
                             let postData = {
-                                "content": input.value
+                                "content": input.value,
+                                "receiver_id": now_chat_id,
                             }
                             fetch('/chat', {
                                 method: 'POST',
