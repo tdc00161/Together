@@ -293,31 +293,37 @@ class ProjectController extends Controller
 
     $url = url()->current();
 
-    $project = DB::table('projects')
-                ->where('invite',$url)
+    $user = Auth::user();
+    // dd($user);
+
+    $project = DB::table('projects as pj')
+                ->join('users as us','us.id','pj.user_pk')
+                ->select('pj.id as project_id','pj.flg','us.id as uid','pj.invite')
+                ->where('pj.invite',$url)
                 ->get();
     // dd($project);
 
-    $id = $project[0]->id;
-    $member_id = $project[0]->user_pk;
+    $id = $project[0]->project_id;
+    $member_id = $user->id;
     // dump($id);
     // dd($member_id);
 
-    //초대 구성원 추가
-    $invite_user = ProjectUser::create([
-      'project_id' => $id,
-      'authority_id' => '1',
-      'member_id' => $member_id,
-    ]);
-
+    if(ProjectUser::check($member_id)){
+        //초대 구성원 추가
+        $invite_user = ProjectUser::create([
+          'project_id' => $id,
+          'authority_id' => '1',
+          'member_id' => $member_id
+        ]);
+    }
 
     if(!Auth::check()){
       return redirect()->route('user.login.get');
     }else{
       if($project[0]->flg === '0'){
-        return redirect()->route('individual.get',['id' => $project[0]->id]);
+        return redirect()->route('individual.get',['id' => $project[0]->project_id]);
       }elseif($project[0]->flg === '1'){
-        return redirect()->route('team.get',['id' => $project[0]->id]);
+        return redirect()->route('team.get',['id' => $project[0]->project_id]);
       }
     }
   }
@@ -503,16 +509,18 @@ class ProjectController extends Controller
     public function exit_project(Request $request, $id)
     {
         $user = auth::user();
-        Log::debug("user 확인요청 : ". $user);
+        Log::debug("user 확인요청 : ". $user);        
+
         if(!$user) {
           return response()->json(['errer' => 'item not found'], 404);
         }
         //구성원 나가기 기능
         $member = ProjectUser::where('project_users.project_id',$id)
-                            ->where('project_users.member_id', $user->id)
                             ->join('projects as pj', 'pj.id', 'project_users.project_id')
                             ->join('users as us', 'us.id', 'pj.user_pk')
                             ->select('project_users.*')
+                            ->where('pj.authority_id',1)
+                            ->where('project_users.member_id',$user->id)
                             ->delete();
 
         return response()->json();

@@ -24,6 +24,9 @@ class ProjectUser extends Model // 프로젝트 참여자
         'member_id',
     ];
 
+    public static function check($id){
+        return self::where('member_id', $id)->exists();
+    }
 
     public $timestamps = ["created_at"];
 
