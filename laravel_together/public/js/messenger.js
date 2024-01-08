@@ -882,26 +882,63 @@ function chatListCheck() {
                             }
                             return response.json();
                         })
-                        .then(data => {
+                        .then(data => {                            
                             // 성공 응답 받았을 때 처리
-                            console.log(data);   
-                            // 수신 받은 채팅내역을 필드에 출력
+                            // console.log(data);   
+
+                            // 채팅 필드
                             var messageField = document.querySelector('.messages-field')
-                            data.forEach(msg => {
-                                console.log(msg);
+
+                            // 수신 받은 채팅내역을 필드에 출력
+                            data['chatRecords'].forEach(msg => {
+                                // console.log(msg);
+
+                                // 채팅 박스
                                 var chatMsgBox = document.createElement('div');
-                                chatMsgBox.className = 'chat-msg-box';
-                                chatMsgBox.setAttribute('chat-id',msg.id);
-                                var chatUserIcon = document.createElement('div');
-                                chatUserIcon.className = 'chat-user-icon';
-                                var chatUserIconAfter = document.createElement('div');
-                                chatUserIconAfter.className = 'chat-user-icon-after';
-                                var chatUserName = document.createElement('div');
-                                chatUserName.className = 'chat-user-name'
-                                var chatContent = document.createElement('div');
-                                
-                                messageField.append(chatMsgBox);
+                                    chatMsgBox.className = 'chat-msg-box';
+                                    chatMsgBox.setAttribute('chat-id',msg.id);
+
+                                if(data['userId'] === msg.sender_id) {
+                                    // 내가 쓴 채팅
+                                    var chatContent = document.createElement('div');
+                                    chatContent.className = 'chat-content';
+                                    chatContent.classList.add('my-chat-content');
+                                    chatContent.textContent = msg.content;
+                                    // 채팅내역만 담기
+                                    chatMsgBox.append(chatContent);
+                                    messageField.append(chatMsgBox);
+                                } else {
+                                    // 송신 유저 아이콘
+                                    var chatUserIcon = document.createElement('div');
+                                    chatUserIcon.className = 'chat-user-icon';
+                                    // 우측 묶음
+                                    var chatUserIconAfter = document.createElement('div');
+                                    chatUserIconAfter.className = 'chat-user-icon-after';
+                                    // 송신 유저 이름
+                                    var chatUserName = document.createElement('div');
+                                    chatUserName.className = 'chat-user-name';
+                                    chatUserName.textContent = msg.name;
+                                    // 채팅 컨텐츠
+                                    var chatContent = document.createElement('div');
+                                    chatContent.className = 'chat-content';
+                                    chatContent.textContent = msg.content;
+                                    // 구조대로 담기
+                                    chatUserIconAfter.append(chatUserName);
+                                    chatUserIconAfter.append(chatContent);
+                                    chatMsgBox.append(chatUserIcon);
+                                    chatMsgBox.append(chatUserIconAfter);
+                                    messageField.append(chatMsgBox);
+                                }
                             })
+                            // 다 하고 맨 아래로 스크롤
+                            let ChatList = document.querySelectorAll('.chat-msg-box');
+                            let lastChat = ChatList[ChatList.length-1];
+                            lastChat.scrollIntoView(false);
+
+                            window.Echo.private('chats')
+                                .listen('MessageSent', e => {
+                                    console.log(e);
+                                })
                         })
                         .catch(error => {
                             // 실패 응답 또는 네트워크 오류 발생 시 처리
@@ -910,7 +947,7 @@ function chatListCheck() {
 
                         // 채팅방 입력창 버튼 이벤트
                         // 전송버튼
-                        var send_chat = document.querySelector('.send-chat')
+                        var send_chat = document.querySelector('.send-chat');
                         send_chat.addEventListener('click', () => {
                             // 입력창
                             var input = document.querySelector('#chatting-input');
@@ -924,7 +961,7 @@ function chatListCheck() {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': csrfToken_insert_detail,
+                                    'X-CSRF-TOKEN': csrfToken,
                                 },
                                 body: JSON.stringify(postData),
                             })
@@ -938,6 +975,28 @@ function chatListCheck() {
                                 })
                                 .then(data => {
                                     console.log(data);
+
+                                    var messageField = document.querySelector('.messages-field')
+                                    // 채팅 박스
+                                    var chatMsgBox = document.createElement('div');
+                                    chatMsgBox.className = 'chat-msg-box';
+                                    chatMsgBox.setAttribute('chat-id',data.sender_id);
+                                    // 내가 쓴 채팅
+                                    var chatContent = document.createElement('div');
+                                    chatContent.className = 'chat-content';
+                                    chatContent.classList.add('my-chat-content');
+                                    chatContent.textContent = data.content;
+                                    // 채팅내역만 담기
+                                    chatMsgBox.append(chatContent);
+                                    messageField.append(chatMsgBox);
+
+                                    // 채팅창 초기화
+                                    input.value = '';
+
+                                    // 다 하고 맨 아래로 스크롤
+                                    let ChatList = document.querySelectorAll('.chat-msg-box');
+                                    let lastChat = ChatList[ChatList.length-1];
+                                    lastChat.scrollIntoView(false);
                                 })
                                 .catch(error => {
                                     console.log(error.stack);
@@ -968,8 +1027,42 @@ function chatListCheck() {
 // 옵저버 실행
 chatListCheck();
 
+// // 채팅방이 꺼지면 채팅내역 삭제
+// function msgFieldCheck() {
+//     // 1. 주기적으로 감지할 대상 요소 선정
+//     const target = document.querySelector('.messages-field');
+    
+//     // 2. 옵저버 콜백 생성
+//     const callback = (mutationList, observer) => {        
+//         mutationList.forEach((mutation, index) => {
+//             console.log(mutation);
+//         })
+//     };
+    
+//     // 3. 옵저버 인스턴스 생성
+//     const observer = new MutationObserver(callback); // 타겟에 변화가 일어나면 콜백함수를 실행하게 된다.
+    
+//     // 4. DOM의 어떤 부분을 감시할지를 옵션 설정
+//     const config = { 
+//         attributes: true, // 속성 변화 할때 감지
+//         // childList: true, // 자식노드 추가/제거 감지
+//         characterData: true // 데이터 변경전 내용 기록
+//     };
+    
+//     // 5. 감지 시작
+//     observer.observe(target, config);
+// }
+
+// // 옵저버 실행
+// msgFieldCheck();
+
 // 뒤로가기 버튼 적용
 document.querySelector('.chat-back').addEventListener('click',() => {
+    // 채팅 필드 초기화
+    var messageField = document.querySelector('.messages-field')
+    while (messageField.hasChildNodes()) {
+        messageField.removeChild(messageField.firstChild);
+    } 
     document.querySelector('.chat-window').style.display = 'none';
     document.querySelector('.chat-layout').style.display = 'block';
 })

@@ -2201,10 +2201,12 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   forceTLS: true,
   encryption: true
 });
-window.Echo.channel('test-channel').listen('.test-event', function (data) {
-  console.log(data);
-  alert(JSON.stringify(data['message']));
-});
+
+// window.Echo.channel('test-channel')
+//     .listen('.test-event', (data) => {
+//         console.log(data);
+//         alert(JSON.stringify(data['message']));
+//     });
 
 /***/ }),
 

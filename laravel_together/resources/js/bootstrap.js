@@ -28,8 +28,8 @@ window.Echo = new Echo({
     encryption: true
 });
 
-window.Echo.channel('test-channel')
-    .listen('.test-event', (data) => {
-        console.log(data);
-        alert(JSON.stringify(data['message']));
-    });
+// window.Echo.channel('test-channel')
+//     .listen('.test-event', (data) => {
+//         console.log(data);
+//         alert(JSON.stringify(data['message']));
+//     });

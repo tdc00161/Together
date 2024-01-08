@@ -1,6 +1,7 @@
 <head>
     <link rel="stylesheet" href="/css/messenger.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body>
     <div id="m-myModal" class="m-modal">

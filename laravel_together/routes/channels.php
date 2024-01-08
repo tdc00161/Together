@@ -13,10 +13,15 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('test-channel', function ($user, $id) {
-    // return (int) $user->id === (int) $id;
-    return true;
-});
-// Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-//     return (int) $user->id === (int) $id;
+// Broadcast::channel('test-channel', function ($user, $id) {
+//     // return (int) $user->id === (int) $id;
+//     return true;
 // });
+
+Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('chats', function ($user) {
+    return auth()->check();
+});
