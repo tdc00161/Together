@@ -49,9 +49,14 @@ class ProjectController extends Controller
     $data['invite'] = url()->full();
     // dd($data);
 
+    //프로젝트별 랜덤 고유 토큰 추가
+    $data['invite'] = url()->full();
+    // dd($data);
+
+    // $data['start_data'] = str_replace('-', '/', $data['start_date']);
+    
     //DB 저장
     $result = Project::create($data);
-
 
     //----project_users 테이블 데이터 추가
 
