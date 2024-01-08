@@ -850,14 +850,14 @@ function chatListCheck() {
     
     // 2. 옵저버 콜백 생성
     const callback = (mutationList, observer) => {
-        console.log(mutationList);
+        // console.log(mutationList);
         // console.log(mutationList[0].addedNodes[0]);
         // mutationList[0].addedNodes[0].addEventListener('click', (event) => event.target.parentNode.style.display = 'none')
         mutationList.forEach((mutation, index) => {
             // if(mutation.type === 'childList') {
             if(mutation.addedNodes.length !== 0) {
                 mutation.addedNodes.forEach((addedNode, index) => {
-                    console.log(addedNode);
+                    // console.log(addedNode);
                     addedNode.addEventListener('click', () => {
                         // console.log(addedNode.getAttribute('chat-room-id'));
                         // 클릭하면 채팅창이 켜지고 해당 채팅방의 id로 fetch
@@ -943,7 +943,7 @@ fetch('/chatlist', {
     chatLayout.className = 'chat-layout';
     
     data.forEach((chatOne, index) => {
-        console.log(chatOne);
+        // console.log(chatOne);
 
         // 새로운 chat-room 요소 생성
         var chatRoom = document.createElement('div');
