@@ -17,13 +17,13 @@ class MessengerController extends Controller
 
 		$userId = Auth::id();
 		
-		// $myChatRooms = DB::table('chat_rooms as cr')
-		// 	->join('chat_users as cu','cu.chat_room_id','cr.id')
-		// 	->where('cu.user_id',$userId)
-		// 	->get()
-		// 	->toArray();
+		$myChatRooms = DB::table('chat_rooms as cr')
+			->join('chat_users as cu','cu.chat_room_id','cr.id')
+			->where('cu.user_id',$userId)
+			->get()
+			->toArray();
 			
-    	// return $myChatRooms;
+    	return $myChatRooms;
     }
 
 	// 한 채팅방의 채팅내역을 불러옴
