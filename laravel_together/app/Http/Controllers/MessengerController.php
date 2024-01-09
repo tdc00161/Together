@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\ChatRoom;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +62,7 @@ class MessengerController extends Controller
 		// chat 채팅내역에 새로운 채팅을 저장 (필요: sender_id, receiver_id(chat_rooms 채팅방 join), content)
 		$request['sender_id'] = $userId;
 
+		// 채팅 유효성 검사
 		$validated = $request->validate([
 			'content' => 'required',
 			'sender_id' => 'required',
@@ -68,9 +71,17 @@ class MessengerController extends Controller
 
 		Log::debug($request);
 		Log::debug($validated);
-
+		
+		// 채팅 생성
 		$result = Chat::create($validated);
 
+		// 해당 채팅방의 최신 내역 갱신
+		ChatRoom::where('id',$result->receiver_id)
+			->update([
+				'last_chat' => $result->content
+			]);
+
+		// 채팅 이벤트 실행
 		MessageSent::dispatch($result);
 
     	return $result;
