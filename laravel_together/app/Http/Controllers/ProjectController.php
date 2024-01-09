@@ -289,7 +289,7 @@ class ProjectController extends Controller
   }
 
   //초대 응했을 때 들어오는 링크
-  public function acceptInvite(Request $request) {
+  public function acceptInvite(Request $request, $token) {
 
     $url = url()->current();
 
@@ -308,7 +308,10 @@ class ProjectController extends Controller
     // dump($id);
     // dd($member_id);
 
-    $invite_member = ProjectUser::where('member_id',$member_id)->first();
+    $invite_member = ProjectUser::where('member_id',$member_id)
+                                  ->where('project_id',$id)
+                                  ->first();
+    // dd($invite_member);
 
     if(!$invite_member){
         //초대 구성원 추가
@@ -317,6 +320,8 @@ class ProjectController extends Controller
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
+    }else{
+      return view('/membermodal')->with('project',$project);
     }
 
     if(!Auth::check()){
@@ -330,6 +335,11 @@ class ProjectController extends Controller
     }
   }
 
+  public function membermodal($token){
+
+    // dd($token);
+    return view('/membermodal')->with('token',$token);
+  }
 
   public function project_graph_data(Request $request, $id) {
 
