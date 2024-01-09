@@ -147,19 +147,27 @@ function enterkeySearch() {
 //     }
 //   });
 // }
+
+// ************* 모든 필터링 중복 적용?
+let filterFunctions  = [];
+let statusFilter = [];
+let responFilter = [];
+let startFilter = [];
+let endFilter = [];
+
 // ************* 상태 필터링 (라디오 일 때)
 function is_checked_status(event) {
   let statusRadioId = event.target.id;
   let statusAllCheck = 'label[for="'+ statusRadioId +'"]';
   let statusValues = document.querySelector(statusAllCheck).innerText;
-  console.log(statusValues);
+  // console.log(statusValues);
 
   let ganttTasks = document.querySelectorAll('.gantt-task');
   ganttTasks.forEach(task => {
     let statusNameSpan = task.querySelector('.status-name-span');
     if (statusNameSpan) {
       let taskStatus = statusNameSpan.textContent.trim();
-      console.log(taskStatus);
+      // console.log(taskStatus);
 
       if (statusValues === '전체') {
         if (taskStatus.includes(task)) {
@@ -237,6 +245,68 @@ function is_checked_status(event) {
   });
 } 
 
+// ************* 담당자 필터링 
+function is_checked_respon(event) {
+  let responRadioId = event.target.id;
+  let responAllCheck = 'label[for="'+ responRadioId +'"]';
+  let responValues = document.querySelector(responAllCheck).innerText;
+  // console.log(responValues);
+
+  let ganttTasks = document.querySelectorAll('.gantt-task');
+  ganttTasks.forEach(task => {
+    let responNameSpan = task.querySelector('.respon-name-span');
+    if (responNameSpan) {
+      let taskRespon = responNameSpan.textContent.trim();
+      // console.log(taskRespon !== '' && responValues.includes(taskRespon));
+      // console.log(taskRespon === '');
+
+      if (responValues === '전체') {
+        if (taskRespon.includes(task)) {
+          task.style.display = 'none';
+        } else {
+          task.style.display = 'flex';
+        }
+      } else if (responValues === '없음') {
+        if (taskRespon === '') {
+          task.style.display = 'flex';
+        } else {
+          task.style.display = 'none';
+        }
+      } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+        task.style.display = 'flex';
+      } else {
+        task.style.display = 'none';
+      }
+
+      // gantt-task의 ID를 추출합니다.
+      let taskId = task.getAttribute('id').split('-')[2];
+
+      // gantt-chart 요소를 가져옵니다.
+      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+
+      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+        if (responValues === '전체') {
+          if (taskRespon.includes(task)) {
+            ganttChart.style.display = 'none';
+          } else {
+            ganttChart.style.display = 'flex';
+          }
+        } else if (responValues === '없음') {
+          if (taskRespon === '') {
+            ganttChart.style.display = 'flex';
+          } else {
+            ganttChart.style.display = 'none';
+          }
+        } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+          ganttChart.style.display = 'flex';
+        } else {
+          ganttChart.style.display = 'none';
+        }
+      }
+    }   
+  });
+}
 
 // ************* 시작일 필터링 
 function is_checked_start(event) {
@@ -272,8 +342,8 @@ function is_checked_start(event) {
     let startDateInput = task.querySelector('.start-date');
     if (startDateInput) {
       let taskStart = startDateInput.value;
-      console.log(task);
-      console.log(taskStart); // 시작일의 value 값 출력
+      // console.log(task);
+      // console.log(taskStart); // 시작일의 value 값 출력
 
       if (startText === '전체') {
         if (taskStart.includes(task)) {
@@ -373,8 +443,8 @@ function is_checked_end(event) {
     let endDateInput = task.querySelector('.end-date');
     if (endDateInput) {
       let taskEnd = endDateInput.value;
-      console.log(task);
-      console.log(taskEnd); // 시작일의 value 값 출력
+      // console.log(task);
+      // console.log(taskEnd); // 시작일의 value 값 출력
 
       if (endText === '전체') {
         if (taskEnd.includes(task)) {
@@ -439,8 +509,6 @@ function is_checked_end(event) {
     }
   });
 }
-
-// ************* 모든 필터링 중복 적용?
 
 
 
@@ -1175,6 +1243,7 @@ function addSubTask(event, mainId) {
   // gantt-task 안 두번째 div 안 span
   // <span id="responNameSpan">{{$item->name}}</span>
   const addUserNamespan = document.createElement('span');
+  addUserNamespan.classList.add('respon-name-span');
   addUserNamespan.id = 'responNameSpan';
   addUserNamespan.textContent = '담당자';
 
@@ -1194,7 +1263,7 @@ function addSubTask(event, mainId) {
   // <span>{{$item->task_status_name}}</span>
   const addStatusColorSpan = document.createElement('span');
   addStatusColorSpan.id = 'statusNameSpan';
-  addStatusColorSpan.classList = 'status-name-span';
+  addStatusColorSpan.classList.add('status-name-span');
   addStatusColorSpan.textContent = '시작전';
 
 

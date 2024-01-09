@@ -239,6 +239,17 @@ a:hover {
     display: none;
 }
 
+#exitModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
 .deletemodal-content {
     background-color: #fefefe;
     margin: auto;
@@ -513,7 +524,7 @@ a:hover {
 	/* padding: 3px; */
 	display: flex;
     justify-content: space-between;
-	/* height: 6%; */
+	height: 43.5px;
 	position: relative;
 }
 
@@ -532,7 +543,7 @@ a:hover {
 	border-right: 1px solid var(--inactive-color);
 	border-bottom: 1px solid var(--inactive-color);
 	padding: 10px 5px;
-	height: 43.5px;
+	/* height: 43.5px; */
 	/* text-overflow: ellipsis; */
   	overflow: hidden;
   	white-space: nowrap;

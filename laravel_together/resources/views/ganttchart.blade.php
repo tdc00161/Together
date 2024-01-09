@@ -151,10 +151,27 @@
                     <span>담당자</span>
                 </div>
                 <ul class="gantt-items">
-                    <li><input id="resAll" type="radio"><label class="gantt-item" for="resAll">전체</label></li>
-                    {{-- @foreach (array_unique(array_column($data, 'name')) as $itemName) --}}
-                    @foreach(array_unique(array_column($data['task'], 'res_name')) as $resName)
-                        <li><input type="radio"><span class="gantt-item">{{ $resName }}</span></li>
+                    <li><input id="resAll" type="radio" name="respon" checked onclick="is_checked_respon(event)">
+                        <label class="gantt-item" for="resAll">전체</label>
+                    </li>
+                    @php
+                        $resNames = array_unique(array_column($data['task'], 'res_name'));
+                        $resNames = array_filter($resNames, function($name) {
+                            return $name !== null;
+                        });
+                        $resNames[] = null; // null 값을 배열에 추가하여 '없음'을 마지막에 표시
+                    @endphp
+
+                    @foreach($resNames as $index => $resName)
+                        <li>
+                            @if ($resName !== null)
+                                <input id="res{{ $index + 1 }}" type="radio" name="respon" onclick="is_checked_respon(event)">
+                                <label for="res{{ $index + 1 }}" class="gantt-item">{{ $resName }}</label>
+                            @else
+                                <input id="res-none" type="radio" name="respon" onclick="is_checked_respon(event)">
+                                <label for="res-none" class="gantt-item">없음</label>
+                            @endif
+                        </li>
                     @endforeach
                 </ul>
             </div>
@@ -203,7 +220,7 @@
             <button class="gantt-add-btn" onclick="openTaskModal(0)">업무추가</button>
             </div>
             {{-- <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button> --}}
-        </div>
+    </div>
     
     <!-- 팝업 모달 창 -->
     <div id="ganttPopupModal" class="gantt-update-modal">
@@ -256,7 +273,7 @@
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName"><span id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
                             <div class="gantt-status-name">
                                 <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
                                     <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>
@@ -286,7 +303,7 @@
                                     <div class="taskChildPosition"></div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
-                                <div class="responName"><span id="responNameSpan">{{$item2->res_name}}</span></div>
+                                <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span></div>
                                 <div class="gantt-status-name">
                                     <div class="statusName gantt-status-color" data-status="{{$item2->status_name}}">
                                         <span class="status-name-span" id="statusNameSpan">{{$item2->status_name}}</span>
