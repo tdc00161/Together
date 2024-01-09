@@ -97,8 +97,8 @@
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
         <div class="filter-div">
 
-            <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+            <div id="list1" class="gantt-dropdown-check-list" tabindex="100" onclick="toggleGanttFilterDropdown()">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">상태</span>
                 </div>
@@ -222,10 +222,10 @@
 
             <span style="color: rgb(202, 202, 202)">｜</span>
 
-            <div id="list6" class="gantt-dropdown-check-list" tabindex="100">
+            <div id="list6" class="gantt-dropdown-check-list" onclick="toggleGanttFilterDropdown()" tabindex="100">
                 <div class="gantt-span">
                     <img class="gantt-align" src="/img/Group 136.png" alt="filter">
-                    <span>정렬</span>
+                    <span style="font-size: 12px;">정렬</span>
                 </div>
                 <ul class="gantt-items">
                     <li class="gantt-task-header-div">
@@ -278,24 +278,24 @@
             <div class="gantt-task-wrap">
                 <div class="gantt-task-header">
                     <div class="gantt-task-header-div" style="width: 34%">
-                        <span class="gantt-order">업무명</span>
+                        {{-- <span class="gantt-order">업무명</span> --}}
                         {{-- <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                     <div class="gantt-task-header-div" style="width: 14%">
-                        <span class="gantt-order">담당자</span>
-                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        {{-- <span class="gantt-order">담당자</span>
+                        <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                     <div class="gantt-task-header-div" style="width: 16%">
-                        <span class="gantt-order">상태</span>
-                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        {{-- <span class="gantt-order">상태</span>
+                        <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                     <div class="gantt-task-header-div" style="width: 18%">
-                        <span class="gantt-order">시작일</span>
-                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        {{-- <span class="gantt-order">시작일</span>
+                        <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                     <div class="gantt-task-header-div" style="width: 18%">
-                        <span class="gantt-order">마감일</span>
-                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        {{-- <span class="gantt-order">마감일</span>
+                        <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                 </div>
                 <div class="gantt-task-body">
@@ -388,6 +388,7 @@
             <div class="gantt-chart-wrap scroll-style">
                 <div class="gantt-chart-container">
                     <div class="gantt-chart-header">
+                        {{-- <div class="gantt-header-month"></div> --}}
                         <div class="gantt-header-scroll">
                             {{-- 날짜를 가로로 나열할 부분 --}}
                         </div>

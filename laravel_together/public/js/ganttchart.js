@@ -1490,30 +1490,123 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ************* 차트영역 헤더에 날짜 추가
 const headerScroll = document.querySelector('.gantt-header-scroll');
+const ganttHeadermonth = document.querySelector('.gantt-header-month');
 
 // 예시 데이터 - 날짜
 const startDate = new Date('2024-01-01');
 const endDate = new Date('2024-03-31');
 
-// 날짜를 헤더에 추가하는 함수
 function addDatesToHeader() {
   const chartDate = new Date(startDate);
 
   while (chartDate <= endDate) {
+    // const dateContainer = document.createElement('div');
+    // dateContainer.classList.add('date-container');
+
+    // 월을 출력
+    // if (chartDate.getDate() === 1) {
+    //   const monthElement = document.createElement('div');
+    //   monthElement.classList.add('month');
+    //   monthElement.innerHTML = `<div class="month-text">${chartDate.toLocaleDateString('ko-KR', { month: 'short' })}</div>`;
+    //   headerScroll.appendChild(monthElement);
+    // }
+
     const dateElement = document.createElement('div');
     dateElement.classList.add('date');
-    dateElement.textContent = chartDate.toLocaleDateString('ko-KR', { day: 'numeric', month: 'short' });
+
+    const day = chartDate.toLocaleDateString('ko-KR', { day: '2-digit' }).replace('일', '');;
+    const month = chartDate.toLocaleDateString('ko-KR', { month: '2-digit' }).replace('월', '');;
+
+    dateElement.innerHTML = `<span>${month}</span><span class="bar">/</span><span class="day">${day}</span>`;
     headerScroll.appendChild(dateElement);
 
+
     chartDate.setDate(chartDate.getDate() + 1);
-  }
+  } 
 }
 
 addDatesToHeader();
 
+// document.addEventListener('DOMContentLoaded', function () {
+//   // 월 요소
+//   const monthElement = document.querySelector('.month');
+
+//   // 스크롤 이벤트 리스너 등록
+//   document.querySelector('.gantt-chart-wrap.scroll-style').addEventListener('scroll', function () {
+//     // 현재 가로 스크롤 위치
+//     const scrollLeft = this.scrollLeft;
+
+//     // left 값을 스크롤의 위치에 따라 증가시킴
+//     monthElement.style.left = `${scrollLeft}px`;
+//   });
+// });
+
+document.addEventListener('DOMContentLoaded', function () {
+  // 월 요소들의 배열
+  const monthElements = document.querySelectorAll('.month');
+
+  // 스크롤 이벤트 리스너 등록
+  document.querySelector('.gantt-chart-wrap.scroll-style').addEventListener('scroll', function () {
+    // 현재 가로 스크롤 위치
+    const scrollLeft = this.scrollLeft;
+
+    // 이전 월 요소들의 left 값을 해제
+    monthElements.forEach(monthElement => {
+      monthElement.style.left = '0';
+    });
+
+    // 현재 월 요소에만 left 값을 적용
+    const currentMonthElement = findCurrentMonthElement(monthElements, scrollLeft);
+    if (currentMonthElement) {
+      currentMonthElement.style.left = `${scrollLeft}px`;
+
+      // 현재 월이 마지막 date div에 도달하면 다음 월의 left 값을 설정
+      const dateContainers = currentMonthElement.querySelectorAll('.date');
+      const lastDateContainer = dateContainers[dateContainers.length - 1];
+
+      if (lastDateContainer.getBoundingClientRect().right <= currentMonthElement.getBoundingClientRect().right) {
+        const nextMonthElement = findNextMonthElement(currentMonthElement);
+        if (nextMonthElement) {
+          nextMonthElement.style.left = `${scrollLeft}px`;
+        }
+      }
+    }
+  });
+
+  // 현재 스크롤 위치에 해당하는 월 요소를 찾는 함수
+  function findCurrentMonthElement(monthElements, scrollLeft) {
+    let currentMonthElement = null;
+
+    // 월 요소들을 순회하면서 현재 스크롤 위치에 해당하는 월 요소를 찾음
+    monthElements.forEach(monthElement => {
+      const { left, width } = monthElement.getBoundingClientRect();
+
+      if (scrollLeft >= left && scrollLeft < left + width) {
+        currentMonthElement = monthElement;
+      }
+    });
+
+    return currentMonthElement;
+  }
+
+  // 다음 월 요소를 찾는 함수
+  function findNextMonthElement(currentMonthElement) {
+    let nextMonthElement = null;
+
+    // 현재 월 요소의 다음 형제 노드를 찾음
+    const nextSibling = currentMonthElement.nextElementSibling;
+
+    if (nextSibling && nextSibling.classList.contains('gantt-header-month')) {
+      nextMonthElement = nextSibling;
+    }
+
+    return nextMonthElement;
+  }
+});
 
 
-// ************* 차트생성
+
+// --------------------------- 차트생성------------------------------------
 // 페이지 로드 후 실행되는 부분
 window.onload = function () {
   // 모든 시작일(start)과 종료일(end) 입력 요소 선택
@@ -1861,12 +1954,11 @@ function changeStyle(element) {
 
 // 드롭다운 토글 함수 정의
 function toggleGanttFilterDropdown() {
-
   let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-  let activest = document.getElementById('list1');
-
+  console.log("click");
   
   for (let i = 0; i < checkLists.length; i++) {
+    
     let checkList = checkLists[i];
   
     checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
