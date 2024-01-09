@@ -135,13 +135,18 @@ function enterkeySearch() {
 // }
 
 // ************* 모든 필터링 중복 적용?
-let filterFunctions  = [];
+// let filterFunctions  = [];
 let statusFilter = [];
 let responFilter = [];
 let startFilter = [];
 let endFilter = [];
+let allFilter = [];
+document.querySelectorAll('.gantt-task').forEach(task => {
+  allFilter.push(task);
+});
+console.log(allFilter);
 
-// ************* 상태 필터링 (라디오 일 때)
+// ************* 상태 필터링 (라디오일 때)
 function is_checked_status(event) {
   let statusRadioId = event.target.id;
   let statusAllCheck = 'label[for="'+ statusRadioId +'"]';
@@ -157,78 +162,84 @@ function is_checked_status(event) {
 
       if (statusValues === '전체') {
         if (taskStatus.includes(task)) {
-          task.style.display = 'none';
+          // task.style.display = 'none';
+          statusFilter.push(task);
         } else {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
         }
       } else if (statusValues === '시작전') {
         if (taskStatus === statusValues) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          statusFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (statusValues === '진행중') {
         if (taskStatus === statusValues) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          statusFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (statusValues === '피드백') {
         if (taskStatus === statusValues) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          statusFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (statusValues === '완료') {
         if (taskStatus === statusValues) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          statusFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       }
 
-      // gantt-task의 ID를 추출합니다.
-      let taskId = task.getAttribute('id').split('-')[2];
+      // // gantt-task의 ID를 추출합니다.
+      // let taskId = task.getAttribute('id').split('-')[2];
 
-      // gantt-chart 요소를 가져옵니다.
-      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+      // // gantt-chart 요소를 가져옵니다.
+      // let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
 
-      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
-      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
-        if (statusValues === '전체') {
-          if (taskStatus.includes(task)) {
-            ganttChart.style.display = 'none';
-          } else {
-            ganttChart.style.display = 'flex';
-          }
-        } else if (statusValues === '시작전') {
-          if (taskStatus === statusValues) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (statusValues === '진행중') {
-          if (taskStatus === statusValues) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (statusValues === '피드백') {
-          if (taskStatus === statusValues) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (statusValues === '완료') {
-          if (taskStatus === statusValues) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        }
-      }
+      // // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      // if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+      //   if (statusValues === '전체') {
+      //     if (taskStatus.includes(task)) {
+      //       ganttChart.style.display = 'none';
+      //     } else {
+      //       ganttChart.style.display = 'flex';
+      //     }
+      //   } else if (statusValues === '시작전') {
+      //     if (taskStatus === statusValues) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (statusValues === '진행중') {
+      //     if (taskStatus === statusValues) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (statusValues === '피드백') {
+      //     if (taskStatus === statusValues) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (statusValues === '완료') {
+      //     if (taskStatus === statusValues) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   }
+      // }
     }
   });
+  d_none_checked();
 } 
 
 // ************* 담당자 필터링 
@@ -248,50 +259,54 @@ function is_checked_respon(event) {
 
       if (responValues === '전체') {
         if (taskRespon.includes(task)) {
-          task.style.display = 'none';
+          // task.style.display = 'none';
+          responFilter.push(task);
         } else {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
         }
       } else if (responValues === '없음') {
         if (taskRespon === '') {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          responFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
-        task.style.display = 'flex';
+        // task.style.display = 'flex';
+        responFilter.push(task);
       } else {
-        task.style.display = 'none';
+        // task.style.display = 'none';
       }
 
-      // gantt-task의 ID를 추출합니다.
-      let taskId = task.getAttribute('id').split('-')[2];
+      // // gantt-task의 ID를 추출합니다.
+      // let taskId = task.getAttribute('id').split('-')[2];
 
-      // gantt-chart 요소를 가져옵니다.
-      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+      // // gantt-chart 요소를 가져옵니다.
+      // let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
 
-      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
-      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
-        if (responValues === '전체') {
-          if (taskRespon.includes(task)) {
-            ganttChart.style.display = 'none';
-          } else {
-            ganttChart.style.display = 'flex';
-          }
-        } else if (responValues === '없음') {
-          if (taskRespon === '') {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
-          ganttChart.style.display = 'flex';
-        } else {
-          ganttChart.style.display = 'none';
-        }
-      }
+      // // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      // if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+      //   if (responValues === '전체') {
+      //     if (taskRespon.includes(task)) {
+      //       ganttChart.style.display = 'none';
+      //     } else {
+      //       ganttChart.style.display = 'flex';
+      //     }
+      //   } else if (responValues === '없음') {
+      //     if (taskRespon === '') {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+      //     ganttChart.style.display = 'flex';
+      //   } else {
+      //     ganttChart.style.display = 'none';
+      //   }
+      // }
     }   
   });
+  d_none_checked();
 }
 
 // ************* 시작일 필터링 
@@ -333,66 +348,71 @@ function is_checked_start(event) {
 
       if (startText === '전체') {
         if (taskStart.includes(task)) {
-          task.style.display = 'none';
+          // task.style.display = 'none';
+          startFilter.push(task);
         } else {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
         }
       } else if (startText === '오늘') {
         if (taskStart.includes(formattedToday)) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          startFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (startText === '이번주') {
         if (taskStart >= formattedStartOfWeek && taskStart <= formattedEndOfWeek) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          startFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (startText === '이번달') {
         if (taskStart >= formattedFirstDayOfMonth && taskStart <= formattedLastDayOfMonth) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          startFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       }
 
-      // gantt-task의 ID를 추출합니다.
-      let taskId = task.getAttribute('id').split('-')[2];
+      // // gantt-task의 ID를 추출합니다.
+      // let taskId = task.getAttribute('id').split('-')[2];
 
-      // gantt-chart 요소를 가져옵니다.
-      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+      // // gantt-chart 요소를 가져옵니다.
+      // let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
 
-      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
-      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
-        if (startText === '전체') {
-          if (taskStart.includes(task)) {
-            ganttChart.style.display = 'none';
-          } else {
-            ganttChart.style.display = 'flex';
-          }
-        } else if (startText === '오늘') {
-          if (taskStart.includes(formattedToday)) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (startText === '이번주') {
-          if (taskStart >= formattedStartOfWeek && taskStart <= formattedEndOfWeek) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (startText === '이번달') {
-          if (taskStart >= formattedFirstDayOfMonth && taskStart <= formattedLastDayOfMonth) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        }
-      }
+      // // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      // if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+      //   if (startText === '전체') {
+      //     if (taskStart.includes(task)) {
+      //       ganttChart.style.display = 'none';
+      //     } else {
+      //       ganttChart.style.display = 'flex';
+      //     }
+      //   } else if (startText === '오늘') {
+      //     if (taskStart.includes(formattedToday)) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (startText === '이번주') {
+      //     if (taskStart >= formattedStartOfWeek && taskStart <= formattedEndOfWeek) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (startText === '이번달') {
+      //     if (taskStart >= formattedFirstDayOfMonth && taskStart <= formattedLastDayOfMonth) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   }
+      // }
     }
   });
+  d_none_checked();
 }
 
 // ************* 마감일 필터링 
@@ -434,69 +454,98 @@ function is_checked_end(event) {
 
       if (endText === '전체') {
         if (taskEnd.includes(task)) {
-          task.style.display = 'none';
+          // task.style.display = 'none';
+          endFilter.push(task);
         } else {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
         }
       } else if (endText === '오늘') {
         if (taskEnd.includes(formattedToday)) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          endFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (endText === '이번주') {
         if (taskEnd >= formattedStartOfWeek && taskEnd <= formattedEndOfWeek) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          endFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       } else if (endText === '이번달') {
         if (taskEnd >= formattedFirstDayOfMonth && taskEnd <= formattedLastDayOfMonth) {
-          task.style.display = 'flex';
+          // task.style.display = 'flex';
+          endFilter.push(task);
         } else {
-          task.style.display = 'none';
+          // task.style.display = 'none';
         }
       }
 
-      // gantt-task의 ID를 추출합니다.
-      let taskId = task.getAttribute('id').split('-')[2];
+      // // gantt-task의 ID를 추출합니다.
+      // let taskId = task.getAttribute('id').split('-')[2];
 
-      // gantt-chart 요소를 가져옵니다.
-      let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
+      // // gantt-chart 요소를 가져옵니다.
+      // let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
 
-      // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
-      if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
-        if (endText === '전체') {
-          if (taskEnd.includes(task)) {
-            ganttChart.style.display = 'none';
-          } else {
-            ganttChart.style.display = 'flex';
-          }
-        } else if (endText === '오늘') {
-          if (taskEnd.includes(formattedToday)) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (endText === '이번주') {
-          if (taskEnd >= formattedStartOfWeek && taskEnd <= formattedEndOfWeek) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        } else if (endText === '이번달') {
-          if (taskEnd >= formattedFirstDayOfMonth && taskEnd <= formattedLastDayOfMonth) {
-            ganttChart.style.display = 'flex';
-          } else {
-            ganttChart.style.display = 'none';
-          }
-        }
-      }
+      // // gantt-chart가 존재하고 gantt-task와 gantt-chart의 ID가 일치하는 경우 처리
+      // if (ganttChart && ganttChart.id === `gantt-chart-${taskId}`) {
+      //   if (endText === '전체') {
+      //     if (taskEnd.includes(task)) {
+      //       ganttChart.style.display = 'none';
+      //     } else {
+      //       ganttChart.style.display = 'flex';
+      //     }
+      //   } else if (endText === '오늘') {
+      //     if (taskEnd.includes(formattedToday)) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (endText === '이번주') {
+      //     if (taskEnd >= formattedStartOfWeek && taskEnd <= formattedEndOfWeek) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   } else if (endText === '이번달') {
+      //     if (taskEnd >= formattedFirstDayOfMonth && taskEnd <= formattedLastDayOfMonth) {
+      //       ganttChart.style.display = 'flex';
+      //     } else {
+      //       ganttChart.style.display = 'none';
+      //     }
+      //   }
+      // }
     }
   });
+  d_none_checked();
 }
 
+function getCommonValues(arr1, arr2) {
+  // 두 배열에서 공통된 값을 담을 빈 배열 선언
+  const commonValues = [];
 
+  // 첫 번째 배열의 요소를 기준으로 반복하면서 두 번째 배열에 같은 값이 있는지 확인
+  arr1.forEach(item => {
+      if (arr2.includes(item) && !commonValues.includes(item)) {
+          // 두 번째 배열에 같은 값이 있고, 아직 공통된 값 배열에 없는 경우에만 추가
+          commonValues.push(item);
+      }
+  });
+
+  return commonValues;
+}
+
+function d_none_checked(){
+  let a = getCommonValues(statusFilter,responFilter)
+  console.log(a);
+  let b = getCommonValues(a,startFilter)
+  console.log(b);
+  let c = getCommonValues(b,endFilter)
+  console.log(c);
+}
+
+// ************* 필터 중복 적용 함수???
 
 // ************* 오름차순, 내림차순 정렬
 // 업무명 기준

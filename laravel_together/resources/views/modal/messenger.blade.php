@@ -25,24 +25,7 @@
 
 <!-- 탭 내용 -->
 <div id="tab1" class="tab-content">
-    {{-- <div id="errordiv" class="empty-msg-css"> 3차 개발 예정 </div> --}}
     <div class="chat-layout">
-      {{-- <div class="chat-room">
-          <div class="chat-icon"></div>
-          <div class="chat-middle">
-              <div class="chat-name" alarm-count="1">김관호</div>
-              <div class="chat-content">대법원에 대법관을 둔다. 다만, 법률이 정하는 바에 의대법원에 대법관을 둔다. 다만,</div>
-          </div>
-          <div class="chat-time">오후 05:35</div>
-      </div>
-      <div class="chat-room">
-          <div class="chat-icon"></div>
-          <div class="chat-middle">
-              <div class="chat-name" alarm-count="1">김관호</div>
-              <div class="chat-content">대법원에 대법관을 둔다.</div>
-          </div>
-          <div class="chat-time">오후 05:35</div>
-      </div> --}}
     </div>
     <div class="chat-window" style="display: none">
       <div class="chat-back"></div>

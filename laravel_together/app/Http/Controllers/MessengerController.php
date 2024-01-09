@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageCame;
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
@@ -69,8 +70,8 @@ class MessengerController extends Controller
 			'receiver_id' => 'required',
 		]);
 
-		Log::debug($request);
-		Log::debug($validated);
+		// Log::debug($request);
+		// Log::debug($validated);
 		
 		// 채팅 생성
 		$result = Chat::create($validated);
@@ -85,5 +86,20 @@ class MessengerController extends Controller
 		MessageSent::dispatch($result);
 
     	return $result;
+    }
+
+	// 채팅수신알람
+    public function alarm(Request $request) {
+
+		// $userId = Auth::id();
+
+		// 실행 시 알람리스트에 레코드 추가 (필요: 수신 받는 사람 / 내용)
+		// Log::debug('알람컨트롤러');
+		// Log::debug($request);
+
+		// 채팅 이벤트 실행
+		MessageCame::dispatch($request);
+
+    	return $request;
     }
 }

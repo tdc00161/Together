@@ -1,3 +1,4 @@
+const { document } = require("postcss");
 
 //프로젝트 원형차트 생성
 window.onload = function() {
