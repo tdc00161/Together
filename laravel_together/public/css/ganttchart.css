@@ -11,6 +11,17 @@
     flex-direction: column;
 }
 
+#exitModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
 .grid_div {
 	background-color: rgba(0, 0, 0, 0.514);
     border-radius: 0 10px 10px 10px;
@@ -225,10 +236,46 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 a:hover {
     color: white;
 }
+/* -------------------------------------------------- */
+.task-add-btn {
+	width: 11px;
+	height: auto;
+	margin-bottom: 2px;
+}
+.gantt-add-btn:hover {
+	background-color: #000;
+}
+.gantt-align-div {
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: transparent;
+	border-radius: 11px;
+	width: 80px;
+	text-align: center;
+	border: 1px solid white;
+	margin-left: 5px;
+}
+.gantt-align {
+	width: 20px;
+	height: auto;
+}
 
 /* 모달창 */
 
 #deleteModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+#exitModal {
     position: fixed;
     z-index: 1;
     left: 0;
@@ -308,18 +355,16 @@ a:hover {
 	width: 150px;
 	height: 30px;
 	padding-left: 10px;
-	margin-right: 20px;
+	margin-right: 17px;
 	background-color: transparent;
 
 }
 
 .filter-div {
 	display: flex;
-	width: 445px;
+	width: 500px;
 	justify-content: space-around;
 	align-items: center;
-
-
 }
 
 .gantt-filter {
@@ -330,7 +375,7 @@ a:hover {
 }
 
 .gantt-dropdown-check-list {
-	display: inline-block;
+	/* display: inline-block; */
 	position: relative;
 }
 
@@ -397,6 +442,7 @@ a:hover {
 	padding: 0;
 	border: none;
 	color: white;
+	cursor: default;
 }
 
 .gantt-dropdown-check-list.visible .gantt-items {
@@ -455,12 +501,10 @@ a:hover {
 	margin-left: auto;
 }
 .gantt-add-btn {
-	background-color: #9656FF;
 	color: #fff;
-	border: none;
     padding: 5px 15px;
-    border-radius: 10px;
-	cursor: pointer;
+    border-radius: 5px;
+	border: 1px solid white;
 }
 
 /* 간트차트 section 업무 영역 */
@@ -513,7 +557,7 @@ a:hover {
 	/* padding: 3px; */
 	display: flex;
     justify-content: space-between;
-	/* height: 6%; */
+	height: 43.5px;
 	position: relative;
 }
 
@@ -532,7 +576,7 @@ a:hover {
 	border-right: 1px solid var(--inactive-color);
 	border-bottom: 1px solid var(--inactive-color);
 	padding: 10px 5px;
-	height: 43.5px;
+	/* height: 43.5px; */
 	/* text-overflow: ellipsis; */
   	overflow: hidden;
   	white-space: nowrap;
@@ -805,4 +849,8 @@ a:hover {
 	color: #fff;
 	margin: 0px;
 	font-size: large;
+}
+
+.show {
+    display: block;
 }
