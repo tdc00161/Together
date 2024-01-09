@@ -96,14 +96,15 @@
     <div class="gantt-btn-wrap">
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
         <div class="filter-div">
-            <div onclick="changeStyle(this)" id="list1" class="gantt-dropdown-check-list" tabindex="100">
-                <div class="gantt-span">
+
+            <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
+                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
-                    <span>상태</span>
+                    <span style="font-size: 12px;">상태</span>
                 </div>
-                <ul class="gantt-items">
+                <ul id="myganttDropdown" class="gantt-items">
                     <li><input id="statusAll" type="radio" name="status" value="전체" checked onclick="is_checked_status(event)">
-                        <div class="gantt-color gantt-statusAll"></div><label for="statusAll" class="gantt-item">전체</label>
+                        <label for="statusAll" class="gantt-item">전체</label>
                     </li>
                     <li><input id="status1" type="radio" name="status" value="시작전" onclick="is_checked_status(event)">
                         <div class="gantt-color gantt-status1"></div><label for="status1" class="gantt-item">시작전</label>
@@ -119,12 +120,13 @@
                     </li>
                 </ul>
             </div>
+
             <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
-                <div class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
-                    <span>중요도</span>
+                    <span style="font-size: 12px;">중요도</span>
                 </div>
-                <ul class="gantt-items">
+                <ul id="myganttDropdown" class="gantt-items">
                     <li><input id="priorityAll" type="radio" name="priority" value="priorityAll">
                         <label for="priorityAll" class="gantt-item">전체</label>
                     </li>
@@ -145,25 +147,44 @@
                     </li>
                 </ul>
             </div>
+
             <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
-                <div class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
-                    <span>담당자</span>
+                    <span style="font-size: 12px;">담당자</span>
                 </div>
-                <ul class="gantt-items">
-                    <li><input id="resAll" type="radio"><label class="gantt-item" for="resAll">전체</label></li>
-                    {{-- @foreach (array_unique(array_column($data, 'name')) as $itemName) --}}
-                    @foreach(array_unique(array_column($data['task'], 'res_name')) as $resName)
-                        <li><input type="radio"><span class="gantt-item">{{ $resName }}</span></li>
+                <ul id="myganttDropdown" class="gantt-items">
+                    <li><input id="resAll" type="radio" name="respon" checked onclick="is_checked_respon(event)">
+                        <label class="gantt-item" for="resAll">전체</label>
+                    </li>
+                    @php
+                        $resNames = array_unique(array_column($data['task'], 'res_name'));
+                        $resNames = array_filter($resNames, function($name) {
+                            return $name !== null;
+                        });
+                        $resNames[] = null; // null 값을 배열에 추가하여 '없음'을 마지막에 표시
+                    @endphp
+
+                    @foreach($resNames as $index => $resName)
+                        <li>
+                            @if ($resName !== null)
+                                <input id="res{{ $index + 1 }}" type="radio" name="respon" onclick="is_checked_respon(event)">
+                                <label for="res{{ $index + 1 }}" class="gantt-item">{{ $resName }}</label>
+                            @else
+                                <input id="res-none" type="radio" name="respon" onclick="is_checked_respon(event)">
+                                <label for="res-none" class="gantt-item">없음</label>
+                            @endif
+                        </li>
                     @endforeach
                 </ul>
             </div>
+
             <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
-                <div class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
-                    <span>시작일</span>
+                    <span style="font-size: 12px;">시작일</span>
                 </div>
-                <ul class="gantt-items">
+                <ul id="myganttDropdown" class="gantt-items">
                     <li><input name="start" type="radio" id="start1" checked onclick="is_checked_start(event)">
                         <label for="start1" class="gantt-item">전체</label>
                     </li>
@@ -179,11 +200,11 @@
                 </ul>
             </div>
             <div id="list5" class="gantt-dropdown-check-list" tabindex="100">
-                <div class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
-                    <span>마감일</span>
+                    <span style="font-size: 12px;">마감일</span>
                 </div>
-                <ul class="gantt-items">
+                <ul id="myganttDropdown" class="gantt-items">
                     <li><input name="end" type="radio" id="end1" checked onclick="is_checked_end(event)">
                         <label for="end1" class="gantt-item">전체</label>
                     </li>
@@ -198,12 +219,47 @@
                     </li>
                 </ul>
             </div>
+
+            <span style="color: rgb(202, 202, 202)">｜</span>
+
+            <div id="list6" class="gantt-dropdown-check-list" tabindex="100">
+                <div class="gantt-span">
+                    <img class="gantt-align" src="/img/Group 136.png" alt="filter">
+                    <span>정렬</span>
+                </div>
+                <ul class="gantt-items">
+                    <li class="gantt-task-header-div">
+                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        <label for="end1" class="gantt-item">업무명</label>
+                    </li>
+                    <li class="gantt-task-header-div">
+                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        <label for="end2" class="gantt-item">담당자</label>
+                    </li>
+                    <li class="gantt-task-header-div">
+                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        <label for="end3" class="gantt-item">상태</label>
+                    </li>
+                    <li class="gantt-task-header-div">
+                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        <label for="end4" class="gantt-item">시작일</label>
+                    </li>
+                    <li class="gantt-task-header-div">
+                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        <label for="end5" class="gantt-item">마감일</label>
+                    </li>
+                </ul>
+            </div>
+
         </div>
             <div class="add-btn-section">
-            <button class="gantt-add-btn" onclick="openTaskModal(0)">업무추가</button>
+            <button class="gantt-add-btn" onclick="openTaskModal(0)">
+                <img class="task-add-btn" src="/img/Group 164.png">
+                업무추가
+            </button>
             </div>
             {{-- <button class="gantt-update-btn gantt-add-btn" type="submit">업무수정</button> --}}
-        </div>
+    </div>
     
     <!-- 팝업 모달 창 -->
     <div id="ganttPopupModal" class="gantt-update-modal">
@@ -223,7 +279,7 @@
                 <div class="gantt-task-header">
                     <div class="gantt-task-header-div" style="width: 34%">
                         <span class="gantt-order">업무명</span>
-                        <button type="button"><img src="/img/table4.png" alt=""></button>
+                        {{-- <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                     <div class="gantt-task-header-div" style="width: 14%">
                         <span class="gantt-order">담당자</span>
@@ -256,7 +312,7 @@
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName"><span id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
                             <div class="gantt-status-name">
                                 <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
                                     <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>
@@ -286,7 +342,7 @@
                                     <div class="taskChildPosition"></div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
-                                <div class="responName"><span id="responNameSpan">{{$item2->res_name}}</span></div>
+                                <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span></div>
                                 <div class="gantt-status-name">
                                     <div class="statusName gantt-status-color" data-status="{{$item2->status_name}}">
                                         <span class="status-name-span" id="statusNameSpan">{{$item2->status_name}}</span>
