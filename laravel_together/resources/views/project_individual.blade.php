@@ -146,7 +146,7 @@
                         </div>
                         <div class="name_total">
                             <div class="member_name1">{{$item->name}}</div>
-                            <div class="member_name1">admin@naver.com</div>
+                            <div class="member_name1">{{$item->email}}</div>
                         </div>
                     </div>
                 @empty
@@ -160,7 +160,7 @@
                 <div class="projectMemberaddModalContent">
                     <span class="memberaddclosebtn" onclick="projectMemberAddCloseModal()">&times;</span>
                     <div>이메일로 추가</div>
-                    <div>친구에서 추가</div>
+                    <button>친구에서 추가</button>
                     <div>초대 링크로 추가</div>
                     <input type="text" style="color: black; width:350px" value="{{$result->invite}}"><button type="button" class="copy-btn" onclick="copyUrl()">ㅁ</button>
                 </div>

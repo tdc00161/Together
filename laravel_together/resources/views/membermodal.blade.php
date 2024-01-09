@@ -7,6 +7,6 @@
     <title>구성원 중복 모달창</title>
 </head>
 <body>
-    <input type="hidden" value="{{$project[0]->invite}}" id="invite"></body>
-    <input type="hidden" value="{{$project[0]->project_id}}" id="team-id"></body>
+    <form action="/team/{{$project_id}}" method="get" id="frm">
+    </form>
 </html>

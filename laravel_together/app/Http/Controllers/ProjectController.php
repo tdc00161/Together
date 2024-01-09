@@ -261,7 +261,7 @@ class ProjectController extends Controller
     // (jueunyang08) 프로젝트 구성원 출력
     $projectmemberdata = DB::table('project_users as p')
                             ->join('users as u', 'u.id', '=', 'p.member_id')
-                            ->select('p.project_id', 'u.name', 'p.member_id')
+                            ->select('p.project_id', 'u.name', 'p.member_id','u.email')
                             ->where('p.project_id', '=', $id)
                             ->orderBy('p.created_at','asc')
                             ->get();
@@ -292,9 +292,9 @@ class ProjectController extends Controller
   public function acceptInvite(Request $request, $token) {
 
     $url = url()->current();
-
+    // dump($url);
     $user = Auth::user();
-    // dd($user);
+    // dump($user);
 
     $project = DB::table('projects as pj')
                 ->join('users as us','us.id','pj.user_pk')
@@ -303,25 +303,26 @@ class ProjectController extends Controller
                 ->get();
     // dd($project);
 
-    $id = $project[0]->project_id;
+    // $id = $project[0]->project_id;
     $member_id = $user->id;
     // dump($id);
     // dd($member_id);
 
     $invite_member = ProjectUser::where('member_id',$member_id)
-                                  ->where('project_id',$id)
+                                  ->join('projects as pj','pj.id','project_users.project_id')
+                                  ->where('invite',$url)
                                   ->first();
     // dd($invite_member);
 
     if(!$invite_member){
         //초대 구성원 추가
         $invite_user = ProjectUser::create([
-          'project_id' => $id,
+          'project_id' => $invite_member[0]->id,
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
     }else{
-      return view('/membermodal')->with('project',$project);
+      return view('/membermodal')->with('project_id',$project[0]->project_id)->with('url',$url);
     }
 
     if(!Auth::check()){
@@ -335,9 +336,9 @@ class ProjectController extends Controller
     }
   }
 
-  public function membermodal($token){
+  public function membermodal(Request $request){
 
-    // dd($token);
+    dd($token);
     return view('/membermodal')->with('token',$token);
   }
 
