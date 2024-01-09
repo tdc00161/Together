@@ -70,7 +70,7 @@ class MessengerController extends Controller
 			'receiver_id' => 'required',
 		]);
 
-		// Log::debug($request);
+		Log::debug($request);
 		// Log::debug($validated);
 		
 		// 채팅 생성
@@ -79,7 +79,8 @@ class MessengerController extends Controller
 		// 해당 채팅방의 최신 내역 갱신
 		ChatRoom::where('id',$result->receiver_id)
 			->update([
-				'last_chat' => $result->content
+				'last_chat' => $result->content,
+				'last_chat_created_at' => now(),
 			]);
 
 		// 채팅 이벤트 실행

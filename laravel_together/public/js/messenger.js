@@ -1063,7 +1063,7 @@ window.Echo.private('chats')
         }
 
         // 채팅리스트 최신내역 갱신
-        lastChatRefresh(e.message.receiver_id, e.message.content);
+        lastChatRefresh(e.message.receiver_id, e.message.content, e.message.created_at);
 
         // 다 하고 맨 아래로 스크롤
         chat_window.style.display === 'block' ? chatUpdateScroll() : '';
@@ -1073,6 +1073,8 @@ window.Echo.private('chats')
 window.Echo.private('chats')
     .listen('MessageCame', e => {
         console.log(e);
+        // .chat-name::after{
+        //     content: attr(alarm-count); 여기에 이벤트 반환 값 넣기
     })
 
 // 채팅방 입력창 버튼 이벤트
@@ -1126,7 +1128,7 @@ send_chat.addEventListener('click', () => {
             input.value = '';
 
             // 채팅리스트 최신내역 갱신
-            lastChatRefresh(chat_window.getAttribute('chat-room-id'), data.content);
+            lastChatRefresh(chat_window.getAttribute('chat-room-id'), data.content,data.last_chat_created_at);
 
             // 다 하고 맨 아래로 스크롤
             chatUpdateScroll();
@@ -1137,11 +1139,13 @@ send_chat.addEventListener('click', () => {
 })
 
 // 채팅리스트 최신내역 갱신 함수
-function lastChatRefresh(receiver, content) {
+function lastChatRefresh(receiver, content, last_chat_time) {
     let chat_rooms = document.querySelectorAll('.chat-room');
     chat_rooms.forEach((chat_room,index) => {
         if(Number(chat_room.getAttribute('chat-room-id')) === receiver){ // chat_room.getAttribute('chat-room-id') typeof 하고 넣어야 할 때가 올 수 있다.
             document.querySelectorAll('.last-chat')[index].textContent = content;
+            let GoodDateTime = formatDate(last_chat_time)
+            document.querySelectorAll('.chat-time')[index].textContent = GoodDateTime;
         }
     })
 }
@@ -1212,7 +1216,7 @@ fetch('/chatlist', {
     chatLayout.className = 'chat-layout';
     
     data.forEach((chatOne, index) => {
-        // console.log(chatOne);
+        console.log(chatOne);
 
         // 새로운 chat-room 요소 생성
         let chatRoom = document.createElement('div');
@@ -1247,7 +1251,8 @@ fetch('/chatlist', {
         // chat-time 요소 생성 및 chat-room에 추가
         let chatTime = document.createElement('div');
         chatTime.className = 'chat-time';
-        chatTime.textContent = chatOne.created_at; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
+        let GoodDateTime = formatDate(chatOne.last_chat_created_at)
+        chatTime.textContent = GoodDateTime; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
         chatRoom.appendChild(chatTime);                
     })
     // document.querySelector('.tab-content').appendChild(chatLayout); // blade->chatLayout 사용
@@ -1255,3 +1260,37 @@ fetch('/chatlist', {
 .catch(error => {
     console.log(error.stack);
 });
+
+// 날짜 출력기
+function formatDate(inputDateTime) {
+    const inputDate = new Date(inputDateTime);
+    const currentDate = new Date();
+
+    const isSameDay = inputDate.getDate() === currentDate.getDate() &&
+                        inputDate.getMonth() === currentDate.getMonth() &&
+                        inputDate.getFullYear() === currentDate.getFullYear();
+
+    const isSameYear = inputDate.getFullYear() === currentDate.getFullYear();
+
+    if (isSameDay) {
+        const formattedTime = formatTime(inputDate.getHours(), inputDate.getMinutes());
+        // console.log(`오늘 ${formattedTime}`);
+        return formattedTime;
+    } else if (isSameYear) {
+        const formattedMonthDay = `${inputDate.getMonth() + 1}월 ${inputDate.getDate()}일`;
+        // console.log(formattedMonthDay);
+        return formattedMonthDay;
+    } else {
+        const formattedFullDate = `${inputDate.getFullYear()}.${(inputDate.getMonth() + 1).toString().padStart(2, '0')}.${inputDate.getDate().toString().padStart(2, '0')}`;
+        // console.log(formattedFullDate);
+        return formattedFullDate;
+    }
+}
+
+function formatTime(hours, minutes) {
+    const period = hours >= 12 ? '오후' : '오전';
+    const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    return `${period} ${formattedHours}:${formattedMinutes}`;
+}
+  
