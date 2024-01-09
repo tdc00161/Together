@@ -2043,6 +2043,6 @@ document.querySelectorAll('.date').forEach((date,index)=>{
   let m = date.firstElementChild
   let d = document.querySelectorAll('.day')[index]
   if(m.textContent === month && d.textContent === day){
-    date.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+    date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 })

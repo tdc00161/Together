@@ -16,7 +16,7 @@ class MessageCame
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message, $senderName;
+    public $readCount = 0;
 
     /**
      * Create a new event instance.
@@ -25,10 +25,15 @@ class MessageCame
      */
     public function __construct($message)
     {
-        $this->message = $message;
         // $this->senderName = User::find($message->sender_id)->name;
         $this->dontBroadcastToCurrentUser();
         Log::debug('메세지온다');
+    }
+
+    // 안읽은 횟수 카운트
+    public function readUp($a)
+    {
+        $this->readCount++;
     }
 
     /**

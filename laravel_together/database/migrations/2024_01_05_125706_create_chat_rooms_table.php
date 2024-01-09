@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('chat_rooms', function (Blueprint $table) {
             $table->id(); // pk
-            $table->char('flg',1); // 0 => 1대1, 1 => 그룹
             $table->string('last_chat',60); // 최신채팅내역
+            $table->char('read',1); // 읽음 플래그
+            $table->timestamps('last_chat_created_at'); // 작성일/수정일
             $table->string('chat_room_name',30); // 채팅방 이름
             // $table->timestamps('created_at')->useCurrent(); // 작성일
             // $table->timestamps('updated_at'); // 수정일
