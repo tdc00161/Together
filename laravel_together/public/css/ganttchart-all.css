@@ -459,10 +459,6 @@
 .gantt-task-body {
 
 }
-.gantt-project-title {
-	border-bottom: 1px solid;
-	width: 100%;
-}
 
 /* .gantt-project {
 	height: 43.5px;
@@ -472,6 +468,10 @@
 	height: 43.5px;
 	line-height: 43.5px;
 	border-right: 1px solid #fff;
+	font-size: larger;
+    font-weight: 600;
+	border-bottom: 1px solid ;
+	width: 100%;
 }
 
 .gantt-task {
@@ -569,10 +569,10 @@
 .gantt-editable-div:hover .gantt-task-detail-click-span {
 	color: rgb(151, 87, 255);
 }
-.gantt-editable-div:hover .taskName {
+/* .gantt-editable-div:hover .taskName {
 	background-color: rgba(151, 87, 255, 0.3);
 	border: 1px solid rgb(151, 87, 255);
-}
+} */
 
 /* .editable > img {
 	width: 15px;
