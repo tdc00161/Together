@@ -3,20 +3,6 @@
 // 간트 csrf
 const csrfToken_gantt = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-// ************* 드롭박스 생성
-let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-
-for (let i = 0; i < checkLists.length; i++) {
-  let checkList = checkLists[i];
-
-  checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
-    if (checkList.classList.contains('visible'))
-      checkList.classList.remove('visible');
-    else
-      checkList.classList.add('visible');
-  }
-}
-
 // ********* 엔터쳤을 때 줄바꿈 막기
 const editableDivs = document.querySelectorAll('.taskName');
 
@@ -1788,4 +1774,42 @@ function changeStyle(element) {
   element.classList.toggle('gantt-span-focus');
 }
 
+// ************* 드롭박스 생성
+// let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
 
+// for (let i = 0; i < checkLists.length; i++) {
+//   let checkList = checkLists[i];
+
+//   checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
+//     if (checkList.classList.contains('visible'))
+//       checkList.classList.remove('visible');
+//     else
+//       checkList.classList.add('visible');
+//   }
+// }
+
+// ---------------간트차트 필터 드롭다운----------------
+
+// 드롭다운 토글 함수 정의
+function toggleGanttFilterDropdown() {
+
+  let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
+  let activest = document.getElementById('list1');
+
+  
+  for (let i = 0; i < checkLists.length; i++) {
+    let checkList = checkLists[i];
+  
+    checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
+      if (checkList.classList.contains('visible')) {
+        checkList.classList.remove('visible');
+        checkList.classList.remove('gantt-span-focus');
+      } else {
+        checkList.classList.add('visible');
+        
+        checkList.classList.add('gantt-span-focus');
+      }
+    }
+  }
+}  
+//---------------------------------------------------------------
