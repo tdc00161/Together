@@ -544,7 +544,7 @@ button {
 }
 
 .m-modal-content .chat-content {
-    padding: 7px;
+    padding: 7px 13px;
     background-color: var(--dropdown-hover);
     border-radius: 9px;
 }
