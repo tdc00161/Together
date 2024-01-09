@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\ChatRoom;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +33,7 @@ class MessengerController extends Controller
     public function chatRoomRecords($chatRoomId) {
 
 		// 채팅방 id로 채팅 내역을 검색
-		$chatRecords = DB::table('chats as c')
+		$response['chatRecords'] = DB::table('chats as c')
 			->join('users as u','u.id','c.sender_id')
 			->where('receiver_id',$chatRoomId)
 			->select(
@@ -44,24 +47,43 @@ class MessengerController extends Controller
 				)
 			->get()
 			->toArray();
-		Log::debug($chatRecords);
+		// Log::debug($chatRecords);
+
+		$response['userId'] = Auth::id();
 			
-    	return $chatRecords;
+    	return $response;
     }
 
 	// 채팅전송
     public function store(Request $request) {
 
 		$userId = Auth::id();
-						
-		Log::debug($request);
 
 		// chat 채팅내역에 새로운 채팅을 저장 (필요: sender_id, receiver_id(chat_rooms 채팅방 join), content)
 		$request['sender_id'] = $userId;
 
-		Chat::create($request->toArray());
+		// 채팅 유효성 검사
+		$validated = $request->validate([
+			'content' => 'required',
+			'sender_id' => 'required',
+			'receiver_id' => 'required',
+		]);
 
-    	return $request;
-    	// return $myChatRooms;
+		Log::debug($request);
+		Log::debug($validated);
+		
+		// 채팅 생성
+		$result = Chat::create($validated);
+
+		// 해당 채팅방의 최신 내역 갱신
+		ChatRoom::where('id',$result->receiver_id)
+			->update([
+				'last_chat' => $result->content
+			]);
+
+		// 채팅 이벤트 실행
+		MessageSent::dispatch($result);
+
+    	return $result;
     }
 }

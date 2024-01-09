@@ -2175,6 +2175,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+/* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(pusher_js__WEBPACK_IMPORTED_MODULE_1__);
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 /**
@@ -2193,7 +2195,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 
-window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+
+
+// window.Pusher = require('pusher-js');
+
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "8e6b931099fa752134c5",
@@ -2201,10 +2206,12 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   forceTLS: true,
   encryption: true
 });
-window.Echo.channel('test-channel').listen('.test-event', function (data) {
-  console.log(data);
-  alert(JSON.stringify(data['message']));
-});
+
+// window.Echo.channel('test-channel')
+//     .listen('.test-event', (data) => {
+//         console.log(data);
+//         alert(JSON.stringify(data['message']));
+//     });
 
 /***/ }),
 
@@ -25987,6 +25994,18 @@ runtime.setup(pusher_Pusher);
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

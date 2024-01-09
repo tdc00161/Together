@@ -487,10 +487,11 @@ button {
 
 /* ---------------------- 240107 김관호 채팅리스트, 채팅방 css ---------------------- */
 .m-modal-content .tab-content {
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .m-modal-content .chat-layout {
+    padding: 21px;
 }
 
 .m-modal-content .chat-room {
@@ -542,10 +543,13 @@ button {
     top: 5px;
 }
 
-.m-modal-content .chat-content{
-    /* overflow: hidden;
-    height: 40px;
-    text-overflow: ellipsis; */
+.m-modal-content .chat-content {
+    padding: 7px 13px;
+    background-color: var(--dropdown-hover);
+    border-radius: 9px;
+}
+.m-modal-content .my-chat-content {
+    margin-left: auto;
 }
 
 .m-modal-content .chat-time{
@@ -553,13 +557,13 @@ button {
 }
 
 .m-modal-content .chat-window {
-    width: 419px;
-    height: 537px;
+    height: 597px;
+    padding: 2px 21px;
 }
 
 .m-modal-content .chat-back {
-    width: 22px;
-    height: 39px;
+    width: 14px;
+    height: 36px;
     background-image: url(/img/icon-leftarrow.png);
     background-position: center;
     background-repeat: no-repeat;
@@ -571,6 +575,29 @@ button {
     width: 100%;
     height: 100%;
     border-radius: 7px;
+    padding: 19px;
+    overflow: scroll;
+}
+
+.m-modal-content .chat-msg-box {
+    display: flex;    
+}
+
+.m-modal-content .chat-msg-box:not(:first-child) {
+    margin-top: 12px;
+}
+
+.m-modal-content .chat-user-icon {
+    width: 34px;
+    height: 34px;
+    background-image: url('/img/profile-img.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.m-modal-content .chat-user-icon-after {
+    margin-left: 9px;
 }
 
 .m-modal-content .chat-footer {
