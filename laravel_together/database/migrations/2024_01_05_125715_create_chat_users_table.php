@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id(); // pk
             $table->unsignedBigInteger('chat_room_id'); // 채팅방 pk
             $table->unsignedBigInteger('user_id'); // 참여자 pk
+            $table->timestamps('chat_checked')->useCurrent(); // 채팅 확인일
             $table->timestamps(); // 작성일/수정일
             $table->softDeletes(); // 삭제일
         });

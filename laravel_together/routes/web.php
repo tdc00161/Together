@@ -61,13 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/team', [ProjectController::class,'mainindex']); //페이지 비활성화
     Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get'); //팀 프로젝트 출력
     Route::middleware('auth')->get('/task', [TaskController::class, 'index']); // 전체 업무 조회 / page
-    Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정
-    Route::get('/test1', function () {
-        event(new TE('테스트메시지'));
-    });
-    Route::get('/test2', function () {
-        return view('chatTest');
-    });
+    Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정    
+    // Route::get('/test', [MessengerController::class,'getAlarm']); // 테스트
 });
 Route::middleware('auth.api')->group(function () {
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
@@ -88,6 +83,7 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
     Route::get('/chatlist', [MessengerController::class,'chatlist']); // 채팅 리스트 출력
     Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
-    Route::post('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
+    // Route::get('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
+    Route::post('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });

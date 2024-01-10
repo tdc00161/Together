@@ -947,9 +947,45 @@ function chatListCheck() {
                             })
                             // 다 하고 맨 아래로 스크롤
                             chatUpdateScroll();
+
+                            // 채팅 읽음 처리 보내기
+                            let postData = {
+                                "now_chat_id": now_chat_id,
+                            }
+                            fetch('/chat-alarm', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    // 'X-Socket-ID': socketId,
+                                },
+                                body: JSON.stringify(postData),
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('error with print chatting list.');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // console.log(data);
+                                let chatRoomList = document.querySelectorAll('.chat-room')
+                                let chatNameList = document.querySelectorAll('.chat-name')
+                                chatRoomList.forEach((chatRoom,index)=>{
+                                    // console.log(chatRoom);
+                                    // console.log(chatRoom.getAttribute('chat-room-id'));
+                                    // console.log(data);
+                                    if(Number(chatRoom.getAttribute('chat-room-id')) === data.chat_room_id){
+                                        // console.log(chatNameList[index]);
+                                        chatNameList[index].removeAttribute('alarm-count')
+                                    }
+                                })
+                            })
+                            .catch(error => {
+                                console.log(error.stack);
+                            });
                         })
                         .catch(error => {
-                            // 실패 응답 또는 네트워크 오류 발생 시 처리
                             console.log(error.stack);
                         });
                     })
@@ -1040,7 +1076,7 @@ window.Echo.private('chats')
             // console.log('채팅창이 안떠져 있다');
             // 어디채팅방에서 온 메세지인지 안에서 분기할까 결정
             fetch('/chat-alarm', {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
@@ -1208,15 +1244,15 @@ fetch('/chatlist', {
 })
 .then(data => {
     // 성공 응답 받았을 때 처리
-    // console.log(data);
+    console.log(data);
 
     // 새로운 chat-layout 요소 생성
     // let chatLayout = document.createElement('div'); // blade->chatLayout 사용
     let chatLayout = document.querySelector('.chat-layout');
     chatLayout.className = 'chat-layout';
     
-    data.forEach((chatOne, index) => {
-        console.log(chatOne);
+    data.myChatRooms.forEach((chatOne, index) => {
+        // console.log(chatOne);
 
         // 새로운 chat-room 요소 생성
         let chatRoom = document.createElement('div');
@@ -1237,7 +1273,16 @@ fetch('/chatlist', {
         // chat-name 요소 생성, 속성 추가, chat-middle에 추가
         let chatName = document.createElement('div');
         chatName.className = 'chat-name';
-        chatName.setAttribute('alarm-count', ''); // 속성 추가
+        // 카운트 가져온 걸 속성에 추가 및 알람메신저아이콘으로 교체
+        data.myChatCount.forEach(myCount => {
+            if(myCount.chat_room_id === chatOne.chat_room_id){
+                chatName.setAttribute('alarm-count', myCount.chat_count); // 속성 추가
+                // 헤더 메신저 아이콘
+                let MsgIcons = document.querySelectorAll('.alarm-messenger');
+                MsgIcons[0].classList.add('has-new-chat');
+                MsgIcons[1].classList.add('has-new-chat');
+            }
+        });
         chatName.textContent = chatOne.chat_room_name ? chatOne.chat_room_name : '';
         chatMiddle.appendChild(chatName);
         
