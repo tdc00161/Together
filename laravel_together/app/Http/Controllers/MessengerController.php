@@ -23,6 +23,7 @@ class MessengerController extends Controller
 		$data = [];
 		$userId = Auth::id();
 
+		// 자신이 참여한 채팅방 
 		$data['myChatRooms'] = DB::table('chat_rooms as cr')
 			->join('chat_users as cu', 'cu.chat_room_id', 'cr.id')
 			->where('cu.user_id', $userId)
