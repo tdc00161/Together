@@ -1,5 +1,5 @@
 // ************* 개인 피드로 이동
-
+let childFlg = 0;
 // 간트 csrf
 const csrfToken_gantt = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -2019,22 +2019,6 @@ console.log('1');
   }
 }
 //---------------------------------------------------------------
-
-  // var bkRow = document.querySelector(".bk-row");
-  // var dates = document.querySelector(".dates");
-
-  // // Add hover event listener to bk-row
-  // bkRow.addEventListener("mouseenter", function() {
-  //   dates.style.display='block';
-  // });
-
-  // bkRow.addEventListener("mouseleave", function() {
-  //   dates.style.display='none';
-  // });
-
-//----------------------------------------------------------------------
-
-
 // 240109 김관호: 간트 자동 가로 스크롤 테스트
 // 현재 날짜 객체 생성
 const currentDate = new Date();
@@ -2057,17 +2041,35 @@ document.querySelectorAll('.date').forEach((date,index)=>{
   }
 })
 //-----------------------------------------------------------
-document.addEventListener("DOMContentLoaded", function() {
-  var ganttDetail = document.querySelector(".gantt-detail");
 
-  // Add click event listener to gantt-detail
-  ganttDetail.addEventListener("click", function() {
-    // Toggle display property between 'block' and 'none'
-    if (ganttDetail.style.display === "block") {
-      ganttDetail.style.display = "none";
-    } else {
-      ganttDetail.style.display = "block";
+
+  // Function to toggle child task based on parent ID
+  function toggleChildTask(parentId) {
+   
+    var parentTask = document.getElementById(`gantt-task-${parentId}`);
+    var childTask = document.querySelector(`.gantt-child-task[parent="${parentId}"]`);
+    if (childFlg == 0) {
+      // If child task exists, remove it
+      // parentTask.removeChild(childTask);
+      // childTask.remove();
+      
+      childFlg = 1;
+      childTask.style.display='none';
+    } else if(childFlg === 1) {
+      // If child task doesn't exist, create and append it
+      // var newChildTask = document.createElement("div");
+      // newChildTask.className = "gantt-task gantt-child-task";
+      // newChildTask.id = `gantt-task-${Math.floor(Math.random() * 1000) + 1}`;
+      // newChildTask.setAttribute("parent", parentId);
+      // newChildTask.innerHTML = '<br><div>This is a new child task.</div>';
+      
+      // parentTask.appendChild(newChildTask);
+      
+      childFlg = 0;
+      childTask.style.display='flex';
     }
-  });
-});
-//-----------------------------------------------------------
+  }
+
+  // Function to handle button click
+  window.toggleChildTask = toggleChildTask;
+  

@@ -26,6 +26,7 @@ class MessengerController extends Controller
 		$data['myChatRooms'] = DB::table('chat_rooms as cr')
 			->join('chat_users as cu', 'cu.chat_room_id', 'cr.id')
 			->where('cu.user_id', $userId)
+			->orderBy('last_chat_created_at','desc')
 			->get()
 			->toArray();
 
@@ -154,6 +155,20 @@ class MessengerController extends Controller
 		$result = $readChatUser->first();
 
 		Log::debug($result);
+
+		return $result;
+	}
+
+	// 채팅방 생성 및 초대 처리 (선 - 프로젝트 생성(자동) / 친구추가(자동) / 나중 - 초대(수동))
+	public function createRoomAndInvite(Request $request)
+	{
+		$data = [
+			'flg' => $request->flg,
+			'user_count' => $request->defaultPeople,
+			'chat_room_name' => $request->defaultRoomName,
+		];
+		
+		$result = ChatRoom::create($data);
 
 		return $result;
 	}
