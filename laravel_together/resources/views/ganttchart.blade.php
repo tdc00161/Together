@@ -97,7 +97,7 @@
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
         <div class="filter-div">
 
-            <div id="list1" class="gantt-dropdown-check-list" tabindex="100" onclick="toggleGanttFilterDropdown()">
+            <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
                 <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">상태</span>
@@ -122,7 +122,7 @@
             </div>
 
             <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">중요도</span>
                 </div>
@@ -149,7 +149,7 @@
             </div>
 
             <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">담당자</span>
                 </div>
@@ -180,7 +180,7 @@
             </div>
 
             <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">시작일</span>
                 </div>
@@ -200,7 +200,7 @@
                 </ul>
             </div>
             <div id="list5" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">마감일</span>
                 </div>
@@ -222,7 +222,7 @@
 
             <span style="color: rgb(202, 202, 202)">｜</span>
 
-            <div id="list6" class="gantt-dropdown-check-list" onclick="toggleGanttFilterDropdown()" tabindex="100">
+            <div id="list6" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
                     <img class="gantt-align" src="/img/Group 136.png" alt="filter">
                     <span style="font-size: 12px;">정렬</span>
@@ -302,12 +302,7 @@
                     @forelse ($data['task'] as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable">
-                                <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                <div class="gantt-detail" style="display: none">
-                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
-                                    <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
-                                </div>     
+                             <div>dd</div>
                                 <div class="taskKey" style="display: none">{{$item->task_number}}</div>
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
@@ -330,14 +325,17 @@
                             <div class="gantt-task-5">
                                 <input type="date" class="end-date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
                             </div>
+                            <div><button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
+                                </div></div>
                         </div>
                         @forelse ($item->depth_1 as $item2)
                             <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                 <div class="gantt-editable-div editable">
-                                    <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                    <div class="gantt-detail" style="display: none">
-                                        <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
-                                    </div>     
+                                        
                                     <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
                                     <div class="taskChildPosition"></div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
@@ -353,6 +351,11 @@
                                 </div>
                                 <div class="gantt-task-5">
                                     <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
+                                </div>
+                                <div><button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
+                                </div>
                                 </div>
                             </div>
                         @empty
