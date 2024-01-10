@@ -160,24 +160,24 @@
             <div id="projectMemberaddModal" class="projectMemberaddModalcss">
                 <div class="projectMemberaddModalContent">
                     <span class="memberaddclosebtn" onclick="projectMemberAddCloseModal()">&times;</span>
-                    <div>이메일로 추가</div>
+                    <div>이메일 초대</div>
                     <div class="m-gird">
-                        <div class="minline-b" onclick="toggleDrop()">친구에서 추가</div>
+                        <div onclick="toggleDrop()">친구 초대</div>
                         <div id="friend-drop">
                             <button class="friend_btn" onclick="toggleDropdown()">친구리스트</button>
                             <div id="drop-list" class="drop-list">
                                 @foreach ($friendinvite as $item)
                                     <div class="minvite_grid" id="drop-member">
-                                        <img src="/img/profile-img.png" alt="" style="width: 20px; height: 20px; padding-left:3px;">
-                                        <button class="mbbtn" style="color: black; padding-left:3px;" value="{{$item->friend_id}}">{{$item->name}}</button>
+                                        <img class="mbimg" src="/img/profile-img.png" alt="">
+                                        <button class="mbbtn" value="{{$item->friend_id}}">{{$item->name}}</button>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
                     </div>
                     <div class="m-gird">
-                        <div class="minline-b">초대 링크로 추가</div>
-                        <input type="text" style="color: black; width:250px" value="{{$result->invite}}">
+                        <div>초대 링크</div>
+                        <input style="color: black;" type="text" value="{{$result->invite}}">
                     </div>
                 </div>
             </div>

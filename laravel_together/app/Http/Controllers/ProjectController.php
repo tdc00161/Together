@@ -296,9 +296,9 @@ class ProjectController extends Controller
 
     //친구목록에서 초대
     $friendinvite = Friendlist::select('friendlists.friend_id','us.name','us.id')
-                                ->join('users as us','us.id','friendlists.friend_id')
-                                ->where('friendlists.user_id',$user->id)
-                                ->get();
+                              ->join('users as us','us.id','friendlists.friend_id')
+                              ->where('friendlists.user_id',$user->id)
+                              ->get();
     // dd($friendinvite);
 
 
@@ -386,36 +386,32 @@ class ProjectController extends Controller
     // dd($request);
     Log::debug($request);
 
-
     $url = $request->url;
     Log::debug($url);
 
     $urlsb = substr($url, -3);
     Log::debug($urlsb);
 
+    $invite_member = ProjectUser::where('member_id',$request->Value)
+                                ->join('projects as pj','pj.id','project_users.project_id')
+                                ->where('project_users.project_id',$urlsb)
+                                ->first();
+    if(!$invite_member){
+      
+      $memberpj = ProjectUser::create([
+        'project_id' => $urlsb,
+        'authority_id' => '1',
+        'member_id' => $request->Value
+      ]);
+      
+      return $url;
 
-    $memberpj = ProjectUser::create([
-      'project_id' => $urlsb,
-      'authority_id' => '1',
-      'member_id' => $request->Value
-    ]);
+    }else{
 
-    Log::debug($memberpj);
+      return $url;
+    
+    }
 
-	// -------------------------------------------------------- 240110 김관호: 초대 시 채팅방에 참여
-	$chatRoomId = ChatRoom::where('project_id',$urlsb)->first();
-	
-	if($chatRoomId){
-		$ChatUserData = [
-			'chat_room_id' => $chatRoomId->id,
-			'user_id' => $request->Value,
-		];
-		
-		$ChatRoom = ChatUser::create($ChatUserData);
-	}
-	// -------------------------------------------------------- 240110 김관호
-
-    return $url;
   }
 
 

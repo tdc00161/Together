@@ -7,10 +7,6 @@
     flex-direction: column;
 }
 
-/* .menu_title {
-    display: grid;
-    grid-template-rows: 1.5fr 1.5fr;
-} */
 .project-header {
     display: flex;
 }
@@ -402,16 +398,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .m-gird {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
+    grid-template-columns: 0.4fr 1.6fr;
+    margin-top: 20px;
+    height: 30px;
+    line-height: 26px;
 }
 
 .minvite_grid {
     display: grid;
     grid-template-columns: 0.2fr 1.8fr;
-    width: 250px;
+    width: 100%;
     height: 30px;
     align-content: center;
-    background-color: #f0f0f0;
+    background-color: #6f6f6f;
 }
 
 .minvite_grid:hover{
@@ -425,7 +424,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .friend_btn {
-    width: 250px;
+    width: 100%;
+    height: 31px;
     background-color: #dddddd;
     color: black;
     font-weight: bold;
@@ -440,16 +440,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 11px;
 }
 .drop-list {
-    background-color: #919191;
-    width: 250px;
-    height: 200px;
+    background-color: #646363;
+    width: 296px;
     display: none;
     position: absolute;
     min-width: 160px;
     z-index: 1;
 }
 
+.minline-b {
+    display: inline-block;
+}
 
+.mbimg {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    padding-left:3px;
+}
 
 .invite_a {
     font-size: 1.5rem;
