@@ -103,7 +103,7 @@
                     <span style="font-size: 12px;">상태</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="statusAll" class="status-radio radio-checked" type="radio" name="status" value="전체">
+                    <li><input id="statusAll" class="status-radio radio-checked" type="radio" name="status" value="전체" checked>
                         <label for="statusAll" class="gantt-item status-value">전체</label>
                     </li>
                     <li><input id="status1" class="status-radio" type="radio" name="status" value="시작전"> {{-- onclick="filtering()" --}}
@@ -302,7 +302,7 @@
                     @forelse ($data['task'] as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable">
-                             <div>dd</div>
+                             <button onclick="toggleChildTask({{$item->id}})" class="task-top-icon"><img class="task-top-icon-img" src="/img/Group 201.png"></button>
                                 <div class="taskKey" style="display: none">{{$item->task_number}}</div>
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
@@ -335,9 +335,10 @@
                         @forelse ($item->depth_1 as $item2)
                             <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                 <div class="gantt-editable-div editable">
-                                        
+                                       
                                     <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
                                     <div class="taskChildPosition"></div>
+                                    <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span></div>
