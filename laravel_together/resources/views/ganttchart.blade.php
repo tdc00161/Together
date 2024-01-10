@@ -103,7 +103,7 @@
                     <span style="font-size: 12px;">상태</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="statusAll" class="status-radio radio-checked" type="radio" name="status" value="전체">
+                    <li><input id="statusAll" class="status-radio radio-checked" type="radio" name="status" value="전체" checked>
                         <label for="statusAll" class="gantt-item status-value">전체</label>
                     </li>
                     <li><input id="status1" class="status-radio" type="radio" name="status" value="시작전"> {{-- onclick="filtering()" --}}
