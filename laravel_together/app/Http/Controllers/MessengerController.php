@@ -86,7 +86,7 @@ class MessengerController extends Controller
 		ChatRoom::where('id', $result->receiver_id)
 			->update([
 				'last_chat' => $result->content,
-				'last_chat_created_at' => now(),
+				'last_chat_created_at' => now()->format('Y-m-d H:i'),
 			]);
 
 		// 채팅 이벤트 실행
@@ -96,20 +96,20 @@ class MessengerController extends Controller
 	}
 
 	// // 채팅수신알람
-	// public function alarm(Request $request)
-	// {
+	public function alarm(Request $request)
+	{
 
-	// 	// $userId = Auth::id();
+		// $userId = Auth::id();
 
-	// 	// 실행 시 알람리스트에 레코드 추가 (필요: 수신 받는 사람 / 내용)
-	// 	// Log::debug('알람컨트롤러');
-	// 	// Log::debug($request);
+		// 실행 시 알람리스트에 레코드 추가 (필요: 수신 받는 사람 / 내용)
+		// Log::debug('알람컨트롤러');
+		// Log::debug($request);
 
-	// 	// 채팅 이벤트 실행
-	// 	MessageCame::dispatch($request);
+		// 채팅 이벤트 실행
+		MessageCame::dispatch($request);
 
-	// 	return $request;
-	// }
+		return $request;
+	}
 
 	// 채팅수신알람 조회
 	public function getAlarm()
@@ -117,7 +117,7 @@ class MessengerController extends Controller
 
 		$userId = Auth::id();
 
-		// 자신이 참여한 채팅방 중 chat_user->chat_checked 이후로 생성된 채팅 가져오기
+		// 자신이 참여한 채팅방 중 내가 쓴게 아닌 chat_user->chat_checked 이후로 생성된 채팅 가져오기
 		$result = DB::table('chat_users as cu')
 			->join('chat_rooms as cr', function ($join) {
 				$join->on('cr.id', 'cu.chat_room_id')
@@ -125,7 +125,8 @@ class MessengerController extends Controller
 			})
 			->join('chats as c', function ($join) {
 				$join->on('c.receiver_id', 'cr.id')
-					->whereColumn('c.created_at', '>', 'cu.chat_checked');
+					->whereColumn('c.created_at', '>', 'cu.chat_checked')
+					->where('c.sender_id','!=',Auth::id());
 			})
 			->select('cr.id as chat_room_id', DB::raw('COUNT(c.id) as chat_count'))
 			->groupBy('cr.id')
@@ -146,7 +147,7 @@ class MessengerController extends Controller
 		$readChatUser = ChatUser::where('chat_room_id', $request->now_chat_id)
 			->where('user_id', $userId);
 		$readChatUser->update([
-				'chat_checked' => now(),
+				'chat_checked' => now()->format('Y-m-d H:i'),
 			]);
 		// dd($result);
 

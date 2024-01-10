@@ -83,7 +83,7 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
     Route::get('/chatlist', [MessengerController::class,'chatlist']); // 채팅 리스트 출력
     Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
-    // Route::get('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
-    Route::post('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
+    Route::post('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
+    Route::delete('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
 });

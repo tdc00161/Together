@@ -1150,8 +1150,6 @@ function addSubTask(event, mainId) {
   const addGanttDetailClick = document.createElement('button');
   addGanttDetailClick.classList.add('gantt-task-detail-click');
   addGanttDetailClick.addEventListener('click', function (event) {
-    // console.log(this);
-    // console.log(event.target.parentNode.nextElementSibling); 더보기 버튼의 부모의 다음 형제
 
     // gantt-detail 이 none 이면 blck
     if(this.contains(event.target)){
@@ -1625,7 +1623,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.addEventListener('click', function(event) {
       ganttDetailList.forEach(function(detail) {
-          if (!event.target.closest('.gantt-editable-div')) {
+          if (!event.target.closest('.gantt-task')) {
               detail.style.display = 'none';
           }
       });
@@ -1772,33 +1770,31 @@ function sendUpdateRequest(id, updatedValue, numbersOnly) {
     });
 }
 
-// 수정 완료 팝업 창 보이기
-function showPopupMessage(message) {
-  const popupModal = document.getElementById('ganttPopupModal');
-  const popupMessage = document.getElementById('ganttPopupMessage');
+// 240110 수정완료 주석
+// // 수정 완료 팝업 창 보이기
+// function showPopupMessage(message) {
+//   const popupModal = document.getElementById('ganttPopupModal');
+//   const popupMessage = document.getElementById('ganttPopupMessage');
 
-  popupMessage.textContent = message;
-  popupModal.style.display = 'block';
+//   popupMessage.textContent = message;
+//   popupModal.style.display = 'block';
 
-  // 팝업 창 닫기
-  const closePopup = () => {
-    popupModal.style.display = 'none';
-    document.removeEventListener('click', closePopup);
-  };
+//   // 팝업 창 닫기
+//   const closePopup = () => {
+//     popupModal.style.display = 'none';
+//     document.removeEventListener('click', closePopup);
+//   };
 
-  // 팝업 영역에서의 클릭 이벤트 전파 차단
-  popupModal.addEventListener('click', (event) => {
-    event.stopPropagation();
-  });
+//   // 팝업 영역에서의 클릭 이벤트 전파 차단
+//   popupModal.addEventListener('click', (event) => {
+//     event.stopPropagation();
+//   });
 
-  // 일정 시간(여기서는 1초) 후 팝업 창 닫기
-  setTimeout(() => {
-    closePopup();
-  }, 1000);
-
-  // // 팝업 외의 영역 클릭 시 팝업 닫기
-  // document.addEventListener('click', closePopup);
-}
+//   // 일정 시간(여기서는 1초) 후 팝업 창 닫기
+//   setTimeout(() => {
+//     closePopup();
+//   }, 1000);
+// }
 
 // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
 document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
@@ -1858,7 +1854,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     sendUpdateRequest(id, updatedValue, numbersOnly);
 
     // 수정 완료 팝업 메시지 표시
-    showPopupMessage('수정 완료!');
+    // showPopupMessage('수정 완료!');
   });
 });
 
@@ -2005,27 +2001,25 @@ function changeStyle(element) {
 // ---------------간트차트 필터 드롭다운----------------
 
 // 드롭다운 토글 함수 정의
-function toggleGanttFilterDropdown() {
+let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
+console.log("click");
 
-  let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-  let activest = document.getElementById('list1');
-
+for (let i = 0; i < checkLists.length; i++) {
   
-  for (let i = 0; i < checkLists.length; i++) {
-    let checkList = checkLists[i];
-  
-    checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
-      if (checkList.classList.contains('visible')) {
-        checkList.classList.remove('visible');
-        checkList.classList.remove('gantt-span-focus');
-      } else {
-        checkList.classList.add('visible');
-        
-        checkList.classList.add('gantt-span-focus');
-      }
+  let checkList = checkLists[i];
+console.log('1');
+  checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
+    if (checkList.classList.contains('visible')) {
+      checkList.classList.remove('visible');
+      checkList.classList.remove('gantt-span-focus');
+      console.log('2');
+    } else {
+      checkList.classList.add('visible');
+      console.log('3');
+      checkList.classList.add('gantt-span-focus');
     }
   }
-}  
+}
 //---------------------------------------------------------------
 
   // var bkRow = document.querySelector(".bk-row");
@@ -2064,3 +2058,18 @@ document.querySelectorAll('.date').forEach((date,index)=>{
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 })
+//-----------------------------------------------------------
+document.addEventListener("DOMContentLoaded", function() {
+  var ganttDetail = document.querySelector(".gantt-detail");
+
+  // Add click event listener to gantt-detail
+  ganttDetail.addEventListener("click", function() {
+    // Toggle display property between 'block' and 'none'
+    if (ganttDetail.style.display === "block") {
+      ganttDetail.style.display = "none";
+    } else {
+      ganttDetail.style.display = "block";
+    }
+  });
+});
+//-----------------------------------------------------------

@@ -458,7 +458,7 @@ a:hover {
 
 .gantt-items li input{
 	margin: 0px 5px;
-	accent-color: #ffffff;
+	accent-color: #000000;
 }
 .gantt-item {
 	padding-left: 4px;
@@ -516,9 +516,7 @@ a:hover {
 	width: 45%;
 	text-align: center;
 }
-.gantt-task-container {
 
-}
 .gantt-task-header {
 	display: flex;
 	justify-content: flex-start;
@@ -532,9 +530,7 @@ a:hover {
 	padding: 3px 0px;
 	height: 30px;
 }
-.gantt-order {
 
-}
 .gantt-order-div {
 	display: none;
     /* width: fit-content; */
@@ -563,6 +559,11 @@ a:hover {
 	width: 100%;
 	text-align: center;
 	background: none;
+	font-size: 12px;
+}
+
+.respon-name-span {
+background-color: #000;
 }
 
 .gantt-task-detail-click, .taskKey, .taskName {
@@ -588,17 +589,15 @@ a:hover {
 .gantt-task .gantt-status-name {
 	width: 16%;
 }
-.gantt-task .gantt-task-4 {
+.gantt-task-4 {
 	width: 18%;
 }
-.gantt-task .gantt-task-5 {
+.gantt-task-5 {
 	width: 18%;
 }
 /* 업무명 수정 가능 */
 .editable {
-	/* border: 1px solid #ccc; */
 	padding: 5px;
-	cursor: pointer;
 }
 /*  */
 .gantt-editable-div {
@@ -611,7 +610,6 @@ a:hover {
 }
 .gantt-task-detail-click-span {
 	display: block;
-	/* transform: rotate(90deg); */
 	white-space: nowrap;
 	transform-origin: 50% 50%;
 	position: absolute;
@@ -619,7 +617,11 @@ a:hover {
 	left: 50%;
 	transform: translate(-50%, -50%) rotate(90deg);
 	font-size: large;
+	color: transparent;
+	padding-right: 5px;
+	font-weight: bold;
 }
+
 .taskKey {
 	flex: 0 0 20%;
 }
@@ -636,25 +638,21 @@ a:hover {
 	padding-left: 10px;
 }
 
-.gantt-editable-div:hover .gantt-task-detail-click-span {
-	color: rgb(151, 87, 255);
+.gantt-task:hover .gantt-task-detail-click-span {
+	color: white;
 }
 .gantt-editable-div:hover .taskName {
-	background-color: rgba(151, 87, 255, 0.3);
-	border: 1px solid rgb(151, 87, 255);
+	background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 4px;
 }
 
-/* .editable > img {
-	width: 15px;
-	margin: 0px 5px;
-} */
 
 /* 업무명 자세히 보기 */
 .gantt-detail {
 	display: none;
 	position: absolute;
-	left: 13px;
-	top: 32px;
+	top: 30px;
+	right: -95px;
     background-color: rgba(151, 86, 255, 0.9);
     width: auto;
     padding: 5px;
@@ -718,15 +716,6 @@ a:hover {
 	position: relative;
 }
 
-.gantt-chart-container {
-	/* flex: 1; */
-	/* overflow: auto; */
-	/* overflow-y: hidden; */
-}
-.gantt-chart-startdate {
-
-}
-
 .gantt-chart-header {
 	text-align: center;
 	height: 44px;
@@ -783,17 +772,13 @@ a:hover {
     margin-left: 1px;
     margin-top: 2px;
 	height: 15px;
-	/* display: none; */
+	display: none;
 }
 
-.start {
-
-	
+.gantt-chart:hover .dates{
+	display: block;
 }
 
-.end {
-
-}
 .date-container {
 	display: flex;
 	flex-direction: column;
