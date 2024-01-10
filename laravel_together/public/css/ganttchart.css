@@ -522,9 +522,8 @@ a:hover {
 .gantt-task-header {
 	display: flex;
 	justify-content: flex-start;
-	
 	text-align: center;
-	height: 70px;
+	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
 }
 
@@ -546,15 +545,17 @@ a:hover {
     /* margin-left: 17px; */
 }
 .gantt-task-body {
+	border-right: 4px solid #ffffff29;
 
 }
+.gantt-chart-body {
+    box-shadow: inset 5px 0 10px 0px black;
+}
 .gantt-task {
-	/* border-bottom: 1px solid #000; */
-	/* padding: 3px; */
 	display: flex;
-    justify-content: space-between;
-	height: 43.5px;
+	height: 40.5px;
 	position: relative;
+	margin-bottom: 3px;
 }
 
 .gantt-task input {
@@ -569,13 +570,11 @@ a:hover {
 }
 
 .gantt-task>div {
-	border-right: 1px solid var(--inactive-color);
-	border-bottom: 1px solid var(--inactive-color);
 	padding: 10px 5px;
-	/* height: 43.5px; */
-	/* text-overflow: ellipsis; */
   	overflow: hidden;
   	white-space: nowrap;
+	/* margin-bottom: 3px; */
+	background-color: #ffffff0a;
 }
 
 /*  업무 부분 너비 조절 */
@@ -713,10 +712,10 @@ a:hover {
 .gantt-chart-wrap {
 	width: 55%;
     height: 100%;
-	/* border: 1px solid #000; */
 	display: flex;
 	overflow: auto;
-	/* flex-direction: column; */
+	overflow-x: scroll;
+	position: relative;
 }
 
 .gantt-chart-container {
@@ -724,14 +723,18 @@ a:hover {
 	/* overflow: auto; */
 	/* overflow-y: hidden; */
 }
+.gantt-chart-startdate {
+
+}
 
 .gantt-chart-header {
 	text-align: center;
-	height: 70px;
+	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
+	padding-left: 3px;
 }
 .gantt-header-month {
 	display: flex;
@@ -741,6 +744,7 @@ a:hover {
 	white-space: nowrap;
 	display: flex;
 	flex-direction: row;
+	gap: 13px;
 	
 }
 .bar {
@@ -749,24 +753,46 @@ a:hover {
 
 .gantt-chart {
 	display: flex;
-    /* justify-content: center; */
     flex-direction: row;
-	height: 43.5px;
-	border-bottom: 1px solid var(--inactive-color);
-	padding: 6px 0px;
+	height: 40.5px;
+	align-items: center;
+	margin-bottom: 3px;
+	background-color: #ffffff0a;
+	gap: 13px;
+	padding-left: 3px;
 }
-.gantt-chart-body div .bk-row {
-	width: 60px;
-	height: 30px;
+.bk-row {
+	width: 77px;
+	height: 20px;
+	border-radius: 3px;
+	background-color: #21D9AD;
+	display: flex;
 }
 .gantt-chart > div {
 	flex-basis: 60px;
 	width: 60px;
+	/* width: 60px; */
+	/* margin-right: 12px; */
 }
-.bk-row {
-	background-color: #9656FF;
-	width: 100%;
-	height: 100%;
+.dates {
+	font-size: 11px;
+	background-color: #0000004a;
+	width: 94%;
+    text-align: center;
+	border-radius: 4px;
+    margin-left: 1px;
+    margin-top: 2px;
+	height: 15px;
+	/* display: none; */
+}
+
+.start {
+
+	
+}
+
+.end {
+
 }
 .date-container {
 	display: flex;
@@ -780,7 +806,9 @@ a:hover {
 	color: #fff;
 	height: 30px;
 	background-color: rgba(0, 0, 0, 0.5);
-	border-radius: 6px;
+	border-radius: 60px;
+	font-size: 12px;
+	text-align: center;
 }
 .gantt-chart-header .month {
 	padding: 4px 15px;

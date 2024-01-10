@@ -1566,7 +1566,7 @@ function addDatesToHeader() {
     const day = chartDate.toLocaleDateString('ko-KR', { day: '2-digit' }).replace('일', '');;
     const month = chartDate.toLocaleDateString('ko-KR', { month: '2-digit' }).replace('월', '');;
 
-    dateElement.innerHTML = `<span>${month}</span><span class="bar">/</span><span class="day">${day}</span>`;
+    dateElement.innerHTML = `${month}/${day}`;
     headerScroll.appendChild(dateElement);
 
 
@@ -1709,13 +1709,13 @@ function test(rowNum) {
       div.textContent = '';
 
       target.appendChild(div);
-
+    // bk-row 간트차트 날짜
       if (startDate.getTime() === new Date(start).getTime()) {
-        div.textContent = '시작일: ' + formattedDate;
+        div.innerHTML = '<span class="dates start">'+formattedDate+'</span>';
       }
 
       if (startDate.getTime() === new Date(end).getTime()) {
-        div.textContent = '마감일: ' + formattedDate;
+        div.innerHTML = '<span class="dates end">'+formattedDate+'</span>';
       }
 
       // 다음 날짜로 이동
@@ -1985,20 +1985,6 @@ function changeStyle(element) {
   element.classList.toggle('gantt-span-focus');
 }
 
-// ************* 드롭박스 생성
-// let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-
-// for (let i = 0; i < checkLists.length; i++) {
-//   let checkList = checkLists[i];
-
-//   checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
-//     if (checkList.classList.contains('visible'))
-//       checkList.classList.remove('visible');
-//     else
-//       checkList.classList.add('visible');
-//   }
-// }
-
 // ---------------간트차트 필터 드롭다운----------------
 
 // 드롭다운 토글 함수 정의
@@ -2023,3 +2009,17 @@ function toggleGanttFilterDropdown() {
   }
 }  
 //---------------------------------------------------------------
+
+  // var bkRow = document.querySelector(".bk-row");
+  // var dates = document.querySelector(".dates");
+
+  // // Add hover event listener to bk-row
+  // bkRow.addEventListener("mouseenter", function() {
+  //   dates.style.display='block';
+  // });
+
+  // bkRow.addEventListener("mouseleave", function() {
+  //   dates.style.display='none';
+  // });
+
+//----------------------------------------------------------------------
