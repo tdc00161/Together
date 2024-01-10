@@ -458,7 +458,7 @@ a:hover {
 
 .gantt-items li input{
 	margin: 0px 5px;
-	accent-color: #ffffff;
+	accent-color: #000000;
 }
 .gantt-item {
 	padding-left: 4px;
@@ -516,15 +516,12 @@ a:hover {
 	width: 45%;
 	text-align: center;
 }
-.gantt-task-container {
 
-}
 .gantt-task-header {
 	display: flex;
 	justify-content: flex-start;
-	
 	text-align: center;
-	height: 70px;
+	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
 }
 
@@ -533,9 +530,7 @@ a:hover {
 	padding: 3px 0px;
 	height: 30px;
 }
-.gantt-order {
 
-}
 .gantt-order-div {
 	display: none;
     /* width: fit-content; */
@@ -546,15 +541,17 @@ a:hover {
     /* margin-left: 17px; */
 }
 .gantt-task-body {
+	border-right: 4px solid #ffffff29;
 
 }
+.gantt-chart-body {
+    box-shadow: inset 5px 0 10px 0px black;
+}
 .gantt-task {
-	/* border-bottom: 1px solid #000; */
-	/* padding: 3px; */
 	display: flex;
-    justify-content: space-between;
-	height: 43.5px;
+	height: 40.5px;
 	position: relative;
+	margin-bottom: 3px;
 }
 
 .gantt-task input {
@@ -562,6 +559,11 @@ a:hover {
 	width: 100%;
 	text-align: center;
 	background: none;
+	font-size: 12px;
+}
+
+.respon-name-span {
+background-color: #000;
 }
 
 .gantt-task-detail-click, .taskKey, .taskName {
@@ -569,13 +571,11 @@ a:hover {
 }
 
 .gantt-task>div {
-	border-right: 1px solid var(--inactive-color);
-	border-bottom: 1px solid var(--inactive-color);
 	padding: 10px 5px;
-	/* height: 43.5px; */
-	/* text-overflow: ellipsis; */
   	overflow: hidden;
   	white-space: nowrap;
+	/* margin-bottom: 3px; */
+	background-color: #ffffff0a;
 }
 
 /*  업무 부분 너비 조절 */
@@ -583,23 +583,21 @@ a:hover {
 	width: 34%;
 	text-align: left;
 }
-.gantt-task .responName {
+.responName {
 	width: 14%;
 }
 .gantt-task .gantt-status-name {
 	width: 16%;
 }
-.gantt-task .gantt-task-4 {
+.gantt-task-4 {
 	width: 18%;
 }
-.gantt-task .gantt-task-5 {
+.gantt-task-5 {
 	width: 18%;
 }
 /* 업무명 수정 가능 */
 .editable {
-	/* border: 1px solid #ccc; */
 	padding: 5px;
-	cursor: pointer;
 }
 /*  */
 .gantt-editable-div {
@@ -612,7 +610,6 @@ a:hover {
 }
 .gantt-task-detail-click-span {
 	display: block;
-	/* transform: rotate(90deg); */
 	white-space: nowrap;
 	transform-origin: 50% 50%;
 	position: absolute;
@@ -620,13 +617,33 @@ a:hover {
 	left: 50%;
 	transform: translate(-50%, -50%) rotate(90deg);
 	font-size: large;
+	color: transparent;
+	padding-right: 5px;
+	font-weight: bold;
 }
+
 .taskKey {
 	flex: 0 0 20%;
 }
+.task-top-icon {
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+    justify-content: center;
+}
+.task-top-icon-img {
+	width: 15px;
+	height: 15px;
+}
+.task-bottom-icon-img {
+	width: 10px;
+	height: auto;
+	
+}
 
 .taskChildPosition {
-	width: 7%;
+	width: 11%;
 }
 
 .taskName {
@@ -637,25 +654,21 @@ a:hover {
 	padding-left: 10px;
 }
 
-.gantt-editable-div:hover .gantt-task-detail-click-span {
-	color: rgb(151, 87, 255);
+.gantt-task:hover .gantt-task-detail-click-span {
+	color: white;
 }
-.gantt-editable-div:hover .taskName {
-	background-color: rgba(151, 87, 255, 0.3);
-	border: 1px solid rgb(151, 87, 255);
+.taskName:hover {
+	background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 4px;
 }
 
-/* .editable > img {
-	width: 15px;
-	margin: 0px 5px;
-} */
 
 /* 업무명 자세히 보기 */
 .gantt-detail {
 	display: none;
 	position: absolute;
-	left: 13px;
-	top: 32px;
+	top: 30px;
+	right: -95px;
     background-color: rgba(151, 86, 255, 0.9);
     width: auto;
     padding: 5px;
@@ -713,25 +726,20 @@ a:hover {
 .gantt-chart-wrap {
 	width: 55%;
     height: 100%;
-	/* border: 1px solid #000; */
 	display: flex;
 	overflow: auto;
-	/* flex-direction: column; */
-}
-
-.gantt-chart-container {
-	/* flex: 1; */
-	/* overflow: auto; */
-	/* overflow-y: hidden; */
+	overflow-x: scroll;
+	position: relative;
 }
 
 .gantt-chart-header {
 	text-align: center;
-	height: 70px;
+	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
+	padding-left: 3px;
 }
 .gantt-header-month {
 	display: flex;
@@ -741,6 +749,7 @@ a:hover {
 	white-space: nowrap;
 	display: flex;
 	flex-direction: row;
+	gap: 13px;
 	
 }
 .bar {
@@ -749,25 +758,43 @@ a:hover {
 
 .gantt-chart {
 	display: flex;
-    /* justify-content: center; */
     flex-direction: row;
-	height: 43.5px;
-	border-bottom: 1px solid var(--inactive-color);
-	padding: 6px 0px;
+	height: 40.5px;
+	align-items: center;
+	margin-bottom: 3px;
+	background-color: #ffffff0a;
+	gap: 13px;
+	padding-left: 3px;
 }
-.gantt-chart-body div .bk-row {
-	width: 60px;
-	height: 30px;
+.bk-row {
+	width: 77px;
+	height: 20px;
+	border-radius: 3px;
+	background-color: #21D9AD;
+	display: flex;
 }
 .gantt-chart > div {
 	flex-basis: 60px;
 	width: 60px;
+	/* width: 60px; */
+	/* margin-right: 12px; */
 }
-.bk-row {
-	background-color: #9656FF;
-	width: 100%;
-	height: 100%;
+.dates {
+	font-size: 11px;
+	background-color: #0000004a;
+	width: 94%;
+    text-align: center;
+	border-radius: 4px;
+    margin-left: 1px;
+    margin-top: 2px;
+	height: 15px;
+	display: none;
 }
+
+.gantt-chart:hover .dates{
+	display: block;
+}
+
 .date-container {
 	display: flex;
 	flex-direction: column;
@@ -780,7 +807,9 @@ a:hover {
 	color: #fff;
 	height: 30px;
 	background-color: rgba(0, 0, 0, 0.5);
-	border-radius: 6px;
+	border-radius: 60px;
+	font-size: 12px;
+	text-align: center;
 }
 .gantt-chart-header .month {
 	padding: 4px 15px;

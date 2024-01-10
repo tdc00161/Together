@@ -97,65 +97,65 @@
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
         <div class="filter-div">
 
-            <div id="list1" class="gantt-dropdown-check-list" tabindex="100" onclick="toggleGanttFilterDropdown()">
+            <div id="list1" class="gantt-dropdown-check-list" tabindex="100">
                 <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">상태</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="statusAll" type="radio" name="status" value="전체" checked onclick="is_checked_status(event)">
-                        <label for="statusAll" class="gantt-item">전체</label>
+                    <li><input id="statusAll" class="status-radio radio-checked" type="radio" name="status" value="전체" checked>
+                        <label for="statusAll" class="gantt-item status-value">전체</label>
                     </li>
-                    <li><input id="status1" type="radio" name="status" value="시작전" onclick="is_checked_status(event)">
-                        <div class="gantt-color gantt-status1"></div><label for="status1" class="gantt-item">시작전</label>
+                    <li><input id="status1" class="status-radio" type="radio" name="status" value="시작전"> {{-- onclick="filtering()" --}}
+                        <div class="gantt-color gantt-status1"></div><label for="status1" class="gantt-item status-value">시작전</label>
                     </li>
-                    <li><input id="status2" type="radio" name="status" value="진행중" onclick="is_checked_status(event)">
-                        <div class="gantt-color gantt-status2"></div><label for="status2" class="gantt-item">진행중</label>
+                    <li><input id="status2" class="status-radio" type="radio" name="status" value="진행중"> {{-- onclick="filtering()" --}}
+                        <div class="gantt-color gantt-status2"></div><label for="status2" class="gantt-item status-value">진행중</label>
                     </li>
-                    <li><input id="status3" type="radio" name="status" value="피드백" onclick="is_checked_status(event)">
-                        <div class="gantt-color gantt-status3"></div><label for="status3" class="gantt-item">피드백</label>
+                    <li><input id="status3" class="status-radio" type="radio" name="status" value="피드백"> {{-- onclick="filtering()" --}}
+                        <div class="gantt-color gantt-status3"></div><label for="status3" class="gantt-item status-value">피드백</label>
                     </li>
-                    <li><input id="status4" type="radio" name="status" value="완료" onclick="is_checked_status(event)">
-                        <div class="gantt-color gantt-status4"></div><label for="status4" class="gantt-item">완료</label>
+                    <li><input id="status4" class="status-radio" type="radio" name="status" value="완료"> {{-- onclick="filtering()" --}}
+                        <div class="gantt-color gantt-status4"></div><label for="status4" class="gantt-item status-value">완료</label>
                     </li>
                 </ul>
             </div>
 
             <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">중요도</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="priorityAll" type="radio" name="priority" value="priorityAll">
-                        <label for="priorityAll" class="gantt-item">전체</label>
+                    <li><input id="priorityAll" class="priority-radio radio-checked" type="radio" name="priority" value="priorityAll">
+                        <label for="priorityAll" class="gantt-item priority-value">전체</label>
                     </li>
-                    <li><input id="priority1" type="radio" name="priority" value="priority1"><img class="gantt-rank" src="/img/gantt-bisang.png" alt="">
-                        <label for="priority1" class="gantt-item">긴급</label>
+                    <li><input id="priority1" class="priority-radio" type="radio" name="priority" value="priority1"><img class="gantt-rank" src="/img/gantt-bisang.png" alt="">
+                        <label for="priority1" class="gantt-item priority-value">긴급</label>
                     </li>
-                    <li><input id="priority2" type="radio" name="priority" value="priority2"><img class="gantt-rank" src="/img/gantt-up.png" alt="">
-                        <label for="priority2" class="gantt-item">높음</label>
+                    <li><input id="priority2" class="priority-radio" type="radio" name="priority" value="priority2"><img class="gantt-rank" src="/img/gantt-up.png" alt="">
+                        <label for="priority2" class="gantt-item priority-value">높음</label>
                     </li>
-                    <li><input id="priority3" type="radio" name="priority" value="priority3"><img class="gantt-rank" src="/img/gantt-line.png" alt="">
-                        <label for="priority3" class="gantt-item">보통</label>
+                    <li><input id="priority3" class="priority-radio" type="radio" name="priority" value="priority3"><img class="gantt-rank" src="/img/gantt-line.png" alt="">
+                        <label for="priority3" class="gantt-item priority-value">보통</label>
                     </li>
-                    <li><input id="priority4" type="radio" name="priority" value="priority4"><img class="gantt-rank" src="/img/gantt-down.png" alt="">
-                        <label for="priority4" class="gantt-item">낮음</label>
+                    <li><input id="priority4" class="priority-radio" type="radio" name="priority" value="priority4"><img class="gantt-rank" src="/img/gantt-down.png" alt="">
+                        <label for="priority4" class="gantt-item priority-value">낮음</label>
                     </li>
-                    <li><input id="priorityNot" type="radio" name="priority" value="priorityNot">
-                        <label for="priorityNot" class="gantt-item">없음</label>
+                    <li><input id="priorityNot" class="priority-radio" type="radio" name="priority" value="priorityNot">
+                        <label for="priorityNot" class="gantt-item priority-value">없음</label>
                     </li>
                 </ul>
             </div>
 
             <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">담당자</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="resAll" type="radio" name="respon" checked onclick="is_checked_respon(event)">
-                        <label class="gantt-item" for="resAll">전체</label>
+                    <li><input id="resAll" class="respon-radio radio-checked" type="radio" name="respon" checked> {{-- onclick="filtering()" --}}
+                        <label class="gantt-item respon-value" for="resAll">전체</label>
                     </li>
                     @php
                         $resNames = array_unique(array_column($data['task'], 'res_name'));
@@ -168,11 +168,11 @@
                     @foreach($resNames as $index => $resName)
                         <li>
                             @if ($resName !== null)
-                                <input id="res{{ $index + 1 }}" type="radio" name="respon" onclick="is_checked_respon(event)">
-                                <label for="res{{ $index + 1 }}" class="gantt-item">{{ $resName }}</label>
+                                <input class="respon-radio" id="res{{ $index + 1 }}" type="radio" name="respon"> {{-- onclick="filtering()" --}}
+                                <label for="res{{ $index + 1 }}" class="gantt-item respon-value">{{ $resName }}</label>
                             @else
-                                <input id="res-none" type="radio" name="respon" onclick="is_checked_respon(event)">
-                                <label for="res-none" class="gantt-item">없음</label>
+                                <input class="respon-radio" id="res-none" type="radio" name="respon"> {{-- onclick="filtering()" --}}
+                                <label for="res-none" class="gantt-item respon-value">없음</label>
                             @endif
                         </li>
                     @endforeach
@@ -180,49 +180,49 @@
             </div>
 
             <div id="list4" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">시작일</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input name="start" type="radio" id="start1" checked onclick="is_checked_start(event)">
-                        <label for="start1" class="gantt-item">전체</label>
+                    <li><input name="start" class="start-radio radio-checked" type="radio" id="start1" checked> {{-- onclick="filtering()" --}}
+                        <label for="start1" class="gantt-item start-value">전체</label>
                     </li>
-                    <li><input name="start" type="radio" id="start2" onclick="is_checked_start(event)">
-                        <label for="start2" class="gantt-item">오늘</label>
+                    <li><input name="start" class="start-radio" type="radio" id="start2"> {{-- onclick="filtering()" --}}
+                        <label for="start2" class="gantt-item start-value">오늘</label>
                     </li>
-                    <li><input name="start" type="radio" id="start3" onclick="is_checked_start(event)">
-                        <label for="start3" class="gantt-item">이번주</label>
+                    <li><input name="start" class="start-radio" type="radio" id="start3"> {{-- onclick="filtering()" --}}
+                        <label for="start3" class="gantt-item start-value">이번주</label>
                     </li>
-                    <li><input name="start" type="radio" id="start4" onclick="is_checked_start(event)">
-                        <label for="start4" class="gantt-item">이번달</label>
+                    <li><input name="start" class="start-radio" type="radio" id="start4"> {{-- onclick="filtering()" --}}
+                        <label for="start4" class="gantt-item start-value">이번달</label>
                     </li>
                 </ul>
             </div>
             <div id="list5" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" onclick="toggleGanttFilterDropdown()" class="gantt-span">
+                <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
                     <span style="font-size: 12px;">마감일</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input name="end" type="radio" id="end1" checked onclick="is_checked_end(event)">
-                        <label for="end1" class="gantt-item">전체</label>
+                    <li><input name="end" class="end-radio radio-checked" type="radio" id="end1" checked> {{-- onclick="filtering()" --}}
+                        <label for="end1" class="gantt-item end-value">전체</label>
                     </li>
-                    <li><input name="end" type="radio" id="end2" onclick="is_checked_end(event)">
-                        <label for="end2" class="gantt-item">오늘</label>
+                    <li><input name="end" class="end-radio" type="radio" id="end2"> {{-- onclick="filtering()" --}}
+                        <label for="end2" class="gantt-item end-value">오늘</label>
                     </li>
-                    <li><input name="end" type="radio" id="end3" onclick="is_checked_end(event)">
-                        <label for="end3" class="gantt-item">이번주</label>
+                    <li><input name="end" class="end-radio" type="radio" id="end3"> {{-- onclick="filtering()" --}}
+                        <label for="end3" class="gantt-item end-value">이번주</label>
                     </li>
-                    <li><input name="end" type="radio" id="end4" onclick="is_checked_end(event)">
-                        <label for="end4" class="gantt-item">이번달</label>
+                    <li><input name="end" class="end-radio" type="radio" id="end4"> {{-- onclick="filtering()" --}}
+                        <label for="end4" class="gantt-item end-value">이번달</label>
                     </li>
                 </ul>
             </div>
 
             <span style="color: rgb(202, 202, 202)">｜</span>
 
-            <div id="list6" class="gantt-dropdown-check-list" onclick="toggleGanttFilterDropdown()" tabindex="100">
+            <div id="list6" class="gantt-dropdown-check-list" tabindex="100">
                 <div class="gantt-span">
                     <img class="gantt-align" src="/img/Group 136.png" alt="filter">
                     <span style="font-size: 12px;">정렬</span>
@@ -302,12 +302,7 @@
                     @forelse ($data['task'] as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable">
-                                <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                <div class="gantt-detail" style="display: none">
-                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
-                                    <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
-                                </div>     
+                             <button onclick="toggleChildTask({{$item->id}})" class="task-top-icon"><img class="task-top-icon-img" src="/img/Group 201.png"></button>
                                 <div class="taskKey" style="display: none">{{$item->task_number}}</div>
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
@@ -330,16 +325,20 @@
                             <div class="gantt-task-5">
                                 <input type="date" class="end-date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
                             </div>
+                            <div><button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
+                                    <br>
+                                    <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
+                                </div></div>
                         </div>
                         @forelse ($item->depth_1 as $item2)
                             <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                 <div class="gantt-editable-div editable">
-                                    <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                    <div class="gantt-detail" style="display: none">
-                                        <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
-                                    </div>     
+                                       
                                     <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
                                     <div class="taskChildPosition"></div>
+                                    <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span></div>
@@ -353,6 +352,11 @@
                                 </div>
                                 <div class="gantt-task-5">
                                     <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
+                                </div>
+                                <div><button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-detail" style="display: none">
+                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
+                                </div>
                                 </div>
                             </div>
                         @empty

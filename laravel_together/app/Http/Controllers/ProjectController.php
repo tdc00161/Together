@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
@@ -75,6 +76,16 @@ class ProjectController extends Controller
 
     //DB 저장
     $data2result = ProjectUser::create($data2);
+
+    // --------------------------------------------- 240110 김관호: 프로젝트 제작 후 채팅방 생성
+    $ChatRoomData = [
+			'flg' => $request->flg,
+			'user_count' => 1,
+			'chat_room_name' => $result->project_title,
+		];
+		
+		$ChatRoom = ChatRoom::create($ChatRoomData);
+    // --------------------------------------------- 240110 김관호 
 
     //flg 기준 개인/팀 화면으로 전달, 로그인 안한 유저일 경우 log 화면으로 이동
     if (Auth::check()) {
@@ -329,6 +340,10 @@ class ProjectController extends Controller
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
+
+        // -------------------------------------------------------- 240110 김관호: 초대 시 채팅방에 참여
+        // TODO
+        // -------------------------------------------------------- 240110 김관호
     }else{
       return view('/membermodal')->with('project_id',$project[0]->project_id)->with('url',$url);
     }

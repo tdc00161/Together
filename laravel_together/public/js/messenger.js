@@ -874,12 +874,17 @@ function chatListCheck() {
                     addedNode.addEventListener('click', (event) => {
                         // console.log(addedNode.getAttribute('chat-room-id'));
                         let now_chat_id = addedNode.getAttribute('chat-room-id')
+                        
                         // 클릭하면 채팅창이 켜지고 해당 채팅방의 id로 fetch
                         document.querySelector('.chat-layout').style.display = 'none';
                         document.querySelector('.chat-window').style.display = 'block';
                         // console.log(addedNode);
                         document.querySelector('.chat-window').setAttribute('chat-room-id',now_chat_id);
 
+                        // 들어갈 때 input 초기화
+                        let input = document.querySelector('#chatting-input');
+                        input.value = '';
+                        
                         // 채팅방 id를 불러서 최신내용 호출
                         fetch('/chat/'+ now_chat_id, {
                             method: 'GET',
@@ -947,9 +952,51 @@ function chatListCheck() {
                             })
                             // 다 하고 맨 아래로 스크롤
                             chatUpdateScroll();
+
+                            // 채팅 읽음 처리 보내기
+                            let postData = {
+                                "now_chat_id": now_chat_id,
+                            }
+                            fetch('/chat-alarm', {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    // 'X-Socket-ID': socketId,
+                                },
+                                body: JSON.stringify(postData),
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('error with print chatting list.');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // console.log(data);
+
+                                // 채팅방 옆 숫자 지우기
+                                let chatRoomList = document.querySelectorAll('.chat-room')
+                                let chatNameList = document.querySelectorAll('.chat-name')
+                                let totalAlarm = 0;
+                                chatRoomList.forEach((chatRoom,index)=>{
+                                    if(Number(chatRoom.getAttribute('chat-room-id')) === data.chat_room_id){
+                                        chatNameList[index].removeAttribute('alarm-count')
+                                    }
+                                    // 채팅방 옆 숫자가 아무곳도 없으면 헤더/탭 아이콘 변경
+                                    totalAlarm += Number(chatNameList[index].getAttribute('alarm-count'))
+                                })
+                                if(totalAlarm === 0) {
+                                    let MsgIcons = document.querySelectorAll('.alarm-messenger');
+                                    MsgIcons[0].classList.remove('has-new-chat');
+                                    MsgIcons[1].classList.remove('has-new-chat');
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error.stack);
+                            });
                         })
                         .catch(error => {
-                            // 실패 응답 또는 네트워크 오류 발생 시 처리
                             console.log(error.stack);
                         });
                     })
@@ -1056,6 +1103,22 @@ window.Echo.private('chats')
             })
             .then(data => {
                 console.log(data);
+                // 채팅 올 때 알림 표시하기
+                console.log(data.message.receiver_id);
+                let chatRooms = document.querySelectorAll('.chat-room')
+                let chatNames = document.querySelectorAll('.chat-name')
+                chatRooms.forEach((chatRoom,index) => {           
+                    console.log(chatRoom.getAttribute('chat-room-id'));
+                    if(Number(chatRoom.getAttribute('chat-room-id')) === data.message.receiver_id){
+                        let alarmCount = chatNames[index].getAttribute('alarm-count');
+                        chatNames[index].setAttribute('alarm-count',Number(alarmCount === '' ? alarmCount = 0 : alarmCount)+1);
+                    }
+                })
+
+                // 헤더/탭에도 알림표시
+                let MsgIcons = document.querySelectorAll('.alarm-messenger');
+                MsgIcons[0].classList.add('has-new-chat');
+                MsgIcons[1].classList.add('has-new-chat');
             })
             .catch(error => {
                 console.log(error.stack);
@@ -1080,9 +1143,21 @@ window.Echo.private('chats')
 // 채팅방 입력창 버튼 이벤트
 // 전송버튼
 let send_chat = document.querySelector('.send-chat');
+// 입력창
+let input = document.querySelector('#chatting-input');
+
 send_chat.addEventListener('click', () => {
-    // 입력창
-    let input = document.querySelector('#chatting-input');
+    if(input.value.trim() !== ''){
+        sendChat();
+    }
+});
+input.addEventListener('keypress', (event) => {
+    if (input.value.trim() !== '' && event.key === 'Enter') {
+        sendChat();
+    }
+});
+
+function sendChat() {
     let chat_window = document.querySelector('.chat-window');
 
     // api 작성 통신
@@ -1136,7 +1211,7 @@ send_chat.addEventListener('click', () => {
         .catch(error => {
             console.log(error.stack);
         });
-})
+}
 
 // 채팅리스트 최신내역 갱신 함수
 function lastChatRefresh(receiver, content, last_chat_time) {
@@ -1208,15 +1283,15 @@ fetch('/chatlist', {
 })
 .then(data => {
     // 성공 응답 받았을 때 처리
-    // console.log(data);
+    console.log(data);
 
     // 새로운 chat-layout 요소 생성
     // let chatLayout = document.createElement('div'); // blade->chatLayout 사용
     let chatLayout = document.querySelector('.chat-layout');
     chatLayout.className = 'chat-layout';
     
-    data.forEach((chatOne, index) => {
-        console.log(chatOne);
+    data.myChatRooms.forEach((chatOne, index) => {
+        // console.log(chatOne);
 
         // 새로운 chat-room 요소 생성
         let chatRoom = document.createElement('div');
@@ -1237,7 +1312,16 @@ fetch('/chatlist', {
         // chat-name 요소 생성, 속성 추가, chat-middle에 추가
         let chatName = document.createElement('div');
         chatName.className = 'chat-name';
-        chatName.setAttribute('alarm-count', ''); // 속성 추가
+        // 카운트 가져온 걸 속성에 추가 및 알람메신저아이콘으로 교체
+        data.myChatCount.forEach(myCount => {
+            if(myCount.chat_room_id === chatOne.chat_room_id){
+                chatName.setAttribute('alarm-count', myCount.chat_count); // 속성 추가
+                // 헤더 메신저 아이콘
+                let MsgIcons = document.querySelectorAll('.alarm-messenger');
+                MsgIcons[0].classList.add('has-new-chat');
+                MsgIcons[1].classList.add('has-new-chat');
+            }
+        });
         chatName.textContent = chatOne.chat_room_name ? chatOne.chat_room_name : '';
         chatMiddle.appendChild(chatName);
         
