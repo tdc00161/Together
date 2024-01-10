@@ -2023,3 +2023,26 @@ function toggleGanttFilterDropdown() {
   // });
 
 //----------------------------------------------------------------------
+
+
+// 240109 김관호: 간트 자동 가로 스크롤 테스트
+// 현재 날짜 객체 생성
+const currentDate = new Date();
+
+// 년, 월, 일 추출
+const year = currentDate.getFullYear().toString();
+const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+const day = currentDate.getDate().toString().padStart(2, '0');
+
+// 결과 확인
+// console.log('Year:', year);
+// console.log('Month:', month);
+// console.log('Day:', day);
+
+document.querySelectorAll('.date').forEach((date,index)=>{
+  let m = date.firstElementChild
+  let d = document.querySelectorAll('.day')[index]
+  if(m.textContent === month && d.textContent === day){
+    date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  }
+})
