@@ -486,6 +486,33 @@ button {
 }
 
 /* ---------------------- 240107 김관호 채팅리스트, 채팅방 css ---------------------- */
+.alarm-messenger {
+    position: relative;
+}
+
+.has-new-chat::after {
+    position: absolute;
+    background-color: red;
+    border-radius: 50%;
+    content: '';
+    pointer-events: none;
+}
+
+
+.has-new-chat:not(.tab)::after {
+    width: 9px;
+    height: 9px;
+    bottom: 6px;
+    right: 4px;
+}
+
+.has-new-chat:not(.icon-Sub)::after {
+    width: 12px;
+    height: 12px;
+    bottom: 11px;
+    right: 7px;
+}
+
 .m-modal-content .tab-content {
     /* padding: 20px; */
 }
@@ -535,7 +562,7 @@ button {
 
 .m-modal-content .chat-name::after{
     content: attr(alarm-count);
-    background-color: #a11212;
+    background-color: red;
     padding: 0px 5px;
     border-radius: 6px;
     font-size: 11px;
@@ -555,6 +582,7 @@ button {
 
 .m-modal-content .chat-time{
     text-align: center;
+    width: 57px;
 }
 
 .m-modal-content .chat-window {

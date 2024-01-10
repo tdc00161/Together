@@ -1678,7 +1678,11 @@ function addDatesToHeader() {
   while (chartDate <= endDate) {
     const dateElement = document.createElement('div');
     dateElement.classList.add('date');
-    dateElement.textContent = chartDate.toLocaleDateString('ko-KR', { day: 'numeric', month: 'short' });
+
+    const day = chartDate.toLocaleDateString('ko-KR', { day: '2-digit' }).replace('일', '');;
+    const month = chartDate.toLocaleDateString('ko-KR', { month: '2-digit' }).replace('월', '');;
+
+    dateElement.innerHTML = `${month}/${day}`;
     headerScroll.appendChild(dateElement);
 
     chartDate.setDate(chartDate.getDate() + 1);
@@ -1743,13 +1747,13 @@ function test(rowNum) {
       div.textContent = '';
 
       target.appendChild(div);
-
+    // bk-row 간트차트 날짜
       if (startDate.getTime() === new Date(start).getTime()) {
-        div.textContent = '시작일: ' + formattedDate;
+        div.innerHTML = '<span class="dates start">'+formattedDate+'</span>';
       }
 
       if (startDate.getTime() === new Date(end).getTime()) {
-        div.textContent = '마감일: ' + formattedDate;
+        div.innerHTML = '<span class="dates end">'+formattedDate+'</span>';
       }
 
       // 다음 날짜로 이동
@@ -2019,20 +2023,6 @@ function changeStyle(element) {
   element.classList.toggle('gantt-span-focus');
 }
 
-// ************* 드롭박스 생성
-// let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-
-// for (let i = 0; i < checkLists.length; i++) {
-//   let checkList = checkLists[i];
-
-//   checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
-//     if (checkList.classList.contains('visible'))
-//       checkList.classList.remove('visible');
-//     else
-//       checkList.classList.add('visible');
-//   }
-// }
-
 // ---------------간트차트 필터 드롭다운----------------
 
 // 드롭다운 토글 함수 정의
@@ -2058,3 +2048,40 @@ function toggleGanttFilterDropdown() {
   }
 }  
 //---------------------------------------------------------------
+
+  // var bkRow = document.querySelector(".bk-row");
+  // var dates = document.querySelector(".dates");
+
+  // // Add hover event listener to bk-row
+  // bkRow.addEventListener("mouseenter", function() {
+  //   dates.style.display='block';
+  // });
+
+  // bkRow.addEventListener("mouseleave", function() {
+  //   dates.style.display='none';
+  // });
+
+//----------------------------------------------------------------------
+
+
+// 240109 김관호: 간트 자동 가로 스크롤 테스트
+// 현재 날짜 객체 생성
+const currentDate = new Date();
+
+// 년, 월, 일 추출
+const year = currentDate.getFullYear().toString();
+const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+const day = currentDate.getDate().toString().padStart(2, '0');
+
+// 결과 확인
+// console.log('Year:', year);
+// console.log('Month:', month);
+// console.log('Day:', day);
+
+document.querySelectorAll('.date').forEach((date,index)=>{
+  let m = date.firstElementChild
+  let d = document.querySelectorAll('.day')[index]
+  if(m.textContent === month && d.textContent === day){
+    date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  }
+})

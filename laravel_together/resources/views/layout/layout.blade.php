@@ -39,7 +39,7 @@
      <div class="header-profile">
       
       <button class="icon-Sub" onclick="toggleActive('icon-notice')"><img class="header-btn icon-notice" src="/img/icon-notice.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}
-      <button class="icon-Sub" onclick="toggleModal(); toggleActive('icon-messenger')"><img class="header-btn icon-messenger" src="/img/icon-messenger.png" alt=""></button>
+      <button class="icon-Sub alarm-messenger" onclick="toggleModal(); toggleActive('icon-messenger')"><img class="header-btn icon-messenger" src="/img/icon-messenger.png" alt=""></button>
 
       <div class="dropdown">
         <button class="dropdown-toggle icon-Sub" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleActive('myprofilebtn')">
