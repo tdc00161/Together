@@ -146,13 +146,83 @@ document.querySelectorAll('.gantt-task').forEach(task => {
 });
 console.log(allFilter);
 
+// 라디오 클릭하면 자기한테 클래스 주기
+let statusRadio = document.querySelectorAll('.status-radio')
+// let priorityRadio = document.querySelectorAll('.priority-radio')
+let responRadio = document.querySelectorAll('.respon-radio')
+let startRadio = document.querySelectorAll('.start-radio')
+let endRadio = document.querySelectorAll('.end-radio')
+
+let radios = [
+  statusRadio, 
+  responRadio,
+  startRadio,
+  endRadio,
+]
+
+radios.forEach(radio => {
+  radio.forEach(radioOne =>{
+    radioOne.addEventListener('click',() => {
+      // console.log(radioOne);
+      radioOne.classList.add('radio-checked')
+      radio.forEach(notMe => {
+        notMe !== radioOne ? notMe.classList.remove('radio-checked') : '';
+      })
+      filtering();
+    })
+  })
+})
+
+function filtering() {
+
+  allFilter.forEach(one => {
+    one.classList.remove('d-none');
+  })
+
+  statusFilter = [];
+  responFilter = [];
+  startFilter = [];
+  endFilter = [];
+
+is_checked_status();
+is_checked_respon();
+is_checked_start();
+is_checked_end();
+
+// console.log(statusFilter);
+// console.log(responFilter);
+// console.log(startFilter);
+// console.log(endFilter);
+
+let display_block = d_none_checked();
+
+let display_none = getUniqueValues(display_block,allFilter);
+
+display_none.forEach(dnone => {
+  dnone.classList.add('d-none');
+})
+
+}
+
 // ************* 상태 필터링 (라디오일 때)
-function is_checked_status(event) {
-  let statusRadioId = event.target.id;
-  let statusAllCheck = 'label[for="'+ statusRadioId +'"]';
-  let statusValues = document.querySelector(statusAllCheck).innerText;
+function is_checked_status() {
+  // let statusRadioId = event.target.id;
+  // let statusAllCheck = 'label[for="'+ statusRadioId +'"]';
+  // let statusValues = document.querySelector(statusAllCheck).innerText;
   // console.log(statusValues);
 
+  let statusChk = document.querySelectorAll('.status-radio');
+  let statusVal = document.querySelectorAll('.status-value');
+  let statusValues = '';
+  statusChk.forEach((chkOne,index) => {
+    if(chkOne.classList.contains('radio-checked')){
+      // console.log(statusVal);
+      // console.log(statusVal[index]);
+      statusValues = statusVal[index].textContent
+    }
+  })
+
+  // console.log(statusValues);
   let ganttTasks = document.querySelectorAll('.gantt-task');
   ganttTasks.forEach(task => {
     let statusNameSpan = task.querySelector('.status-name-span');
@@ -162,10 +232,12 @@ function is_checked_status(event) {
 
       if (statusValues === '전체') {
         if (taskStatus.includes(task)) {
+          console.log(statusValues === '전체');
           // task.style.display = 'none';
-          statusFilter.push(task);
+          
         } else {
           // task.style.display = 'flex';
+          statusFilter.push(task);
         }
       } else if (statusValues === '시작전') {
         if (taskStatus === statusValues) {
@@ -239,16 +311,26 @@ function is_checked_status(event) {
       // }
     }
   });
-  d_none_checked();
 } 
 
 // ************* 담당자 필터링 
-function is_checked_respon(event) {
-  let responRadioId = event.target.id;
-  let responAllCheck = 'label[for="'+ responRadioId +'"]';
-  let responValues = document.querySelector(responAllCheck).innerText;
+function is_checked_respon() {
+  // let responRadioId = event.target.id;
+  // let responAllCheck = 'label[for="'+ responRadioId +'"]';
+  // let responValues = document.querySelector(responAllCheck).innerText;
   // console.log(responValues);
 
+  let responChk = document.querySelectorAll('.respon-radio');
+  let responVal = document.querySelectorAll('.respon-value');
+  let responValues = '';
+  responChk.forEach((chkOne,index) => {
+    if(chkOne.classList.contains('radio-checked')){
+      // console.log(resVal);
+      // console.log(resVal[index]);
+      responValues = responVal[index].textContent
+    }
+  })
+  
   let ganttTasks = document.querySelectorAll('.gantt-task');
   ganttTasks.forEach(task => {
     let responNameSpan = task.querySelector('.respon-name-span');
@@ -260,9 +342,10 @@ function is_checked_respon(event) {
       if (responValues === '전체') {
         if (taskRespon.includes(task)) {
           // task.style.display = 'none';
-          responFilter.push(task);
+          
         } else {
           // task.style.display = 'flex';
+          responFilter.push(task);
         }
       } else if (responValues === '없음') {
         if (taskRespon === '') {
@@ -306,15 +389,25 @@ function is_checked_respon(event) {
       // }
     }   
   });
-  d_none_checked();
 }
 
 // ************* 시작일 필터링 
-function is_checked_start(event) {
-  let startRadioId = event.target.id;
-  let startCheck = 'label[for="'+ startRadioId +'"]';
-  let startText = document.querySelector(startCheck).innerText;
+function is_checked_start() {
+  // let startRadioId = event.target.id;
+  // let startCheck = 'label[for="'+ startRadioId +'"]';
+  // let startText = document.querySelector(startCheck).innerText;
   // console.log(startText); // 전체, 오늘, 이번주, 이번달 각각 출력
+
+  let startChk = document.querySelectorAll('.start-radio');
+  let startVal = document.querySelectorAll('.start-value');
+  let startText = '';
+  startChk.forEach((chkOne,index) => {
+    if(chkOne.classList.contains('radio-checked')){
+      // console.log(staVal);
+      // console.log(staVal[index]);
+      startText = startVal[index].textContent
+    }
+  })
 
   // 오늘 날짜 구하기
   let today = new Date();
@@ -349,9 +442,10 @@ function is_checked_start(event) {
       if (startText === '전체') {
         if (taskStart.includes(task)) {
           // task.style.display = 'none';
-          startFilter.push(task);
+          
         } else {
           // task.style.display = 'flex';
+          startFilter.push(task);
         }
       } else if (startText === '오늘') {
         if (taskStart.includes(formattedToday)) {
@@ -412,15 +506,25 @@ function is_checked_start(event) {
       // }
     }
   });
-  d_none_checked();
 }
 
 // ************* 마감일 필터링 
-function is_checked_end(event) {
-  let endRadioId = event.target.id;
-  let endCheck = 'label[for="'+ endRadioId +'"]';
-  let endText = document.querySelector(endCheck).innerText;
+function is_checked_end() {
+  // let endRadioId = event.target.id;
+  // let endCheck = 'label[for="'+ endRadioId +'"]';
+  // let endText = document.querySelector(endCheck).innerText;
   // console.log(endText); // 전체, 오늘, 이번주, 이번달 각각 출력
+
+  let endChk = document.querySelectorAll('.end-radio');
+  let endVal = document.querySelectorAll('.end-value');
+  let endText = '';
+  endChk.forEach((chkOne,index) => {
+    if(chkOne.classList.contains('radio-checked')){
+      // console.log(staVal);
+      // console.log(staVal[index]);
+      endText = endVal[index].textContent
+    }
+  })
 
   // 오늘 날짜 구하기
   let today = new Date();
@@ -455,9 +559,10 @@ function is_checked_end(event) {
       if (endText === '전체') {
         if (taskEnd.includes(task)) {
           // task.style.display = 'none';
-          endFilter.push(task);
+          
         } else {
           // task.style.display = 'flex';
+          endFilter.push(task);
         }
       } else if (endText === '오늘') {
         if (taskEnd.includes(formattedToday)) {
@@ -518,7 +623,6 @@ function is_checked_end(event) {
       // }
     }
   });
-  d_none_checked();
 }
 
 function getCommonValues(arr1, arr2) {
@@ -536,14 +640,37 @@ function getCommonValues(arr1, arr2) {
   return commonValues;
 }
 
-function d_none_checked(){
-  let a = getCommonValues(statusFilter,responFilter)
-  console.log(a);
-  let b = getCommonValues(a,startFilter)
-  console.log(b);
-  let c = getCommonValues(b,endFilter)
-  console.log(c);
+function getUniqueValues(arr1, arr2) {
+  const uniqueValues = [];
+
+  // arr1과 arr2 모두에는 없지만 서로 다른 값들을 찾는다
+  arr1.forEach(item => {
+    if (!arr2.includes(item) && !uniqueValues.includes(item)) {
+      uniqueValues.push(item);
+    }
+  });
+
+  arr2.forEach(item => {
+    if (!arr1.includes(item) && !uniqueValues.includes(item)) {
+      uniqueValues.push(item);
+    }
+  });
+
+  return uniqueValues;
 }
+
+function d_none_checked(){
+  console.log('******* 비교 시작');
+  let a = getCommonValues(statusFilter,responFilter);
+  console.log('a:',a);
+  let b = getCommonValues(a,startFilter);
+  console.log('b:',b);
+  let c = getCommonValues(b,endFilter);
+  console.log('c:',c);
+  console.log('비교 끝 *******');
+  return c;
+}
+
 
 // ************* 필터 중복 적용 함수???
 
@@ -1539,123 +1666,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ************* 차트영역 헤더에 날짜 추가
 const headerScroll = document.querySelector('.gantt-header-scroll');
-const ganttHeadermonth = document.querySelector('.gantt-header-month');
 
 // 예시 데이터 - 날짜
 const startDate = new Date('2024-01-01');
 const endDate = new Date('2024-03-31');
 
+// 날짜를 헤더에 추가하는 함수
 function addDatesToHeader() {
   const chartDate = new Date(startDate);
 
   while (chartDate <= endDate) {
-    // const dateContainer = document.createElement('div');
-    // dateContainer.classList.add('date-container');
-
-    // 월을 출력
-    // if (chartDate.getDate() === 1) {
-    //   const monthElement = document.createElement('div');
-    //   monthElement.classList.add('month');
-    //   monthElement.innerHTML = `<div class="month-text">${chartDate.toLocaleDateString('ko-KR', { month: 'short' })}</div>`;
-    //   headerScroll.appendChild(monthElement);
-    // }
-
     const dateElement = document.createElement('div');
     dateElement.classList.add('date');
-
-    const day = chartDate.toLocaleDateString('ko-KR', { day: '2-digit' }).replace('일', '');;
-    const month = chartDate.toLocaleDateString('ko-KR', { month: '2-digit' }).replace('월', '');;
-
-    dateElement.innerHTML = `<span>${month}</span><span class="bar">/</span><span class="day">${day}</span>`;
+    dateElement.textContent = chartDate.toLocaleDateString('ko-KR', { day: 'numeric', month: 'short' });
     headerScroll.appendChild(dateElement);
 
-
     chartDate.setDate(chartDate.getDate() + 1);
-  } 
+  }
 }
 
 addDatesToHeader();
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   // 월 요소
-//   const monthElement = document.querySelector('.month');
-
-//   // 스크롤 이벤트 리스너 등록
-//   document.querySelector('.gantt-chart-wrap.scroll-style').addEventListener('scroll', function () {
-//     // 현재 가로 스크롤 위치
-//     const scrollLeft = this.scrollLeft;
-
-//     // left 값을 스크롤의 위치에 따라 증가시킴
-//     monthElement.style.left = `${scrollLeft}px`;
-//   });
-// });
-
-document.addEventListener('DOMContentLoaded', function () {
-  // 월 요소들의 배열
-  const monthElements = document.querySelectorAll('.month');
-
-  // 스크롤 이벤트 리스너 등록
-  document.querySelector('.gantt-chart-wrap.scroll-style').addEventListener('scroll', function () {
-    // 현재 가로 스크롤 위치
-    const scrollLeft = this.scrollLeft;
-
-    // 이전 월 요소들의 left 값을 해제
-    monthElements.forEach(monthElement => {
-      monthElement.style.left = '0';
-    });
-
-    // 현재 월 요소에만 left 값을 적용
-    const currentMonthElement = findCurrentMonthElement(monthElements, scrollLeft);
-    if (currentMonthElement) {
-      currentMonthElement.style.left = `${scrollLeft}px`;
-
-      // 현재 월이 마지막 date div에 도달하면 다음 월의 left 값을 설정
-      const dateContainers = currentMonthElement.querySelectorAll('.date');
-      const lastDateContainer = dateContainers[dateContainers.length - 1];
-
-      if (lastDateContainer.getBoundingClientRect().right <= currentMonthElement.getBoundingClientRect().right) {
-        const nextMonthElement = findNextMonthElement(currentMonthElement);
-        if (nextMonthElement) {
-          nextMonthElement.style.left = `${scrollLeft}px`;
-        }
-      }
-    }
-  });
-
-  // 현재 스크롤 위치에 해당하는 월 요소를 찾는 함수
-  function findCurrentMonthElement(monthElements, scrollLeft) {
-    let currentMonthElement = null;
-
-    // 월 요소들을 순회하면서 현재 스크롤 위치에 해당하는 월 요소를 찾음
-    monthElements.forEach(monthElement => {
-      const { left, width } = monthElement.getBoundingClientRect();
-
-      if (scrollLeft >= left && scrollLeft < left + width) {
-        currentMonthElement = monthElement;
-      }
-    });
-
-    return currentMonthElement;
-  }
-
-  // 다음 월 요소를 찾는 함수
-  function findNextMonthElement(currentMonthElement) {
-    let nextMonthElement = null;
-
-    // 현재 월 요소의 다음 형제 노드를 찾음
-    const nextSibling = currentMonthElement.nextElementSibling;
-
-    if (nextSibling && nextSibling.classList.contains('gantt-header-month')) {
-      nextMonthElement = nextSibling;
-    }
-
-    return nextMonthElement;
-  }
-});
 
 
-
-// --------------------------- 차트생성------------------------------------
+// ************* 차트생성
 // 페이지 로드 후 실행되는 부분
 window.onload = function () {
   // 모든 시작일(start)과 종료일(end) 입력 요소 선택
@@ -2003,11 +2037,12 @@ function changeStyle(element) {
 
 // 드롭다운 토글 함수 정의
 function toggleGanttFilterDropdown() {
+
   let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-  console.log("click");
+  let activest = document.getElementById('list1');
+
   
   for (let i = 0; i < checkLists.length; i++) {
-    
     let checkList = checkLists[i];
   
     checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
@@ -2023,26 +2058,3 @@ function toggleGanttFilterDropdown() {
   }
 }  
 //---------------------------------------------------------------
-
-
-// 240109 김관호: 간트 자동 가로 스크롤 테스트
-// 현재 날짜 객체 생성
-const currentDate = new Date();
-
-// 년, 월, 일 추출
-const year = currentDate.getFullYear().toString();
-const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-const day = currentDate.getDate().toString().padStart(2, '0');
-
-// 결과 확인
-// console.log('Year:', year);
-// console.log('Month:', month);
-// console.log('Day:', day);
-
-document.querySelectorAll('.date').forEach((date,index)=>{
-  let m = date.firstElementChild
-  let d = document.querySelectorAll('.day')[index]
-  if(m.textContent === month && d.textContent === day){
-    date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-  }
-})
