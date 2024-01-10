@@ -12,6 +12,7 @@ class ChatRoom extends Model
 
     protected $fillable = [
         'flg',
+        'project_id',
         'user_count',
         'last_chat',
         'last_chat_created_at',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatRoom;
+use App\Models\ChatUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
@@ -79,12 +80,13 @@ class ProjectController extends Controller
 
     // --------------------------------------------- 240110 김관호: 프로젝트 제작 후 채팅방 생성
     $ChatRoomData = [
-			'flg' => $request->flg,
-			'user_count' => 1,
-			'chat_room_name' => $result->project_title,
-		];
+		'flg' => $result->flg,
+		'project_id' => $result->id,
+		'user_count' => 1,
+		'chat_room_name' => $result->project_title,
+	];
 		
-		$ChatRoom = ChatRoom::create($ChatRoomData);
+	$ChatRoom = ChatRoom::create($ChatRoomData);
     // --------------------------------------------- 240110 김관호 
 
     //flg 기준 개인/팀 화면으로 전달, 로그인 안한 유저일 경우 log 화면으로 이동
@@ -341,9 +343,6 @@ class ProjectController extends Controller
           'member_id' => $member_id
         ]);
 
-        // -------------------------------------------------------- 240110 김관호: 초대 시 채팅방에 참여
-        // TODO
-        // -------------------------------------------------------- 240110 김관호
     }else{
       return view('/membermodal')->with('project_id',$project[0]->project_id)->with('url',$url);
     }
@@ -387,6 +386,24 @@ class ProjectController extends Controller
     ]);
 
     Log::debug($memberpj);
+
+	// -------------------------------------------------------- 240110 김관호: 초대 시 채팅방에 참여
+	Log::debug('$urlsb');
+	Log::debug($urlsb);
+	$chatRoomId = ChatRoom::where('project_id',$urlsb)->first();
+	Log::debug($chatRoomId);
+	
+	if($chatRoomId){
+		$ChatUserData = [
+			'chat_room_id' => $chatRoomId->id,
+			'user_id' => $request->Value,
+		];
+		
+		Log::debug($ChatUserData);
+		$ChatRoom = ChatUser::create($ChatUserData);
+		Log::debug($ChatRoom);
+	}
+	// -------------------------------------------------------- 240110 김관호
 
     return $url;
   }
