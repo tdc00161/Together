@@ -368,22 +368,27 @@ class ProjectController extends Controller
 
 
   //친구목록에서 구성원 추가
-  public function friendmember(Request $request, $id){
+  public function friendmember(Request $request){
     // dd($request);
     Log::debug($request);
-    Log::debug($id);
-    
+
+
+    $url = $request->url;
+    Log::debug($url);
+
+    $urlsb = substr($url, -3);
+    Log::debug($urlsb);
 
 
     $memberpj = ProjectUser::create([
-      'project_id' => $invite_member[0]->id,
+      'project_id' => $urlsb,
       'authority_id' => '1',
-      'member_id' => $request
+      'member_id' => $request->Value
     ]);
 
-    // $project_id = project::find($id);
+    Log::debug($memberpj);
 
-    return redirect()->view('individual');
+    return $url;
   }
 
 

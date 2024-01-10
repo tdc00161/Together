@@ -286,6 +286,8 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
       console.log(event.target);
       let Value = event.target.value;
       console.log('Value', Value);
+      let url = window.location.href;
+      document.getElementById('drop-list').style.display = 'none';
 
       fetch('/friendinvite',{
          method: 'POST',
@@ -295,13 +297,15 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
          },
          body: JSON.stringify({
             "Value": Value,
+            "url": url,
          }),
       }).then((response) => {
          // console.log(response)
          return response.json()
       })
       .then((data) => {
-         event.target.value = data.friend_id
+         event.target.value = data.friend_id,
+         url = data.url
       })
       .catch(error => console.log(error));
    })
