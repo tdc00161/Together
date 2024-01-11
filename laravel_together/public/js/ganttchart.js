@@ -1,5 +1,7 @@
-// ************* 개인 피드로 이동
-let childFlg = 0;
+
+var childFlg = 0;
+var ganttTaskWrap = document.getElementById('ganttTaskWrap');
+var otherDiv = document.getElementById('otherDiv');
 // 간트 csrf
 const csrfToken_gantt = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -1051,9 +1053,70 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// ************* 담당자 드롭다운 선택
 
+let responName = document.querySelectorAll('.responName');
+let responNameSpan = document.querySelectorAll('.respon-name-span')
+let add_responsible_gantt = document.querySelector('.add_responsible_gantt');
+let add_responsible_gantt_one = document.querySelector('.add_responsible_gantt_one');
+let ganttCloneResponsibleModal = add_responsible_gantt_one ? add_responsible_gantt_one.cloneNode(true) : ''
+let ganttThisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
 
+responName.forEach((responNameOne,index) => {
+    responNameOne.addEventListener('click', () => {
+            console.log(responNameSpan[index]);
+    // 담당자 초기화
 
+    while (add_responsible_gantt.hasChildNodes()) {
+        add_responsible_gantt.removeChild(add_responsible_gantt.firstChild);
+    }
+    add_responsible_gantt.append(ganttCloneResponsibleModal)  
+
+    // 담당자 리스트 확인용 통신
+    fetch('/project/user/' + ganttThisProjectId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken_gantt,
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data);
+        for (let index = 0; index < data.data.length; index++) {
+            
+            // div 엘리먼트 생성
+            var newDiv = document.createElement("div");
+            newDiv.className = "add_responsible_gantt_one";
+
+            // 아이콘 엘리먼트 생성
+            var iconDiv = document.createElement("div");
+            iconDiv.className = "add_responsible_gantt_one_icon";
+
+            // 이름 엘리먼트 생성
+            var nameDiv = document.createElement("div");
+            nameDiv.className = "add_responsible_gantt_one_name";
+            nameDiv.textContent = data.data[index].member_name; // 데이터에서 가져온 이름 속성 사용
+
+            // 이름 엘리먼트를 div에 추가
+            newDiv.appendChild(iconDiv);
+            newDiv.appendChild(nameDiv);
+            
+            newDiv.addEventListener('click', () => {
+                // data.data[index].member_name 얘로 값을 바꾼다.
+                console.log(responName.firstChild.textContent);
+                // responName.firstChild.textContent
+            })
+            add_responsible_gantt.appendChild(newDiv);
+
+            }
+        })
+        .catch(err => {
+            console.log(err.message);
+        })
+        add_responsible_gantt.classList.remove('d-none');
+    })
+})
 
 
 
@@ -1103,16 +1166,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
-// ************* 체크박스 필터링
-
-
-// ************* 스크롤 한번에
-
-
-
-
 // ************* 하위 업무 추가
 // id 값은 임의로 넣은것
 function addSubTask(event, mainId) {
@@ -1125,6 +1178,12 @@ function addSubTask(event, mainId) {
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   console.log(gantt_modal_id[0]);
+
+  var iconImg = document.querySelector(`#iconimg${gantt_modal_id}`);
+  iconImg.src = "/img/Group 202.png";
+
+
+
   // 차트 부분
   const doMGanttChart = document.getElementById('gantt-chart-' + gantt_modal_id[0]); // 원래 자리접근
 
@@ -1755,11 +1814,11 @@ function sendUpdateRequest(id, updatedValue, numbersOnly) {
   // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
   // 아래는 가상의 코드입니다.
   let url = '/ganttchartRequest/' + numbersOnly
-  console.log(url);
+  // console.log(url);
   axios.put(url, { 'value': updatedValue })
     .then(res => {
       // 성공적으로 요청을 보낸 후에 할 작업
-      console.log('수정 요청 성공:', res.data);
+      // console.log('수정 요청 성공:', res.data);
       // addChildTaskAfter(res.data);
     })
     .catch(err => {
@@ -1800,10 +1859,10 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     event.target.parentNode.parentNode.getAttribute('id') //var result4 = str.slice(-4);
     // 간트 수정 시 타겟 추정 및 아이디 반환
     let originalString = 0;
-    console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); // responName
-    console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title
-    console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
-    console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
+    // console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); // responName
+    // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title
+    // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
+    // console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
     if (event.target.parentNode.getAttribute('id')) {
       originalString = event.target.parentNode.getAttribute('id')
     } else if (event.target.parentNode.parentNode.getAttribute('id')) {
@@ -1815,7 +1874,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     }
     const parts = originalString.split('-');
     const numbersOnly = parts[parts.length - 1];
-    console.log('id: ' + numbersOnly); // 출력 결과: 1243
+    // console.log('id: ' + numbersOnly); // 출력 결과: 1243
     const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
     let updatedValue = {
       'responName': '',
@@ -1825,8 +1884,8 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
       'title': ''
     };
 
-    console.log('this: ' + this.textContent);
-    console.log('this: ' + this.value);
+    // console.log('this: ' + this.textContent);
+    // console.log('this: ' + this.value);
 
     // 내용 가져오기
     if (this.tagName === 'DIV') {
@@ -1848,7 +1907,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
 
 
     // 수정 요청 보내기
-    console.log('수정 신청');
+    // console.log('수정 신청');
     sendUpdateRequest(id, updatedValue, numbersOnly);
 
     // 수정 완료 팝업 메시지 표시
@@ -2000,20 +2059,19 @@ function changeStyle(element) {
 
 // 드롭다운 토글 함수 정의
 let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-console.log("click");
 
 for (let i = 0; i < checkLists.length; i++) {
   
   let checkList = checkLists[i];
-console.log('1');
+// console.log('1');
   checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
     if (checkList.classList.contains('visible')) {
       checkList.classList.remove('visible');
       checkList.classList.remove('gantt-span-focus');
-      console.log('2');
+    //   console.log('2');
     } else {
       checkList.classList.add('visible');
-      console.log('3');
+    //   console.log('3');
       checkList.classList.add('gantt-span-focus');
     }
   }
@@ -2033,43 +2091,68 @@ const day = currentDate.getDate().toString().padStart(2, '0');
 // console.log('Month:', month);
 // console.log('Day:', day);
 
+function formatDates(inputDate) {
+  // 날짜 문자열을 '/'를 기준으로 분할
+  const parts = inputDate.split('/');
+
+  // 분할된 문자열에서 양쪽에 있는 공백을 제거하고 'MM' 형식으로 변환
+  const a = parts[0].trim().padStart(2, '0');
+  const b = parts[1].trim().padStart(2, '0');
+
+  // 두 변수를 반환
+  return { a, b };
+}
+
 document.querySelectorAll('.date').forEach((date,index)=>{
-  let m = date.firstElementChild
-  let d = document.querySelectorAll('.day')[index]
-  if(m.textContent === month && d.textContent === day){
+  let split = formatDates(date.textContent)
+  let m = split.a
+  let d = split.b
+  // console.log(m);
+  // console.log(d);
+  if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 })
 //-----------------------------------------------------------
 
 
+
   // Function to toggle child task based on parent ID
   function toggleChildTask(parentId) {
    
     var parentTask = document.getElementById(`gantt-task-${parentId}`);
-    var childTask = document.querySelector(`.gantt-child-task[parent="${parentId}"]`);
-    if (childFlg == 0) {
-      // If child task exists, remove it
-      // parentTask.removeChild(childTask);
-      // childTask.remove();
-      
-      childFlg = 1;
-      childTask.style.display='none';
-    } else if(childFlg === 1) {
-      // If child task doesn't exist, create and append it
-      // var newChildTask = document.createElement("div");
-      // newChildTask.className = "gantt-task gantt-child-task";
-      // newChildTask.id = `gantt-task-${Math.floor(Math.random() * 1000) + 1}`;
-      // newChildTask.setAttribute("parent", parentId);
-      // newChildTask.innerHTML = '<br><div>This is a new child task.</div>';
-      
-      // parentTask.appendChild(newChildTask);
-      
-      childFlg = 0;
-      childTask.style.display='flex';
-    }
-  }
+    var childTasks = document.querySelectorAll(`.gantt-child-task[parent="${parentId}"]`);
+    var iconImg = document.querySelector(`#iconimg${parentId}`);
+    var button = document.querySelector(`#toptaskbtn${parentId}`);
 
+    if (childTasks.length > 0 && childFlg === 0) {
+      childTasks.forEach(task => {
+          task.style.display = 'none'
+      });
+      iconImg.src = "/img/Group 201.png";
+      childFlg = 1;
+  } else if (childTasks.length > 0 && childFlg === 1) {
+      childTasks.forEach(task => {
+          task.style.display = 'flex';
+      });
+      iconImg.src = "/img/Group 202.png";
+      childFlg = 0;
+  } else if(childTasks.length == 0) {
+    button.style.display = 'none';
+  }
+}
   // Function to handle button click
   window.toggleChildTask = toggleChildTask;
-  
+
+  // gantt-task-wrap의 스크롤 이벤트 처리
+
+
+  ganttTaskWrap.addEventListener('scroll', function() {
+      // gantt-task-wrap의 스크롤 위치에 따라 다른 div도 스크롤 처리
+      otherDiv.scrollTop = ganttTaskWrap.scrollTop;
+  });
+
+  otherDiv.addEventListener('scroll', function() {
+    // gantt-task-wrap의 스크롤 위치에 따라 다른 div도 스크롤 처리
+    ganttTaskWrap.scrollTop = otherDiv.scrollTop;
+});

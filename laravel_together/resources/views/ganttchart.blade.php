@@ -92,7 +92,7 @@
 </div>
 {{-- 헤더 끝 --}}
 <div class="grid_div">
-
+    
     <div class="gantt-btn-wrap">
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
         <div class="filter-div">
@@ -298,26 +298,34 @@
                         <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                 </div>
-                <div class="gantt-task-body">
+                <div class="gantt-task-body" id="otherDiv">
+                    {{-- 상위 업무 --}}
                     @forelse ($data['task'] as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
                             <div class="gantt-editable-div editable">
-                             <button onclick="toggleChildTask({{$item->id}})" class="task-top-icon"><img class="task-top-icon-img" src="/img/Group 201.png"></button>
-                                <div class="taskKey" style="display: none">{{$item->task_number}}</div>
+                                <div class="task-top-icon">
+                                    @if($item->depth_1)
+                                    <button onclick="toggleChildTask({{$item->id}})" id="toptaskbtn{{$item->id}}"><img id="iconimg{{$item->id}}" class="task-top-icon-img" src="/img/Group 202.png"></button>
+                                @else
+                                <button onclick="toggleChildTask({{$item->id}})" id="toptaskbtn{{$item->id}}"><img id="iconimg{{$item->id}}" class="task-top-icon-img" src=""></button>
+                                @endif
+                                </div>
+                            
+                                <div class="taskKey">{{$item->task_number}}</div>
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
                             <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="add_responsible_gantt add_property_gantt d-none">
+                                {{-- <div class="add_responsible_gantt_one d-none">
+                                    <div class="add_responsible_gantt_one_icon"></div>
+                                    <div class="add_responsible_gantt_one_name">User</div>
+                                </div> --}}
+                            </div>
                             <div class="gantt-status-name">
                                 <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
                                     <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>
                                 </div>
-                                {{-- <div class="gantt-status-menu" id="statusMenu">
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('시작전')"><span>시작전</span></div>
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('진행중')"><span>진행중</span></div>
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('피드백')"><span>피드백</span></div>
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('완료')"><span>완료</span></div>
-                                </div> --}}
                             </div>
                             <div class="gantt-task-4">
                                 <input type="date" class="start-date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
@@ -332,10 +340,11 @@
                                     <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
                                 </div></div>
                         </div>
+                        {{-- 하위 업무 --}}
                         @forelse ($item->depth_1 as $item2)
                             <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                 <div class="gantt-editable-div editable">
-                                       
+                                    
                                     <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
                                     <div class="taskChildPosition"></div>
                                     <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
@@ -389,6 +398,7 @@
                     @endforelse
                 </div>
             </div>
+            
             <div class="gantt-chart-wrap scroll-style">
                 <div class="gantt-chart-container">
                     <div class="gantt-chart-header">
@@ -397,7 +407,7 @@
                             {{-- 날짜를 가로로 나열할 부분 --}}
                         </div>
                     </div>
-                    <div class="gantt-chart-body">
+                    <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php

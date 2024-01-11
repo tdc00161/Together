@@ -328,13 +328,16 @@ a:hover {
     font-weight: bold;
     border-radius: 3px;
 }
-
+.gantt-chart-container {
+	display: flex;
+	flex-direction: column;
+}
 
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
-	height: 575px;
-	overflow: auto;
+	height: 549px;
+	overflow: hidden;
 	border-radius: 0 0 10px 10px;
 }
 
@@ -509,12 +512,14 @@ a:hover {
 /* 간트차트 section 업무 영역 */
 .gantt-all-task {
 	display: flex;
-	/* height: 94%; */
+	height: 100%;
 }
 
 .gantt-task-wrap {
 	width: 45%;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
 }
 
 .gantt-task-header {
@@ -523,6 +528,8 @@ a:hover {
 	text-align: center;
 	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
+	border-right: 6px solid #000000b8;
+	box-shadow: 12px 0px 8px -7px #00000099;
 }
 
 .gantt-task-header .gantt-task-header-div {
@@ -541,17 +548,27 @@ a:hover {
     /* margin-left: 17px; */
 }
 .gantt-task-body {
-	border-right: 4px solid #ffffff29;
+	/* border-right: 4px solid #ffffff29; */
+	overflow-y:auto;
+	height: 495px;
+	box-shadow: inset 0px -4px 12px 0px black, 12px 0px 8px -7px #00000099;
 
 }
+.gantt-task-body::-webkit-scrollbar-thumb {
+    background-color: transparent; /* 스크롤바 색상 */
+}
 .gantt-chart-body {
-    box-shadow: inset 5px 0 10px 0px black;
+    box-shadow: inset -8px -4px 12px 0px black;
+	overflow-y: auto;
 }
 .gantt-task {
 	display: flex;
 	height: 40.5px;
 	position: relative;
 	margin-bottom: 3px;
+}
+.gantt-child-task {
+	background-color: #ffffff14;
 }
 
 .gantt-task input {
@@ -570,7 +587,7 @@ background-color: #000;
 	display: inline-block;
 }
 
-.gantt-task>div {
+.gantt-task>div:not(.add_responsible_gantt) {
 	padding: 10px 5px;
   	overflow: hidden;
   	white-space: nowrap;
@@ -602,6 +619,7 @@ background-color: #000;
 /*  */
 .gantt-editable-div {
 	display: flex;
+	align-items: center;
 }
 .gantt-task-detail-click {
 	flex: 0 0 10%;
@@ -623,8 +641,20 @@ background-color: #000;
 }
 
 .taskKey {
-	flex: 0 0 20%;
+		display: flex;
+		width: 16px;
+		height: 16px;
+		font-size: 10px;
+		background: #f7296f;
+		border-radius: 5px;
+		justify-content: center;
+		align-items: center;
+		margin-left: 5px;
 }
+/* #toptaskbtn {
+display: none;
+} */
+
 .task-top-icon {
 	width: 20px;
 	height: 20px;
@@ -633,8 +663,8 @@ background-color: #000;
     justify-content: center;
 }
 .task-top-icon-img {
-	width: 15px;
-	height: 15px;
+	width: 13px;
+	height: 13px;
 }
 .task-bottom-icon-img {
 	width: 10px;
@@ -680,7 +710,43 @@ background-color: #000;
 	padding: 3px;
 }
 
-/* 드롭박스 선택 수정 */
+/* 드롭박스 담당자 선택 수정 */
+.add_responsible_gantt {
+	/* 배치 */
+	position: absolute;
+	top: 32px;
+	left: 39px;
+	z-index: 5;
+	/* 내부 */
+	background-color: rgb(44 30 29);
+	overflow: auto;
+	border-radius: 5px;
+	/* 크기 */
+	width: 90px;
+	min-height: 28px;
+	max-height: 70px;
+}
+
+.add_responsible_gantt_one {
+    display: flex;
+	cursor: pointer;
+}
+
+.add_responsible_gantt_one:hover{
+	background-color: rgba(12, 12, 12, 0.829);
+}
+
+.add_responsible_gantt_one_icon {
+	background-image: url('/img/profile-img.png');
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+	height: 18px;
+	margin: 0px 5px;
+}
+
+/* 드롭박스 상태 선택 수정 */
 .gantt-status-menu {
 	display: none;
     border: 1px solid;
@@ -727,14 +793,15 @@ background-color: #000;
 	width: 55%;
     height: 100%;
 	display: flex;
-	overflow: auto;
-	overflow-x: scroll;
+	overflow-x: auto;
+	overflow-y: hidden;
 	position: relative;
+
 }
 
 .gantt-chart-header {
 	text-align: center;
-	height: 44px;
+	height: 58px;
 	background-color: rgba(255, 255, 255, 0.226);
 	display: flex;
 	flex-direction: column;
@@ -837,6 +904,10 @@ background-color: #000;
 .scroll-style::-webkit-scrollbar-thumb {
 	/* position: fixed; */
 	background-color: white;
+}
+
+.scroll-style::-webkit-scrollbar-horizontal {
+	height: 3px;
 }
 
 /* 업무명 div에 placeholder */

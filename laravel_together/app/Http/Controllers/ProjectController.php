@@ -72,11 +72,10 @@ class ProjectController extends Controller
     $data2result = ProjectUser::create($data2);
 
     // --------------------------------------------- 240110 김관호: 프로젝트 제작 후 채팅방 생성 및 참가
-	if($result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
+	if((int)$result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
 		$ChatRoomData = [
 			'flg' => $result->flg,
 			'project_id' => $result->id,
-			'user_count' => 1,
 			'chat_room_name' => $result->project_title,
 		];
 			
@@ -84,16 +83,8 @@ class ProjectController extends Controller
 		// Log::debug($ChatRoom);
 
 	
-		$chatRoomId = ChatRoom::where('project_id',$ChatRoom->project_id)->first();
-		
-		if($chatRoomId){
-			$ChatUserData = [
-				'chat_room_id' => $chatRoomId->id,
-				'user_id' => $user_id,
-			];
-			
-			$ChatRoom = ChatUser::create($ChatUserData);
-		}
+		// 채팅방 초대 모듈 호출
+    $this->chatRoomInvite( $ChatRoom->project_id,$user_id);
 	}
     // --------------------------------------------- 240110 김관호 
 
@@ -364,10 +355,13 @@ class ProjectController extends Controller
           'member_id' => $member_id
         ]);
 
+        // 채팅방 초대
+        $this->chatRoomInvite($invite_member[0]->id,$member_id);
+
     }else{
       return view('/membermodal')->with('project_id',$project[0]->project_id)->with('url',$url);
     }
-
+    
     if(!Auth::check()){
       return redirect()->route('user.login.get');
     }else{
@@ -380,10 +374,10 @@ class ProjectController extends Controller
   }
 
   //구성원 중복시 창
-  public function membermodal(Request $request){
-
-    return view('/membermodal')->with('token',$token);
-
+  public function membermodal(){ // Request $request, $token
+    // dd($token);
+    return view('/membermodal');
+    // ->with('token',$request->token)
   }
 
 
@@ -412,6 +406,9 @@ class ProjectController extends Controller
         'member_id' => $request->Value
       ]);
       
+      // 초대 시 채팅방에 참여
+      $this->chatRoomInvite($urlsb,$request->Value);
+
       return response()->json('성공');
 
     }else{
@@ -618,6 +615,10 @@ class ProjectController extends Controller
     Log::debug("user 에러");
     $user->delete();
     Log::debug("user 삭제");
+
+    // // 채팅방도 나가기
+    $this->chatRoomExit($id,Auth::id());
+
     return response()->json();
     Log::debug("화면전달");
   }
@@ -644,9 +645,63 @@ class ProjectController extends Controller
                           ->where('project_users.member_id',$user->id)
                           ->delete();
 
+      // 나갈 때 채팅방에서 나가기
+      $this->chatRoomExit($id,$user->id);
+
       return response()->json();
       
       Log::debug("화면전달");
+  }
+
+  // 채팅방 초대 모듈
+  public function chatRoomInvite($project_id,$user_id)
+  {
+    $chatRoomId = ChatRoom::where('project_id',$project_id)->first(); //$ChatRoom->project_id
+		$ChatRoom = null;
+    
+		if($chatRoomId){
+			$ChatUserData = [
+				'chat_room_id' => $chatRoomId->id,
+				'user_id' => $user_id,
+			];
+			
+			$ChatRoom = ChatUser::create($ChatUserData);
+
+      // 채팅방 인원 증가
+      $result = $chatRoomId->update([
+        'user_count' => $chatRoomId->user_count+1,
+      ]);
+    }
+    // Log::debug($ChatRoom);
+    return $ChatRoom;
+  }
+
+  // 채팅방 나가기 모듈
+  public function chatRoomExit($project_id,$user_id)
+  {
+    $chatRoomId = ChatRoom::where('project_id',$project_id)->first(); //$ChatRoom->project_id
+		$ChatUser = null;
+    
+		if($chatRoomId){
+			$ChatUser = ChatUser::where('chat_room_id',$chatRoomId->id)
+        ->where('user_id',$user_id);
+      $ChatUser->delete();
+
+      // 유저가 다 나갔으면 채팅방 삭제
+      Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->count());
+      if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
+        Log::debug('사람 없는 채팅방');
+        $chatRoomId->delete();
+      }
+      
+      // 아마 채팅창에 표시하거나 유저수 카운트 변화하려면 여기서 이벤트 발생해야 할 것
+
+      // 채팅방 인원 감소
+      $result = $chatRoomId->update([
+        'user_count' => $chatRoomId->user_count-1,
+      ]);
+    }
+      return $ChatUser;
   }
 
 }
