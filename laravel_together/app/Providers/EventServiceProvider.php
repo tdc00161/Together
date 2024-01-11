@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\AlarmEvent;
 use App\Events\MessageSent;
+use App\Listeners\AlarmEventListener;
 use App\Listeners\MessageSentListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,7 +24,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         MessageSent::class => [
             MessageSentListener::class,
-        ]
+        ],
+        AlarmEvent::class => [
+            AlarmEventListener::class,
+        ],
     ];
 
     /**
