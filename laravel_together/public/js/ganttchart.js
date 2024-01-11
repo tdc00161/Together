@@ -2049,21 +2049,10 @@ document.querySelectorAll('.date').forEach((date,index)=>{
     var parentTask = document.getElementById(`gantt-task-${parentId}`);
     var childTask = document.querySelector(`.gantt-child-task[parent="${parentId}"]`);
     if (childFlg == 0) {
-      // If child task exists, remove it
-      // parentTask.removeChild(childTask);
-      // childTask.remove();
       
       childFlg = 1;
       childTask.style.display='none';
     } else if(childFlg === 1) {
-      // If child task doesn't exist, create and append it
-      // var newChildTask = document.createElement("div");
-      // newChildTask.className = "gantt-task gantt-child-task";
-      // newChildTask.id = `gantt-task-${Math.floor(Math.random() * 1000) + 1}`;
-      // newChildTask.setAttribute("parent", parentId);
-      // newChildTask.innerHTML = '<br><div>This is a new child task.</div>';
-      
-      // parentTask.appendChild(newChildTask);
       
       childFlg = 0;
       childTask.style.display='flex';
