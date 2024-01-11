@@ -1054,21 +1054,45 @@ document.addEventListener('DOMContentLoaded', function () {
 // ************* 담당자 드롭다운 선택
 
 let responName = document.querySelectorAll('.responName');
-let responNameSpan = document.querySelectorAll('.respon-name-span')
-let add_responsible_gantt = document.querySelector('.add_responsible_gantt');
+let responNameSpan = document.querySelectorAll('.respon-name-span');
+let add_responsible_gantt = document.querySelectorAll('.add_responsible_gantt');
 let add_responsible_gantt_one = document.querySelector('.add_responsible_gantt_one');
 let ganttCloneResponsibleModal = add_responsible_gantt_one ? add_responsible_gantt_one.cloneNode(true) : ''
 let ganttThisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
 
 responName.forEach((responNameOne,index) => {
     responNameOne.addEventListener('click', () => {
-            console.log(responNameSpan[index]);
-    // 담당자 초기화
+        // console.log(index);
+        // console.log('원래 자리:', originalText);
 
-    while (add_responsible_gantt.hasChildNodes()) {
-        add_responsible_gantt.removeChild(add_responsible_gantt.firstChild);
+        // 한 번 클릭 후 다시 클릭 시 창 닫기
+        if (add_responsible_gantt[index].classList.contains('d-none')) {
+            add_responsible_gantt[index].classList.remove('d-none');
+        } else {
+            add_responsible_gantt[index].classList.add('d-none');
+        }
+
+        // 다른 담당자 눌렀을 때 하나만 창 뜨게하기
+        add_responsible_gantt.forEach(function(resOther, i) {
+            if (i !== index) {
+                resOther.classList.add('d-none');
+            }
+        });
+
+        // 담당자 칸 이외 영역 클릭 시 창 닫기
+        document.addEventListener('click', function(event) {
+            add_responsible_gantt.forEach(function() {
+                if (!event.target.closest('.gantt-task')) {
+                    add_responsible_gantt[index].classList.add('d-none');
+                }
+            });
+        });
+        
+    // 담당자 초기화
+    while (add_responsible_gantt[index].hasChildNodes()) {
+        add_responsible_gantt[index].removeChild(add_responsible_gantt[index].firstChild);
     }
-    add_responsible_gantt.append(ganttCloneResponsibleModal)  
+    add_responsible_gantt[index].append(ganttCloneResponsibleModal)  
 
     // 담당자 리스트 확인용 통신
     fetch('/project/user/' + ganttThisProjectId, {
@@ -1081,41 +1105,58 @@ responName.forEach((responNameOne,index) => {
         .then(response => response.json())
         .then(data => {
             // console.log(data);
-        for (let index = 0; index < data.data.length; index++) {
+        for (let index2 = 0; index2 < data.data.length; index2++) {
             
             // div 엘리먼트 생성
-            var newDiv = document.createElement("div");
+            let newDiv = document.createElement("div");
             newDiv.className = "add_responsible_gantt_one";
 
             // 아이콘 엘리먼트 생성
-            var iconDiv = document.createElement("div");
+            let iconDiv = document.createElement("div");
             iconDiv.className = "add_responsible_gantt_one_icon";
 
             // 이름 엘리먼트 생성
-            var nameDiv = document.createElement("div");
+            let nameDiv = document.createElement("div");
             nameDiv.className = "add_responsible_gantt_one_name";
-            nameDiv.textContent = data.data[index].member_name; // 데이터에서 가져온 이름 속성 사용
+            nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
 
             // 이름 엘리먼트를 div에 추가
             newDiv.appendChild(iconDiv);
             newDiv.appendChild(nameDiv);
-            
-            newDiv.addEventListener('click', () => {
-                // data.data[index].member_name 얘로 값을 바꾼다.
-                console.log(responName.firstChild.textContent);
-                // responName.firstChild.textContent
-            })
-            add_responsible_gantt.appendChild(newDiv);
 
+            add_responsible_gantt[index].appendChild(newDiv);
+            // add_responsible_gantt[index].classList.remove('d-none');
+
+            newDiv.addEventListener('click', () => {
+                // console.log('원래자리', responNameSpan[index].textContent);
+                // console.log('바꿀값:', data.data[index2].member_name);
+                responNameSpan[index].textContent = data.data[index2].member_name;
+
+                // 드롭박스 안 담당자 클릭 시 창 닫기
+                add_responsible_gantt[index].classList.add('d-none');
+                })
             }
         })
         .catch(err => {
             console.log(err.message);
         })
-        add_responsible_gantt.classList.remove('d-none');
     })
 })
 
+
+
+// document.addEventListener('click', function(e) {
+//     responName.forEach((resOne,i) => {
+        
+//     })
+// })  
+
+// newDiv.addEventListener('click', () => {
+            //     console.log('원래자리', responNameSpan[index].textContent);
+            //     responNameSpan[index].textContent = data.data[index].member_name;
+            //     console.log('바꿀값:', data.data[index].member_name);
+
+            // })
 
 
 // ************* 상태값 드롭다운 선택
@@ -1611,6 +1652,7 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
 
   // console.log(1);
   //
+  // 더보기 버튼 영역외 클릭
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
@@ -1669,12 +1711,6 @@ document.addEventListener('DOMContentLoaded', function () {
           ganttDetailList[index].style.display = ganttDetailList[index].style.display === 'none' ? 'block' : 'none';
       });
   });
-
-  // ganttDetailList.forEach(function(detail) {
-  //   detail.addEventListener('click', function(event) {
-  //       event.stopPropagation();
-  //   });
-  // });
 
   document.addEventListener('click', function(event) {
       ganttDetailList.forEach(function(detail) {
@@ -1852,19 +1888,20 @@ function sendUpdateRequest(id, updatedValue, numbersOnly) {
 // }
 
 // 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
-document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
+document.querySelectorAll('.taskName, .respon-name-span, .status-name-span, .start-date, .end-date').forEach(element => {
   element.addEventListener('blur', function (event) {
     event.target.parentNode.parentNode.getAttribute('id') //var result4 = str.slice(-4);
     // 간트 수정 시 타겟 추정 및 아이디 반환
     let originalString = 0;
-    // console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); // responName
-    // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title
+    // console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); //
+    // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title, responName
     // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
     // console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
     if (event.target.parentNode.getAttribute('id')) {
       originalString = event.target.parentNode.getAttribute('id')
     } else if (event.target.parentNode.parentNode.getAttribute('id')) {
       originalString = event.target.parentNode.parentNode.getAttribute('id')
+    //   console.log(originalString);
     } else if (event.target.parentNode.parentNode.parentNode.getAttribute('id')) {
       originalString = event.target.parentNode.parentNode.parentNode.getAttribute('id')
     } else if (event.target.getAttribute('id')) {
@@ -1889,7 +1926,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     if (this.tagName === 'DIV') {
       updatedValue.title = this.textContent;
     } else if (this.tagName === 'SPAN') {
-      if (this.getAttribute('id').includes('responNameSpan')) {
+      if (this.classList.includes('respon-name-span')) {
         updatedValue.responName = this.textContent;
       } else {
         updatedValue.status = this.textContent;
@@ -1905,7 +1942,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
 
 
     // 수정 요청 보내기
-    // console.log('수정 신청');
+    console.log('수정 신청');
     sendUpdateRequest(id, updatedValue, numbersOnly);
 
     // 수정 완료 팝업 메시지 표시
