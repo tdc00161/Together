@@ -604,6 +604,7 @@ background-color: #000;
 }
 .responName {
 	width: 14%;
+	position: relative;
 }
 .gantt-task .gantt-status-name {
 	width: 16%;
@@ -713,32 +714,47 @@ display: none;
 }
 
 /* 드롭박스 담당자 선택 수정 */
-.add_responsible_gantt {
-	/* 배치 */
-	position: absolute;
-	top: 32px;
-	left: 39px;
-	z-index: 5;
-	/* 내부 */
-	background-color: rgb(44 30 29);
-	overflow: auto;
-	border-radius: 5px;
-	/* 크기 */
-	width: 90px;
-	min-height: 28px;
-	max-height: 70px;
+.add_responsible_gantt:not(.otherColor) {
+	position: fixed;
+    /* top: 32px; */
+    /* left: 39px; */
+    z-index: 5;
+    background-color: rgb(44 30 29);
+    overflow: auto;
+    border-radius: 5px;
+    width: 80px;
+    min-height: 28px;
+    max-height: 70px;
+    border: 1px solid;
+}
+.otherColor {
+	position: fixed;
+    /* top: 32px; */
+    /* left: 39px; */
+    z-index: 5;
+    background-color: rgb(62 49 48);
+    overflow: auto;
+    border-radius: 5px;
+    width: 80px;
+    min-height: 28px;
+    max-height: 70px;
+    border: 1px solid;
 }
 
 .add_responsible_gantt_one {
     display: flex;
 	cursor: pointer;
+	padding: 2px 0px;
 }
 
 .add_responsible_gantt_one:hover{
 	background-color: rgba(12, 12, 12, 0.829);
 }
 
-.add_responsible_gantt_one_icon {
+.add_responsible_gantt_one_name {
+    margin: 0 auto;
+}
+/* .add_responsible_gantt_one_icon {
 	background-image: url('/img/profile-img.png');
 	background-position: center;
 	background-size: cover;
@@ -746,7 +762,7 @@ display: none;
 	width: 18px;
 	height: 18px;
 	margin: 0px 5px;
-}
+} */
 
 /* 드롭박스 상태 선택 수정 */
 .gantt-status-menu {
@@ -758,7 +774,7 @@ display: none;
     z-index: 1;
 }
 
-.gantt-status-menu > .gantt-status-select:nth-child(1) > span{
+/* .gantt-status-menu > .gantt-status-select:nth-child(1) > span{
 	display: inline-block;
 	border-radius: 5px;
 	background-color: #B1B1B1;
@@ -781,7 +797,7 @@ display: none;
 	border-radius: 5px;
 	background-color: #64C139;
 	padding: 1px 5px;
-}
+} */
 
 
 .gantt-status-select {

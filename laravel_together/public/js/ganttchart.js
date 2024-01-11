@@ -651,8 +651,6 @@ function d_none_checked(){
 }
 
 
-// ************* 필터 중복 적용 함수???
-
 // ************* 오름차순, 내림차순 정렬
 // 업무명 기준
 document.addEventListener('DOMContentLoaded', function () {
@@ -1113,9 +1111,9 @@ responName.forEach((responNameOne,index) => {
             let newDiv = document.createElement("div");
             newDiv.className = "add_responsible_gantt_one";
 
-            // 아이콘 엘리먼트 생성
-            let iconDiv = document.createElement("div");
-            iconDiv.className = "add_responsible_gantt_one_icon";
+            // // 아이콘 엘리먼트 생성
+            // let iconDiv = document.createElement("div");
+            // iconDiv.className = "add_responsible_gantt_one_icon";
 
             // 이름 엘리먼트 생성
             let nameDiv = document.createElement("div");
@@ -1123,7 +1121,7 @@ responName.forEach((responNameOne,index) => {
             nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
 
             // 이름 엘리먼트를 div에 추가
-            newDiv.appendChild(iconDiv);
+            // newDiv.appendChild(iconDiv);
             newDiv.appendChild(nameDiv);
 
             add_responsible_gantt[index].appendChild(newDiv);
@@ -1146,64 +1144,96 @@ responName.forEach((responNameOne,index) => {
 })
 
 
+// ************* 상태값 드롭다운 선택
+// let statusName = document.querySelectorAll('.statusName');
+// let statusNameSpan = document.querySelectorAll('.status-name-span');
+// let add_status_gantt = document.querySelectorAll('.add_status_gantt');
+// let add_status_gantt_one = document.querySelector('.add_status_gantt_one');
+// let ganttCloneStatusModal = add_status_gantt_one ? add_status_gantt_one.cloneNode(true) : ''
 
-// document.addEventListener('click', function(e) {
-//     responName.forEach((resOne,i) => {
+// statusName.forEach((statusNameOne,index) => {
+//   statusNameOne.addEventListener('click', () => {
+//         // console.log(index);
+//         // console.log('원래 자리:', originalText);
+
+//         // // 한 번 클릭 후 다시 클릭 시 창 닫기
+//         // if (add_responsible_gantt[index].classList.contains('d-none')) {
+//         //     add_responsible_gantt[index].classList.remove('d-none');
+//         // } else {
+//         //     add_responsible_gantt[index].classList.add('d-none');
+//         // }
+
+//         // // 다른 담당자 눌렀을 때 하나만 창 뜨게하기
+//         // add_responsible_gantt.forEach(function(resOther, i) {
+//         //     if (i !== index) {
+//         //         resOther.classList.add('d-none');
+//         //     }
+//         // });
+
+//         // // 담당자 칸 이외 영역 클릭 시 창 닫기
+//         // document.addEventListener('click', function(event) {
+//         //     add_responsible_gantt.forEach(function() {
+//         //         if (!event.target.closest('.gantt-task')) {
+//         //             add_responsible_gantt[index].classList.add('d-none');
+//         //         }
+//         //     });
+//         // });
+        
+//     // 담당자 초기화
+//     while (add_status_gantt[index].hasChildNodes()) {
+//       add_status_gantt[index].removeChild(add_status_gantt[index].firstChild);
+//     }
+//     add_status_gantt[index].append(ganttCloneStatusModal)  
+
+//     // 담당자 리스트 확인용 통신
+//     fetch('/ganttchart/' + ganttThisProjectId, {
+//         method: 'GET',
+//         headers: {
+//             // 'Content-Type': 'application/json',
+//             // 'X-CSRF-TOKEN': csrfToken_gantt,
+//         },
         
 //     })
-// })  
+//         .then(response)
+//         .then(data => {
+//             console.log(data);
+//         // for (let index2 = 0; index2 < data.data.length; index2++) {
+            
+//         //     // div 엘리먼트 생성
+//         //     let newDiv = document.createElement("div");
+//         //     newDiv.className = "add_status_gantt_one";
 
-// newDiv.addEventListener('click', () => {
-            //     console.log('원래자리', responNameSpan[index].textContent);
-            //     responNameSpan[index].textContent = data.data[index].member_name;
-            //     console.log('바꿀값:', data.data[index].member_name);
+//         //     // // 아이콘 엘리먼트 생성
+//         //     // let iconDiv = document.createElement("div");
+//         //     // iconDiv.className = "add_responsible_gantt_one_icon";
 
-            // })
+//         //     // 이름 엘리먼트 생성
+//         //     let nameDiv = document.createElement("div");
+//         //     nameDiv.className = "add_status_gantt_one_name";
+//         //     nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
 
+//         //     // 이름 엘리먼트를 div에 추가
+//         //     // newDiv.appendChild(iconDiv);
+//         //     newDiv.appendChild(nameDiv);
 
-// ************* 상태값 드롭다운 선택
-// 드롭박스 클릭 후 선택 수정
-// function ganttToggleDropdown() {
-//   let statusMenus = document.querySelectorAll('.gantt-status-menu');
-//   statusMenus.forEach((statusMenu) => {
-//     if (statusMenu.style.display === 'none' || statusMenu.style.display === '') {
-//       statusMenu.style.display = 'block';
-//     } else {
-//       statusMenu.style.display = 'none';
-//     }
-//   });
-// }
+//         //     add_responsible_gantt[index].appendChild(newDiv);
+//         //     // add_responsible_gantt[index].classList.remove('d-none');
 
+//         //     newDiv.addEventListener('click', () => {
+//         //         // console.log('원래자리', responNameSpan[index].textContent);
+//         //         // console.log('바꿀값:', data.data[index2].member_name);
+//         //         responNameSpan[index].textContent = data.data[index2].member_name;
 
-// function ganttChangeStatus(newStatus) {
-//   let statusSpan = document.querySelectorAll('.status-name-span');
-//   statusSpan.forEach((statusSpan) => {
-//     statusSpan.innerText = newStatus;
-//   })
-//   let statusMenu = document.querySelectorAll('.gantt-status-menu');
-//   statusMenu.forEach((statusMenu) => {
-//     statusMenu.style.display = 'none';
-//   })
-// }
-
-
-
-// function ganttToggleDropdown(event) {
-//   console.log(event.target.parentNode.nextElementSibling);
-//   let statusMenu = event.target.parentNode.nextElementSibling
-//     // if (statusMenu.style.display === 'none' || statusMenu.style.display === '') {
-//   statusMenu.style.display = 'block';
-//     // } else {
-//     //   statusMenu.style.display = 'none';
-//     // }
-//     // 1. 다른 곳을 클릭했을 때 닫게
-//     // 어떻게? 제생각엔 엘리먼트.contains(event.target)를 적절히 사용하기...(야매)
-//   }
-
-// function ganttChangeStatus(event, newStatus) {
-//     statusSpan.innerText = newStatus;
-//     statusMenu.style.display = 'none';
-// }
+//         //         // 드롭박스 안 담당자 클릭 시 창 닫기
+//         //         add_responsible_gantt[index].classList.add('d-none');
+//         //         })
+//         //     }
+//         })
+//         .catch(err => {
+//             console.log(err.message);
+//         })
+//     })
+// })
 
 
 
