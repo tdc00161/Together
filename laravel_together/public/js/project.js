@@ -272,15 +272,29 @@ function exitProject(project_pk) {
    }).catch(error => console.log(error));
 }
 
-
+// 친구리스트 클릭시 목록 띄우기
 function toggleDropdown() {
    document.getElementById('drop-list').style.display = 'block';
 }
 
-function toggleDrop() {
-   document.getElementById('drop-list').style.display = 'none';
-}
+// 친구초대 영역외 클릭시 목록 닫기
+let list = document.querySelector('drop-list');
 
+document.addEventListener('click', (e) => {
+   // console.log(e.target);
+   // console.log(document.querySelector('#friend-drop'));
+   // console.log(document.querySelector('#friend-drop').contains(e.target));
+   if(!document.querySelector('#friend-drop').contains(e.target)){
+      document.getElementById('drop-list').style.display = 'none';
+   }
+   // if(e.target !== list){
+   //    document.addEventListener('click',function(e){
+   //    document.getElementById('drop-list').style.display = 'none';
+   //    })
+   // }
+})
+
+// 친구목록 선택시 값을 controller 에 전달 및 전송값 출력
 document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
    mbbtnOne.addEventListener('click', function(event){
       console.log(event.target);
@@ -288,6 +302,7 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
       console.log('Value', Value);
       let url = window.location.href;
       document.getElementById('drop-list').style.display = 'none';
+      let invitemsg = document.getElementById('invitemsg')
 
       fetch('/friendinvite',{
          method: 'POST',
@@ -299,20 +314,82 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
             "Value": Value,
             "url": url,
          }),
-      }).then((response) => {
-         // console.log(response)
+      })
+      .then((response) => {
          return response.json()
       })
       .then((data) => {
-         event.target.value = data.friend_id,
-         url = data.url
+         console.log(data);
+         if(data === '성공') {
+            invitemsg.textContent = '초대되었습니다.'
+         } else {
+            invitemsg.textContent = '이미 초대된 친구입니다.'
+         }
+         setTimeout(() => {
+            invitemsg.textContent = ''
+         }, 2000);
       })
       .catch(error => console.log(error));
    })
 
 });
 
+// 초대링크 클릭시 링크 복사하기
+document.querySelector(".invite_link").addEventListener('click',function(e){
+   let copyLink = document.querySelector(".invite_link").innerText;
 
+   navigator.clipboard.writeText(copyLink)
+   .then(function(){
+      alert('링크가 복사되었습니다.');
+   }).catch(function(err){
+      console.error('실패',err);
+   })
+})
+
+// 내보내기 기능
+document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
+   btnOne.addEventListener('click',function(e){
+      
+      document.querySelectorAll(".m_signout")[index].style.display = "block";
+      
+      let memail = document.querySelectorAll(".member-email")[index].textContent;
+
+      let murl = window.location.href;
+      
+      document.querySelector(".m_signout").addEventListener('click', function(e){
+            // document.querySelectorAll('.m_signout')[index].style.display = "none";
+   
+            fetch('/signout',{
+               method: 'delete',
+               headers: {
+                  "Content-Type": "application/json",
+                  'X-CSRF-TOKEN': csrfToken_project
+               },
+               body: JSON.stringify({
+                  "memail": memail,
+                  "url": murl,
+               }),
+            })
+            .then((response) => {
+               return response.json()
+            })
+            .then((data) => {
+               console.log(data);
+               alert('내보내기 완료되었습니다.')
+            })
+            .catch(error => console.log(error));
+         })
+      })
+})
+
+//내보내기 버튼 영역외 클릭시 닫기
+// let outbtn = document.querySelector('.m_signout');
+
+// document.addEventListener('click', (e) => {
+//    if(!document.querySelector('.plusbtn').contains(e.target)){
+//       document.querySelector('.m_signout').style.display = 'none';
+//    }
+// })
 
 
 // tab 기능

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AlarmEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -110,6 +111,9 @@ class FriendRequestController extends Controller
         ]);
 
         $friendRequest->save();
+
+        // 240111 김관호: 친추 알림 발생
+        AlarmEvent::dispatch($friendRequest);
 
         // Ajax 요청에서 처리할 응답 데이터 반환
         return response()->json([

@@ -31,7 +31,11 @@ class MessengerController extends Controller
 			->get()
 			->toArray();
 
+		// 알람 갯수 불러오기
 		$data['myChatCount'] = $this->getAlarm();
+
+		// 채팅방 인원구 불러오기
+		// $data['myChatMembers'] = 0;
 
 		return $data;
 	}
@@ -170,6 +174,22 @@ class MessengerController extends Controller
 		];
 		
 		$result = ChatRoom::create($data);
+
+		return $result;
+	}
+
+	// 채팅방 마다 인원수 구하기
+	public function getChatMembers()
+	{
+		$userId = Auth::id();
+
+		$result = DB::table('chat_users as cu')
+			->join('chat_rooms as cr', function($join) {
+				$join->on('cr.id','cu.chat_room_id');
+			}) // 여기서 자신이 포함된 채팅방을 가져오라는 이중쿼리를 해야함 -> 보류
+			->select('cu.chat_room_id', DB::raw('count(cu.id) as user_count'))
+			->groupBy('cu.chat_room_id')
+			->get();
 
 		return $result;
 	}

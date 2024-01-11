@@ -328,13 +328,16 @@ a:hover {
     font-weight: bold;
     border-radius: 3px;
 }
-
+.gantt-chart-container {
+	display: flex;
+	flex-direction: column;
+}
 
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
 	height: 549px;
-	overflow: auto;
+	overflow: hidden;
 	border-radius: 0 0 10px 10px;
 }
 
@@ -509,12 +512,15 @@ a:hover {
 /* 간트차트 section 업무 영역 */
 .gantt-all-task {
 	display: flex;
-	/* height: 94%; */
+	height: 100%;
 }
 
 .gantt-task-wrap {
 	width: 45%;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	resize: horizontal;
 }
 
 .gantt-task-header {
@@ -523,6 +529,8 @@ a:hover {
 	text-align: center;
 	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
+	border-right: 6px solid #161616d9;
+	box-shadow: 2px -2px 3px 1px #000000;
 }
 
 .gantt-task-header .gantt-task-header-div {
@@ -541,17 +549,25 @@ a:hover {
     /* margin-left: 17px; */
 }
 .gantt-task-body {
-	border-right: 4px solid #ffffff29;
+	/* border-right: 4px solid #ffffff29; */
+	overflow-y:auto;
+	height: 495px;
+	box-shadow: inset 0px -4px 12px 0px black, 12px 0px 8px -7px #00000099;
 
 }
+.gantt-task-body::-webkit-scrollbar-thumb {
+    background-color: transparent; /* 스크롤바 색상 */
+}
 .gantt-chart-body {
-    box-shadow: inset 5px 0 10px 0px black;
+    box-shadow: inset -8px -4px 12px 0px black;
+	overflow-y: auto;
 }
 .gantt-task {
 	display: flex;
 	height: 40.5px;
 	position: relative;
 	margin-bottom: 3px;
+	flex-direction: row;
 }
 .gantt-child-task {
 	background-color: #ffffff14;
@@ -682,14 +698,14 @@ display: none;
 /* 업무명 자세히 보기 */
 .gantt-detail {
 	display: none;
-	position: absolute;
-	top: 30px;
-	right: -95px;
+	position: fixed;
     background-color: rgba(151, 86, 255, 0.9);
     width: auto;
     padding: 5px;
     z-index: 1;
 	border: 1px solid var(--inactive-color);
+	margin-left: 20px;
+	margin-top: 5px;
 }
 .gantt-detail-btn {
 	border: none;
@@ -779,14 +795,15 @@ display: none;
 	width: 55%;
     height: 100%;
 	display: flex;
-	overflow: auto;
-	overflow-x: scroll;
+	overflow-x: auto;
+	overflow-y: hidden;
 	position: relative;
+
 }
 
 .gantt-chart-header {
 	text-align: center;
-	height: 44px;
+	height: 58px;
 	background-color: rgba(255, 255, 255, 0.226);
 	display: flex;
 	flex-direction: column;
@@ -889,6 +906,10 @@ display: none;
 .scroll-style::-webkit-scrollbar-thumb {
 	/* position: fixed; */
 	background-color: white;
+}
+
+.scroll-style::-webkit-scrollbar-horizontal {
+	height: 3px;
 }
 
 /* 업무명 div에 placeholder */

@@ -339,6 +339,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border: 1px solid var(--theme-bg-color);
     background-color: var(--content-bg);
     border-radius: 8px;
+    position:relative;
 
 }
 .m_first {
@@ -380,9 +381,27 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .invite_grid {
     width: 100%;
     display: grid;
-    grid-template-columns: 0.5fr 1.5fr;
+    grid-template-columns: 0.5fr 1.5fr 0.1fr;
     padding-left: 5px;
     margin-bottom: 4px;
+}
+
+.plusbtn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.m_signout {
+    display: none;
+    position: absolute;
+    width: 100px;
+    align-items: center;
+    background-color: rgb(206 206 207 / 53%);
+    top: 70px;
+    right: -90px;
+    border-radius: 2px;
+    z-index: 1;
 }
 
 .invite_member_div {
@@ -431,6 +450,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-weight: bold;
 }
 
+.invite_friend_msg {
+    text-align: center;
+    padding-left: 80px;
+    margin: 5px;
+}
+
 .name_total {
     margin-top: 7px;
 }
@@ -439,7 +464,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: 100%;
     font-size: 11px;
 }
-.drop-list {
+
+.invite_link {
+    color: black;
+    height: 33px;
+    background: white;
+    line-height: 33px;
+    padding-left: 5px;
+}
+
+.drop_list {
     background-color: #646363;
     width: 296px;
     display: none;
