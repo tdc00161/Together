@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\AlarmEvent;
 use App\Events\MessageSent;
+use App\Events\SpecificDateReached;
 use App\Listeners\AlarmEventListener;
 use App\Listeners\MessageSentListener;
+use App\Listeners\ProcessSpecificDateReached;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         AlarmEvent::class => [
             AlarmEventListener::class,
+        ],
+        SpecificDateReached::class => [
+            ProcessSpecificDateReached::class,
         ],
     ];
 
