@@ -573,7 +573,7 @@ background-color: #000;
 	display: inline-block;
 }
 
-.gantt-task>div {
+.gantt-task>div:not(.add_responsible_gantt) {
 	padding: 10px 5px;
   	overflow: hidden;
   	white-space: nowrap;
@@ -683,7 +683,43 @@ background-color: #000;
 	padding: 3px;
 }
 
-/* 드롭박스 선택 수정 */
+/* 드롭박스 담당자 선택 수정 */
+.add_responsible_gantt {
+	/* 배치 */
+	position: absolute;
+	top: 32px;
+	left: 39px;
+	z-index: 5;
+	/* 내부 */
+	background-color: var(--dropdown-hover);
+	overflow: scroll;
+	border-radius: 5px;
+	/* 크기 */
+	width: 140px;
+	min-height: 28px;
+	max-height: 100px;
+}
+
+.add_responsible_gantt_one {
+    display: flex;
+	cursor: pointer;
+}
+
+.add_responsible_gantt_one:hover{
+	background-color: rgba(12, 12, 12, 0.829);
+}
+
+.add_responsible_gantt_one_icon {
+	background-image: url('/img/profile-img.png');
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+	height: 18px;
+	margin: 0px 5px;
+}
+
+/* 드롭박스 상태 선택 수정 */
 .gantt-status-menu {
 	display: none;
     border: 1px solid;

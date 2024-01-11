@@ -307,17 +307,18 @@
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="responName" onclick="addGanttResponsible(0)"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="add_responsible_gantt add_property_gantt d-none">
+                                <div class="add_responsible_gantt_one d-none" onclick="selectGanttResponsible(event)">
+                                    <div class="add_responsible_gantt_one_icon"></div>
+                                    <div class="add_responsible_gantt_one_name">User</div>
+                                </div>
+                            </div>
                             <div class="gantt-status-name">
                                 <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
                                     <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>
                                 </div>
-                                {{-- <div class="gantt-status-menu" id="statusMenu">
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('시작전')"><span>시작전</span></div>
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('진행중')"><span>진행중</span></div>
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('피드백')"><span>피드백</span></div>
-                                    <div class="gantt-status-select" onclick="ganttChangeStatus('완료')"><span>완료</span></div>
-                                </div> --}}
+                                
                             </div>
                             <div class="gantt-task-4">
                                 <input type="date" class="start-date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
