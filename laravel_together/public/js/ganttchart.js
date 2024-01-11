@@ -1,5 +1,7 @@
-// ************* 개인 피드로 이동
+
 var childFlg = 0;
+var ganttTaskWrap = document.getElementById('ganttTaskWrap');
+var otherDiv = document.getElementById('otherDiv');
 // 간트 csrf
 const csrfToken_gantt = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -2141,4 +2143,16 @@ document.querySelectorAll('.date').forEach((date,index)=>{
 }
   // Function to handle button click
   window.toggleChildTask = toggleChildTask;
-  
+
+  // gantt-task-wrap의 스크롤 이벤트 처리
+
+
+  ganttTaskWrap.addEventListener('scroll', function() {
+      // gantt-task-wrap의 스크롤 위치에 따라 다른 div도 스크롤 처리
+      otherDiv.scrollTop = ganttTaskWrap.scrollTop;
+  });
+
+  otherDiv.addEventListener('scroll', function() {
+    // gantt-task-wrap의 스크롤 위치에 따라 다른 div도 스크롤 처리
+    ganttTaskWrap.scrollTop = otherDiv.scrollTop;
+});
