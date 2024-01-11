@@ -718,13 +718,13 @@ display: none;
 	left: 39px;
 	z-index: 5;
 	/* 내부 */
-	background-color: var(--dropdown-hover);
-	overflow: scroll;
+	background-color: rgb(44 30 29);
+	overflow: auto;
 	border-radius: 5px;
 	/* 크기 */
-	width: 140px;
+	width: 90px;
 	min-height: 28px;
-	max-height: 100px;
+	max-height: 70px;
 }
 
 .add_responsible_gantt_one {
