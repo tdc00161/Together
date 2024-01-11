@@ -520,6 +520,7 @@ a:hover {
 	text-align: center;
 	display: flex;
 	flex-direction: column;
+	resize: horizontal;
 }
 
 .gantt-task-header {
@@ -528,8 +529,8 @@ a:hover {
 	text-align: center;
 	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
-	border-right: 6px solid #000000b8;
-	box-shadow: 12px 0px 8px -7px #00000099;
+	border-right: 6px solid #161616d9;
+	box-shadow: 2px -2px 3px 1px #000000;
 }
 
 .gantt-task-header .gantt-task-header-div {
@@ -566,6 +567,7 @@ a:hover {
 	height: 40.5px;
 	position: relative;
 	margin-bottom: 3px;
+	flex-direction: row;
 }
 .gantt-child-task {
 	background-color: #ffffff14;
@@ -696,14 +698,14 @@ display: none;
 /* 업무명 자세히 보기 */
 .gantt-detail {
 	display: none;
-	position: absolute;
-	top: 30px;
-	right: -95px;
+	position: fixed;
     background-color: rgba(151, 86, 255, 0.9);
     width: auto;
     padding: 5px;
     z-index: 1;
 	border: 1px solid var(--inactive-color);
+	margin-left: 20px;
+	margin-top: 5px;
 }
 .gantt-detail-btn {
 	border: none;

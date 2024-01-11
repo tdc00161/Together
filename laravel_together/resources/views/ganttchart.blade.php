@@ -275,7 +275,7 @@
     </div>
     <div class="gantt-content-wrap">
         <section class="gantt-all-task scroll-style-parent">
-            <div class="gantt-task-wrap">
+            <div class="gantt-task-wrap" id="resizableDiv">
                 <div class="gantt-task-header">
                     <div class="gantt-task-header-div" style="width: 34%">
                         {{-- <span class="gantt-order">업무명</span> --}}
@@ -338,7 +338,8 @@
                                     <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
                                     <br>
                                     <button class="gantt-detail-btn" onclick="addSubTask(event, {{$item->id}})">하위업무 추가</button>
-                                </div></div>
+                                </div>
+                            </div>
                         </div>
                         {{-- 하위 업무 --}}
                         @forelse ($item->depth_1 as $item2)
