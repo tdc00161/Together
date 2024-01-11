@@ -1,4 +1,4 @@
-const { document } = require("postcss");
+// const { document } = require("postcss");
 
 //프로젝트 원형차트 생성
 window.onload = function() {
@@ -214,16 +214,6 @@ const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]'
       });
 }
 
-
-// 프로젝트 설명 클릭시 초기값 삭제
-// let UPDATECONTENTSET = document.getElementById('project_content');
-// UPDATECONTENTSET.addEventListener('click',deleteContent)
-
-// function deleteContent () {
-//    this.value = "";
-// }
-
-
 //삭제 모달창 open
 function openDeleteModal() {
    document.getElementById('deleteModal').style.display = 'block';
@@ -263,7 +253,7 @@ function closeExitModal() {
    document.getElementById('exitModal').style.display = 'none';
 }
 
-//나가기버튼시 삭제
+//나가기 버튼시 삭제
 const csrfToken_project2 = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function exitProject(project_pk) {
 
@@ -282,23 +272,48 @@ function exitProject(project_pk) {
    }).catch(error => console.log(error));
 }
 
-// 초대링크 클릭시 서버로 요청
 
-// const link = document.getElementById('invite-Link').addEventListener('click',function(){
-//    window.location.href = '{{ $inviteLink }}';
-// })
-
-// 링크 복사
-
-
-function copyUrl(){
-   let nowUrl = window.location.href;
-   
-   navigator.clipboard.writeText(nowUrl)
-   .then(res=>{
-      alert("주소가 복사되었습니다!");
-   })
+function toggleDropdown() {
+   document.getElementById('drop-list').style.display = 'block';
 }
+
+function toggleDrop() {
+   document.getElementById('drop-list').style.display = 'none';
+}
+
+document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
+   mbbtnOne.addEventListener('click', function(event){
+      console.log(event.target);
+      let Value = event.target.value;
+      console.log('Value', Value);
+      let url = window.location.href;
+      document.getElementById('drop-list').style.display = 'none';
+
+      fetch('/friendinvite',{
+         method: 'POST',
+         headers: {
+            "Content-Type": "application/json",
+            'X-CSRF-TOKEN': csrfToken_project
+         },
+         body: JSON.stringify({
+            "Value": Value,
+            "url": url,
+         }),
+      }).then((response) => {
+         // console.log(response)
+         return response.json()
+      })
+      .then((data) => {
+         event.target.value = data.friend_id,
+         url = data.url
+      })
+      .catch(error => console.log(error));
+   })
+
+});
+
+
+
 
 // tab 기능
 

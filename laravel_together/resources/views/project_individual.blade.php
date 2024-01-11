@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endsection
 
-@section('title', '개인프로젝트')
+@section('title', '프로젝트')
 
 @section('main')
     <input type="hidden" id="user" value="{{$user}}">
@@ -139,19 +139,20 @@
                     @endif
                 </div>
                 {{-- 프로젝트 구성원 초대 --}}
-                @forelse ($projectmemberdata as $item)
-                    <div class="invite_grid">
-                        <div id="{{'project_num'.$item->project_id.'_user'.$item->member_id}}" class="invite_member_div">
-                            <img class="invite-img" src="/img/Group 114.png" alt="">
+                <div class="invite_scroll">
+                    @forelse ($projectmemberdata as $item)
+                        <div class="invite_grid">
+                            <div id="{{'project_num'.$item->project_id.'_user'.$item->member_id}}" class="invite_member_div">
+                                <img class="invite-img" src="/img/Group 114.png" alt="">
+                            </div>
+                            <div class="name_total">
+                                <div class="member_name1">{{$item->name}}</div>
+                                <div class="member_name1">{{$item->email}}</div>
+                            </div>
                         </div>
-                        <div class="name_total">
-                            <div class="member_name1">{{$item->name}}</div>
-                            <div class="member_name1">{{$item->email}}</div>
-                        </div>
-                    </div>
-                @empty
-                    
-                @endforelse 
+                    @empty
+                        
+                    @endforelse 
                 </div>
             </div>
 
@@ -159,13 +160,28 @@
             <div id="projectMemberaddModal" class="projectMemberaddModalcss">
                 <div class="projectMemberaddModalContent">
                     <span class="memberaddclosebtn" onclick="projectMemberAddCloseModal()">&times;</span>
-                    <div>이메일로 추가</div>
-                    <button>친구에서 추가</button>
-                    <div>초대 링크로 추가</div>
-                    <input type="text" style="color: black; width:350px" value="{{$result->invite}}"><button type="button" class="copy-btn" onclick="copyUrl()">ㅁ</button>
+                    <div>이메일 초대</div>
+                    <div class="m-gird">
+                        <div onclick="toggleDrop()">친구 초대</div>
+                        <div id="friend-drop">
+                            <button class="friend_btn" onclick="toggleDropdown()">친구리스트</button>
+                            <div id="drop-list" class="drop-list">
+                                @foreach ($friendinvite as $item)
+                                    <div class="minvite_grid" id="drop-member">
+                                        <img class="mbimg" src="/img/profile-img.png" alt="">
+                                        <button class="mbbtn" value="{{$item->friend_id}}">{{$item->name}}</button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-gird">
+                        <div>초대 링크</div>
+                        <input style="color: black;" type="text" value="{{$result->invite}}">
+                    </div>
                 </div>
             </div>
-            
+        </div>
         <div class="gird_row2">
             <div class="right_box1">
                 {{-- 공지/업데이트 항목 --}}

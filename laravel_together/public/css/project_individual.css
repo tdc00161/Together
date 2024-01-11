@@ -7,10 +7,6 @@
     flex-direction: column;
 }
 
-/* .menu_title {
-    display: grid;
-    grid-template-rows: 1.5fr 1.5fr;
-} */
 .project-header {
     display: flex;
 }
@@ -375,11 +371,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     line-height: 25px;
 }
 
+.invite_scroll {
+    overflow-y: scroll;
+    width: 100%;
+    height: 211px;
+}
+
 .invite_grid {
     width: 100%;
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
-    padding-left: 17px;
+    padding-left: 5px;
     margin-bottom: 4px;
 }
 
@@ -389,9 +391,44 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    margin-right: 10px;
+    margin-right: 6px;
     flex-wrap: nowrap;
     flex-direction: column;
+}
+
+.m-gird {
+    display: grid;
+    grid-template-columns: 0.4fr 1.6fr;
+    margin-top: 20px;
+    height: 30px;
+    line-height: 26px;
+}
+
+.minvite_grid {
+    display: grid;
+    grid-template-columns: 0.2fr 1.8fr;
+    width: 100%;
+    height: 30px;
+    align-content: center;
+    background-color: #6f6f6f;
+}
+
+.minvite_grid:hover{
+    background-color: #64C139;
+}
+
+
+.list_box {
+    width: 250px;
+    background-color: #B1B1B1;
+}
+
+.friend_btn {
+    width: 100%;
+    height: 31px;
+    background-color: #dddddd;
+    color: black;
+    font-weight: bold;
 }
 
 .name_total {
@@ -402,7 +439,26 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: 100%;
     font-size: 11px;
 }
+.drop-list {
+    background-color: #646363;
+    width: 296px;
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
 
+.minline-b {
+    display: inline-block;
+}
+
+.mbimg {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    padding-left:3px;
+}
 
 .invite_a {
     font-size: 1.5rem;
@@ -447,10 +503,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .gird_row2 {
     width: 100%;
     height: 570px;
-    /* display: grid;
-    grid-template-rows: 1fr 1fr;
-    align-items: stretch;
-    justify-content: space-between; */
 }
 
 .right_box1 {
@@ -470,7 +522,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: 8px;
     display: inline-block;
     justify-content: space-around;
-    /* text-align: center; */
 }
 
 .listtable {
@@ -516,10 +567,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 30px;
     line-height: 30px;
     font-size: 25px;
-    /* background-image: url(/laravel_together/public/img/projectplus.png);
-    background-size: cover; */
     font-weight: 600;
-    /* margin-right: 10px; */
 }
 
 .td_pd {
@@ -611,13 +659,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-weight: bold;
     border-radius: 3px;
 }
-/* 
-.deletebutton:hover,
-.deletebutton:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-} */
 
 .feeddiv {
     text-align: center;

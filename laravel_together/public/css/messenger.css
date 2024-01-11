@@ -575,6 +575,7 @@ button {
     padding: 7px 13px;
     background-color: var(--dropdown-hover);
     border-radius: 9px;
+    min-height: 36px;
 }
 .m-modal-content .my-chat-content {
     margin-left: auto;

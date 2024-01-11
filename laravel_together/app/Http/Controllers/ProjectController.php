@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatRoom;
+use App\Models\ChatUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
@@ -75,6 +77,32 @@ class ProjectController extends Controller
 
     //DB 저장
     $data2result = ProjectUser::create($data2);
+
+    // --------------------------------------------- 240110 김관호: 프로젝트 제작 후 채팅방 생성 및 참가
+	if($result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
+		$ChatRoomData = [
+			'flg' => $result->flg,
+			'project_id' => $result->id,
+			'user_count' => 1,
+			'chat_room_name' => $result->project_title,
+		];
+			
+		$ChatRoom = ChatRoom::create($ChatRoomData);
+		// Log::debug($ChatRoom);
+
+	
+		$chatRoomId = ChatRoom::where('project_id',$ChatRoom->project_id)->first();
+		
+		if($chatRoomId){
+			$ChatUserData = [
+				'chat_room_id' => $chatRoomId->id,
+				'user_id' => $user_id,
+			];
+			
+			$ChatRoom = ChatUser::create($ChatUserData);
+		}
+	}
+    // --------------------------------------------- 240110 김관호 
 
     //flg 기준 개인/팀 화면으로 전달, 로그인 안한 유저일 경우 log 화면으로 이동
     if (Auth::check()) {
@@ -266,6 +294,13 @@ class ProjectController extends Controller
                             ->orderBy('p.created_at','asc')
                             ->get();
 
+    //친구목록에서 초대
+    $friendinvite = Friendlist::select('friendlists.friend_id','us.name','us.id')
+                              ->join('users as us','us.id','friendlists.friend_id')
+                              ->where('friendlists.user_id',$user->id)
+                              ->get();
+    // dd($friendinvite);
+
 
     //개인,팀 화면에 정보 출력 , 로그인 안 한 유저일 경우 login 화면으로 이동
     if (Auth::check()) {
@@ -281,7 +316,8 @@ class ProjectController extends Controller
         ->with('project0title', $project0title)
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
-        ->with('authoritychk',$authoritychk);
+        ->with('authoritychk',$authoritychk)
+        ->with('friendinvite',$friendinvite);
         // ->with('inviteUrl',$inviteUrl);
     } else {
         return redirect('/user/login');
@@ -321,6 +357,7 @@ class ProjectController extends Controller
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
+
     }else{
       return view('/membermodal')->with('project_id',$project[0]->project_id)->with('url',$url);
     }
@@ -336,11 +373,47 @@ class ProjectController extends Controller
     }
   }
 
+  //구성원 중복시 창
   public function membermodal(Request $request){
 
-    dd($token);
+    // dd($token);
     return view('/membermodal')->with('token',$token);
   }
+
+
+  //친구목록에서 구성원 추가
+  public function friendmember(Request $request){
+    // dd($request);
+    Log::debug($request);
+
+    $url = $request->url;
+    Log::debug($url);
+
+    $urlsb = substr($url, -3);
+    Log::debug($urlsb);
+
+    $invite_member = ProjectUser::where('member_id',$request->Value)
+                                ->join('projects as pj','pj.id','project_users.project_id')
+                                ->where('project_users.project_id',$urlsb)
+                                ->first();
+    if(!$invite_member){
+      
+      $memberpj = ProjectUser::create([
+        'project_id' => $urlsb,
+        'authority_id' => '1',
+        'member_id' => $request->Value
+      ]);
+      
+      return $url;
+
+    }else{
+
+      return $url;
+    
+    }
+
+  }
+
 
   public function project_graph_data(Request $request, $id) {
 

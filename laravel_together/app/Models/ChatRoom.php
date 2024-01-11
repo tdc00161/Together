@@ -11,6 +11,11 @@ class ChatRoom extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
+        'flg',
+        'project_id',
+        'user_count',
+        'last_chat',
+        'last_chat_created_at',
         'chat_room_name',
     ];
 }

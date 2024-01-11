@@ -95,10 +95,8 @@ let startFilter = [];
 let endFilter = [];
 let allFilter = [];
 document.querySelectorAll('.gantt-task').forEach(task => {
-  // gantt-task의 ID를 추출합니다.
   let taskId = task.getAttribute('id').split('-')[2];
 
-  // gantt-chart 요소를 가져옵니다.
   let ganttChart = document.getElementById(`gantt-chart-${taskId}`);
   allFilter.push(task);
   allFilter.push(ganttChart);
@@ -106,7 +104,7 @@ document.querySelectorAll('.gantt-task').forEach(task => {
 
 
 
-console.log(allFilter);
+// console.log(allFilter);
 
 // 라디오 클릭하면 자기한테 클래스 주기
 let statusRadio = document.querySelectorAll('.status-radio')
@@ -639,14 +637,14 @@ function getUniqueValues(arr1, arr2) {
 }
 
 function d_none_checked(){
-  console.log('******* 비교 시작');
+  // console.log('******* 비교 시작');
   let a = getCommonValues(statusFilter,responFilter);
-  console.log('a:',a);
+  // console.log('a:',a);
   let b = getCommonValues(a,startFilter);
-  console.log('b:',b);
+  // console.log('b:',b);
   let c = getCommonValues(b,endFilter);
-  console.log('c:',c);
-  console.log('비교 끝 *******');
+  // console.log('c:',c);
+  // console.log('비교 끝 *******');
   return c;
 }
 
