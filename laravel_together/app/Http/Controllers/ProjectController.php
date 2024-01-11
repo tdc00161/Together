@@ -79,11 +79,10 @@ class ProjectController extends Controller
     $data2result = ProjectUser::create($data2);
 
     // --------------------------------------------- 240110 김관호: 프로젝트 제작 후 채팅방 생성 및 참가
-	if($result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
+	if((int)$result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
 		$ChatRoomData = [
 			'flg' => $result->flg,
 			'project_id' => $result->id,
-			'user_count' => 1,
 			'chat_room_name' => $result->project_title,
 		];
 			
@@ -584,6 +583,10 @@ class ProjectController extends Controller
     Log::debug("user 에러");
     $user->delete();
     Log::debug("user 삭제");
+
+    // // 채팅방도 나가기
+    $this->chatRoomExit($id,Auth::id());
+
     return response()->json();
     Log::debug("화면전달");
   }
@@ -631,29 +634,42 @@ class ProjectController extends Controller
 			];
 			
 			$ChatRoom = ChatUser::create($ChatUserData);
-    }
 
-      return $ChatRoom;
+      // 채팅방 인원 증가
+      $result = $chatRoomId->update([
+        'user_count' => $chatRoomId->user_count+1,
+      ]);
+    }
+    // Log::debug($ChatRoom);
+    return $ChatRoom;
   }
 
   // 채팅방 나가기 모듈
   public function chatRoomExit($project_id,$user_id)
   {
     $chatRoomId = ChatRoom::where('project_id',$project_id)->first(); //$ChatRoom->project_id
-		$ChatRoom = null;
+		$ChatUser = null;
     
 		if($chatRoomId){
-			$ChatRoom = ChatUser::where('chat_room_id',$chatRoomId->id)
+			$ChatUser = ChatUser::where('chat_room_id',$chatRoomId->id)
         ->where('user_id',$user_id);
-      $ChatRoom->delete();
+      $ChatUser->delete();
 
+      // 유저가 다 나갔으면 채팅방 삭제
       Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->count());
       if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
         Log::debug('사람 없는 채팅방');
+        $chatRoomId->delete();
       }
+      
       // 아마 채팅창에 표시하거나 유저수 카운트 변화하려면 여기서 이벤트 발생해야 할 것
+
+      // 채팅방 인원 감소
+      $result = $chatRoomId->update([
+        'user_count' => $chatRoomId->user_count-1,
+      ]);
     }
-      return $ChatRoom;
+      return $ChatUser;
   }
 
 }

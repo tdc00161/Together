@@ -852,8 +852,10 @@ let msg_now_user_id = null;
 // 다 하고 맨 아래로 스크롤 함수
 function chatUpdateScroll() {
     let ChatList = document.querySelectorAll('.chat-msg-box');
-    let lastChat = ChatList[ChatList.length-1];
-    lastChat.scrollIntoView(false);
+    if(ChatList.length !== 0){
+        let lastChat = ChatList[ChatList.length-1];
+        lastChat.scrollIntoView(false);
+    }
 }
 
 // 채팅방에 리스트가 들어가면 이벤트 적용 with MutationObserver
@@ -1151,12 +1153,15 @@ send_chat.addEventListener('click', () => {
         sendChat();
     }
 });
+
+// 엔터로 채팅보내기
 input.addEventListener('keypress', (event) => {
     if (input.value.trim() !== '' && event.key === 'Enter') {
         sendChat();
     }
 });
 
+// 채팅보내기 모듈
 function sendChat() {
     let chat_window = document.querySelector('.chat-window');
 
