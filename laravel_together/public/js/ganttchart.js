@@ -2144,9 +2144,8 @@ document.querySelectorAll('.date').forEach((date,index)=>{
   // Function to handle button click
   window.toggleChildTask = toggleChildTask;
 
+  // ----------------------------------------------------------
   // gantt-task-wrap의 스크롤 이벤트 처리
-
-
   ganttTaskWrap.addEventListener('scroll', function() {
       // gantt-task-wrap의 스크롤 위치에 따라 다른 div도 스크롤 처리
       otherDiv.scrollTop = ganttTaskWrap.scrollTop;
@@ -2155,4 +2154,26 @@ document.querySelectorAll('.date').forEach((date,index)=>{
   otherDiv.addEventListener('scroll', function() {
     // gantt-task-wrap의 스크롤 위치에 따라 다른 div도 스크롤 처리
     ganttTaskWrap.scrollTop = otherDiv.scrollTop;
+});
+// ----------------------------------------------------------
+document.getElementById('resizableDiv').addEventListener('mousedown', function (event) {
+  if (event.pageX >= this.offsetWidth - 10) { // 드래그를 시작할 영역을 설정 (여기서는 가로 크기에서 10픽셀 이내의 영역)
+      var startX = event.pageX;
+      var startWidth = this.offsetWidth;
+
+      function handleMouseMove(event) {
+          var newWidth = startWidth + (event.pageX - startX);
+          if (newWidth > 100) { // 최소 크기를 설정할 수 있음
+              document.getElementById('resizableDiv').style.width = newWidth + 'px';
+          }
+      }
+
+      function handleMouseUp() {
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('mouseup', handleMouseUp);
+      }
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+  }
 });
