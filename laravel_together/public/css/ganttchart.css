@@ -333,7 +333,7 @@ a:hover {
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
-	height: 575px;
+	height: 549px;
 	overflow: auto;
 	border-radius: 0 0 10px 10px;
 }
@@ -573,7 +573,7 @@ background-color: #000;
 	display: inline-block;
 }
 
-.gantt-task>div {
+.gantt-task>div:not(.add_responsible_gantt) {
 	padding: 10px 5px;
   	overflow: hidden;
   	white-space: nowrap;
@@ -605,6 +605,7 @@ background-color: #000;
 /*  */
 .gantt-editable-div {
 	display: flex;
+	align-items: center;
 }
 .gantt-task-detail-click {
 	flex: 0 0 10%;
@@ -626,8 +627,20 @@ background-color: #000;
 }
 
 .taskKey {
-	flex: 0 0 20%;
+		display: flex;
+		width: 16px;
+		height: 16px;
+		font-size: 10px;
+		background: #f7296f;
+		border-radius: 5px;
+		justify-content: center;
+		align-items: center;
+		margin-left: 5px;
 }
+/* #toptaskbtn {
+display: none;
+} */
+
 .task-top-icon {
 	width: 20px;
 	height: 20px;
@@ -636,8 +649,8 @@ background-color: #000;
     justify-content: center;
 }
 .task-top-icon-img {
-	width: 15px;
-	height: 15px;
+	width: 13px;
+	height: 13px;
 }
 .task-bottom-icon-img {
 	width: 10px;
@@ -683,7 +696,43 @@ background-color: #000;
 	padding: 3px;
 }
 
-/* 드롭박스 선택 수정 */
+/* 드롭박스 담당자 선택 수정 */
+.add_responsible_gantt {
+	/* 배치 */
+	position: absolute;
+	top: 32px;
+	left: 39px;
+	z-index: 5;
+	/* 내부 */
+	background-color: var(--dropdown-hover);
+	overflow: scroll;
+	border-radius: 5px;
+	/* 크기 */
+	width: 140px;
+	min-height: 28px;
+	max-height: 100px;
+}
+
+.add_responsible_gantt_one {
+    display: flex;
+	cursor: pointer;
+}
+
+.add_responsible_gantt_one:hover{
+	background-color: rgba(12, 12, 12, 0.829);
+}
+
+.add_responsible_gantt_one_icon {
+	background-image: url('/img/profile-img.png');
+	background-position: center;
+	background-size: cover;
+
+	width: 18px;
+	height: 18px;
+	margin: 0px 5px;
+}
+
+/* 드롭박스 상태 선택 수정 */
 .gantt-status-menu {
 	display: none;
     border: 1px solid;
