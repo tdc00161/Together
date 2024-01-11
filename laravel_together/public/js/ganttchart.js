@@ -1054,6 +1054,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // ************* 담당자 드롭다운 선택
 
 let responName = document.querySelectorAll('.responName')
+let responNameSpan = document.querySelectorAll('.respon-name-span')
 let add_responsible_gantt = document.querySelector('.add_responsible_gantt');
 let add_responsible_gantt_one = document.querySelector('.add_responsible_gantt_one');
 let ganttCloneResponsibleModal = add_responsible_gantt_one ? add_responsible_gantt_one.cloneNode(true) : ''
@@ -1061,7 +1062,7 @@ let ganttThisProjectId = window.location.pathname.match(/\d+/)[0] ? window.locat
 
 responName.forEach((responNameOne,index) => {
   responNameOne.addEventListener('click', () => {
-
+    console.log(responNameSpan[index]);
     // 담당자 초기화
 
     while (add_responsible_gantt.hasChildNodes()) {
