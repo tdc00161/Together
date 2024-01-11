@@ -33,8 +33,8 @@ return new class extends Migration
             // $table->foreign('status_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             // $table->foreign('priority_id')->references('id')->on('base_data'); // base_data 테이블과 연결
             // $table->foreign('category_id')->references('id')->on('base_data'); // base_data 테이블과 연결
-            $table->date('start_date')->nullable();; // ->default('CURRENT_TIMESTAMP');
-            $table->date('end_date')->nullable();; // ->default('CURRENT_TIMESTAMP');
+            $table->timestamps('start_date')->nullable(); // ->default('CURRENT_TIMESTAMP');
+            $table->timestamps('end_date')->nullable(); // ->default('CURRENT_TIMESTAMP');
             $table->timestamps(); // 작성, 수정일자
             $table->softDeletes(); // 탈퇴일자
         });

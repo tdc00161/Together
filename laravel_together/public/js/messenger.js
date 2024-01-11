@@ -1027,7 +1027,7 @@ chatListCheck();
 // 채팅 받기
 window.Echo.private('chats')
     .listen('MessageSent', e => {
-        console.log(e);
+        // console.log(e);
 
         // 리슨한 메세지 출력
         // 채팅 박스
@@ -1102,13 +1102,13 @@ window.Echo.private('chats')
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 // 채팅 올 때 알림 표시하기
-                console.log(data.message.receiver_id);
+                // console.log(data.message.receiver_id);
                 let chatRooms = document.querySelectorAll('.chat-room')
                 let chatNames = document.querySelectorAll('.chat-name')
                 chatRooms.forEach((chatRoom,index) => {           
-                    console.log(chatRoom.getAttribute('chat-room-id'));
+                    // console.log(chatRoom.getAttribute('chat-room-id'));
                     if(Number(chatRoom.getAttribute('chat-room-id')) === data.message.receiver_id){
                         let alarmCount = chatNames[index].getAttribute('alarm-count');
                         chatNames[index].setAttribute('alarm-count',Number(alarmCount === '' ? alarmCount = 0 : alarmCount)+1);
@@ -1135,7 +1135,7 @@ window.Echo.private('chats')
 // 채팅 알람 받기
 window.Echo.private('chats')
     .listen('MessageCame', e => {
-        console.log(e);
+        // console.log(e);
         // .chat-name::after{
         //     content: attr(alarm-count); 여기에 이벤트 반환 값 넣기
     })
@@ -1283,7 +1283,7 @@ fetch('/chatlist', {
 })
 .then(data => {
     // 성공 응답 받았을 때 처리
-    console.log(data);
+    // console.log(data);
 
     // 새로운 chat-layout 요소 생성
     // let chatLayout = document.createElement('div'); // blade->chatLayout 사용

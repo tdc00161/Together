@@ -2126,7 +2126,7 @@ function changeStyle(element) {
 
 // 드롭다운 토글 함수 정의
 let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-console.log("click");
+// console.log("click");
 
 for (let i = 0; i < checkLists.length; i++) {
   
@@ -2159,10 +2159,25 @@ const day = currentDate.getDate().toString().padStart(2, '0');
 // console.log('Month:', month);
 // console.log('Day:', day);
 
+function formatDates(inputDate) {
+  // 날짜 문자열을 '/'를 기준으로 분할
+  const parts = inputDate.split('/');
+
+  // 분할된 문자열에서 양쪽에 있는 공백을 제거하고 'MM' 형식으로 변환
+  const a = parts[0].trim().padStart(2, '0');
+  const b = parts[1].trim().padStart(2, '0');
+
+  // 두 변수를 반환
+  return { a, b };
+}
+
 document.querySelectorAll('.date').forEach((date,index)=>{
-  let m = date.firstElementChild
-  let d = document.querySelectorAll('.day')[index]
-  if(m.textContent === month && d.textContent === day){
+  let split = formatDates(date.textContent)
+  let m = split.a
+  let d = split.b
+  // console.log(m);
+  // console.log(d);
+  if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 })
