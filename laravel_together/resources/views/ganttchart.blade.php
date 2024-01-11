@@ -315,7 +315,13 @@
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="responName" onclick="addGanttResponsible(0)"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
+                            <div class="add_responsible_gantt add_property_gantt d-none">
+                                <div class="add_responsible_gantt_one d-none" onclick="selectGanttResponsible(event)">
+                                    <div class="add_responsible_gantt_one_icon"></div>
+                                    <div class="add_responsible_gantt_one_name">User</div>
+                                </div>
+                            </div>
                             <div class="gantt-status-name">
                                 <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
                                     <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>

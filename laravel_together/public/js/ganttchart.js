@@ -1051,6 +1051,142 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// ************* 담당자 드롭다운 선택
+
+let responName = document.querySelectorAll('.responName')
+let add_responsible_gantt = document.querySelector('.add_responsible_gantt');
+let add_responsible_gantt_one = document.querySelector('.add_responsible_gantt_one');
+let ganttCloneResponsibleModal = add_responsible_gantt_one ? add_responsible_gantt_one.cloneNode(true) : ''
+let ganttThisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
+
+responName.forEach((responNameOne,index) => {
+  responNameOne.addEventListener('click', () => {
+
+    // 담당자 초기화
+
+    while (add_responsible_gantt.hasChildNodes()) {
+        add_responsible_gantt.removeChild(add_responsible_gantt.firstChild);
+      }
+      add_responsible_gantt.append(ganttCloneResponsibleModal)  
+
+    // 담당자 리스트 확인용 통신
+    fetch('/project/user/' + ganttThisProjectId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken_gantt,
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+          for (let index = 0; index < data.data.length; index++) {
+            
+            // div 엘리먼트 생성
+            var newDiv = document.createElement("div");
+            newDiv.className = "add_responsible_gantt_one";
+
+            // 아이콘 엘리먼트 생성
+            var iconDiv = document.createElement("div");
+            iconDiv.className = "add_responsible_gantt_one_icon";
+
+            // 이름 엘리먼트 생성
+            var nameDiv = document.createElement("div");
+            nameDiv.className = "add_responsible_gantt_one_name";
+            nameDiv.textContent = data.member_name; // 데이터에서 가져온 이름 속성 사용
+
+            // 이름 엘리먼트를 div에 추가
+            newDiv.appendChild(iconDiv);
+            newDiv.appendChild(nameDiv);
+
+            // 생성한 div를 어떤 부모 엘리먼트에 추가할지 결정 (예: body에 추가)
+            add_responsible_gantt.appendChild(newDiv);
+
+            // -------------------------------------------------------------------
+
+            // // 담당자 모달용 클론 (갱신)
+            // let responsibleModalClone = add_responsible_gantt_one.cloneNode(true);
+            // // 클론->이름
+            // let defalutMemberName = responsibleModalClone.firstChild.nextSibling.nextElementSibling;
+            // // respose받은 담당자 리스트 중 하나
+            // const element = data.data[index];
+            // // 담당자 이름 바꾸기
+            // defalutMemberName.textContent = element.member_name;
+            // // d-none 해제
+            // responsibleModalClone.classList.remove('d-none');
+    
+            // // console.log(defalutMemberName.textContent);
+    
+            // // 현재 추가된/추가안된 담당자 모달에 수정된 클론을 추가
+            // let nowResponsibleModal = document.querySelector('.add_responsible_gantt');
+            // // nowResponsibleModal.append(responsibleModalClone)
+            // nowResponsibleModal.insertBefore(responsibleModalClone, nowResponsibleModal.firstElementChild);
+            // // console.log(element.member_name);
+          }
+        })
+        .catch(err => {
+          console.log(err.message);
+        })
+  })
+})
+
+function addGanttResponsible(a) {
+
+//   let add_responsible_gantt = document.querySelector('.add_responsible_gantt');
+//   let add_responsible_gantt_one = document.querySelector('.add_responsible_gantt_one');
+//   let cloneResponsibleModal = add_responsible_gantt_one ? add_responsible_gantt_one.cloneNode(true) : ''
+//   let thisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
+
+//   // 담당자 초기화
+//   while (add_responsible_gantt.hasChildNodes()) {
+//     add_responsible_gantt.removeChild(add_responsible_gantt.firstChild);
+//   }
+//   add_responsible_gantt.append(cloneResponsibleModal)
+
+//   // 담당자 리스트 확인용 통신
+//   fetch('/project/user/' + thisProjectId, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRF-TOKEN': csrfToken_gantt,
+//     },
+//   })
+//     .then(response => response.json())
+//     .then(data => {
+//       for (let index = 0; index < data.data.length; index++) {
+//         // 담당자 모달용 클론 (갱신)
+//         let responsibleModalClone = add_responsible_gantt_one.cloneNode(true);
+//         // 클론->이름
+//         let defalutMemberName = responsibleModalClone.firstChild.nextSibling.nextElementSibling;
+//         // respose받은 담당자 리스트 중 하나
+//         const element = data.data[index];
+//         // 담당자 이름 바꾸기
+//         defalutMemberName.textContent = element.member_name;
+//         // d-none 해제
+//         responsibleModalClone.classList.remove('d-none');
+
+//         // console.log(defalutMemberName.textContent);
+
+//         // 현재 추가된/추가안된 담당자 모달에 수정된 클론을 추가
+//         let nowResponsibleModal = document.querySelector('.add_responsible_gantt');
+//         // nowResponsibleModal.append(responsibleModalClone)
+//         nowResponsibleModal.insertBefore(responsibleModalClone, nowResponsibleModal.firstElementChild);
+//         // console.log(element.member_name);
+//       }
+//     })
+//     .catch(err => {
+//       console.log(err.message);
+//     })
+
+//   add_responsible_gantt.classList.remove('d-none');
+//   // RESPONSIBLE_ICON[a].after(cloneResponsible)
+//   // 담당자 모달, 담당자추가버튼 외 영역으로 끄기
+//   // INSERT_MODAL.addEventListener('click', function (event) {
+//   //   if (!ADD_RESPONSIBLE_MODAL.contains(event.target) && !RESPONSIBLE_ADD_BTN[a].contains(event.target)) {
+//   //     ADD_RESPONSIBLE_MODAL.classList.add('d-none')
+//   //   }
+//   // });
+}
 
 
 
@@ -1100,16 +1236,6 @@ document.addEventListener('DOMContentLoaded', function () {
 //     statusSpan.innerText = newStatus;
 //     statusMenu.style.display = 'none';
 // }
-
-
-
-
-
-// ************* 체크박스 필터링
-
-
-// ************* 스크롤 한번에
-
 
 
 
@@ -2037,10 +2163,25 @@ const day = currentDate.getDate().toString().padStart(2, '0');
 // console.log('Month:', month);
 // console.log('Day:', day);
 
+function formatDates(inputDate) {
+  // 날짜 문자열을 '/'를 기준으로 분할
+  const parts = inputDate.split('/');
+
+  // 분할된 문자열에서 양쪽에 있는 공백을 제거하고 'MM' 형식으로 변환
+  const a = parts[0].trim().padStart(2, '0');
+  const b = parts[1].trim().padStart(2, '0');
+
+  // 두 변수를 반환
+  return { a, b };
+}
+
 document.querySelectorAll('.date').forEach((date,index)=>{
-  let m = date.firstElementChild
-  let d = document.querySelectorAll('.day')[index]
-  if(m.textContent === month && d.textContent === day){
+  let split = formatDates(date.textContent)
+  let m = split.a
+  let d = split.b
+  // console.log(m);
+  // console.log(d);
+  if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 })
