@@ -12,9 +12,10 @@ class Alarm extends Model
 
     protected $fillable = [
         'listener_id',
+        'read',
         'content',
         'created_at',
     ];
 
-    public $timestamps = ["created_at"];
+    public $timestamps = false;
 }

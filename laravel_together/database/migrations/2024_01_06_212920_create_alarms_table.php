@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('alarms', function (Blueprint $table) {
             $table->id(); // pk
             $table->unsignedBigInteger('listener_id'); // 받는사람 pk
-            $table->string('content'); // 알림 내용
+            $table->string('content',1000); // 알림 내용
             $table->timestamp('created_at')->useCurrent(); // 생성일
             $table->softDeletes(); // 확인일
         });
