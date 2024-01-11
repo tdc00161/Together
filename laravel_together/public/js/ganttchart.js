@@ -1,5 +1,5 @@
 // ************* 개인 피드로 이동
-let childFlg = 0;
+var childFlg = 0;
 // 간트 csrf
 const csrfToken_gantt = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -1125,6 +1125,12 @@ function addSubTask(event, mainId) {
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   console.log(gantt_modal_id[0]);
+
+  var iconImg = document.querySelector(`#iconimg${gantt_modal_id}`);
+  iconImg.src = "/img/Group 202.png";
+
+
+
   // 차트 부분
   const doMGanttChart = document.getElementById('gantt-chart-' + gantt_modal_id[0]); // 원래 자리접근
 
@@ -1755,11 +1761,11 @@ function sendUpdateRequest(id, updatedValue, numbersOnly) {
   // 여기에 실제 서버 엔드포인트 및 요청 설정을 작성해야 합니다.
   // 아래는 가상의 코드입니다.
   let url = '/ganttchartRequest/' + numbersOnly
-  console.log(url);
+  // console.log(url);
   axios.put(url, { 'value': updatedValue })
     .then(res => {
       // 성공적으로 요청을 보낸 후에 할 작업
-      console.log('수정 요청 성공:', res.data);
+      // console.log('수정 요청 성공:', res.data);
       // addChildTaskAfter(res.data);
     })
     .catch(err => {
@@ -1800,10 +1806,10 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     event.target.parentNode.parentNode.getAttribute('id') //var result4 = str.slice(-4);
     // 간트 수정 시 타겟 추정 및 아이디 반환
     let originalString = 0;
-    console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); // responName
-    console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title
-    console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
-    console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
+    // console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); // responName
+    // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title
+    // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
+    // console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
     if (event.target.parentNode.getAttribute('id')) {
       originalString = event.target.parentNode.getAttribute('id')
     } else if (event.target.parentNode.parentNode.getAttribute('id')) {
@@ -1815,7 +1821,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
     }
     const parts = originalString.split('-');
     const numbersOnly = parts[parts.length - 1];
-    console.log('id: ' + numbersOnly); // 출력 결과: 1243
+    // console.log('id: ' + numbersOnly); // 출력 결과: 1243
     const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
     let updatedValue = {
       'responName': '',
@@ -1825,8 +1831,8 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
       'title': ''
     };
 
-    console.log('this: ' + this.textContent);
-    console.log('this: ' + this.value);
+    // console.log('this: ' + this.textContent);
+    // console.log('this: ' + this.value);
 
     // 내용 가져오기
     if (this.tagName === 'DIV') {
@@ -1848,7 +1854,7 @@ document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .en
 
 
     // 수정 요청 보내기
-    console.log('수정 신청');
+    // console.log('수정 신청');
     sendUpdateRequest(id, updatedValue, numbersOnly);
 
     // 수정 완료 팝업 메시지 표시
@@ -2000,12 +2006,10 @@ function changeStyle(element) {
 
 // 드롭다운 토글 함수 정의
 let checkLists = document.getElementsByClassName('gantt-dropdown-check-list');
-console.log("click");
 
 for (let i = 0; i < checkLists.length; i++) {
   
   let checkList = checkLists[i];
-console.log('1');
   checkList.getElementsByClassName('gantt-span')[0].onclick = function (evt) {
     if (checkList.classList.contains('visible')) {
       checkList.classList.remove('visible');
@@ -2043,22 +2047,31 @@ document.querySelectorAll('.date').forEach((date,index)=>{
 //-----------------------------------------------------------
 
 
+
   // Function to toggle child task based on parent ID
   function toggleChildTask(parentId) {
    
     var parentTask = document.getElementById(`gantt-task-${parentId}`);
-    var childTask = document.querySelector(`.gantt-child-task[parent="${parentId}"]`);
-    if (childFlg == 0) {
-      
-      childFlg = 1;
-      childTask.style.display='none';
-    } else if(childFlg === 1) {
-      
-      childFlg = 0;
-      childTask.style.display='flex';
-    }
-  }
+    var childTasks = document.querySelectorAll(`.gantt-child-task[parent="${parentId}"]`);
+    var iconImg = document.querySelector(`#iconimg${parentId}`);
+    var button = document.querySelector(`#toptaskbtn${parentId}`);
 
+    if (childTasks.length > 0 && childFlg === 0) {
+      childTasks.forEach(task => {
+          task.style.display = 'none'
+      });
+      iconImg.src = "/img/Group 201.png";
+      childFlg = 1;
+  } else if (childTasks.length > 0 && childFlg === 1) {
+      childTasks.forEach(task => {
+          task.style.display = 'flex';
+      });
+      iconImg.src = "/img/Group 202.png";
+      childFlg = 0;
+  } else if(childTasks.length == 0) {
+    button.style.display = 'none';
+  }
+}
   // Function to handle button click
   window.toggleChildTask = toggleChildTask;
   

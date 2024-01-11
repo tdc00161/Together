@@ -333,7 +333,7 @@ a:hover {
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
-	height: 575px;
+	height: 549px;
 	overflow: auto;
 	border-radius: 0 0 10px 10px;
 }
@@ -605,6 +605,7 @@ background-color: #000;
 /*  */
 .gantt-editable-div {
 	display: flex;
+	align-items: center;
 }
 .gantt-task-detail-click {
 	flex: 0 0 10%;
@@ -626,8 +627,20 @@ background-color: #000;
 }
 
 .taskKey {
-	flex: 0 0 20%;
+		display: flex;
+		width: 16px;
+		height: 16px;
+		font-size: 10px;
+		background: #f7296f;
+		border-radius: 5px;
+		justify-content: center;
+		align-items: center;
+		margin-left: 5px;
 }
+/* #toptaskbtn {
+display: none;
+} */
+
 .task-top-icon {
 	width: 20px;
 	height: 20px;
@@ -636,8 +649,8 @@ background-color: #000;
     justify-content: center;
 }
 .task-top-icon-img {
-	width: 15px;
-	height: 15px;
+	width: 13px;
+	height: 13px;
 }
 .task-bottom-icon-img {
 	width: 10px;
