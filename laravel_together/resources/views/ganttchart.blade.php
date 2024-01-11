@@ -92,7 +92,7 @@
 </div>
 {{-- 헤더 끝 --}}
 <div class="grid_div">
-
+    
     <div class="gantt-btn-wrap">
         <input class="gantt-search" type="input" id="keySearch" onkeyup="enterkeySearch()" placeholder="'업무명'으로 검색">
         <div class="filter-div">
@@ -298,7 +298,7 @@
                         <button type="button"><img src="/img/table4.png" alt=""></button> --}}
                     </div>
                 </div>
-                <div class="gantt-task-body">
+                <div class="gantt-task-body" id="otherDiv">
                     {{-- 상위 업무 --}}
                     @forelse ($data['task'] as $key => $item)
                         <div class="gantt-task" id="gantt-task-{{$item->id}}">
@@ -398,6 +398,7 @@
                     @endforelse
                 </div>
             </div>
+            
             <div class="gantt-chart-wrap scroll-style">
                 <div class="gantt-chart-container">
                     <div class="gantt-chart-header">
@@ -406,7 +407,7 @@
                             {{-- 날짜를 가로로 나열할 부분 --}}
                         </div>
                     </div>
-                    <div class="gantt-chart-body">
+                    <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
