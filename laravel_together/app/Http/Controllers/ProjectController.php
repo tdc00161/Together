@@ -48,14 +48,7 @@ class ProjectController extends Controller
     $data['color_code_pk'] = (string)rand(0,4);
 
     //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->to('/')."/".Str::random(20);
-    // dd($data);
-
-    //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->to('/')."/invite/".Str::random(20);
-    // dd($data);
-
-    // $data['start_data'] = str_replace('-', '/', $data['start_date']);
+    $data['invite'] = url()->to('/')."/invite/".Str::random(10);
     
     //DB 저장
     $result = Project::create($data);
@@ -131,13 +124,14 @@ class ProjectController extends Controller
 
     //프로젝트 id 출력
     $result = project::find($id);
-    // dd($result);
+
 
 
     if(!$result){
       return redirect()->route('dashboard.show');
     }
 
+    //권한여부 체크
     $authoritychk = DB::table('project_users as pu')
                       ->join('projects as pj','pj.id','pu.project_id')
                       ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
@@ -145,7 +139,6 @@ class ProjectController extends Controller
                       ->where('pu.member_id',$result->user_pk)
                       ->get();
 
-    // dd($authoritychk);
 
     //프로젝트 색상 출력
     $color_code = DB::table('projects as pj')
@@ -158,7 +151,7 @@ class ProjectController extends Controller
 
     //프로젝트 dday 출력 240101 수정
     $projectDday = Carbon::now()->addDays(-1)->diffInDays($result->end_date);
-    // dd($projectDday);
+
 
     //프로젝트 상태별 개수 출력
     $before =DB::table('tasks')
@@ -170,7 +163,6 @@ class ProjectController extends Controller
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('task_status_id')
                 ->get();
-                // dd($before);
 
     $ing =DB::table('tasks')
             ->selectRaw('count(task_status_id) as cnt')
@@ -291,15 +283,34 @@ class ProjectController extends Controller
                             ->join('users as u', 'u.id', '=', 'p.member_id')
                             ->select('p.project_id', 'u.name', 'p.member_id','u.email')
                             ->where('p.project_id', '=', $id)
+                            ->whereNull('p.deleted_at')
                             ->orderBy('p.created_at','asc')
                             ->get();
 
-    //친구목록에서 초대
-    $friendinvite = Friendlist::select('friendlists.friend_id','us.name','us.id')
-                              ->join('users as us','us.id','friendlists.friend_id')
-                              ->where('friendlists.user_id',$user->id)
-                              ->get();
-    // dd($friendinvite);
+
+    //친구 목록에서 초대
+    $friendinvite = DB::table('friendlists as f')
+                        ->join('users as u', function ($join) use ($userId) {
+                            $join->on(function ($query) use ($userId) {
+                                    $query->on('u.id', '=', 'f.friend_id')
+                                        ->where('f.user_id', '=', $userId);
+                                })
+                                ->orOn(function ($query) use ($userId) {
+                                    $query->on('u.id', '=', 'f.user_id')
+                                        ->where('f.friend_id', '=', $userId);
+                                });
+                        })
+                        ->select([
+                            'f.friend_id',
+                            'u.id as user_id',
+                            'u.name',
+                            DB::raw("CASE WHEN f.user_id = {$userId} THEN u.name ELSE NULL END AS friend_name"),
+                            'u.email',
+                        ])
+                        ->whereNull('f.deleted_at')
+                        ->orderBy('u.name', 'asc')
+                        ->distinct()
+                        ->get();
 
 
     //개인,팀 화면에 정보 출력 , 로그인 안 한 유저일 경우 login 화면으로 이동
@@ -328,27 +339,22 @@ class ProjectController extends Controller
   public function acceptInvite(Request $request, $token) {
 
     $url = url()->current();
-    // dump($url);
+
     $user = Auth::user();
-    // dump($user);
+
 
     $project = DB::table('projects as pj')
                 ->join('users as us','us.id','pj.user_pk')
                 ->select('pj.id as project_id','pj.flg','us.id as uid','pj.invite')
                 ->where('pj.invite',$url)
                 ->get();
-    // dd($project);
 
-    // $id = $project[0]->project_id;
     $member_id = $user->id;
-    // dump($id);
-    // dd($member_id);
 
     $invite_member = ProjectUser::where('member_id',$member_id)
                                   ->join('projects as pj','pj.id','project_users.project_id')
                                   ->where('invite',$url)
                                   ->first();
-    // dd($invite_member);
 
     if(!$invite_member){
         //초대 구성원 추가
@@ -376,8 +382,8 @@ class ProjectController extends Controller
   //구성원 중복시 창
   public function membermodal(Request $request){
 
-    // dd($token);
     return view('/membermodal')->with('token',$token);
+
   }
 
 
@@ -396,7 +402,9 @@ class ProjectController extends Controller
                                 ->join('projects as pj','pj.id','project_users.project_id')
                                 ->where('project_users.project_id',$urlsb)
                                 ->first();
-    if(!$invite_member){
+	Log::debug($invite_member);
+    
+	if(!$invite_member){
       
       $memberpj = ProjectUser::create([
         'project_id' => $urlsb,
@@ -404,16 +412,40 @@ class ProjectController extends Controller
         'member_id' => $request->Value
       ]);
       
-      return $url;
+      return response()->json('성공');
 
     }else{
 
-      return $url;
+      return response()->json('실패');
     
     }
 
   }
 
+
+  // 구성원 내보내기
+  public function signoutm(Request $request){
+
+    Log::debug("리퀘스트:".$request);
+
+    $murl = $request->url;
+    Log::debug('주소'.$murl);
+
+    $murlid = substr($murl, -3);
+    Log::debug('프로젝트 아이디'.$murlid);
+
+    $uid = User::select('id')
+                ->where('email',$request->memail)
+                ->get();
+    Log::debug('유저아이디'.$uid);
+    
+    $deletem = ProjectUser::where('project_id',$murlid)
+                          ->where('member_id',$uid[0]->id)
+                          ->delete();
+    Log::debug('삭제'.$deletem);
+
+    return response()->json('성공');
+  }
 
   public function project_graph_data(Request $request, $id) {
 

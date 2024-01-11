@@ -147,7 +147,12 @@
                             </div>
                             <div class="name_total">
                                 <div class="member_name1">{{$item->name}}</div>
-                                <div class="member_name1">{{$item->email}}</div>
+                                <div class="member_name1 member-email">{{$item->email}}</div>
+                            </div>
+                            <div class="plusbtn"><img src="/img/icon-more.png" alt="" style="width:4px; height:17px;"></div>
+                            <div class="m_signout">
+                                <img src="/img/signoutred.png" alt="" style="width: 15px; height: 15px; display:inline-block;">
+                                <div style="display: inline-block;">내보내기</div>
                             </div>
                         </div>
                     @empty
@@ -165,7 +170,7 @@
                         <div onclick="toggleDrop()">친구 초대</div>
                         <div id="friend-drop">
                             <button class="friend_btn" onclick="toggleDropdown()">친구리스트</button>
-                            <div id="drop-list" class="drop-list">
+                            <div id="drop-list" class="drop_list">
                                 @foreach ($friendinvite as $item)
                                     <div class="minvite_grid" id="drop-member">
                                         <img class="mbimg" src="/img/profile-img.png" alt="">
@@ -175,9 +180,10 @@
                             </div>
                         </div>
                     </div>
+                    <div id=invitemsg class="invite_friend_msg"></div>
                     <div class="m-gird">
                         <div>초대 링크</div>
-                        <input style="color: black;" type="text" value="{{$result->invite}}">
+                        <div class="invite_link">{{Str::limit($result->invite,43,'...')}}</div>
                     </div>
                 </div>
             </div>
