@@ -553,6 +553,9 @@ a:hover {
 	position: relative;
 	margin-bottom: 3px;
 }
+.gantt-child-task {
+	background-color: #ffffff14;
+}
 
 .gantt-task input {
 	border: none;
