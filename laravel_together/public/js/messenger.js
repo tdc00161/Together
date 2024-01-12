@@ -52,6 +52,7 @@ function toggleModal() {
 
 function closeModalOutside(event) {
     var modal = document.getElementById('m-myModal');
+    let alarmModal = document.querySelector('.alarm-modal');
     var activeElements = document.querySelectorAll('.activee');
 
     for (var i = 0; i < activeElements.length; i++) {
@@ -64,6 +65,7 @@ function closeModalOutside(event) {
         activeElements[i].classList.remove('activee');
     }
 
+    alarmModal.classList.add('d-none');
     modal.style.display = 'none';
     document.removeEventListener('click', closeModalOutside);
 }

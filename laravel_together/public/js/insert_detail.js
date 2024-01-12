@@ -979,7 +979,7 @@ function addComment() {
 			comment_box.scrollIntoView(false)
 		})
 		.catch(err => {
-			console.log(err.message);
+			console.log(err.stack);
 		})
 
 	// // 입력한 댓글 씌우기
@@ -998,11 +998,21 @@ function addComment() {
 	INPUT_COMMENT_CONTENT.value = ''
 }
 
+// 댓글 엔터로 달기
+// 입력창
+let comment_input = document.querySelector('#comment_input');
+// 엔터로 채팅보내기
+comment_input.addEventListener('keypress', (event) => {
+    if (comment_input.value.trim() !== '' && event.key === 'Enter') {
+        addComment();
+    }
+});
+
 // 오픈모달 모듈------------------------------------------------------
 
 // 값을 모달에 삽입
 function insertModalValue(data, a) {
-	console.log(data);
+	// console.log(data);
 	if (a === 1) { // 상세
 		// 수리 // WRITER_NAME.textContent = data.task[0].wri_name;
 		TASK_CREATED_AT.textContent = data.task[0].created_at;

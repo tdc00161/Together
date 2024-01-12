@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\TestEvent;
+use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\MessengerController;
 use App\Http\Middleware\UpdateUserActivity;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +88,7 @@ Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
     Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
     Route::post('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
     Route::delete('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
-    Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
+    Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']); // 채팅방 내역 불러오기
     Route::delete('/signout',[ProjectController::class,'signoutm']); // 구성원 내보내기
+    Route::get('/alarms',[AlarmController::class,'getAlarmList']); // 알람 불러오기
 });
