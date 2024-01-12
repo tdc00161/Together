@@ -350,17 +350,30 @@ document.querySelector(".invite_link").addEventListener('click',function(e){
 document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
    btnOne.addEventListener('click',function(e){
       let memail = e.target.id;
-      console.log(memail);
+
       let murl = window.location.href;
-      console.log(murl);
+
       document.querySelectorAll(".m_signout")[index].style.display = "block"; 
+
       
-      document.querySelectorAll(".m_signout").forEach((btnTwo,index)=>{
-         console.log(document.querySelectorAll(".m_signout"));
-      
+      let mSignout =  document.querySelectorAll(".m_signout")
+
+      // 내보내기 드롭 영역외 클릭시 닫기
+      document.addEventListener('click', e => {
+         if(!btnOne.contains(e.target) && !mSignout[index].contains(e.target)){
+            console.log('지우겠음',mSignout[index]);
+            mSignout[index].style.display = 'none';
+         }
+      })
+
+      document.querySelectorAll(".m_signout").forEach((btnTwo,i)=>{      
+         if (i !== index) {
+            btnTwo.style.display = "none";
+         }         
+
          btnTwo.addEventListener('click', function(e){
 
-            document.querySelectorAll('.m_signout')[index].style.display = "none";
+            document.querySelectorAll('.m_signout')[i].style.display = "none";
 
             fetch('/signout',{
                method: 'delete',
@@ -389,11 +402,21 @@ document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
 // 내보내기 버튼 영역외 클릭시 닫기
 let outbtn = document.querySelectorAll('.m_signout');
 
-document.addEventListener('click', (e) => {
-   if(!e.target.querySelectorAll('.plusbtn')){
-      document.querySelectorAll('.m_signout').style.display = 'none';
-   }
-})
+document.addEventListener('click', (e)=>{
+   // if(!document.querySelectorAll(".plusbtn") && !document.querySelectorAll(".m_signout")){
+   //    document.querySelectorAll('.m_signout').style.display = 'none';
+   //    console.log('성공');
+   // }else{
+   //    console.log('실패');
+   // }
+   // console.log(!document.querySelectorAll(".plusbtn") && !document.querySelectorAll(".m_signout")); 
+   // console.log(e.target);
+   // console.log(document.querySelector('.getout').contains(e.target));
+});
+
+
+   
+
 
 
 // tab 기능

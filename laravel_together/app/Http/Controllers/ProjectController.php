@@ -116,22 +116,22 @@ class ProjectController extends Controller
 
     //로그인한 유저 정보 출력
     $user = Auth::user();
-    // dd($user);
+    // dump($user);
     //프로젝트 id 출력
     $result = project::find($id);
-
-
-
+    // dump($result);
     if(!$result){
       return redirect()->route('dashboard.show');
     }
 
     //권한여부 체크
     $authoritychk = DB::table('project_users as pu')
+                      ->select('pu.authority_id','pu.project_id','pu.member_id')
                       ->join('projects as pj','pj.id','pu.project_id')
-                      ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
+                      ->join('users as us','us.id','pu.member_id')
                       ->where('pu.project_id',$result->id)
-                      ->where('pu.member_id',$result->user_pk)
+                      // ->where('pu.member_id',$user->id)
+                      ->whereNull('pu.deleted_at')
                       ->get();
     // dd($authoritychk);
 
@@ -281,7 +281,6 @@ class ProjectController extends Controller
                             ->whereNull('p.deleted_at')
                             ->orderBy('p.created_at','asc')
                             ->get();
-    // dd($projectmemberdata);
 
     //친구 목록에서 초대
     $friendinvite = DB::table('friendlists as f')
