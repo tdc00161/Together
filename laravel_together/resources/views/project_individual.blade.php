@@ -149,15 +149,23 @@
                                 <div class="member_name1">{{$item->name}}</div>
                                 <div class="member_name1 member-email">{{$item->email}}</div>
                             </div>
-                            <div class="plusbtn"><img src="/img/icon-more.png" alt="" style="width:4px; height:17px;"></div>
-                            <div class="m_signout">
-                                <img src="/img/signoutred.png" alt="" style="width: 15px; height: 15px; display:inline-block;">
-                                <div style="display: inline-block;">내보내기</div>
-                            </div>
+                            @if($item->member_id !== $user)
+                            {{-- {{$item->member_id}}
+                            {{$user}} --}}
+                                @if($item->authority_id === "1")
+                                    <div class="plusbtn" id="{{$item->email}}"><img src="/img/icon-more.png" alt="" style="width:4px; height:17px;"></div>
+                                    <div class="m_signout">
+                                        <img src="/img/signoutred.png" alt="" style="width: 15px; height: 15px; display:inline-block;">
+                                        <div style="display: inline-block;">추방</div>
+                                    </div>
+                                @elseif(($authoritychk[0]->authority_id === "0"))
+                                @endif
+                            @else
+                            @endif
                         </div>
                     @empty
                         
-                    @endforelse 
+                    @endforelse
                 </div>
             </div>
 

@@ -349,16 +349,19 @@ document.querySelector(".invite_link").addEventListener('click',function(e){
 // 내보내기 기능
 document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
    btnOne.addEventListener('click',function(e){
-      
-      document.querySelectorAll(".m_signout")[index].style.display = "block";
-      
-      let memail = document.querySelectorAll(".member-email")[index].textContent;
-
+      let memail = e.target.id;
+      console.log(memail);
       let murl = window.location.href;
+      console.log(murl);
+      document.querySelectorAll(".m_signout")[index].style.display = "block"; 
       
-      document.querySelector(".m_signout").addEventListener('click', function(e){
-            // document.querySelectorAll('.m_signout')[index].style.display = "none";
-   
+      document.querySelectorAll(".m_signout").forEach((btnTwo,index)=>{
+         console.log(document.querySelectorAll(".m_signout"));
+      
+         btnTwo.addEventListener('click', function(e){
+
+            document.querySelectorAll('.m_signout')[index].style.display = "none";
+
             fetch('/signout',{
                method: 'delete',
                headers: {
@@ -380,16 +383,17 @@ document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
             .catch(error => console.log(error));
          })
       })
+   })
+});
+
+// 내보내기 버튼 영역외 클릭시 닫기
+let outbtn = document.querySelectorAll('.m_signout');
+
+document.addEventListener('click', (e) => {
+   if(!e.target.querySelectorAll('.plusbtn')){
+      document.querySelectorAll('.m_signout').style.display = 'none';
+   }
 })
-
-//내보내기 버튼 영역외 클릭시 닫기
-// let outbtn = document.querySelector('.m_signout');
-
-// document.addEventListener('click', (e) => {
-//    if(!document.querySelector('.plusbtn').contains(e.target)){
-//       document.querySelector('.m_signout').style.display = 'none';
-//    }
-// })
 
 
 // tab 기능
