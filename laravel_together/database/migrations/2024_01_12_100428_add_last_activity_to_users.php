@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('last_activity')->nullable()->after('name');
+            $table->char('online_flg',1)->default('0')->after('name');
+            $table->timestamp('last_activity')->nullable()->after('online_flg');
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('last_activity');
+            $table->dropColumn('online_flg');
         });
     }
 };

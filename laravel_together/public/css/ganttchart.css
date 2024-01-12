@@ -617,7 +617,7 @@ background-color: #000;
 
 .gantt-task>div:not(.add_responsible_gantt) {
 	padding: 10px 5px;
-  	overflow: hidden;
+  	overflow: visible;
   	white-space: nowrap;
 	/* margin-bottom: 3px; */
 	background-color: #ffffff0a;
@@ -631,6 +631,7 @@ background-color: #000;
 }
 .responName {
 	width: 14%;
+	overflow: visible;
 	position: relative;
 }
 .task-flex {
@@ -747,9 +748,9 @@ display: none;
 
 /* 드롭박스 담당자 선택 수정 */
 .add_responsible_gantt:not(.otherColor) {
-	position: fixed;
-    /* top: 32px; */
-    /* left: 39px; */
+	position: absolute;
+    top: 33px;
+    left: -7px;
     z-index: 5;
     background-color: rgb(44 30 29);
     overflow: auto;
@@ -760,9 +761,9 @@ display: none;
     border: 1px solid;
 }
 .otherColor {
-	position: fixed;
-    /* top: 32px; */
-    /* left: 39px; */
+	position: absolute;
+    top: 33px;
+    left: -7px;
     z-index: 5;
     background-color: rgb(62 49 48);
     overflow: auto;
