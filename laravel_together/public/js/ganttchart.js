@@ -1148,96 +1148,26 @@ responName.forEach((responNameOne,index) => {
     })
 })
 
+// <<업무상태>>
+// 업무상태들.forEach((responNameOne,index) => {
+//   업무상태.addEventListener('click', () => {
+//     - 모달 열기
+//     - 모달 안 내용 document.create('div')
+//     - 만든 상태에서 document.create('div').addEventListener 해서
+//       해당 상태마다 fetch 수정 송신
+//     - 그 후 js로 상태업무값 변경처리
+//   }
 
 // ************* 상태값 드롭다운 선택
 // let statusName = document.querySelectorAll('.statusName');
 // let statusNameSpan = document.querySelectorAll('.status-name-span');
 // let add_status_gantt = document.querySelectorAll('.add_status_gantt');
 // let add_status_gantt_one = document.querySelector('.add_status_gantt_one');
-// let ganttCloneStatusModal = add_status_gantt_one ? add_status_gantt_one.cloneNode(true) : ''
 
-// statusName.forEach((statusNameOne,index) => {
+// statusName.forEach((statusNameOne, index) => {
 //   statusNameOne.addEventListener('click', () => {
-//         // console.log(index);
-//         // console.log('원래 자리:', originalText);
 
-//         // // 한 번 클릭 후 다시 클릭 시 창 닫기
-//         // if (add_responsible_gantt[index].classList.contains('d-none')) {
-//         //     add_responsible_gantt[index].classList.remove('d-none');
-//         // } else {
-//         //     add_responsible_gantt[index].classList.add('d-none');
-//         // }
-
-//         // // 다른 담당자 눌렀을 때 하나만 창 뜨게하기
-//         // add_responsible_gantt.forEach(function(resOther, i) {
-//         //     if (i !== index) {
-//         //         resOther.classList.add('d-none');
-//         //     }
-//         // });
-
-//         // // 담당자 칸 이외 영역 클릭 시 창 닫기
-//         // document.addEventListener('click', function(event) {
-//         //     add_responsible_gantt.forEach(function() {
-//         //         if (!event.target.closest('.gantt-task')) {
-//         //             add_responsible_gantt[index].classList.add('d-none');
-//         //         }
-//         //     });
-//         // });
-        
-//     // 담당자 초기화
-//     while (add_status_gantt[index].hasChildNodes()) {
-//       add_status_gantt[index].removeChild(add_status_gantt[index].firstChild);
-//     }
-//     add_status_gantt[index].append(ganttCloneStatusModal)  
-
-//     // 담당자 리스트 확인용 통신
-//     fetch('/ganttchart/' + ganttThisProjectId, {
-//         method: 'GET',
-//         headers: {
-//             // 'Content-Type': 'application/json',
-//             // 'X-CSRF-TOKEN': csrfToken_gantt,
-//         },
-        
-//     })
-//         .then(response)
-//         .then(data => {
-//             console.log(data);
-//         // for (let index2 = 0; index2 < data.data.length; index2++) {
-            
-//         //     // div 엘리먼트 생성
-//         //     let newDiv = document.createElement("div");
-//         //     newDiv.className = "add_status_gantt_one";
-
-//         //     // // 아이콘 엘리먼트 생성
-//         //     // let iconDiv = document.createElement("div");
-//         //     // iconDiv.className = "add_responsible_gantt_one_icon";
-
-//         //     // 이름 엘리먼트 생성
-//         //     let nameDiv = document.createElement("div");
-//         //     nameDiv.className = "add_status_gantt_one_name";
-//         //     nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
-
-//         //     // 이름 엘리먼트를 div에 추가
-//         //     // newDiv.appendChild(iconDiv);
-//         //     newDiv.appendChild(nameDiv);
-
-//         //     add_responsible_gantt[index].appendChild(newDiv);
-//         //     // add_responsible_gantt[index].classList.remove('d-none');
-
-//         //     newDiv.addEventListener('click', () => {
-//         //         // console.log('원래자리', responNameSpan[index].textContent);
-//         //         // console.log('바꿀값:', data.data[index2].member_name);
-//         //         responNameSpan[index].textContent = data.data[index2].member_name;
-
-//         //         // 드롭박스 안 담당자 클릭 시 창 닫기
-//         //         add_responsible_gantt[index].classList.add('d-none');
-//         //         })
-//         //     }
-//         })
-//         .catch(err => {
-//             console.log(err.message);
-//         })
-//     })
+//   })
 // })
 
 
