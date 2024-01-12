@@ -664,7 +664,7 @@ button {
 
 .header .alarm-modal {
     position: absolute;
-    width: 33%;
+    width: 500px;
     max-height: 500%;
     min-height: 200%;
     background: #181818;

@@ -25,7 +25,7 @@ class CommentController extends Controller
         // Log::debug('Auth: '. Auth::id());
         
         $usr = Auth::id();
-        $con = $request['content']; // TODO: 유효성 처리 추가
+        $con = $request['content'];
         
         $request['task_id'] = $id;
         $request['user_id'] = $usr;
@@ -67,7 +67,7 @@ class CommentController extends Controller
         
         Log::debug($request);
         $usr = Auth::id();
-        $con = $request['content']; // TODO: 유효성 처리 추가
+        $con = $request['content']; 
         $tsk = $request['task_id']; 
         
         // $this_comment = DB::table('comments')->where('id',$id)->get();

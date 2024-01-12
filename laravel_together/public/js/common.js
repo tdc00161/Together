@@ -199,7 +199,26 @@ fetch('/alarms', {
     return response.json();
 })
 .then(data => {
-    console.log(data);
+    // console.log(data.data);
+    data.data.forEach(d => {
+        console.log(JSON.parse(d.content));
+        let code = JSON.parse(d.content)[0].match(/([A-Za-z]+)(\d+)/)[1]
+        let number = JSON.parse(d.content)[0].match(/([A-Za-z]+)(\d+)/)[2]
+        switch (code[1]) {
+            case PE:
+                
+                break;
+        
+            default:
+                break;
+        }
+    })
+    // 알람창에 알람 달기
+    let alarmBody = document.querySelector('.alarm-body')
+
+    
+
+    alarmBody
 })
 .catch(err => console.log(err.stack))
 

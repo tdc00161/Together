@@ -17,10 +17,9 @@ class MessageSentListener
      *
      * @return void
      */
-    public function __construct($a)
+    public function __construct()
     {
         Log::debug('리스너 컨스트럭트');
-        $this->test = $a;
     }
 
     /**

@@ -1079,6 +1079,34 @@ window.Echo.private('chats')
                 chatMsgBox.append(chatUserIcon);
                 chatMsgBox.append(chatUserIconAfter);
                 messageField.append(chatMsgBox);
+
+                // 연 상태로 받으면 바로 읽기 처리
+                let now_chat_id = document.querySelector('.chat-window').getAttribute('chat-room-id')
+                
+                let postData = {
+                    "now_chat_id": now_chat_id,
+                }
+                fetch('/chat-alarm', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        // 'X-Socket-ID': socketId,
+                    },
+                    body: JSON.stringify(postData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('error with print chatting list.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // console.log(data);
+                })
+                .catch(error => {
+                    console.log(error.stack);
+                });
             }
 
         }
@@ -1214,6 +1242,34 @@ function sendChat() {
 
             // 다 하고 맨 아래로 스크롤
             chatUpdateScroll();
+
+            // 보내고 읽기 처리
+            let now_chat_id = document.querySelector('.chat-window').getAttribute('chat-room-id')
+                
+            let postData = {
+                "now_chat_id": now_chat_id,
+            }
+            fetch('/chat-alarm', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    // 'X-Socket-ID': socketId,
+                },
+                body: JSON.stringify(postData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('error with print chatting list.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // console.log(data);
+            })
+            .catch(error => {
+                console.log(error.stack);
+            });
         })
         .catch(error => {
             console.log(error.stack);
