@@ -552,15 +552,23 @@ a:hover {
 	/* border-right: 4px solid #ffffff29; */
 	overflow-y:auto;
 	height: 495px;
-	box-shadow: inset 0px -4px 12px 0px black, 12px 0px 8px -7px #00000099;
+	box-shadow: 12px 0px 8px -7px #00000099;
+	display: flex;
+	flex-direction: column;
+
 
 }
 .gantt-task-body::-webkit-scrollbar-thumb {
     background-color: transparent; /* 스크롤바 색상 */
 }
 .gantt-chart-body {
-    box-shadow: inset -8px -4px 12px 0px black;
-	overflow-y: auto;
+    /* box-shadow: inset -8px -4px 12px 0px black; */
+	/* overflow-y: auto; */
+	overflow-x: hidden;
+}
+.gantt-chart-body::-webkit-scrollbar {
+	width: 0;
+	height: 0;
 }
 .gantt-task {
 	display: flex;
@@ -819,13 +827,15 @@ display: none;
 }
 
 .gantt-chart-header {
+	box-sizing: border-box;
 	text-align: center;
-	height: 58px;
+	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: center;
 	padding-left: 3px;
+	align-items: center;
 }
 .gantt-header-month {
 	display: flex;
@@ -836,6 +846,8 @@ display: none;
 	display: flex;
 	flex-direction: row;
 	gap: 13px;
+	height: 44px;
+	align-items: center;
 	
 }
 .bar {

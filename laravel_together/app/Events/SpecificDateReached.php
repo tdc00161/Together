@@ -88,8 +88,9 @@ class SpecificDateReached
             $getAlarmMembers = $PUarrForEach['PUarr'][$PUarrForEach['ProjectKey']];
             foreach ($getAlarmMembers as $key => $value) {
                 Log::debug($value);
-                // $AlarmEvent = new AlarmEvent([$PUarrForEach['code'],$PUarrForEach['ProjectKey'],$PUarrForEach['Project']]); // 0112 김관호: 이제 AlarmEvent파라미터 알맞게 맞추고 heidi로 레코드 생성 확인
-                // $AlarmEvent->newAlarm();        
+                // Log::debug([$PUarrForEach['Project']]);
+                $AlarmEvent = new AlarmEvent([$PUarrForEach['code'],$value,$PUarrForEach['Project']]); // 0112 김관호: 이제 AlarmEvent파라미터 알맞게 맞추고 heidi로 레코드 생성 확인
+                $AlarmEvent->newAlarm();        
             }
         }
 
@@ -97,6 +98,9 @@ class SpecificDateReached
         // 이제 프로젝트별 날짜비교해서 프로젝트 유저에게 이벤트 발생시키기
         foreach ($ProjectUsers as $key => $ProjectUser) {
             // 마감일자와 시작일자가 현재와 같을 때 반복문을 돌려서 멤버마다 이벤트 발생
+            $date1 = Carbon::parse($ProjectUser->end_date);
+            $date2 = Carbon::parse(now()->format('Y-m-d'));
+            $daysDifference = $date1->diffInDays($date2); 
             if($ProjectUser->start_date === now()->format('Y-m-d')){
                 Log::debug('프로젝트 시작');
                 // 해당 if에 맞는 프로젝트만 ($key 획득) 멤버들을 반복돌려서 이벤트 뿌리기
@@ -107,28 +111,18 @@ class SpecificDateReached
                     'Project' => $ProjectUser
                 ]);                
             }
-            if($ProjectUser->end_date === now()->format('Y-m-d')){
-                Log::debug('프로젝트 마감');
-                // 해당 if에 맞는 프로젝트만 ($key 획득) 멤버들을 반복돌려서 이벤트 뿌리기
-                PUarrForEach([
-                    'code' => 'PE',
-                    'PUarr' => $PUarr,
-                    'ProjectKey' => $ProjectUser->id,
-                    'Project' => $ProjectUser
-                ]);                 
+            if($date1 > $date2){
+                if($daysDifference === 30 || $daysDifference === 14 || $daysDifference === 7 || $daysDifference === 3 || $daysDifference === 1){
+                    Log::debug('프로젝트 마감');
+                    // 해당 if에 맞는 프로젝트만 ($key 획득) 멤버들을 반복돌려서 이벤트 뿌리기
+                    PUarrForEach([
+                        'code' => 'PE'.$daysDifference,
+                        'PUarr' => $PUarr,
+                        'ProjectKey' => $ProjectUser->id,
+                        'Project' => $ProjectUser
+                    ]);                 
+                }
             }
-            // $date1 = Carbon::parse($Project->end_date);
-            // $date2 = Carbon::parse(now()->format('Y-m-d'));
-            // $daysDifference = $date1->diffInDays($date2);  
-            // // Log::debug('$daysDifference',[$daysDifference]);                  
-            // // Log::debug('$date1 > $date2',[$date1 > $date2]);                  
-            // if($Project->task_responsible_id !== null && $date1 > $date2){
-            //     if($daysDifference === 7 || $daysDifference === 3 || $daysDifference === 1){
-            //         // Log::debug('마감까지 일주일',[$Project]);                    
-            //         $AlarmEvent = new AlarmEvent(['TE'.$daysDifference,$Project->task_responsible_id,[$Project]]);
-            //         $AlarmEvent->newAlarm();
-            //     }
-            // }
         }
     }
 

@@ -712,7 +712,7 @@ document.addEventListener('DOMContentLoaded', function () {
       let ganttParentValue = element.getAttribute('parent')
       const ganttParentElement = document.querySelector('#gantt-task-' + ganttParentValue)
       ganttParentElement.after(element)
-    }
+    } // gantt-chart-body
 
         
     
@@ -733,11 +733,12 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_title를 갱신해 불러와 차트를 정렬할 것임 231231
     const totallySortedTasks_title = document.querySelectorAll('.gantt-task');
-    const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
+    // const ganttChartContainer_title = document.querySelector('.gantt-chart-container');
+    const ganttChartBody_title = document.querySelector('.gantt-chart-body');
     totallySortedTasks_title.forEach(tasks_title => {
       const taskId_title = tasks_title.getAttribute('id').split('-')[2];
       const ganttChartItem_title = document.getElementById(`gantt-chart-${taskId_title}`);
-      ganttChartContainer_title.appendChild(ganttChartItem_title);
+      ganttChartBody_title.appendChild(ganttChartItem_title);
     });
 
   });
@@ -1872,6 +1873,7 @@ function test(rowNum) {
       div.dataset.rowNum = rowNum;
       div.textContent = '';
 
+      // console.log(target);
       target.appendChild(div);
     // bk-row 간트차트 날짜
       if (startDate.getTime() === new Date(start).getTime()) {
