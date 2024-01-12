@@ -396,12 +396,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     position: absolute;
     width: 100px;
+    height: 23px;
+    padding-left: 10px;
     align-items: center;
-    background-color: rgb(206 206 207 / 53%);
-    top: 70px;
+    background-color: var(--dropdown-bg);
     right: -90px;
     border-radius: 2px;
-    z-index: 1;
+}
+
+.m_signout:hover {
+    background-color: var(--hover-menu-bg);
 }
 
 .invite_member_div {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AlarmEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +33,7 @@ class CommentController extends Controller
 
         // Log::debug([$request,$id]);
         $result = Comment::create($request->toArray());
+        $responsible = Task::where('id',$id)->select('task_responsible_id')->first();
 
         if (!$result) {
             $responseData['code'] = 'E01';
@@ -39,6 +42,12 @@ class CommentController extends Controller
             $responseData['code'] = 'C01';
             $responseData['msg'] = 'comment created.';
             $responseData['data'] = $result;
+
+            // 업무 담당자에게 이벤트 발생
+            if($responsible->task_responsible_id !== null){
+                $AlarmEvent = new AlarmEvent(['CC',$responsible->task_responsible_id,$result]);
+                $AlarmEvent->newAlarm();  
+            }
         }
         
         

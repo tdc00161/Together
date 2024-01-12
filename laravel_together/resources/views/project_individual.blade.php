@@ -54,33 +54,33 @@
                 {{-- 버튼 --}}
                 @forelse ($authoritychk as $item)
                 {{-- <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
-                @if ($item->authority_id == '0')
-                    <div><button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button></div>
-                        {{-- 나가기 모달창 --}}
-                        <div id="exitModal">
+                    @if ($item->authority_id === "1")
+                        <div><button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button></div>
+                            {{-- 나가기 모달창 --}}
+                            <div id="exitModal">
+                                <div class="deletemodal-content">
+                                    <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
+                                    <div class="gridbutton">
+                                        <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
+                                        <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                                    </div>
+                                </div>
+                            </div>
+                    @elseif ($item->authority_id === "0")
+                        <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button>
+                        {{-- 삭제 모달창 --}}
+                        <div id="deleteModal">
                             <div class="deletemodal-content">
-                                <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
+                                <p class="deletespan">정말로 삭제하시겠습니까?</p>
                                 <div class="gridbutton">
-                                    <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
-                                    <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                                    <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                                    <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
                                 </div>
                             </div>
                         </div>
-                @elseif ($item->authority_id == '1')
-                    <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button>
-                    {{-- 삭제 모달창 --}}
-                    <div id="deleteModal">
-                        <div class="deletemodal-content">
-                            <p class="deletespan">정말로 삭제하시겠습니까?</p>
-                            <div class="gridbutton">
-                                <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
-                                <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            @empty
-            @endforelse 
+                    @endif
+                @empty
+                @endforelse 
             </div>
         </div>
         <textarea class="project_content" name="project_content" id="project_content" placeholder="설명을 입력하세요." onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
@@ -149,15 +149,21 @@
                                 <div class="member_name1">{{$item->name}}</div>
                                 <div class="member_name1 member-email">{{$item->email}}</div>
                             </div>
-                            <div class="plusbtn"><img src="/img/icon-more.png" alt="" style="width:4px; height:17px;"></div>
-                            <div class="m_signout">
-                                <img src="/img/signoutred.png" alt="" style="width: 15px; height: 15px; display:inline-block;">
-                                <div style="display: inline-block;">내보내기</div>
-                            </div>
+                            @if($item->member_id !== $user)
+                                @if($item->authority_id === "1")
+                                    <div class="plusbtn getout" id="{{$item->email}}"><img class="getout" src="/img/icon-more.png" alt="" style="width:4px; height:17px;"></div>
+                                    <div class="m_signout">
+                                        <img src="/img/signoutred.png" alt="" style="width: 15px; height: 15px; display:inline-block;">
+                                        <div style="display: inline-block;">추방</div>
+                                    </div>
+                                @else
+                                @endif
+                            @else
+                            @endif
                         </div>
                     @empty
                         
-                    @endforelse 
+                    @endforelse
                 </div>
             </div>
 

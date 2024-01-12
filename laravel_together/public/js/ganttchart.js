@@ -817,7 +817,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
       const totallySortedTasks_respon = document.querySelectorAll('.gantt-task');
-      const ganttChartContainer_respon = document.querySelector('.gantt-chart-container');
+      const ganttChartContainer_respon = document.querySelector('.gantt-chart-body');
       totallySortedTasks_respon.forEach(tasks_respon => {
         const taskId_respon = tasks_respon.getAttribute('id').split('-')[2];
         const ganttChartItem_respon = document.getElementById(`gantt-chart-${taskId_respon}`);
@@ -891,7 +891,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
     const totallySortedTasks_status = document.querySelectorAll('.gantt-task');
-    const ganttChartContainer_status = document.querySelector('.gantt-chart-container');
+    const ganttChartContainer_status = document.querySelector('.gantt-chart-body');
     totallySortedTasks_status.forEach(tasks_status => {
       const taskId_status = tasks_status.getAttribute('id').split('-')[2];
       const ganttChartItem_status = document.getElementById(`gantt-chart-${taskId_status}`);
@@ -966,7 +966,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
     const totallySortedTasks_start = document.querySelectorAll('.gantt-task');
-    const ganttChartContainer_start = document.querySelector('.gantt-chart-container');
+    const ganttChartContainer_start = document.querySelector('.gantt-chart-body');
     totallySortedTasks_start.forEach(tasks_start => {
       const taskId_start = tasks_start.getAttribute('id').split('-')[2];
       const ganttChartItem_start = document.getElementById(`gantt-chart-${taskId_start}`);
@@ -1042,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 배치는 정렬된 좌간트를 따라가는 순으로 sortedTasks_respon를 갱신해 불러와 차트를 정렬할 것임 231231
     const totallySortedTasks_end = document.querySelectorAll('.gantt-task');
-    const ganttChartContainer_end = document.querySelector('.gantt-chart-container');
+    const ganttChartContainer_end = document.querySelector('.gantt-chart-body');
     totallySortedTasks_end.forEach(tasks_end => {
       const taskId_end = tasks_end.getAttribute('id').split('-')[2];
       const ganttChartItem_end = document.getElementById(`gantt-chart-${taskId_end}`);
@@ -1179,7 +1179,7 @@ function addSubTask(event, mainId) {
   // const doMGanttTask = document.getElementById('gantt-task-314'); // 원래 자리접근
   // $item->id : ${ganttModalId}
   // $item2->id :   
-  const doMGanttTask = event.target.parentNode.parentNode.parentNode; // 원래 자리접근
+  const doMGanttTask = event.target.parentNode.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
@@ -1546,7 +1546,7 @@ newChart.setAttribute('parent', gantt_modal_id[0])
 for (let index = 0; index < ganttChildTaskList.length; index++) {
   const element = ganttChildTaskList[index];
   // console.log(element);
-  let thisId = event.target.parentNode.parentNode.parentNode // gantt-task 아이디 찾기
+  let thisId = event.target.parentNode.parentNode.parentNode.parentNode // gantt-task 아이디 찾기
   // console.log(thisId.id.match(/\d+/)[0]);
   // console.log(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]);
   if(element.getAttribute('parent') === thisId.id.match(/\d+/)[0]){
@@ -2175,20 +2175,35 @@ function formatDates(inputDate) {
   return { a, b };
 }
 
+// 현재 날짜를 기준으로 바 생성
+const verticalBar = document.createElement('div');
+const ganttBody = document.querySelector('.gantt-chart-wrap');
+verticalBar.className = 'vertical-bar';
+// document.body.appendChild(verticalBar);
+ganttBody.appendChild(verticalBar);
+
 document.querySelectorAll('.date').forEach((date,index)=>{
   let split = formatDates(date.textContent)
   let m = split.a
   let d = split.b
-  // console.log(m);
-  // console.log(d);
+
   if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+    const rect = date.getBoundingClientRect();
+    console.log(rect);
+
+    verticalBar.style.position = 'absolute';
+    // verticalBar.style.left = rect.left - 735 + 'px';
+    verticalBar.style.left = rect.left + 'px';
+    verticalBar.style.top = '44px';
+    verticalBar.style.width = '1px';
+    verticalBar.style.height = '100%';
+    verticalBar.style.backgroundColor = '#ffffffe6';
   }
 })
 //-----------------------------------------------------------
-
-
-
+// 상위/하위 업무 토글
   // Function to toggle child task based on parent ID
   function toggleChildTask(parentId) {
    
@@ -2228,24 +2243,69 @@ document.querySelectorAll('.date').forEach((date,index)=>{
     ganttTaskWrap.scrollTop = otherDiv.scrollTop;
 });
 // ----------------------------------------------------------
-document.getElementById('resizableDiv').addEventListener('mousedown', function (event) {
-  if (event.pageX >= this.offsetWidth - 10) { // 드래그를 시작할 영역을 설정 (여기서는 가로 크기에서 10픽셀 이내의 영역)
-      var startX = event.pageX;
-      var startWidth = this.offsetWidth;
+// 드래그 리사이즈
+// 대상 Element 선택
+const resizer = document.getElementById('dragMe');
+const leftSide = resizer.previousElementSibling;
+const rightSide = resizer.nextElementSibling;
 
-      function handleMouseMove(event) {
-          var newWidth = startWidth + (event.pageX - startX);
-          if (newWidth > 100) { // 최소 크기를 설정할 수 있음
-              document.getElementById('resizableDiv').style.width = newWidth + 'px';
-          }
-      }
+// 마우스의 위치값 저장을 위해 선언
+let x = 0;
+let y = 0;
 
-      function handleMouseUp() {
-          document.removeEventListener('mousemove', handleMouseMove);
-          document.removeEventListener('mouseup', handleMouseUp);
-      }
+// 크기 조절시 왼쪽 Element를 기준으로 삼기 위해 선언
+let leftWidth = 0;
 
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-  }
-});
+// resizer에 마우스 이벤트가 발생하면 실행하는 Handler
+const mouseDownHandler = function (e) {
+    // 마우스 위치값을 가져와 x, y에 할당
+    x = e.clientX;
+    y = e.clientY;
+    // left Element에 Viewport 상 width 값을 가져와 넣음
+    leftWidth = leftSide.getBoundingClientRect().width;
+
+    // 마우스 이동과 해제 이벤트를 등록
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+};
+
+const mouseMoveHandler = function (e) {
+    // 마우스가 움직이면 기존 초기 마우스 위치에서 현재 위치값과의 차이를 계산
+    const dx = e.clientX - x;
+    const dy = e.clientY - y;
+
+  	// 크기 조절 중 마우스 커서를 변경함
+    // class="resizer"에 적용하면 위치가 변경되면서 커서가 해제되기 때문에 body에 적용
+    document.body.style.cursor = 'col-resize';
+    
+    // 이동 중 양쪽 영역(왼쪽, 오른쪽)에서 마우스 이벤트와 텍스트 선택을 방지하기 위해 추가
+    leftSide.style.userSelect = 'none';
+    leftSide.style.pointerEvents = 'none';
+    
+    rightSide.style.userSelect = 'none';
+    rightSide.style.pointerEvents = 'none';
+    
+    // 초기 width 값과 마우스 드래그 거리를 더한 뒤 상위요소(container)의 너비를 이용해 퍼센티지를 구함
+    // 계산된 퍼센티지는 새롭게 left의 width로 적용
+    const newLeftWidth = ((leftWidth + dx) * 100) / resizer.parentNode.getBoundingClientRect().width;
+    leftSide.style.width = `${newLeftWidth}%`;
+};
+
+const mouseUpHandler = function () {
+    // 모든 커서 관련 사항은 마우스 이동이 끝나면 제거됨
+    resizer.style.removeProperty('cursor');
+    document.body.style.removeProperty('cursor');
+
+    leftSide.style.removeProperty('user-select');
+    leftSide.style.removeProperty('pointer-events');
+
+    rightSide.style.removeProperty('user-select');
+    rightSide.style.removeProperty('pointer-events');
+
+    // 등록한 마우스 이벤트를 제거
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+};
+
+// 마우스 down 이벤트를 등록
+resizer.addEventListener('mousedown', mouseDownHandler);

@@ -116,24 +116,24 @@ class ProjectController extends Controller
 
     //로그인한 유저 정보 출력
     $user = Auth::user();
-
+    // dump($user);
     //프로젝트 id 출력
     $result = project::find($id);
-
-
-
+    // dump($result);
     if(!$result){
       return redirect()->route('dashboard.show');
     }
 
     //권한여부 체크
     $authoritychk = DB::table('project_users as pu')
+                      ->select('pu.authority_id','pu.project_id','pu.member_id')
                       ->join('projects as pj','pj.id','pu.project_id')
-                      ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
+                      ->join('users as us','us.id','pu.member_id')
                       ->where('pu.project_id',$result->id)
-                      ->where('pu.member_id',$result->user_pk)
+                      // ->where('pu.member_id',$user->id)
+                      ->whereNull('pu.deleted_at')
                       ->get();
-
+    // dd($authoritychk);
 
     //프로젝트 색상 출력
     $color_code = DB::table('projects as pj')
@@ -276,12 +276,11 @@ class ProjectController extends Controller
     // (jueunyang08) 프로젝트 구성원 출력
     $projectmemberdata = DB::table('project_users as p')
                             ->join('users as u', 'u.id', '=', 'p.member_id')
-                            ->select('p.project_id', 'u.name', 'p.member_id','u.email')
+                            ->select('p.project_id', 'u.name', 'p.member_id','u.email','p.authority_id') //240112 권한 데이터 출력 추가 : 양수진
                             ->where('p.project_id', '=', $id)
                             ->whereNull('p.deleted_at')
                             ->orderBy('p.created_at','asc')
                             ->get();
-
 
     //친구 목록에서 초대
     $friendinvite = DB::table('friendlists as f')
@@ -324,12 +323,13 @@ class ProjectController extends Controller
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
         ->with('authoritychk',$authoritychk)
         ->with('friendinvite',$friendinvite);
-        // ->with('inviteUrl',$inviteUrl);
     } else {
         return redirect('/user/login');
     }
   }
 
+
+  
   //초대 응했을 때 들어오는 링크
   public function acceptInvite(Request $request, $token) {
 
@@ -348,13 +348,13 @@ class ProjectController extends Controller
 
     $invite_member = ProjectUser::where('member_id',$member_id)
                                   ->join('projects as pj','pj.id','project_users.project_id')
-                                  ->where('invite',$url)
+                                  ->where('pj.invite',$url)
                                   ->first();
 
     if(!$invite_member){
         //초대 구성원 추가
         $invite_user = ProjectUser::create([
-          'project_id' => $invite_member[0]->id,
+          'project_id' => $project[0]->project_id,
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
@@ -428,7 +428,6 @@ class ProjectController extends Controller
     }
 
   }
-
 
   // 구성원 내보내기
   public function signoutm(Request $request){
