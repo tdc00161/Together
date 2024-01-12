@@ -1847,8 +1847,9 @@ function test(rowNum) {
       div.dataset.rowNum = rowNum;
       div.textContent = '';
 
+      // console.log('row' + rowNum + '-' + formattedDate);
       // console.log(target);
-      target.appendChild(div);
+      target !== null ? target.appendChild(div) : '';
     // bk-row 간트차트 날짜
       if (startDate.getTime() === new Date(start).getTime()) {
         div.innerHTML = '<span class="dates start">'+formattedDate+'</span>';
