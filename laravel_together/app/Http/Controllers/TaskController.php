@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AlarmEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -626,6 +627,8 @@ class TaskController extends Controller
         Log::debug('3');
         // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
+
+        $nowRes = $result->task_responsible_id;
         // Log::debug($result);
         if (!$result) {
             $responseData['msg'] = 'task not created.';
@@ -633,6 +636,14 @@ class TaskController extends Controller
         } else {
             $responseData['msg'] = 'task created.';
             $responseData['data'] = $result;
+            if($nowRes){
+                $checkRes = [
+                    'oldRes' => 0,
+                    'nowRes' => $nowRes,
+                    'content' => $result,
+                ];
+                $this->checkRes($checkRes);
+            }
         }
 
         return $responseData;
@@ -648,6 +659,7 @@ class TaskController extends Controller
         ];
 
         $result = Task::find($id);
+        $oldRes = $result->task_responsible_id;
         Log::debug('수정 $request :' . $request);
         // Log::debug($result->data);
 
@@ -685,6 +697,16 @@ class TaskController extends Controller
             Log::debug($result);
             $result->save();
 
+            $nowRes = $result->task_responsible_id;
+            $nowResult = Task::find($id);
+
+            $checkRes = [
+                'oldRes' => $oldRes,
+                'nowRes' => $nowRes,
+                'content' => $nowResult,
+            ];
+            $this->checkRes($checkRes);
+
             $responseData["code"] = "U01";
             $responseData["msg"] = $id." updated";
             $responseData['data']['task'] = $result;
@@ -701,24 +723,73 @@ class TaskController extends Controller
             "code" => "E01",
             "msg" => "no data"
         ];
+        $res = null;
+        $sta = null;
+        $pri = null;
         
         Log::debug('---------------------------------------'.$id);
-        $result = Task::find($id);
+        $result = Task::find($id);                    
+        $oldRes = $result->task_responsible_id; // 240111 김관호: 담당자 변경 알림
         Log::debug('$request :' . $request);
         Log::debug('$result :' . $result);
-        foreach ($request->value as $key => $updatedData) {
-            if($updatedData != ''){
-                Log::debug($updatedData.": 들어온 ".$key."값입니다");
-                Log::debug($result->$key.'안에 값이 있습니다');
-                $result->$key = $updatedData;
-                $result->save();
-
-                $responseData["code"] = "U01";
-                $responseData["msg"] = $id." updated";
-                $responseData['data'] = $result;
-            }
+        Log::debug([$request->value]);
+        Log::debug('55555');
+        if($request['task_responsible_id'] !== null) {
+            $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
+        } else if(array_key_exists('task_responsible_id',$request->value) && $request->value['task_responsible_id'] !== null){
+            $res = DB::table('users')->where('name', $request->value['task_responsible_id'])->first();
         }
+        Log::debug('55555');
+        if($request['task_status_id'] !== null) {
+            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
+        } else if(array_key_exists('task_status_id',$request->value) && $request->value['task_status_id'] !== null){
+            $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request->value['task_status_id'])->first();
+        }
+        Log::debug('55555');
+        if($request['priority_id'] !== null) {
+            $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
+        } else if(array_key_exists('priority_id',$request->value)){
+            $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request->value['priority_id'])->first();
+        }
+        $result['task_responsible_id'] = isset($res) ? $res->id : null;
+        Log::debug('66666');
+        $sta ? $result['task_status_id'] = $sta->data_content_code : '';
+        $result['priority_id'] = isset($pri) ? $pri->data_content_code : null;
+        Log::debug('66666');
+        // Log::debug('$request->title :' . $request->title);
+        array_key_exists('title',$request->value) ? $request->value['title'] === '' ? '' : $result['title'] = $request->value['title'] : '';
+        // Log::debug('$request->content :' . $request->content);
+        $result['content'] = $request->content;
+        // Log::debug('$request->start_date :' . $request->start_date);
+        Log::debug('66666');
+        if (array_key_exists('start_date',$request->value) && $request->value['start_date'] !== '시작일') {
+            $result['start_date'] = $request['start_date'];
+            // Log::debug('$result->start_date :' . $result->start_date);
+        }
+        // Log::debug($request->end_date);
+        Log::debug('77777');
+        if (array_key_exists('end_date',$request->value) && $request->value['end_date'] !== '마감일') {
+            $result['end_date'] = $request['end_date'];
+            // Log::debug('$result->end_date :' . $result->end_date);
+        }
+        Log::debug('77777');
+        Log::debug($result);
+        $result->save();
 
+        $responseData["code"] = "U01";
+        $responseData["msg"] = $id." updated";
+        $responseData['data'] = $result;
+
+        // ------------------------------------------------ 240111 김관호: 담당자 변경 알림
+        $nowRes = $result->task_responsible_id;
+        $nowResult = Task::find($id);
+        $checkRes = [
+            'oldRes' => $oldRes,
+            'nowRes' => $nowRes,
+            'content' => $nowResult,
+        ];
+        $this->checkRes($checkRes);
+        // ------------------------------------------------- 240111 김관호: 담당자 변경 알림
 
         return $responseData;
     }
@@ -744,6 +815,22 @@ class TaskController extends Controller
 
         return $responseData;
         // return [$request, $id];
+    }
+
+    // 업무 작성/수정 결과 담당자 변경
+    public function checkRes($data)
+    {
+        // 담당자 바뀌면 알람발생
+        if($data['oldRes'] !== $data['nowRes']) {
+            if($data['oldRes'] !== null){
+                $AlarmEvent = new AlarmEvent(['CR',$data['oldRes'],$data['content']]);
+                $AlarmEvent->newAlarm();
+            }
+            if($data['nowRes'] !== null){
+                $AlarmEvent = new AlarmEvent(['CR',$data['nowRes'],$data['content']]);
+                $AlarmEvent->newAlarm();
+            }            
+        }
     }
 }
 

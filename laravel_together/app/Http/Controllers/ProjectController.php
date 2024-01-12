@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AlarmEvent;
 use App\Models\ChatRoom;
 use App\Models\ChatUser;
 use Illuminate\Http\Request;
@@ -85,6 +86,9 @@ class ProjectController extends Controller
 	
 		// 채팅방 초대 모듈 호출
     $this->chatRoomInvite( $ChatRoom->project_id,$user_id);
+    // 초대 알람
+    $AlarmEvent = new AlarmEvent(['PI',$user_id,$ChatRoom]);
+    $AlarmEvent->newAlarm();
 	}
     // --------------------------------------------- 240110 김관호 
 
@@ -358,6 +362,9 @@ class ProjectController extends Controller
 
         // 채팅방 초대
         $this->chatRoomInvite($invite_member[0]->id,$member_id);
+        // 초대 알람
+        $AlarmEvent = new AlarmEvent(['PI',$member_id,$invite_member]);
+        $AlarmEvent->newAlarm();
 
     }else{
       return view('/membermodal')->with('project_id',$project[0]->project_id)->with('url',$url);
@@ -409,6 +416,9 @@ class ProjectController extends Controller
       
       // 초대 시 채팅방에 참여
       $this->chatRoomInvite($urlsb,$request->Value);
+      // 초대 알람
+      $AlarmEvent = new AlarmEvent(['PI',$request->Value,$memberpj]);
+      $AlarmEvent->newAlarm();
 
       return response()->json('성공');
 
@@ -617,7 +627,8 @@ class ProjectController extends Controller
     Log::debug("user 삭제");
 
     // // 채팅방도 나가기
-    $this->chatRoomExit($id,Auth::id());
+    $userId = Auth::id();
+    $this->chatRoomExit($id,$userId);
 
     return response()->json();
     Log::debug("화면전달");
@@ -688,7 +699,7 @@ class ProjectController extends Controller
       $ChatUser->delete();
 
       // 유저가 다 나갔으면 채팅방 삭제
-      Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->count());
+      Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
       if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
         Log::debug('사람 없는 채팅방');
         $chatRoomId->delete();

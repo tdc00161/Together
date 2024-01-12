@@ -552,15 +552,23 @@ a:hover {
 	/* border-right: 4px solid #ffffff29; */
 	overflow-y:auto;
 	height: 495px;
-	box-shadow: inset 0px -4px 12px 0px black, 12px 0px 8px -7px #00000099;
+	box-shadow: 12px 0px 8px -7px #00000099;
+	display: flex;
+	flex-direction: column;
+
 
 }
 .gantt-task-body::-webkit-scrollbar-thumb {
     background-color: transparent; /* 스크롤바 색상 */
 }
 .gantt-chart-body {
-    box-shadow: inset -8px -4px 12px 0px black;
-	overflow-y: auto;
+    /* box-shadow: inset -8px -4px 12px 0px black; */
+	/* overflow-y: auto; */
+	overflow-x: hidden;
+}
+.gantt-chart-body::-webkit-scrollbar {
+	width: 0;
+	height: 0;
 }
 .gantt-task {
 	display: flex;
@@ -591,7 +599,7 @@ background-color: #000;
 
 .gantt-task>div:not(.add_responsible_gantt) {
 	padding: 10px 5px;
-  	overflow: hidden;
+  	overflow: visible;
   	white-space: nowrap;
 	/* margin-bottom: 3px; */
 	background-color: #ffffff0a;
@@ -604,6 +612,8 @@ background-color: #000;
 }
 .responName {
 	width: 14%;
+	overflow: visible;
+	position: relative;
 }
 .gantt-task .gantt-status-name {
 	width: 16%;
@@ -713,32 +723,47 @@ display: none;
 }
 
 /* 드롭박스 담당자 선택 수정 */
-.add_responsible_gantt {
-	/* 배치 */
+.add_responsible_gantt:not(.otherColor) {
 	position: absolute;
-	top: 32px;
-	left: 39px;
-	z-index: 5;
-	/* 내부 */
-	background-color: rgb(44 30 29);
-	overflow: auto;
-	border-radius: 5px;
-	/* 크기 */
-	width: 90px;
-	min-height: 28px;
-	max-height: 70px;
+    top: 33px;
+    left: -7px;
+    z-index: 5;
+    background-color: rgb(44 30 29);
+    overflow: auto;
+    border-radius: 5px;
+    width: 80px;
+    min-height: 28px;
+    max-height: 70px;
+    border: 1px solid;
+}
+.otherColor {
+	position: absolute;
+    top: 33px;
+    left: -7px;
+    z-index: 5;
+    background-color: rgb(62 49 48);
+    overflow: auto;
+    border-radius: 5px;
+    width: 80px;
+    min-height: 28px;
+    max-height: 70px;
+    border: 1px solid;
 }
 
 .add_responsible_gantt_one {
     display: flex;
 	cursor: pointer;
+	padding: 2px 0px;
 }
 
 .add_responsible_gantt_one:hover{
 	background-color: rgba(12, 12, 12, 0.829);
 }
 
-.add_responsible_gantt_one_icon {
+.add_responsible_gantt_one_name {
+    margin: 0 auto;
+}
+/* .add_responsible_gantt_one_icon {
 	background-image: url('/img/profile-img.png');
 	background-position: center;
 	background-size: cover;
@@ -746,7 +771,7 @@ display: none;
 	width: 18px;
 	height: 18px;
 	margin: 0px 5px;
-}
+} */
 
 /* 드롭박스 상태 선택 수정 */
 .gantt-status-menu {
@@ -758,7 +783,7 @@ display: none;
     z-index: 1;
 }
 
-.gantt-status-menu > .gantt-status-select:nth-child(1) > span{
+/* .gantt-status-menu > .gantt-status-select:nth-child(1) > span{
 	display: inline-block;
 	border-radius: 5px;
 	background-color: #B1B1B1;
@@ -781,7 +806,7 @@ display: none;
 	border-radius: 5px;
 	background-color: #64C139;
 	padding: 1px 5px;
-}
+} */
 
 
 .gantt-status-select {
@@ -802,13 +827,15 @@ display: none;
 }
 
 .gantt-chart-header {
+	box-sizing: border-box;
 	text-align: center;
-	height: 58px;
+	height: 44px;
 	background-color: rgba(255, 255, 255, 0.226);
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: center;
 	padding-left: 3px;
+	align-items: center;
 }
 .gantt-header-month {
 	display: flex;
@@ -819,6 +846,8 @@ display: none;
 	display: flex;
 	flex-direction: row;
 	gap: 13px;
+	height: 44px;
+	align-items: center;
 	
 }
 .bar {

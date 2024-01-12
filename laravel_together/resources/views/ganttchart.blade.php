@@ -315,17 +315,16 @@
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
-                            <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span></div>
-                            <div class="add_responsible_gantt add_property_gantt d-none">
-                                {{-- <div class="add_responsible_gantt_one d-none">
-                                    <div class="add_responsible_gantt_one_icon"></div>
-                                    <div class="add_responsible_gantt_one_name">User</div>
-                                </div> --}}
+                            <div class="responName">
+                                <span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span>
+                                <div class="add_responsible_gantt d-none"></div>
                             </div>
+                            
                             <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color" onclick="ganttToggleDropdown(event)" data-status="{{$item->status_name}}">
+                                <div class="statusName gantt-status-color" data-status="{{$item->status_name}}">
                                     <span class="status-name-span" id="statusNameSpan">{{$item->status_name}}</span>
                                 </div>
+                                <div class="add_status_gantt d-none"></div>
                             </div>
                             <div class="gantt-task-4">
                                 <input type="date" class="start-date" name="start" id="start-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->start_date}}">
@@ -351,11 +350,16 @@
                                     <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
-                                <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span></div>
+                                <div class="responName">
+                                    <span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span>
+                                    <div class="add_responsible_gantt otherColor d-none"></div>
+                                </div>
+                                
                                 <div class="gantt-status-name">
                                     <div class="statusName gantt-status-color" data-status="{{$item2->status_name}}">
                                         <span class="status-name-span" id="statusNameSpan">{{$item2->status_name}}</span>
                                     </div>
+                                    <div class="add_status_gantt d-none"></div>
                                 </div>
                                 <div class="gantt-task-4">
                                     <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">

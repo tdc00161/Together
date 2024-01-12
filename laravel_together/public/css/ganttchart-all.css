@@ -170,6 +170,23 @@
     color:black;
 }
 
+.gantt-align-div {
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: transparent;
+	border-radius: 11px;
+	width: 80px;
+	text-align: center;
+	border: 1px solid white;
+	margin-left: 5px;
+}
+.gantt-align {
+	width: 20px;
+	height: auto;
+}
+
 /* 모달창 */
 
 #deleteModal {

@@ -25,3 +25,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('chats', function ($user) {
     return auth()->check();
 });
+
+Broadcast::channel('daycheck', function ($user) {
+    return auth()->check();
+});

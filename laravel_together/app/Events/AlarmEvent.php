@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Alarm;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,14 +10,14 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class AlarmEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $alarmCount = 0;
-    public $alarmContent = 0;
+    public $data, $receiver;
 
     /**
      * Create a new event instance.
@@ -25,10 +26,35 @@ class AlarmEvent
      */
     public function __construct($content)
     {
-        $this->alarmContent = $content;
-        $this->alarmCount++;
+        
+        $this->data = json_encode($content);
+        $this->receiver = $content[1];
         $this->dontBroadcastToCurrentUser();
         Log::debug('알람온다');
+        Log::debug($this->receiver);
+        Log::debug($this->data);
+    }
+
+    public function newAlarm()
+    {
+        $this->dontBroadcastToCurrentUser();
+        Log::debug('알람만든다');
+
+        Alarm::create([
+            'listener_id' => $this->receiver,
+            'content' => $this->data,
+        ]);
+    }
+
+    public function deleteAlarm()
+    {
+        $this->dontBroadcastToCurrentUser();
+        Log::debug('알람삭제한다');
+
+        Alarm::create([
+            'listener_id' => $this->receiver,
+            'content' => $this->data,
+        ]);
     }
 
     /**
