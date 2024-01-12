@@ -2,6 +2,7 @@
 
 use App\Events\TestEvent;
 use App\Http\Controllers\MessengerController;
+use App\Http\Middleware\UpdateUserActivity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -37,7 +38,7 @@ Route::post('/user/login', [UserController::class, 'loginpost'])->name('user.log
 Route::get('/user/registration', [UserController::class, 'registrationget'])->name('user.registration.get'); // 회원가입 화면 이동
 Route::middleware('my.user.validation')->post('/user/registration', [UserController::class, 'registrationpost'])->name('user.registration.post'); // 회원가입 처리
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth',UpdateUserActivity::class])->group(function () {
     Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.logout.get'); // 로그아웃 처리
     Route::get('/sidebar', [TaskController::class,'showSidebar']);
     Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
@@ -65,7 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정    
     // Route::get('/test', [MessengerController::class,'getAlarm']); // 테스트
 });
-Route::middleware('auth.api')->group(function () {
+Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
     Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
     Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정

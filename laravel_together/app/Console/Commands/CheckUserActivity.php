@@ -14,14 +14,14 @@ class CheckUserActivity extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'user:check-activity';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check user activity and mark as offline if inactive for 15 minutes';
 
     /**
      * Execute the console command.
@@ -36,8 +36,8 @@ class CheckUserActivity extends Command
         Log::debug($offlineUser);
         foreach ($offlineUser as $key => $value) {
             Log::debug($value);
-            // $OnOffline = new OnOffline(auth()->user());
-            // $OnOffline->whoOnline();  
+            $OnOffline = new OnOffline($value);
+            $OnOffline->whoOffline();  
         }
     }
 }
