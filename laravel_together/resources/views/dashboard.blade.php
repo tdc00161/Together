@@ -1,5 +1,6 @@
 @extends('layout.layout')
 @section('link')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="/css/project_individual.css">
 @endsection
 @section('title', '대시보드')

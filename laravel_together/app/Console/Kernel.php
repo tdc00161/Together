@@ -22,8 +22,8 @@ class Kernel extends ConsoleKernel
             $SpecificDateReached = new SpecificDateReached;
             $SpecificDateReached->TaskDateCheck();
             $SpecificDateReached->ProjectDateCheck();
-        // })->daily(); // 매일 실행
-        })->everyMinute();
+        })->daily(); // 매일 실행
+        // })->everyMinute();
 
         $schedule->command('user:check-activity')->everyMinute(); // 유저 온라인 체크
     }
