@@ -1133,29 +1133,13 @@ responName.forEach((responNameOne,index) => {
             // add_responsible_gantt[index].classList.remove('d-none');
 
             newDiv.addEventListener('click', () => {
-                // console.log('원래자리', responNameSpan[index].textContent);
-                // console.log('바꿀값:', data.data[index2].member_name);
-                responNameSpan[index].textContent = data.data[index2].member_name;
+              // console.log('원래자리', responNameSpan[index].textContent);
+              // console.log('바꿀값:', data.data[index2].member_name);
+              responNameSpan[index].textContent = data.data[index2].member_name;
 
-                // from 김관호 to 김민주
-                // <<업무 차트 정리>>
-                // newDiv 클릭 시
-                // 해당 이름으로 fetch수정 요청 sendUpdateRequest(변경사항(컬럼이름지키기), 업무id)
-                // 요청 후 js로 respon-name-span에 이름 채워넣기
-
-                // <<업무상태>>
-                // 업무상태들.forEach((responNameOne,index) => {
-                //   업무상태.addEventListener('click', () => {
-                //     - 모달 열기
-                //     - 모달 안 내용 document.create('div')
-                //     - 만든 상태에서 document.create('div').addEventListener 해서
-                //       해당 상태마다 fetch 수정 송신
-                //     - 그 후 js로 상태업무값 변경처리
-                //   }
-
-                // 드롭박스 안 담당자 클릭 시 창 닫기
-                add_responsible_gantt[index].classList.add('d-none');
-                })
+              // 드롭박스 안 담당자 클릭 시 창 닫기
+              add_responsible_gantt[index].classList.add('d-none');
+              })
             }
         })
         .catch(err => {
@@ -2003,9 +1987,10 @@ function sendUpdateRequest(updatedValue, numbersOnly) {
 //         updatedValue.end_date = this.value;
 //       }
 //     }
-let taskNameElements = document.querySelectorAll('.taskName') // add_responsible_gantt 선언했음
+let taskNameElements = document.querySelectorAll('.taskName') // add_responsible_gantt_one 선언했음
 let startDateElements = document.querySelectorAll('.start-date')
 let endDateElements = document.querySelectorAll('.end-date')
+let responNameElements = document.querySelectorAll('.add_responsible_gantt_one')
 let updatedValue = {
         // 'task_responsible_id': '',
         // 'task_status_id': '시작전',
@@ -2031,20 +2016,23 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     updatedValue = {
       'start_date': '',
     }
-    updatedValue.start_date = taskNameElements[index].textContent;
+    updatedValue.start_date = startDateElements[index].value;
+    console.log(startDateElements[index].value);
     numbersOnly = gantt.id.match(/\d+/)[0]
+    // console.log(numbersOnly);
     // 수정 요청 보내기
     console.log('수정 신청');
-    sendUpdateRequest(id, updatedValue, numbersOnly);
+    sendUpdateRequest(updatedValue, numbersOnly);
 
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
-  endDateElements[index].addEventListener('blur', function (event) {
+  endDateElements[index].addEventListener('blur', function (e) {
     updatedValue = {
       'end_date': '',
     }
-    updatedValue.end_date = taskNameElements[index].textContent;
+    updatedValue.end_date = endDateElements[index].value;
+    console.log(endDateElements[index].value);
     numbersOnly = gantt.id.match(/\d+/)[0]
     // 수정 요청 보내기
     console.log('수정 신청');
@@ -2053,12 +2041,13 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
-  responName[index].addEventListener('click', function (event) {
-    // add_responsible_gantt 
+  add_responsible_gantt[index].addEventListener('click', function (e) {
+    let resOne = e.target.textContent;
     updatedValue = {
-      'end_date': '',
+      'task_responsible_id': '',
     }
-    updatedValue.end_date = taskNameElements[index].textContent;
+    updatedValue.task_responsible_id = resOne;
+    console.log(resOne);
     numbersOnly = gantt.id.match(/\d+/)[0]
     // 수정 요청 보내기
     console.log('수정 신청');
