@@ -751,7 +751,7 @@ class TaskController extends Controller
         } else if(array_key_exists('priority_id',$request->value)){
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request->value['priority_id'])->first();
         }
-        $result['task_responsible_id'] = isset($res) ? $res->id : null;
+        isset($res) ? $result['task_responsible_id'] = $res->id : '';
         Log::debug('66666');
         $sta ? $result['task_status_id'] = $sta->data_content_code : '';
         $result['priority_id'] = isset($pri) ? $pri->data_content_code : null;

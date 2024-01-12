@@ -2000,7 +2000,7 @@ let updatedValue = {
         // 'title': ''
       };
 document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
-  taskNameElements[index].addEventListener('blur', function (e) {
+  taskNameElements[index].addEventListener('blur', function () {
     updatedValue = {
       'title': '',
     }
@@ -2013,7 +2013,7 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
-  startDateElements[index].addEventListener('blur', function (e) {
+  startDateElements[index].addEventListener('blur', function () {
     updatedValue = {
       'start_date': '',
     }
@@ -2028,7 +2028,7 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
-  endDateElements[index].addEventListener('blur', function (e) {
+  endDateElements[index].addEventListener('blur', function () {
     updatedValue = {
       'end_date': '',
     }
