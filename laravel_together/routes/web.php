@@ -1,7 +1,9 @@
 <?php
 
 use App\Events\TestEvent;
+use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\MessengerController;
+use App\Http\Middleware\UpdateUserActivity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -37,7 +39,7 @@ Route::post('/user/login', [UserController::class, 'loginpost'])->name('user.log
 Route::get('/user/registration', [UserController::class, 'registrationget'])->name('user.registration.get'); // 회원가입 화면 이동
 Route::middleware('my.user.validation')->post('/user/registration', [UserController::class, 'registrationpost'])->name('user.registration.post'); // 회원가입 처리
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth',UpdateUserActivity::class])->group(function () {
     Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.logout.get'); // 로그아웃 처리
     Route::get('/sidebar', [TaskController::class,'showSidebar']);
     Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
@@ -65,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정    
     // Route::get('/test', [MessengerController::class,'getAlarm']); // 테스트
 });
-Route::middleware('auth.api')->group(function () {
+Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
     Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
     Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
@@ -86,6 +88,7 @@ Route::middleware('auth.api')->group(function () {
     Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
     Route::post('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
     Route::delete('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
-    Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']);
+    Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']); // 채팅방 내역 불러오기
     Route::delete('/signout',[ProjectController::class,'signoutm']); // 구성원 내보내기
+    Route::get('/alarms',[AlarmController::class,'getAlarmList']); // 알람 불러오기
 });

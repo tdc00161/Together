@@ -42,6 +42,8 @@ class User extends Authenticatable // 유저
 
     protected $fillable = [
         'name',
+        'online_flg',
+        'last_activity',
         'email',
         'password',
     ];

@@ -65,6 +65,8 @@ $(function () {
    $(".pop-up .close").click(function () {
     $(".pop-up").removeClass("visible");
    });
+
+const CommonCsrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
    
 //    const toggleButton = document.querySelector('.dark-light');
    
@@ -102,17 +104,22 @@ window.onclick = function (event) {
     function toggleActive(className) {
         // 해당 클래스의 액티브 상태를 토글
         var element = document.querySelector(`.${className}`);
+        let alarmModal = document.querySelector('.alarm-modal');
         if (element.classList.contains('activee')) {
             element.classList.remove('activee');
+            className === 'icon-notice' ? alarmModal.classList.add('d-none') : '';
         } else {
             element.classList.add('activee');
+            className === 'icon-notice' ? alarmModal.classList.remove('d-none') : '';
         }
     }
     // 문서의 다른 부분을 클릭했을 때 액티브 상태 해제
     document.addEventListener('click', function (event) {
         var activeElement = document.querySelector('.activee');
-        if (activeElement && !activeElement.contains(event.target)) {
+        let alarmModal = document.querySelector('.alarm-modal');
+        if (activeElement && !activeElement.contains(event.target) && !alarmModal.contains(event.target)) {
             activeElement.classList.remove('activee');
+            alarmModal.classList.add('d-none');
         }
     });
 
@@ -173,3 +180,27 @@ window.onload = function() {
        }
     })
  }
+
+ // 알림창 js ----------------------------------------------------------------
+
+// 알림 출력 통신
+fetch('/alarms', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': CommonCsrfToken,
+        // 'X-Socket-ID': socketId,
+    },
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('error with print chatting list.');
+    }
+    return response.json();
+})
+.then(data => {
+    console.log(data);
+})
+.catch(err => console.log(err.stack))
+
+ // ---------------------------------------------------------------- 알림창 js

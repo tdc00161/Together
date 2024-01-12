@@ -751,7 +751,7 @@ class TaskController extends Controller
         } else if(array_key_exists('priority_id',$request->value)){
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request->value['priority_id'])->first();
         }
-        $result['task_responsible_id'] = isset($res) ? $res->id : null;
+        isset($res) ? $result['task_responsible_id'] = $res->id : '';
         Log::debug('66666');
         $sta ? $result['task_status_id'] = $sta->data_content_code : '';
         $result['priority_id'] = isset($pri) ? $pri->data_content_code : null;
@@ -760,17 +760,19 @@ class TaskController extends Controller
         array_key_exists('title',$request->value) ? $request->value['title'] === '' ? '' : $result['title'] = $request->value['title'] : '';
         // Log::debug('$request->content :' . $request->content);
         $result['content'] = $request->content;
-        // Log::debug('$request->start_date :' . $request->start_date);
+        // ---------------- start
+        // Log::debug('$request->start_date :' . $request->value['start_date']);
         Log::debug('66666');
         if (array_key_exists('start_date',$request->value) && $request->value['start_date'] !== '시작일') {
-            $result['start_date'] = $request['start_date'];
-            // Log::debug('$result->start_date :' . $result->start_date);
+            $result['start_date'] = $request->value['start_date'];
+            // Log::debug('$result->start_date :' . $result['start_date']);
         }
-        // Log::debug($request->end_date);
+        // ---------------- end
+        // Log::debug($request->value['end_date']);
         Log::debug('77777');
         if (array_key_exists('end_date',$request->value) && $request->value['end_date'] !== '마감일') {
-            $result['end_date'] = $request['end_date'];
-            // Log::debug('$result->end_date :' . $result->end_date);
+            $result['end_date'] = $request->value['end_date'];
+            // Log::debug('$result->end_date :' . $result['end_date']);
         }
         Log::debug('77777');
         Log::debug($result);
