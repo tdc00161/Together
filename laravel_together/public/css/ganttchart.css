@@ -625,7 +625,7 @@ background-color: #000;
 
 /*  업무 부분 너비 조절 */
 .gantt-task .gantt-editable-div {
-	width: 34%;
+	width: 22%;
 	text-align: left;
 	flex: 1;
 }
