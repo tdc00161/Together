@@ -86,9 +86,9 @@ class ProjectController extends Controller
 	
 		// 채팅방 초대 모듈 호출
     $this->chatRoomInvite( $ChatRoom->project_id,$user_id);
-    // 초대 알람
-    $AlarmEvent = new AlarmEvent(['PI',$user_id,$ChatRoom]);
-    $AlarmEvent->newAlarm();
+    // 초대 알람 -> 자기가 만들었으니 초대 안해도 됨
+    // $AlarmEvent = new AlarmEvent(['PI',$user_id,$ChatRoom]);
+    // $AlarmEvent->newAlarm();
 	}
     // --------------------------------------------- 240110 김관호 
 

@@ -567,7 +567,6 @@ class TaskController extends Controller
         //             ->where('end_date', $request->end_date)
         //             ->get();
         // }
-        Log::debug('1');
         // Log::debug([$tsk_num]);
         // Log::debug($tsk_num['task_number']);
 
@@ -588,7 +587,6 @@ class TaskController extends Controller
             $request['task_status_name'] = null;
             $request['task_status_id'] = 0;
         }
-        Log::debug('1-1');
         // Log::debug($res);
         if(!empty($res[0])){
             $request['task_responsible_id'] = $res[0]->id;
@@ -598,7 +596,6 @@ class TaskController extends Controller
         } else {
             $request['task_responsible_name'] = null;
         }
-        Log::debug('1-2');
         if(!empty($pri[0])){
             $request['priority_id'] = $pri[0]->data_content_code;
             if(isset($responseData['names'])){
@@ -607,7 +604,6 @@ class TaskController extends Controller
         } else {
             $request['priority_name'] = null;
         }
-        Log::debug('2');
         // not null
         $nowUser = Auth::id();
         $request['task_writer_id'] = $nowUser;
@@ -623,8 +619,7 @@ class TaskController extends Controller
         
         // $request['start_date'] = $start;
         // $request['end_date'] = $end;
-        Log::debug($request);
-        Log::debug('3');
+        // Log::debug($request);
         // 업무 생성 및 반환 분기
         $result = Task::create($request->toArray());
 
@@ -637,10 +632,12 @@ class TaskController extends Controller
             $responseData['msg'] = 'task created.';
             $responseData['data'] = $result;
             if($nowRes){
+                $content['nowRes'] = User::find($nowRes);
+                $content['where'] = $result;
                 $checkRes = [
                     'oldRes' => 0,
                     'nowRes' => $nowRes,
-                    'content' => $result,
+                    'content' => $content,
                 ];
                 $this->checkRes($checkRes);
             }
@@ -660,7 +657,7 @@ class TaskController extends Controller
 
         $result = Task::find($id);
         $oldRes = $result->task_responsible_id;
-        Log::debug('수정 $request :' . $request);
+        // Log::debug('수정 $request :' . $request);
         // Log::debug($result->data);
 
         if (!$result) {
@@ -694,12 +691,14 @@ class TaskController extends Controller
                 $result->end_date = $request->end_date;
                 // Log::debug('$result->end_date :' . $result->end_date);
             }
-            Log::debug($result);
+            // Log::debug($result);
             $result->save();
 
             $nowRes = $result->task_responsible_id;
-            $nowResult = Task::find($id);
-
+            $nowResult = [];
+            $nowResult['oldRes'] = User::find($oldRes);
+            $nowResult['nowRes'] = User::find($nowRes);
+            $nowResult['where'] = $result;
             $checkRes = [
                 'oldRes' => $oldRes,
                 'nowRes' => $nowRes,
@@ -733,49 +732,41 @@ class TaskController extends Controller
         Log::debug('$request :' . $request);
         Log::debug('$result :' . $result);
         Log::debug([$request->value]);
-        Log::debug('55555');
         if($request['task_responsible_id'] !== null) {
             $res = DB::table('users')->where('name', $request['task_responsible_id'])->first();
         } else if(array_key_exists('task_responsible_id',$request->value) && $request->value['task_responsible_id'] !== null){
             $res = DB::table('users')->where('name', $request->value['task_responsible_id'])->first();
         }
-        Log::debug('55555');
         if($request['task_status_id'] !== null) {
             $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request['task_status_id'])->first();
         } else if(array_key_exists('task_status_id',$request->value) && $request->value['task_status_id'] !== null){
             $sta = DB::table('basedata')->where('data_title_code',0)->where('data_content_name', $request->value['task_status_id'])->first();
         }
-        Log::debug('55555');
         if($request['priority_id'] !== null) {
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request['priority_id'])->first();
         } else if(array_key_exists('priority_id',$request->value)){
             $pri = DB::table('basedata')->where('data_title_code',1)->where('data_content_name', $request->value['priority_id'])->first();
         }
         isset($res) ? $result['task_responsible_id'] = $res->id : '';
-        Log::debug('66666');
         $sta ? $result['task_status_id'] = $sta->data_content_code : '';
         $result['priority_id'] = isset($pri) ? $pri->data_content_code : null;
-        Log::debug('66666');
         // Log::debug('$request->title :' . $request->title);
         array_key_exists('title',$request->value) ? $request->value['title'] === '' ? '' : $result['title'] = $request->value['title'] : '';
         // Log::debug('$request->content :' . $request->content);
         $result['content'] = $request->content;
         // ---------------- start
         // Log::debug('$request->start_date :' . $request->value['start_date']);
-        Log::debug('66666');
         if (array_key_exists('start_date',$request->value) && $request->value['start_date'] !== '시작일') {
             $result['start_date'] = $request->value['start_date'];
             // Log::debug('$result->start_date :' . $result['start_date']);
         }
         // ---------------- end
         // Log::debug($request->value['end_date']);
-        Log::debug('77777');
         if (array_key_exists('end_date',$request->value) && $request->value['end_date'] !== '마감일') {
             $result['end_date'] = $request->value['end_date'];
             // Log::debug('$result->end_date :' . $result['end_date']);
         }
-        Log::debug('77777');
-        Log::debug($result);
+        // Log::debug($result);
         $result->save();
 
         $responseData["code"] = "U01";
@@ -784,7 +775,10 @@ class TaskController extends Controller
 
         // ------------------------------------------------ 240111 김관호: 담당자 변경 알림
         $nowRes = $result->task_responsible_id;
-        $nowResult = Task::find($id);
+        $nowResult = [];
+        $nowResult['oldRes'] = User::find($oldRes);
+        $nowResult['nowRes'] = User::find($nowRes);
+        $nowResult['where'] = $result;
         $checkRes = [
             'oldRes' => $oldRes,
             'nowRes' => $nowRes,
@@ -825,11 +819,11 @@ class TaskController extends Controller
         // 담당자 바뀌면 알람발생
         if($data['oldRes'] !== $data['nowRes']) {
             if($data['oldRes'] !== null){
-                $AlarmEvent = new AlarmEvent(['CR',$data['oldRes'],$data['content']]);
+                $AlarmEvent = new AlarmEvent(['CR',$data['oldRes'],$data]);
                 $AlarmEvent->newAlarm();
             }
             if($data['nowRes'] !== null){
-                $AlarmEvent = new AlarmEvent(['CR',$data['nowRes'],$data['content']]);
+                $AlarmEvent = new AlarmEvent(['CR',$data['nowRes'],$data]);
                 $AlarmEvent->newAlarm();
             }            
         }

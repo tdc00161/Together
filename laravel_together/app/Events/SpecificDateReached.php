@@ -87,7 +87,7 @@ class SpecificDateReached
         function PUarrForEach($PUarrForEach){  
             $getAlarmMembers = $PUarrForEach['PUarr'][$PUarrForEach['ProjectKey']];
             foreach ($getAlarmMembers as $key => $value) {
-                Log::debug($value);
+                // Log::debug($value);
                 // Log::debug([$PUarrForEach['Project']]);
                 $AlarmEvent = new AlarmEvent([$PUarrForEach['code'],$value,$PUarrForEach['Project']]); // 0112 김관호: 이제 AlarmEvent파라미터 알맞게 맞추고 heidi로 레코드 생성 확인
                 $AlarmEvent->newAlarm();        

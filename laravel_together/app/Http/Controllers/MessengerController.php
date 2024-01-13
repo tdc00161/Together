@@ -88,7 +88,6 @@ class MessengerController extends Controller
 		// 채팅 생성
 		$result = Chat::create($validated);
 		
-		Log::debug(1243124124214);
 		// 해당 채팅방의 최신 내역 갱신
 		ChatRoom::where('id', $result->receiver_id)
 		->update([
@@ -96,11 +95,9 @@ class MessengerController extends Controller
 			'last_chat_created_at' => now()->format('Y-m-d H:i:s'),
 		]);
 		
-		Log::debug(1243124124214);
 		// 채팅 이벤트 실행
 		MessageSent::dispatch($result);
 		
-		Log::debug(1243124124214);
 		return $result;
 	}
 
@@ -162,7 +159,7 @@ class MessengerController extends Controller
 
 		$result = $readChatUser->first();
 
-		Log::debug($result);
+		// Log::debug($result);
 
 		return $result;
 	}

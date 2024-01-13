@@ -27,7 +27,7 @@ class AlarmController extends Controller
 			->whereNull('a.deleted_at')
 			->orderByDesc('a.created_at')
 			->get();
-        Log::debug($result);
+        // Log::debug($result);
 
         if ($result === []) {
             $responseData['code'] = 'E01';

@@ -6,6 +6,7 @@ use App\Events\AlarmEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,10 @@ class CommentController extends Controller
 
             // 업무 담당자에게 이벤트 발생
             if($responsible->task_responsible_id !== null){
-                $AlarmEvent = new AlarmEvent(['CC',$responsible->task_responsible_id,$result]);
+                $data = [];
+                $data['user'] = User::find($usr);
+                $data['task'] = Task::find($id);
+                $AlarmEvent = new AlarmEvent(['CC',$responsible->task_responsible_id,$data]);
                 $AlarmEvent->newAlarm();  
             }
         }
@@ -65,14 +69,14 @@ class CommentController extends Controller
         // Log::debug('cookie: '.$request->cookie('user'));
         // Log::debug('Auth: '. Auth::id());
         
-        Log::debug($request);
+        // Log::debug($request);
         $usr = Auth::id();
         $con = $request['content']; 
         $tsk = $request['task_id']; 
         
         // $this_comment = DB::table('comments')->where('id',$id)->get();
         $this_comment = Comment::where('id',$id)->get();
-        Log::debug($this_comment);
+        // Log::debug($this_comment);
         // Log::debug(gettype($this_comment[0]->user_id).' : '.gettype($usr));
         // Log::debug(gettype($this_comment[0]->id).' : '.gettype($id));
         // Log::debug($this_comment[0]->id === $id);

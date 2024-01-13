@@ -115,7 +115,10 @@ class FriendRequestController extends Controller
         // Log::debug('친추발생');
 
         // 240111 김관호: 친추 알림 발생
-        $AlarmEvent = new AlarmEvent(['FR',$receiver->id,$friendRequest]);
+        $friendNameBoth = [];
+        $friendNameBoth[] = User::find($sender->id);
+        $friendNameBoth[] = User::find($receiver->id);
+        $AlarmEvent = new AlarmEvent(['FR',$receiver->id,$friendNameBoth]);
         $AlarmEvent->newAlarm();
 
         // Ajax 요청에서 처리할 응답 데이터 반환
@@ -243,7 +246,10 @@ class FriendRequestController extends Controller
         ->update(['status' => 'accepted']);
 
         // 240111 김관호: 친추 완료 알림 발생
-        $AlarmEvent = new AlarmEvent(['FRD',$requestId,['requestId'=>$requestId]]);
+        $friendNameBoth = [];
+        $friendNameBoth[] = User::find($requestId);
+        $friendNameBoth[] = User::find($userId);
+        $AlarmEvent = new AlarmEvent(['BF',$requestId,$friendNameBoth]);
         $AlarmEvent->newAlarm();
 
          // 친구 목록에 추가

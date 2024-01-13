@@ -31,8 +31,8 @@ class AlarmEvent
         $this->receiver = $content[1];
         $this->dontBroadcastToCurrentUser();
         Log::debug('알람온다');
-        Log::debug($this->receiver);
-        Log::debug($this->data);
+        // Log::debug($this->receiver);
+        // Log::debug($this->data);
     }
 
     public function newAlarm()

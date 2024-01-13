@@ -66,7 +66,7 @@ $(function () {
     $(".pop-up").removeClass("visible");
    });
 
-const CommonCsrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+const CommonCsrfToken = document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '';
    
 //    const toggleButton = document.querySelector('.dark-light');
    
@@ -200,18 +200,53 @@ fetch('/alarms', {
 })
 .then(data => {
     // console.log(data.data);
+    let msg = '';
     data.data.forEach(d => {
         console.log(JSON.parse(d.content));
-        let code = JSON.parse(d.content)[0].match(/([A-Za-z]+)(\d+)/)[1]
-        let number = JSON.parse(d.content)[0].match(/([A-Za-z]+)(\d+)/)[2]
-        switch (code[1]) {
-            case PE:
-                
+        let char = JSON.parse(d.content)[0]
+        let code =  char.match(/([A-Za-z]+)(\d+)/);
+        let number = code ? code[2] : false;
+        let taskTitle = '';
+        let projectTitle = '';
+        switch (code ? code[1] : char) {
+            case 'PS': // 프로젝트 시작
+                msg = number ? `${projectTitle}프로젝트 시작까지 ${code[2]}일 남았습니다` : `${projectTitle}프로젝트가 시작되었습니다`;
                 break;
-        
+            case 'PE': // 프로젝트 마감
+                msg = number ? `${projectTitle}프로젝트 마감까지 ${code[2]}일 남았습니다` : `${projectTitle}프로젝트가 마감되었습니다`;
+                break;
+            case 'PI': // 프로젝트 초대
+                msg = `${projectTitle}프로젝트에서 초대되었습니다`;
+                break;
+            case 'TS': // 업무 시작
+                msg = number ? `${taskTitle}업무 시작까지 ${code[2]}일 남았습니다` : `${taskTitle}업무가 시작되었습니다`;
+                break;
+            case 'TE': // 업무 마감
+                msg = number ? `${taskTitle}업무 마감까지 ${code[2]}일 남았습니다` : `${taskTitle}업무가 마감되었습니다`;
+                break;
+            case 'FR': // 친구 요청
+                let from = JSON.parse(d.content)[2][0].name;
+                msg = `${from}유저로부터 친구요청이 왔습니다`;
+                break;
+            case 'BF': // 친구 완료
+                let to = JSON.parse(d.content)[2][1].name;
+                msg = `${to}유저와 친구가 되었습니다`;
+                break;
+            case 'CR': // 담당자 변경
+                let resTaskTitle = JSON.parse(d.content)[2].content ? JSON.parse(d.content)[2].content.where.title : '';
+                let oldRes = JSON.parse(d.content)[2] ? JSON.parse(d.content)[2].content.oldRes ? JSON.parse(d.content)[2].content.oldRes.name : '"없음"' : '';
+                let nowRes = JSON.parse(d.content)[2] ? JSON.parse(d.content)[2].content.nowRes.name : '';
+                msg = `${resTaskTitle}업무의 담당자가 ${oldRes}에서 ${nowRes}로 변경되었습니다`;
+                break;
+            case 'CC': // 댓글 생성
+                let commentTitle = JSON.parse(d.content)[2].task.title
+                let commentUser = JSON.parse(d.content)[2].user.name
+                msg = `${commentTitle}업무에 ${commentUser}이/가 댓글을 작성하였습니다`;
+                break;
             default:
                 break;
         }
+        console.log(msg);
     })
     // 알람창에 알람 달기
     let alarmBody = document.querySelector('.alarm-body')
