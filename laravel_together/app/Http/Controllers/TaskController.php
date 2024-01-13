@@ -634,8 +634,15 @@ class TaskController extends Controller
             if($nowRes){
                 $content['nowRes'] = User::find($nowRes);
                 $content['where'] = $result;
+                $content['project'] = DB::table('projects as p')
+                ->join('tasks as t',function ($join) use ($result) {
+                    $join->on('t.project_id','p.id')
+                        ->where('t.id',$result->id);
+                })
+                ->select('p.project_title')
+                ->first();
                 $checkRes = [
-                    'oldRes' => 0,
+                    'oldRes' => null,
                     'nowRes' => $nowRes,
                     'content' => $content,
                 ];
@@ -693,12 +700,21 @@ class TaskController extends Controller
             }
             // Log::debug($result);
             $result->save();
-
+            
             $nowRes = $result->task_responsible_id;
             $nowResult = [];
             $nowResult['oldRes'] = User::find($oldRes);
             $nowResult['nowRes'] = User::find($nowRes);
             $nowResult['where'] = $result;
+            Log::debug([$result]);
+            Log::debug([$result->project_id]);
+            $nowResult['project'] = DB::table('projects as p')
+                ->join('tasks as t',function ($join) use ($id) {
+                    $join->on('t.project_id','p.id')
+                        ->where('t.id',$id);
+                })
+                ->select('p.project_title')
+                ->first();
             $checkRes = [
                 'oldRes' => $oldRes,
                 'nowRes' => $nowRes,
@@ -779,6 +795,13 @@ class TaskController extends Controller
         $nowResult['oldRes'] = User::find($oldRes);
         $nowResult['nowRes'] = User::find($nowRes);
         $nowResult['where'] = $result;
+        $nowResult['project'] = DB::table('projects as p')
+                ->join('tasks as t',function ($join) use ($id) {
+                    $join->on('t.project_id','p.id')
+                        ->where('t.id',$id);
+                })
+                ->select('p.project_title')
+                ->first();
         $checkRes = [
             'oldRes' => $oldRes,
             'nowRes' => $nowRes,

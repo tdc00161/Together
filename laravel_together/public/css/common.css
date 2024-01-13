@@ -1372,17 +1372,25 @@ box-sizing: border-box;
     overflow-y: auto;
     max-height: 40rem;
     min-height: 10rem;
-    padding: 20px 30px;
+    padding: 15px 20px;
 }
 
 .header .alarm-one {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px;
+    border-radius: 7px;
+    padding: 10px 15px;
+    position: relative;
+}
+
+.header .alarm-one:hover {
+    background-color: rgba(12, 12, 12, 0.829);;
 }
 
 .header .alarm-one:not(:first-child) {
-    margin-top: 20px;
+    margin-top: 2px;
 }
 
 .header .alarm-one *{
@@ -1392,6 +1400,18 @@ box-sizing: border-box;
 
 .header .alarm-content {
     font-size: 17px;
+}
+
+.header .not-read::after {
+    content: 'O';
+    color: transparent;
+    width: 12px;
+    height: 12px;
+    background-color: #ff0000c2;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: 0px;
 }
 
 .header .alarm-time {

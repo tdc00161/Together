@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AlarmEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,10 +46,11 @@ class CommentController extends Controller
             $responseData['data'] = $result;
 
             // 업무 담당자에게 이벤트 발생
-            if($responsible->task_responsible_id !== null){
+            if($responsible->task_responsible_id !== null && $responsible->task_responsible_id !== $usr){
                 $data = [];
                 $data['user'] = User::find($usr);
                 $data['task'] = Task::find($id);
+                $data['project'] = Project::find($data['task']->project_id);
                 $AlarmEvent = new AlarmEvent(['CC',$responsible->task_responsible_id,$data]);
                 $AlarmEvent->newAlarm();  
             }

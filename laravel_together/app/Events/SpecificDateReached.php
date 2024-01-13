@@ -33,7 +33,16 @@ class SpecificDateReached
     public function TaskDateCheck()
     {
         Log::debug('TaskDateCheck');
-        $Tasks = DB::table('tasks')->get();
+        $Tasks = DB::table('tasks as t')
+            ->join('projects as p', 'p.id', 't.project_id')
+            ->select(
+                't.title',
+                't.start_date',
+                't.end_date',
+                't.task_responsible_id',
+                'p.project_title',
+                )
+            ->get();
         foreach ($Tasks as $key => $Task) {    
             if($Task->start_date !== null){
                 if($Task->start_date === now()->format('Y-m-d') && $Task->task_responsible_id !== null){
