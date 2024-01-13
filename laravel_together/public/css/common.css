@@ -1340,3 +1340,68 @@ box-sizing: border-box;
   .page-indicator span.active {
     background-color: #717171;
   }
+
+  /* 알림창 css */
+.header {
+    position: relative;
+}
+
+.header .alarm-modal {
+    position: absolute;
+    width: 500px;
+    max-height: 50rem;
+    min-height: 2rem;
+    background: #181818;
+    border-radius: 17px;
+    box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.6);
+    right: 10%;
+    top: 90%;
+    z-index: 9999;
+    cursor: auto;
+}
+
+.header .alarm-header {
+    font-size: 18px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 18px 24px;
+}
+
+.header .alarm-body {
+    overflow-y: auto;
+    max-height: 40rem;
+    min-height: 10rem;
+    padding: 20px 30px;
+}
+
+.header .alarm-one {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .alarm-one:not(:first-child) {
+    margin-top: 20px;
+}
+
+.header .alarm-one *{
+    width: 77%;
+    text-wrap: wrap;
+}
+
+.header .alarm-content {
+    font-size: 17px;
+}
+
+.header .alarm-time {
+    width: 20%;
+    font-size: 12px;
+    text-align: center;
+}
+
+.m-modal-content .chat-room, 
+.m-modal-content .chat-back, 
+.m-modal-content .send-chat {
+    cursor: pointer;
+}

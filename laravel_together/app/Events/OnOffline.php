@@ -31,7 +31,7 @@ class OnOffline
     public function whoOnline()
     {
         Log::debug('온라인');
-        Log::debug($this->user);
+        Log::debug($this->user->id);
         $this->user->update([
             'last_activity' => now(),
             'online_flg' => '1',
@@ -42,7 +42,7 @@ class OnOffline
     public function whoOffline()
     {
         Log::debug('오프라인');
-        Log::debug($this->user);
+        Log::debug($this->user->id);
         $this->user->update([
             'online_flg' => '0',
         ]);

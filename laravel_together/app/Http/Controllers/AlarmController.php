@@ -25,6 +25,13 @@ class AlarmController extends Controller
 					->where('u.id', Auth::id());
 			})
 			->whereNull('a.deleted_at')
+            ->select(
+                'a.id',
+                'a.listener_id',
+                'a.read',
+                'a.content',
+                'a.created_at',
+                )
 			->orderByDesc('a.created_at')
 			->get();
         // Log::debug($result);

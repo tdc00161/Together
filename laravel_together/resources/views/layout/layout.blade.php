@@ -36,11 +36,8 @@
     <div class="header">
       <a class="header-title" href="/dashboard">Together</a>
       <div class="alarm-modal d-none">
-        <div class="alarm-header">
-          알림창
-        </div>
-        <div class="alarm-body">
-        </div>
+        <div class="alarm-header">알림</div>
+        <div class="alarm-body"></div>
       </div>
      <div class="header-profile">
       <button class="icon-Sub" onclick="toggleActive('icon-notice')"><img class="header-btn icon-notice" src="/img/icon-notice.png" alt=""></button>{{-- <span class="notification-number">3</span> --}}

@@ -200,61 +200,111 @@ fetch('/alarms', {
 })
 .then(data => {
     // console.log(data.data);
-    let msg = '';
     data.data.forEach(d => {
-        console.log(JSON.parse(d.content));
-        let char = JSON.parse(d.content)[0]
-        let code =  char.match(/([A-Za-z]+)(\d+)/);
-        let number = code ? code[2] : false;
-        let taskTitle = '';
-        let projectTitle = '';
-        switch (code ? code[1] : char) {
-            case 'PS': // 프로젝트 시작
-                msg = number ? `${projectTitle}프로젝트 시작까지 ${code[2]}일 남았습니다` : `${projectTitle}프로젝트가 시작되었습니다`;
-                break;
-            case 'PE': // 프로젝트 마감
-                msg = number ? `${projectTitle}프로젝트 마감까지 ${code[2]}일 남았습니다` : `${projectTitle}프로젝트가 마감되었습니다`;
-                break;
-            case 'PI': // 프로젝트 초대
-                msg = `${projectTitle}프로젝트에서 초대되었습니다`;
-                break;
-            case 'TS': // 업무 시작
-                msg = number ? `${taskTitle}업무 시작까지 ${code[2]}일 남았습니다` : `${taskTitle}업무가 시작되었습니다`;
-                break;
-            case 'TE': // 업무 마감
-                msg = number ? `${taskTitle}업무 마감까지 ${code[2]}일 남았습니다` : `${taskTitle}업무가 마감되었습니다`;
-                break;
-            case 'FR': // 친구 요청
-                let from = JSON.parse(d.content)[2][0].name;
-                msg = `${from}유저로부터 친구요청이 왔습니다`;
-                break;
-            case 'BF': // 친구 완료
-                let to = JSON.parse(d.content)[2][1].name;
-                msg = `${to}유저와 친구가 되었습니다`;
-                break;
-            case 'CR': // 담당자 변경
-                let resTaskTitle = JSON.parse(d.content)[2].content ? JSON.parse(d.content)[2].content.where.title : '';
-                let oldRes = JSON.parse(d.content)[2] ? JSON.parse(d.content)[2].content.oldRes ? JSON.parse(d.content)[2].content.oldRes.name : '"없음"' : '';
-                let nowRes = JSON.parse(d.content)[2] ? JSON.parse(d.content)[2].content.nowRes.name : '';
-                msg = `${resTaskTitle}업무의 담당자가 ${oldRes}에서 ${nowRes}로 변경되었습니다`;
-                break;
-            case 'CC': // 댓글 생성
-                let commentTitle = JSON.parse(d.content)[2].task.title
-                let commentUser = JSON.parse(d.content)[2].user.name
-                msg = `${commentTitle}업무에 ${commentUser}이/가 댓글을 작성하였습니다`;
-                break;
-            default:
-                break;
-        }
-        console.log(msg);
-    })
-    // 알람창에 알람 달기
-    let alarmBody = document.querySelector('.alarm-body')
+        console.log(d);
+        // 알람 내용 가공
+        // console.log(JSON.parse(d.content));
+        let msg = alarmText(JSON.parse(d.content));
 
+        // 알림 요소 생성
+        var notification = document.createElement('div');
+        notification.classList.add('alarm-one');
     
-
-    alarmBody
+        // 알림 내용 추가
+        var contentElement = document.createElement('div');
+        contentElement.classList.add('alarm-content');
+        contentElement.textContent = msg;
+        notification.appendChild(contentElement);
+    
+        // 알림 시간 추가
+        var timeElement = document.createElement('div');
+        timeElement.classList.add('alarm-time');
+        timeElement.textContent = formatRelativeDate(d.created_at);
+        notification.appendChild(timeElement);
+    
+        // 알림창에 삽입
+        let alarmBody = document.querySelector('.alarm-body')
+        alarmBody.appendChild(notification);
+    })
 })
 .catch(err => console.log(err.stack))
 
+function alarmText(alarms) {
+    let msg = '';
+    let char = alarms[0]
+    let code =  char.match(/([A-Za-z]+)(\d+)/);
+    let number = code ? code[2] : false;
+    let taskTitle = alarms[2][0] ? alarms[2][0].title : '';
+    let projectTitle = alarms[2].project_title ? alarms[2].project_title : '';
+    switch (code ? code[1] : char) {
+        case 'PS': // 프로젝트 시작
+            msg = number ? `${projectTitle}프로젝트 시작까지 ${code[2]}일 남았습니다` : `${projectTitle}프로젝트가 시작되었습니다`;     
+            break;
+        case 'PE': // 프로젝트 마감
+            msg = number ? `${projectTitle}프로젝트 마감까지 ${code[2]}일 남았습니다` : `${projectTitle}프로젝트가 마감되었습니다`;
+            break;
+        case 'PI': // 프로젝트 초대
+            msg = `${projectTitle}프로젝트에서 초대되었습니다`;
+            break;
+        case 'TS': // 업무 시작
+            msg = number ? `${taskTitle}업무 시작까지 ${code[2]}일 남았습니다` : `${taskTitle}업무가 시작되었습니다`;
+            break;
+        case 'TE': // 업무 마감
+            msg = number ? `${taskTitle}업무 마감까지 ${code[2]}일 남았습니다` : `${taskTitle}업무가 마감되었습니다`;
+            break;
+        case 'FR': // 친구 요청
+            let from = alarms[2][0].name;
+            msg = `${from}유저로부터 친구요청이 왔습니다`;
+            break;
+        case 'BF': // 친구 완료
+            let to = alarms[2][1].name;
+            msg = `${to}유저와 친구가 되었습니다`;
+            break;
+        case 'CR': // 담당자 변경
+            let resTaskTitle = alarms[2].content ? alarms[2].content.where.title : '';
+            let oldRes = alarms[2] ? alarms[2].content.oldRes ? alarms[2].content.oldRes.name : '"없음"' : '';
+            let nowRes = alarms[2] ? alarms[2].content.nowRes.name : '';
+            msg = `${resTaskTitle}업무의 담당자가 ${oldRes}에서 ${nowRes}로 변경되었습니다`;
+            break;
+        case 'CC': // 댓글 생성
+            let commentTitle = alarms[2].task.title
+            let commentUser = alarms[2].user.name
+            msg = `${commentTitle}업무에 ${commentUser}이/가 댓글을 작성하였습니다`;
+            break;
+        default:
+            break;
+    }
+    return msg;
+}
+
+// 날짜표기 함수
+function formatRelativeDate(dateString) {
+    const currentDate = new Date();
+    const targetDate = new Date(dateString);
+  
+    const timeDifference = currentDate - targetDate;
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const minutesDifference = Math.floor(secondsDifference / 60);
+    const hoursDifference = Math.floor(minutesDifference / 60);
+    const daysDifference = Math.floor(hoursDifference / 24);
+    const monthsDifference = Math.floor(daysDifference / 30);
+    const yearsDifference = Math.floor(daysDifference / 365);
+  
+    if (secondsDifference < 60) {
+      return `${secondsDifference}초 전`;
+    } else if (minutesDifference < 60) {
+      return `${minutesDifference}분 전`;
+    } else if (hoursDifference < 24) {
+      return `${hoursDifference}시간 전`;
+    } else if (daysDifference === 1) {
+      return '어제';
+    } else if (monthsDifference < 1 && currentDate.getFullYear() === targetDate.getFullYear()) {
+      return `${targetDate.getMonth() + 1}월 ${targetDate.getDate()}일`;
+    } else {
+      const year = targetDate.getFullYear();
+      const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+      const day = String(targetDate.getDate()).padStart(2, '0');
+      return `${year}.${month}.${day}`;
+    }
+  }
  // ---------------------------------------------------------------- 알림창 js
