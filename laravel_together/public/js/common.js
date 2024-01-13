@@ -201,15 +201,55 @@ fetch('/alarms', {
 .then(data => {
     // console.log(data.data);
     data.data.forEach(d => {
-        console.log(d.read);
+        // console.log(d.id);
+        
         // 알람 내용 가공
-        console.log(JSON.parse(d.content));
+        // console.log(JSON.parse(d.content));
         let msg = alarmText(JSON.parse(d.content));
         
         // 알림 요소 생성
         var notification = document.createElement('div');
         notification.classList.add('alarm-one');
-        Number(d.read) === 0 ? notification.classList.add('not-read') : '';
+
+        // 안읽은 알람 있으면
+        let alarmNotice = document.querySelector('.alarm-notice')
+        if(Number(d.read) === 0){
+            notification.classList.add('not-read');
+            alarmNotice.classList.add('has-new-notice');            
+        }
+
+            // 알림내용 호버시 읽기기능
+            notification.addEventListener('mouseover', e => {
+                fetch('/alarms/' + d.id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': CommonCsrfToken,
+                        // 'X-Socket-ID': socketId,
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('error with print chatting list.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // console.log(data);
+                    notification.style.setProperty('--after-opacity', '0');
+
+                    setTimeout(() => {                        
+                        notification.classList.remove('not-read');
+    
+                        // 안읽은 알람 없으면
+                        let notReads = document.querySelectorAll('.not-read')
+                        if(notReads.length === 0){
+                            alarmNotice.classList.remove('has-new-notice');            
+                        }
+                    }, 500);
+                })
+                .catch(err => console.log(err.stack))
+            });
     
         // 알림 내용 추가
         var contentElement = document.createElement('div');
@@ -227,6 +267,9 @@ fetch('/alarms', {
         let alarmBody = document.querySelector('.alarm-body')
         alarmBody.appendChild(notification);
     })
+
+    // 30일 전 알람까지 가져올 수 있다고 설명
+
 })
 .catch(err => console.log(err.stack))
 
@@ -267,7 +310,7 @@ function alarmText(alarms) {
             let resTaskTitle = alarms[2].content ? alarms[2].content.where.title : '';
             let oldRes = alarms[2] ? alarms[2].content.oldRes ? alarms[2].content.oldRes.name : '없음' : '';
             let nowRes = alarms[2] ? alarms[2].content.nowRes.name : '';
-            msg = `'${resProjectTitle}' - '${resTaskTitle}' 업무의 담당자가 '${oldRes}' 에서 '${nowRes}' 로 변경되었습니다`;
+            msg = `'${resProjectTitle}' - '${resTaskTitle}' 업무의 담당자가 '${oldRes}' 에서 '${nowRes}' 로/으로 변경되었습니다`;
             break;
         case 'CC': // 댓글 생성
             let commentProject = alarms[2].project.project_title
