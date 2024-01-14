@@ -334,7 +334,10 @@
                                 <div class="gantt-task-5">
                                     <input type="date" class="end-date" name="end" id="end-row{{$item->id}}" onchange="test({{$item->id}});" value="{{$item->end_date}}">
                                 </div>
-                                <div class="gantt-more-btn"><button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
+                                <div class="gantt-more-btn">
+                                    <button class="gantt-task-detail-click">
+                                        <span class="gantt-task-detail-click-span">…</span>
+                                    </button>
                                     <div class="gantt-detail" style="display: none">
                                         <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
                                         <br>
@@ -354,28 +357,31 @@
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="task-flex">
-                                <div class="responName">
-                                    <span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span>
-                                    <div class="add_responsible_gantt otherColor d-none"></div>
-                                </div>
-                                
-                                <div class="gantt-status-name">
-                                    <div class="statusName gantt-status-color" data-status="{{$item2->status_name}}">
-                                        <span class="status-name-span" id="statusNameSpan">{{$item2->status_name}}</span>
+                                    <div class="responName">
+                                        <span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span>
+                                        <div class="add_responsible_gantt otherColor d-none"></div>
                                     </div>
-                                    <div class="add_status_gantt d-none"></div>
-                                </div>
-                                <div class="gantt-task-4">
-                                    <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
-                                </div>
-                                <div class="gantt-task-5">
-                                    <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
-                                </div>
-                                <div><button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                <div class="gantt-detail" style="display: none">
-                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
-                                </div>
-                                </div>
+                                    
+                                    <div class="gantt-status-name">
+                                        <div class="statusName gantt-status-color" data-status="{{$item2->status_name}}">
+                                            <span class="status-name-span" id="statusNameSpan">{{$item2->status_name}}</span>
+                                        </div>
+                                        <div class="add_status_gantt d-none"></div>
+                                    </div>
+                                    <div class="gantt-task-4">
+                                        <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
+                                    </div>
+                                    <div class="gantt-task-5">
+                                        <input type="date" class="end-date" name="end" id="end-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->end_date}}">
+                                    </div>
+                                    <div class="gantt-more-btn">
+                                        <button class="gantt-task-detail-click">
+                                            <span class="gantt-task-detail-click-span">…</span>
+                                        </button>
+                                        <div class="gantt-detail" style="display: none">
+                                            <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item2->id}})">자세히보기</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         @empty

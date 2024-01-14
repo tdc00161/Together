@@ -1103,49 +1103,49 @@ responName.forEach((responNameOne,index) => {
             'X-CSRF-TOKEN': csrfToken_gantt,
         },
     })
-        .then(response => response.json())
-        .then(data => {
-            // console.log(data);
-            let ganttTask = document.querySelectorAll('.gantt-task')
-            console.log(ganttTask[index].id.match(/\d+/)[0]);
-        for (let index2 = 0; index2 < data.data.length; index2++) {
-            
-            // div 엘리먼트 생성
-            let newDiv = document.createElement("div");
-            newDiv.className = "add_responsible_gantt_one";
-            let taskNum = ganttTask[index].id.match(/\d+/)[0];
-            newDiv.classList.add('responsible-one-'+taskNum);
+    .then(response => response.json())
+    .then(data => {
+        // console.log(data.data);
+        let ganttTask = document.querySelectorAll('.gantt-task')
+        // console.log(ganttTask[index].id.match(/\d+/)[0]);
+    for (let index2 = 0; index2 < data.data.length; index2++) {
+        
+        // div 엘리먼트 생성
+        let newDiv = document.createElement('div');
+        newDiv.className = 'add_responsible_gantt_one';
+        let taskNum = ganttTask[index].id.match(/\d+/)[0];
+        newDiv.classList.add('responsible-one-'+taskNum);
 
-            // // 아이콘 엘리먼트 생성
-            // let iconDiv = document.createElement("div");
-            // iconDiv.className = "add_responsible_gantt_one_icon";
+        // // 아이콘 엘리먼트 생성
+        // let iconDiv = document.createElement("div");
+        // iconDiv.className = "add_responsible_gantt_one_icon";
 
-            // 이름 엘리먼트 생성
-            let nameDiv = document.createElement("div");
-            nameDiv.className = "add_responsible_gantt_one_name";
-            nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
+        // 이름 엘리먼트 생성
+        let nameDiv = document.createElement('div');
+        nameDiv.className = 'add_responsible_gantt_one_name';
+        nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
 
-            // 이름 엘리먼트를 div에 추가
-            // newDiv.appendChild(iconDiv);
-            newDiv.appendChild(nameDiv);
+        // 이름 엘리먼트를 div에 추가
+        // newDiv.appendChild(iconDiv);
+        newDiv.appendChild(nameDiv);
 
-            add_responsible_gantt[index].appendChild(newDiv);
-            // add_responsible_gantt[index].classList.remove('d-none');
+        add_responsible_gantt[index].appendChild(newDiv);
+        // add_responsible_gantt[index].classList.remove('d-none');
 
-            newDiv.addEventListener('click', () => {
-              // console.log('원래자리', responNameSpan[index].textContent);
-              // console.log('바꿀값:', data.data[index2].member_name);
-              responNameSpan[index].textContent = data.data[index2].member_name;
+        newDiv.addEventListener('click', () => {
+          // console.log('원래자리', responNameSpan[index].textContent);
+          // console.log('바꿀값:', data.data[index2].member_name);
+          responNameSpan[index].textContent = data.data[index2].member_name;
 
-              // 드롭박스 안 담당자 클릭 시 창 닫기
-              add_responsible_gantt[index].classList.add('d-none');
-              })
-            }
-        })
-        .catch(err => {
-            console.log(err.stack);
-        })
+          // 드롭박스 안 담당자 클릭 시 창 닫기
+          add_responsible_gantt[index].classList.add('d-none');
+          })
+        }
+      })
+    .catch(err => {
+        console.log(err.stack);
     })
+  })
 })
 
 // <<업무상태>>
@@ -1159,23 +1159,101 @@ responName.forEach((responNameOne,index) => {
 //   }
 
 // ************* 상태값 드롭다운 선택
-// let statusName = document.querySelectorAll('.statusName');
-// let statusNameSpan = document.querySelectorAll('.status-name-span');
-// let add_status_gantt = document.querySelectorAll('.add_status_gantt');
-// let add_status_gantt_one = document.querySelector('.add_status_gantt_one');
+let statusName = document.querySelectorAll('.statusName');
+let statusNameSpan = document.querySelectorAll('.status-name-span');
+let add_status_gantt = document.querySelectorAll('.add_status_gantt');
+let add_status_gantt_one = document.querySelector('.add_status_gantt_one');
+let ganttCloneStatusModal = add_status_gantt_one ? add_status_gantt_one.cloneNode(true) : ''
+statusName.forEach((statusNameOne, index) => {
+  statusNameOne.addEventListener('click', () => {
 
-// statusName.forEach((statusNameOne, index) => {
-//   statusNameOne.addEventListener('click', () => {
+     // 한 번 클릭 후 다시 클릭 시 창 닫기
+      if (add_status_gantt[index].classList.contains('d-none')) {
+          add_status_gantt[index].classList.remove('d-none');
+      } else {
+          add_status_gantt[index].classList.add('d-none');
+      }
 
-//   })
-// })
+      // 다른 상태값 눌렀을 때 하나만 창 뜨게하기
+      add_status_gantt.forEach(function(staOther, i) {
+          if (i !== index) {
+            staOther.classList.add('d-none');
+          }
+      });
+
+      // 상태값 칸 이외 영역 클릭 시 창 닫기
+      document.addEventListener('click', function(event) {
+        add_status_gantt.forEach(function() {
+              if (!event.target.closest('.gantt-task')) {
+                add_status_gantt[index].classList.add('d-none');
+              }
+          });
+      });
+
+    // 상태값 초기화
+    while (add_status_gantt[index].hasChildNodes()) {
+      add_status_gantt[index].removeChild(add_status_gantt[index].firstChild);
+    }
+    add_status_gantt[index].append(ganttCloneStatusModal)  
+
+
+    fetch('/basedata/' + 0,  {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': csrfToken_gantt,
+      },
+
+    })
+    .then(response => response.json())
+    .then(data => {
+      // console.log(data.data);
+
+      let ganttTask = document.querySelectorAll('.gantt-task');
+      let statusBackColor = ['#B1B1B1', '#04A5FF', '#F34747', '#64C139'];
+        // console.log(ganttTask[index].id.match(/\d+/)[0]);
+      for (let index2 = 0; index2 < data.data.length; index2++) {
+        // div 엘리먼트 생성
+        let taskNum = ganttTask[index].id.match(/\d+/)[0];
+        
+        let newDiv = document.createElement('div');
+        newDiv.classList.add('add_status_gantt_one');
+        newDiv.classList.add('status-one-'+taskNum);
+    
+        // 배경색 적용
+        newDiv.style.backgroundColor = statusBackColor[index2];
+        newDiv.style.borderRadius = '15px';
+        // console.log(newDiv);
+        let nameDiv = document.createElement('div');
+        nameDiv.className = 'add_status_gantt_one_name';
+        nameDiv.textContent = data.data[index2].data_content_name;
+
+        newDiv.appendChild(nameDiv);
+
+        add_status_gantt[index].appendChild(newDiv);
+
+        newDiv.addEventListener('click', () => {
+          
+          // 상태값 클릭 시 배경 바꾸기
+          statusName[index].style.backgroundColor = statusBackColor[index2];
+          // 상태값 클릭 시 글자 바꾸기
+          statusNameSpan[index].textContent = data.data[index2].data_content_name;
+
+          // 드롭박스 안 상태값 클릭 시 창 닫기
+          add_status_gantt[index].classList.add('d-none');
+        })
+      }
+    })
+  })
+})
 
 
 
 // ************* 하위 업무 추가
 // id 값은 임의로 넣은것
 function addSubTask(event, mainId) {
-  console.log(event.target.parentNode.parentNode.parentNode);
+  
+  // console.log(event.target.parentNode.parentNode.parentNode);
   // const doMGanttTask = document.getElementById('gantt-task-314'); // 원래 자리접근
   // $item->id : ${ganttModalId}
   // $item2->id :   
@@ -1198,7 +1276,7 @@ function addSubTask(event, mainId) {
   let newTask = document.createElement('div');
   newTask.classList.add('gantt-task', 'gantt-child-task');
   // newTask.id = 'gantt-task-'; // 밑에서
-  newTask.setAttribute('parent', gantt_modal_id[0])
+  newTask.setAttribute('parent', gantt_modal_id[0]);
 
   // gantt-task 안에 5개 div 생성
 
@@ -1206,54 +1284,20 @@ function addSubTask(event, mainId) {
   // <div class="gantt-editable-div editable"></div>
   const addGanttEditableDiv = document.createElement('div');
   addGanttEditableDiv.classList.add('gantt-editable-div', 'editable');
-  // addGanttEditableDiv
 
-  // gantt-task 안 첫번째 div 안 첫번째 btn 
-  // <button class="gantt-task-detail-click"></button>
-  const addGanttDetailClick = document.createElement('button');
-  addGanttDetailClick.classList.add('gantt-task-detail-click');
-  addGanttDetailClick.addEventListener('click', function (event) {
-
-    // gantt-detail 이 none 이면 blck
-    if(this.contains(event.target)){
-      event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
-    }
-      // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
-  });
-
-  // gantt-task 안 첫번째 div 안 첫번째 btn 안 span
-  const addGanttDetailClickSpan = document.createElement('span');
-  addGanttDetailClickSpan.classList.add('gantt-task-detail-click-span');
-  addGanttDetailClickSpan.textContent = '…';
-
-  // gantt-task 안 첫번째 div 안 두번째 div 
-  // <div class="gantt-detail" style="display: none">
-  const addGanttDetail = document.createElement('div');
-  addGanttDetail.classList.add('gantt-detail');
-  addGanttDetail.style.display = 'none';
-
-  // gantt-task 안 첫번째 div 안 두번째 div 안 btn
-  // <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
-  const addDetailButton = document.createElement('button');
-  addDetailButton.classList.add('gantt-detail-btn');
-  addDetailButton.textContent = '자세히보기';
-  // addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttModalId})`); // 밑에서 처리
-
-  // after
-
-  // gantt-task 안 첫번째 div 안 세번째 div 
+  // gantt-task 안 첫번째 div 안 첫번째 div 
   // <div class="taskKey">{{$item->task_number}}</div>
   const addTaskKey = document.createElement('div');
   addTaskKey.classList.add('taskKey');
   addTaskKey.style.display = 'none';
   // addTaskKey.textContent = '800'; // 밑에서 처리
 
-  // gantt-task 안 첫번째 div 안 네번째 div 
+  // gantt-task 안 첫번째 div 안 두번째 div 
   // <div class="taskChildPosition"></div>
   const addTaskChildPosition = document.createElement('div');
   addTaskChildPosition.classList.add('taskChildPosition');
 
-  // gantt-task 안 첫번째 div 안 다섯번째 div
+  // gantt-task 안 첫번째 div 안 세번째 div
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
@@ -1303,7 +1347,7 @@ function addSubTask(event, mainId) {
       .then(data => {
         addTaskName.removeEventListener('blur', addChildTask);
         addTaskKey.textContent = data.data.task_number;
-        // console.log(data);
+        console.log(data);
 
         // const ganttChildId = data.data.id;
         // console.log(ganttChildId);
@@ -1376,67 +1420,101 @@ function addSubTask(event, mainId) {
     // 이 곳에 after 간트차트(+날짜 계산해서 바로 출력)
     newTask.id = 'gantt-task-' + data.data.id;
     // 작성 기능 -> 수정 기능으로 바꾸기
-    document.querySelectorAll('.taskName, .responName, .statusName, .start-date, .end-date').forEach(element => {
-      element.addEventListener('blur', function (event) {
-        event.target.parentNode.parentNode.getAttribute('id') //var result4 = str.slice(-4);
-        // 간트 수정 시 타겟 추정 및 아이디 반환
-        let originalString = 0;
-        console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); // responName
-        console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title
-        console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
-        console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
-        if (event.target.parentNode.getAttribute('id')) {
-          originalString = event.target.parentNode.getAttribute('id')
-        } else if (event.target.parentNode.parentNode.getAttribute('id')) {
-          originalString = event.target.parentNode.parentNode.getAttribute('id')
-        } else if (event.target.parentNode.parentNode.parentNode.getAttribute('id')) {
-          originalString = event.target.parentNode.parentNode.parentNode.getAttribute('id')
-        } else if (event.target.getAttribute('id')) {
-          originalString = event.target.getAttribute('id')
+    // 업무명, 담당자, 상태, 시작일, 마감일 수정 처리
+    let taskNameElements = document.querySelectorAll('.taskName') 
+    let startDateElements = document.querySelectorAll('.start-date')
+    let endDateElements = document.querySelectorAll('.end-date')
+    // let responNameElements = document.querySelectorAll('.add_responsible_gantt_one')
+    let updatedValue = {
+            // 'task_responsible_id': '',
+            // 'task_status_id': '시작전',
+            // 'start_date': '',
+            // 'end_date': '',
+            // 'title': ''
+          };
+          
+    document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
+      // 업무명 수정
+      taskNameElements[index].addEventListener('blur', function () {
+        updatedValue = {
+          'title': '',
         }
-        const parts = originalString.split('-');
-        const numbersOnly = parts[parts.length - 1];
-        console.log('id: ' + numbersOnly); // 출력 결과: 1243
-        const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
-        let updatedValue = {
-          'responName': '',
-          'status': '',
-          'start_date': '',
-          'end_date': '',
-          'title': ''
-        };
-    
-        console.log('this: ' + this.textContent);
-        console.log('this: ' + this.value);
-    
-        // 내용 가져오기
-        if (this.tagName === 'DIV') {
-          updatedValue.title = this.textContent;
-        } else if (this.tagName === 'SPAN') {
-          if (this.getAttribute('id').includes('responNameSpan')) {
-            updatedValue.responName = this.textContent;
-          } else {
-            updatedValue.status = this.textContent;
-          }
-        } else if (this.tagName === 'INPUT') {
-          if (this.getAttribute('id').includes('start')) {
-            updatedValue.start_date = this.value;
-          } else {
-            updatedValue.end_date = this.value;
-          }
-    
-        }
-    
-    
+        updatedValue.title = taskNameElements[index].textContent;
+        numbersOnly = gantt.id.match(/\d+/)[0]
+        console.log(numbersOnly);
         // 수정 요청 보내기
         console.log('수정 신청');
-        sendUpdateRequest(id, updatedValue, numbersOnly);
-    
+        sendUpdateRequest(updatedValue, numbersOnly);
+
         // 수정 완료 팝업 메시지 표시
-        showPopupMessage('수정 완료!');
+        // showPopupMessage('수정 완료!');
+      });
+      // 시작일 수정
+      startDateElements[index].addEventListener('blur', function () {
+        updatedValue = {
+          'start_date': '',
+        }
+        updatedValue.start_date = startDateElements[index].value;
+        console.log(startDateElements[index].value);
+        numbersOnly = gantt.id.match(/\d+/)[0]
+        // console.log(numbersOnly);
+        // 수정 요청 보내기
+        console.log('수정 신청');
+        sendUpdateRequest(updatedValue, numbersOnly);
+
+        // 수정 완료 팝업 메시지 표시
+        // showPopupMessage('수정 완료!');
+      });
+      // 마감일 수정
+      endDateElements[index].addEventListener('blur', function () {
+        updatedValue = {
+          'end_date': '',
+        }
+        updatedValue.end_date = endDateElements[index].value;
+        console.log(endDateElements[index].value);
+        numbersOnly = gantt.id.match(/\d+/)[0]
+        // 수정 요청 보내기
+        console.log('수정 신청');
+        sendUpdateRequest(updatedValue, numbersOnly);
+
+        // 수정 완료 팝업 메시지 표시
+        // showPopupMessage('수정 완료!');
+      });
+      // 담당자 수정
+      add_responsible_gantt[index].addEventListener('click', function (e) {
+        let resOne = e.target.textContent;
+        updatedValue = {
+          'task_responsible_id': '',
+        }
+        updatedValue.task_responsible_id = resOne;
+        console.log(resOne);
+        numbersOnly = gantt.id.match(/\d+/)[0]
+        // 수정 요청 보내기
+        console.log('수정 신청');
+        sendUpdateRequest(updatedValue, numbersOnly);
+
+        // 수정 완료 팝업 메시지 표시
+        // showPopupMessage('수정 완료!');
+      });
+      // 상태 수정
+      add_status_gantt[index].addEventListener('click', function (e) {
+        let staOne = e.target.textContent;
+        updatedValue = {
+          'task_status_id': '',
+        }
+        updatedValue.task_status_id = staOne;
+        console.log(staOne);
+        numbersOnly = gantt.id.match(/\d+/)[0]
+        // 수정 요청 보내기
+        console.log('수정 신청');
+        sendUpdateRequest(updatedValue, numbersOnly);
+
+        // 수정 완료 팝업 메시지 표시
+        // showPopupMessage('수정 완료!');
       });
     });
   }
+  
   // gantt-task 안 두번째 div
   // <div class="responName"></div>
   const addUserName = document.createElement('div');
@@ -1453,6 +1531,7 @@ function addSubTask(event, mainId) {
   // <div class="add_responsible_gantt d-none"></div>
   const addUserNameSelect = document.createElement('div');
   addUserNameSelect.classList.add('add_responsible_gantt', 'otherColor', 'd-none');
+  
 
   // gantt-task 안 세번째 div
   // <div class="gantt-status-name"></div>
@@ -1505,12 +1584,44 @@ function addSubTask(event, mainId) {
   addTaskEndDate.setAttribute('onchange', 'test(000);'); // 날짜 수정했을 때 차트 수정이 안됨 - 맨밑에 addEventListener로 수정
   // addTaskEndDate.value = '2023-12-05';
   
+  // gantt-task 안 여섯번째 div
+  const addGanttDetailDiv = document.createElement('div');
+  addGanttDetailDiv.classList.add('gantt-more-btn');
+
+  // gantt-task 안 여섯번째 div 안 첫번째 button
+  // <button class="gantt-task-detail-click"></button>
+  const addGanttDetailClick = document.createElement('button');
+  addGanttDetailClick.classList.add('gantt-task-detail-click');
+  addGanttDetailClick.addEventListener('click', function (event) {
+
+    // gantt-detail 이 none 이면 block
+    if(this.contains(event.target)){
+      event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
+    }
+      // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
+  });
+
+  // gantt-task 안 여섯번째 div 안 첫번째 btn 안 span
+  const addGanttDetailClickSpan = document.createElement('span');
+  addGanttDetailClickSpan.classList.add('gantt-task-detail-click-span');
+  addGanttDetailClickSpan.textContent = '…';
+
+  // gantt-task 안 여섯번째 div 안 두번째 div 
+  // <div class="gantt-detail" style="display: none">
+  const addGanttDetail = document.createElement('div');
+  addGanttDetail.classList.add('gantt-detail');
+  addGanttDetail.style.display = 'none';
+
+  // gantt-task 안 여섯번째 div 안 두번째 div 안 btn
+  // <button class="gantt-detail-btn" onclick="openTaskModal(1,0,{{$item->id}})">자세히보기</button>
+  const addDetailButton = document.createElement('button');
+  addDetailButton.classList.add('gantt-detail-btn');
+  addDetailButton.textContent = '자세히보기';
+  // addDetailButton.setAttribute('onclick', `openTaskModal(1,0, ${ganttModalId})`); // 밑에서 처리
+  
+
   // gantt-task 안에 첫번째
   newTask.appendChild(addGanttEditableDiv);
-  addGanttEditableDiv.appendChild(addGanttDetailClick);
-  addGanttDetailClick.appendChild(addGanttDetailClickSpan);
-  addGanttEditableDiv.appendChild(addGanttDetail);
-  addGanttDetail.appendChild(addDetailButton);
   addGanttEditableDiv.appendChild(addTaskKey);
   addGanttEditableDiv.appendChild(addTaskChildPosition);
   addGanttEditableDiv.appendChild(addTaskName);
@@ -1532,6 +1643,15 @@ function addSubTask(event, mainId) {
   // gantt-task 안에 다섯번째
   newTask.appendChild(addTaskEndDateDiv);
   addTaskEndDateDiv.appendChild(addTaskEndDate);
+
+  // gantt-task 안에 여섯번째
+  newTask.appendChild(addGanttDetailDiv);
+  addGanttDetailDiv.appendChild(addGanttDetailClick);
+  addGanttDetailClick.appendChild(addGanttDetailClickSpan);
+  addGanttDetailDiv.appendChild(addGanttDetail);
+  addGanttDetail.appendChild(addDetailButton);
+
+  
 
 // let 하위업무추가 = doubleAddUnderTask
 // let doubleAddUnderTask = document.querySelectorAll('.gantt-detail-btn')
@@ -1574,56 +1694,7 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
 }
   
   
-// 하위업무 추가 = document.querySelector()로 잡은 하위업무추가 버튼 엘리먼트
-// 자식들 => 업무들 중 부모값이 나인 엘리먼트들(배열)?
-// let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
-// childrenTasks === this.id.match(/\d+/);
-// 새자식 => document.create()로 만든 업무 엘리먼트
 
-
-//   let doubleAddUnderTask = document.querySelector('.gantt-detail-btn');
-//  let childrenTasks = Array.from(document.querySelectorAll('.gantt-child-task')).map(task => task.getAttribute('parent'));
-// //   let childrenTasks = [];
-//   // newTask = 0;
-
-//   doubleAddUnderTask.addEventListener('click', function(event) {
-//     let ganttTaskList = document.querySelectorAll('.gantt-task')
-//     for (let index = 0; index < ganttTaskList.length; index++) {
-//       const element = ganttTaskList[index];
-//       if(element.getAttribute('parent') === this.id.match(/\d+/)[0]){
-//         childrenTasks.push(element)
-//       }
-//     }
-//     childrenTasks[childrenTasks.length-1].after(newTask)
-
-//  })
-
-
-
-  // 원래 자리 다음에 생성
-
-  // document.querySelector('')
-  // doMGanttTask.after(newTask); // ->240105 자식분기하위추가 else로 편입
-
-
-
-  // ------------- 왼쪽 업무부분 생성 완
-
-
-  // --------------->240105 자식분기하위추가 else로 편입
-  // const newChart = document.createElement('div');
-  // newChart.classList.add('gantt-chart', 'gantt-child-chart');
-  // newChart.id = 'gantt-chart-000'; //위에서
-  // newChart.setAttribute('parent', gantt_modal_id[0])
-
-  // // 원래있던 부모 다음에 자식 생성
-  // doMGanttChart.after(newChart);
-// ----------------->240105 자식분기하위추가 else로 편입
-
-
-    // --- 차트 부분 생성 완
-
-  // console.log(1);
   //
   // 더보기 버튼 영역외 클릭
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
@@ -1633,9 +1704,9 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
     // console.log(ganttTaskDetailClickList);
       taskDetailClick.addEventListener('click', function(event) {
           ganttDetailList.forEach(function(detail, i) {
-            console.log(i);
-            console.log(index);
-            console.log(i !== index);
+            // console.log(i);
+            // console.log(index);
+            // console.log(i !== index);
               if (i !== index) {
                   detail.style.display = 'none';
               }
@@ -1674,6 +1745,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
+  // 여러 개 클릭했을 때 하나만 뜨게 하기
   ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
       taskDetailClick.addEventListener('click', function(event) {
           ganttDetailList.forEach(function(detail, i) {
@@ -1685,6 +1757,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   });
 
+  // 바깥 영역 클릭했을 때 창 닫기
   document.addEventListener('click', function(event) {
       ganttDetailList.forEach(function(detail) {
           if (!event.target.closest('.gantt-task')) {
@@ -1692,7 +1765,8 @@ document.addEventListener('DOMContentLoaded', function () {
           }
       });
   });
-  
+
+  // 디테일 창 안 버튼 클릭했을 때 창 닫기
   let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
   ganttDetailButtons.forEach(function(button) {
       button.addEventListener('click', function(event) {
@@ -1806,8 +1880,6 @@ function test(rowNum) {
 }
 
 
-// ************* 업무추가 버튼클릭 시 상위업무 추가
-
 /*******************
    * 1. ajax로 백앤에 request
    * 2. id를 이용해서 해당 프로젝트의 하위업무 갯수 획득
@@ -1836,92 +1908,11 @@ function sendUpdateRequest(updatedValue, numbersOnly) {
     });
 }
 
-// 240110 수정완료 주석
-// // 수정 완료 팝업 창 보이기
-// function showPopupMessage(message) {
-//   const popupModal = document.getElementById('ganttPopupModal');
-//   const popupMessage = document.getElementById('ganttPopupMessage');
-
-//   popupMessage.textContent = message;
-//   popupModal.style.display = 'block';
-
-//   // 팝업 창 닫기
-//   const closePopup = () => {
-//     popupModal.style.display = 'none';
-//     document.removeEventListener('click', closePopup);
-//   };
-
-//   // 팝업 영역에서의 클릭 이벤트 전파 차단
-//   popupModal.addEventListener('click', (event) => {
-//     event.stopPropagation();
-//   });
-
-//   // 일정 시간(여기서는 1초) 후 팝업 창 닫기
-//   setTimeout(() => {
-//     closePopup();
-//   }, 1000);
-// }
-// 각 요소에 대해 blur 이벤트를 추가하여 수정 시점을 감지하고 서버에 수정 요청을 보내는 예시
-// document.querySelectorAll('.taskName, .respon-name-span, .status-name-span, .start-date, .end-date').forEach((element,index) => {
-//   element.addEventListener('blur', function (event) {
-//     event.target.parentNode.parentNode.getAttribute('id'); //var result4 = str.slice(-4);
-//     console.log(event.target.parentNode.parentNode.getAttribute('id'));
-//     // 간트 수정 시 타겟 추정 및 아이디 반환
-//     let originalString = 0;
-//     // console.log('변경값 확인용1: ' + event.target.parentNode.getAttribute('id')); //
-//     // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.getAttribute('id')); // title, responName
-//     // console.log('변경값 확인용1: ' + event.target.parentNode.parentNode.parentNode.getAttribute('id')); // status
-//     // console.log('변경값 확인용1: ' + event.target.getAttribute('id')); // start, end
-//     if (event.target.parentNode.getAttribute('id')) {
-//       originalString = event.target.parentNode.getAttribute('id')
-//     } else if (event.target.parentNode.parentNode.getAttribute('id')) {
-//       originalString = event.target.parentNode.parentNode.getAttribute('id')
-//     //   console.log(originalString);
-//     } else if (event.target.parentNode.parentNode.parentNode.getAttribute('id')) {
-//       originalString = event.target.parentNode.parentNode.parentNode.getAttribute('id')
-//     } else if (event.target.getAttribute('id')) {
-//       originalString = event.target.getAttribute('id')
-//     }
-//     const parts = originalString.split('-');
-//     const numbersOnly = parts[parts.length - 1];
-//     // console.log('id: ' + numbersOnly); // 출력 결과: 1243
-//     const id = this.dataset.id; // 데이터 속성을 이용하여 ID 가져오기
-//     let updatedValue = {
-//       'task_responsible_id': '',
-//       'task_status_id': '시작전',
-//       'start_date': '',
-//       'end_date': '',
-//       'title': ''
-//     };
-
-//     // console.log('this: ' + this.textContent);
-//     // console.log('this: ' + this.value);
-//     // console.log(this.tagName); //taskName 
-//     // 내용 가져오기
-//     // if (this.tagName === 'DIV') {
-//     //   console.log('this.tagName === "DIV"');
-//     //   // updatedValue.title = this.textContent;
-//     // } 
-//     console.log(this);
-//     if (this.tagName === 'SPAN') {
-//       updatedValue.title = event.target.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent;
-//       if (this.classList.contains('respon-name-span')) {
-//         updatedValue.task_responsible_id = this.textContent;
-//       } else {
-//         updatedValue.task_status_id = this.textContent;
-//       }
-//     } 
-//     else if (this.tagName === 'INPUT') {
-//       if (this.getAttribute('id').includes('start')) {
-//         updatedValue.start_date = this.value;
-//       } else {
-//         updatedValue.end_date = this.value;
-//       }
-//     }
+// 업무명, 담당자, 상태, 시작일, 마감일 수정 처리
 let taskNameElements = document.querySelectorAll('.taskName') // add_responsible_gantt_one 선언했음
 let startDateElements = document.querySelectorAll('.start-date')
 let endDateElements = document.querySelectorAll('.end-date')
-let responNameElements = document.querySelectorAll('.add_responsible_gantt_one')
+// let responNameElements = document.querySelectorAll('.add_responsible_gantt_one')
 let updatedValue = {
         // 'task_responsible_id': '',
         // 'task_status_id': '시작전',
@@ -1929,13 +1920,16 @@ let updatedValue = {
         // 'end_date': '',
         // 'title': ''
       };
+      
 document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
+  // 업무명 수정
   taskNameElements[index].addEventListener('blur', function () {
     updatedValue = {
       'title': '',
     }
     updatedValue.title = taskNameElements[index].textContent;
     numbersOnly = gantt.id.match(/\d+/)[0]
+    console.log(numbersOnly);
     // 수정 요청 보내기
     console.log('수정 신청');
     sendUpdateRequest(updatedValue, numbersOnly);
@@ -1943,6 +1937,7 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
+  // 시작일 수정
   startDateElements[index].addEventListener('blur', function () {
     updatedValue = {
       'start_date': '',
@@ -1958,6 +1953,7 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
+  // 마감일 수정
   endDateElements[index].addEventListener('blur', function () {
     updatedValue = {
       'end_date': '',
@@ -1972,6 +1968,7 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     // 수정 완료 팝업 메시지 표시
     // showPopupMessage('수정 완료!');
   });
+  // 담당자 수정
   add_responsible_gantt[index].addEventListener('click', function (e) {
     let resOne = e.target.textContent;
     updatedValue = {
@@ -1979,6 +1976,22 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
     }
     updatedValue.task_responsible_id = resOne;
     console.log(resOne);
+    numbersOnly = gantt.id.match(/\d+/)[0]
+    // 수정 요청 보내기
+    console.log('수정 신청');
+    sendUpdateRequest(updatedValue, numbersOnly);
+
+    // 수정 완료 팝업 메시지 표시
+    // showPopupMessage('수정 완료!');
+  });
+  // 상태 수정
+  add_status_gantt[index].addEventListener('click', function (e) {
+    let staOne = e.target.textContent;
+    updatedValue = {
+      'task_status_id': '',
+    }
+    updatedValue.task_status_id = staOne;
+    console.log(staOne);
     numbersOnly = gantt.id.match(/\d+/)[0]
     // 수정 요청 보내기
     console.log('수정 신청');
