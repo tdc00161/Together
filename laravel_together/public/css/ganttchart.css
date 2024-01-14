@@ -2,7 +2,7 @@
 	height: 10px;
 	border-radius: 10px;
 	/* background: rgba(151, 87, 255, 0.5); */
-   }
+}
 
 
 /* 피드 공통 헤더 */
@@ -678,15 +678,15 @@ background-color: #000;
 }
 
 .taskKey {
-		display: flex;
-		width: 16px;
-		height: 16px;
-		font-size: 10px;
-		background: #f7296f;
-		border-radius: 5px;
-		justify-content: center;
-		align-items: center;
-		margin-left: 5px;
+	display: flex;
+	width: 16px;
+	height: 16px;
+	font-size: 10px;
+	background: #f7296f;
+	border-radius: 5px;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5px;
 }
 /* #toptaskbtn {
 display: none;
