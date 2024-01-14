@@ -70,8 +70,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth.api')->group(function () {
     Route::middleware(UpdateUserActivity::class)->group(function () {
         Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
-        Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
-        Route::get('/exit/{id}', [ProjectController::class,'exit_project']); // 방나가기
+        Route::delete('/projectDelete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
+        Route::delete('/projectExit/{id}', [ProjectController::class,'exit_project']); // 방나가기
         Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함) / api
         Route::post('/task',[TaskController::class,'store']); // 업무 작성 / api
         Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정 / api
