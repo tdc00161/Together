@@ -4,7 +4,7 @@
 window.onload = function() {
    //출력할 방법 설정(화면 출력시 데이터 띄움)
    var pathname = window.location.pathname;
-   console.log(pathname);
+   // console.log(pathname);
    // debug("***** project_graph_data End *****");
    $.ajax({
       url: '/chart-data/'+parseInt(pathname.match(/\d+/)[0]),
@@ -12,9 +12,6 @@ window.onload = function() {
       success: function (response) {
          // console.log('***** Ajax Success *****');
          // console.log(response);
-
-         // var dataArray = response.data;
-         // console.log(dataArray);
 
          // 차트 생성
          var canvas = document.getElementById("chartcanvas");
@@ -25,7 +22,6 @@ window.onload = function() {
 
          // 프로젝트 상태별 데이터
          var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
-         // console.log(data);
 
          // 프로젝트 상태별 적용 색상
          var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
@@ -58,13 +54,6 @@ window.onload = function() {
 
 // 카테고리 색상
 var categoryColor = document.getElementById('color');
-// while(categoryColor = true){
-//       if(category_name = '공지'){
-//          categoryColor.style.color = 'red';
-//       } else if(category_name = '업무'){
-//          categoryColor.style.color = 'blue';
-//       }
-// }
 
 
 // ************* 업무상태 색상
@@ -165,7 +154,7 @@ const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]'
          alert('마감일자 입력을 다시 해주세요');
          return false;
       }
-      console.log(end_day);
+
       gap = today - end_day;
       if(gap > 0) {
          dday.innerHTML = '';
@@ -175,7 +164,6 @@ const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]'
          dday.innerHTML = D-day;
       }
       
-      console.log(gap);
       result = Math.floor(gap / (1000 * 60 * 60 * 24));
 
       dday.innerHTML = 'D' + result;
@@ -228,7 +216,7 @@ function closeDeleteModal() {
 const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function deleteProject(project_pk) {
    
-   fetch('/delete/' + project_pk, {
+   fetch('/projectDelete/' + project_pk, {
       method: 'DELETE',
       // body : JSON.stringify(Id),
       headers: {
@@ -257,7 +245,7 @@ function closeExitModal() {
 const csrfToken_project2 = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 function exitProject(project_pk) {
 
-   fetch('/exit/' + project_pk, {
+   fetch('/projectExit/' + project_pk, {
       method: 'DELETE',
       // body : JSON.stringify(Id),
       headers: {
@@ -297,9 +285,9 @@ document.addEventListener('click', (e) => {
 // 친구목록 선택시 값을 controller 에 전달 및 전송값 출력
 document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
    mbbtnOne.addEventListener('click', function(event){
-      console.log(event.target);
+      // console.log(event.target);
       let Value = event.target.value;
-      console.log('Value', Value);
+      // console.log('Value', Value);
       let url = window.location.href;
       document.getElementById('drop-list').style.display = 'none';
       let invitemsg = document.getElementById('invitemsg')
@@ -399,20 +387,6 @@ document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
    })
 });
 
-// 내보내기 버튼 영역외 클릭시 닫기
-let outbtn = document.querySelectorAll('.m_signout');
-
-document.addEventListener('click', (e)=>{
-   // if(!document.querySelectorAll(".plusbtn") && !document.querySelectorAll(".m_signout")){
-   //    document.querySelectorAll('.m_signout').style.display = 'none';
-   //    console.log('성공');
-   // }else{
-   //    console.log('실패');
-   // }
-   // console.log(!document.querySelectorAll(".plusbtn") && !document.querySelectorAll(".m_signout")); 
-   // console.log(e.target);
-   // console.log(document.querySelector('.getout').contains(e.target));
-});
 
 
    
