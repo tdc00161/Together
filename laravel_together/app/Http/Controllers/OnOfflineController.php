@@ -14,8 +14,8 @@ class OnOfflineController extends Controller
     public function areYouMyFriend($id) {
         $me = Auth::id();
         $friend = $id;
-        Log::debug($me);
-        Log::debug($friend);
+        // Log::debug($me);
+        // Log::debug($friend);
 
         $result = DB::table('friendlists')
             ->where(function ($query) use ($me, $friend) {
@@ -27,7 +27,7 @@ class OnOfflineController extends Controller
                     ->where('friend_id', $me);
             })
             ->count();
-        // Log::debug($result);
+        Log::debug('areYouMyFriend '.$result);
 
         return $result;
     }

@@ -30,7 +30,7 @@ class UpdateUserActivity
                 $OnOffline = new OnOffline(auth()->user());
                 $OnOffline->whoOnline();
                 Log::debug('처리');
-                Cache::put('online-'.$userId, 'online request', 30);
+                Cache::put('online-'.$userId, 'online request', 180);
             }
         }
 

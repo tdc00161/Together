@@ -36,6 +36,7 @@ class FriendlistController extends Controller
             'u.name',
             DB::raw("CASE WHEN f.user_id = {$userId} THEN u.name ELSE NULL END AS friend_name"),
             'u.email',
+            'u.online_flg', // 0114 김관호 알림 출력용
         ])
         ->whereNull('f.deleted_at')
         ->orderBy('u.name', 'asc')

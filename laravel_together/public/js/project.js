@@ -349,7 +349,7 @@ document.querySelector(".invite_link").addEventListener('click',function(e){
 // 내보내기 기능
 document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{
    btnOne.addEventListener('click',function(e){
-      let memail = e.target.id;
+      let memail = document.querySelectorAll('.plusbtn')[index].getAttribute('id');
 
       let murl = window.location.href;
 
