@@ -1341,9 +1341,26 @@ box-sizing: border-box;
     background-color: #717171;
   }
 
-  /* 알림창 css */
+  /* --------------------------- 알림창 css --------------------------- */
+
 .header {
     position: relative;
+}
+
+.header .alarm-notice {
+    position: relative;
+}
+
+.header .has-new-notice::after {
+    position: absolute;
+    background-color: red;
+    border-radius: 50%;
+    content: '';
+    pointer-events: none;
+    width: 9px;
+    height: 9px;
+    bottom: 6px;
+    right: 4px;
 }
 
 .header .alarm-modal {
@@ -1412,6 +1429,8 @@ box-sizing: border-box;
     position: absolute;
     top: 5px;
     left: 0px;
+    opacity: var(--after-opacity, 1);
+    transition: opacity 0.5s ease-in;
 }
 
 .header .alarm-time {

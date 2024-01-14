@@ -91,4 +91,5 @@ Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
     Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']); // 채팅방 내역 불러오기
     Route::delete('/signout',[ProjectController::class,'signoutm']); // 구성원 내보내기
     Route::get('/alarms',[AlarmController::class,'getAlarmList']); // 알람 불러오기
+    Route::post('/alarms/{id}',[AlarmController::class,'readAlarm']); // 알람 읽기
 });
