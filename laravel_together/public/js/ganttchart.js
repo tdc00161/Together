@@ -1261,7 +1261,7 @@ function addSubTask(event, mainId) {
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
-  console.log(gantt_modal_id[0]);
+  // console.log(gantt_modal_id[0]);
 
   var iconImg = document.querySelector(`#iconimg${gantt_modal_id}`);
   iconImg.src = "/img/Group 202.png";
@@ -1305,8 +1305,8 @@ function addSubTask(event, mainId) {
   addTaskName.setAttribute('contenteditable', 'true');
   addTaskName.setAttribute('placeholder', '하위업무명을 입력하세요.');
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
-  console.log();
-  console.log('addChildTask');
+  // console.log();
+  // console.log('addChildTask');
   addTaskName.addEventListener('blur', addChildTask)
 
   
@@ -1320,7 +1320,7 @@ function addSubTask(event, mainId) {
       "task_parent": gantt_modal_id[0],
       "task_depth": '1'
     }
-    console.log('blur 중');
+    // console.log('blur 중');
     if (true) {
       // postData.task_status_id = document.querySelectorAll('#checked')[0].textContent
       postData.task_status_name = ''
@@ -1347,7 +1347,7 @@ function addSubTask(event, mainId) {
       .then(data => {
         addTaskName.removeEventListener('blur', addChildTask);
         addTaskKey.textContent = data.data.task_number;
-        console.log(data);
+        // console.log(data);
 
         // const ganttChildId = data.data.id;
         // console.log(ganttChildId);
@@ -1356,13 +1356,13 @@ function addSubTask(event, mainId) {
         addTaskStartDate.id = 'start-row' + data.data.id;
         // addTaskStartDate.id = 'start-row000';
 
-        console.log(addTaskStartDate);
+        // console.log(addTaskStartDate);
         addTaskEndDate.id = 'end-row' + data.data.id;
         // addTaskEndDate.id = 'end-row000';
 
-        console.log(addTaskEndDate);
+        // console.log(addTaskEndDate);
         newChart.id = 'gantt-chart-' + data.data.id;
-        console.log(newChart);
+        // console.log(newChart);
         
         // 시작일 종료일 날짜 설정
         const chartStartDate = new Date('2024-01-01');
@@ -1414,7 +1414,7 @@ function addSubTask(event, mainId) {
   }
 
   function addChildTaskAfter (data) {
-    console.log('addChildTaskAfter');
+    // console.log('addChildTaskAfter');
     creating_delete = 1;
     console.log(data);
     // 이 곳에 after 간트차트(+날짜 계산해서 바로 출력)
@@ -1441,7 +1441,7 @@ function addSubTask(event, mainId) {
         }
         updatedValue.title = taskNameElements[index].textContent;
         numbersOnly = gantt.id.match(/\d+/)[0]
-        console.log(numbersOnly);
+        // console.log(numbersOnly);
         // 수정 요청 보내기
         console.log('수정 신청');
         sendUpdateRequest(updatedValue, numbersOnly);
@@ -1455,7 +1455,7 @@ function addSubTask(event, mainId) {
           'start_date': '',
         }
         updatedValue.start_date = startDateElements[index].value;
-        console.log(startDateElements[index].value);
+        // console.log(startDateElements[index].value);
         numbersOnly = gantt.id.match(/\d+/)[0]
         // console.log(numbersOnly);
         // 수정 요청 보내기
@@ -1471,7 +1471,7 @@ function addSubTask(event, mainId) {
           'end_date': '',
         }
         updatedValue.end_date = endDateElements[index].value;
-        console.log(endDateElements[index].value);
+        // console.log(endDateElements[index].value);
         numbersOnly = gantt.id.match(/\d+/)[0]
         // 수정 요청 보내기
         console.log('수정 신청');
@@ -1488,7 +1488,7 @@ function addSubTask(event, mainId) {
           'task_responsible_id': '',
         }
         updatedValue.task_responsible_id = resOne;
-        console.log(resOne);
+        // console.log(resOne);
         numbersOnly = gantt.id.match(/\d+/)[0]
         // 수정 요청 보내기
         console.log('수정 신청');
@@ -1498,13 +1498,14 @@ function addSubTask(event, mainId) {
         // showPopupMessage('수정 완료!');
       });
       // 상태 수정
-      add_status_gantt[index].addEventListener('click', function (e) {
+      let refresh_add_status_gantt = document.querySelectorAll('.add_status_gantt');
+      refresh_add_status_gantt[index].addEventListener('click', function (e) {
         let staOne = e.target.textContent;
         updatedValue = {
           'task_status_id': '',
         }
         updatedValue.task_status_id = staOne;
-        console.log(staOne);
+        // console.log(staOne);
         numbersOnly = gantt.id.match(/\d+/)[0]
         // 수정 요청 보내기
         console.log('수정 신청');
@@ -1533,17 +1534,21 @@ function addSubTask(event, mainId) {
   const addUserNameSelect = document.createElement('div');
   addUserNameSelect.classList.add('add_responsible_gantt', 'otherColor', 'd-none');
   
+  
 
   // gantt-task 안 세번째 div
   // <div class="gantt-status-name"></div>
   const addStatusColorDiv = document.createElement('div');
   addStatusColorDiv.classList.add('gantt-status-name');
 
-  // gantt-task 안 세번째 div 안 div
+  // gantt-task 안 세번째 div 안 첫번째 div
   // <div class="statusName gantt-status-color" data-status="{{$item->task_status_name}}"></div>
   const addStatusColor = document.createElement('div');
   addStatusColor.classList.add('statusName', 'gantt-status-color');
   addStatusColor.setAttribute('data-status', '시작전');
+  addStatusColor.style.borderRadius = '15px';
+  addStatusColor.style.backgroundColor = '#B1B1B1';
+
   // addStatusColor.dataset.status = '시작전';
 
   // gantt-task 안 세번째 div 안 div 안 span
@@ -1553,6 +1558,10 @@ function addSubTask(event, mainId) {
   addStatusColorSpan.classList.add('status-name-span');
   addStatusColorSpan.textContent = '시작전';
 
+  // gantt-task 안 세번째 div 안 두번째 div
+  // <div class="add_status_gantt d-none"></div>
+  const addStatusSelect = document.createElement('div');
+  addStatusSelect.classList.add('add_status_gantt', 'd-none');
 
   // gantt-task 안 네번째 div
   // <div class="gantt-task-4"></div>
@@ -1636,6 +1645,7 @@ function addSubTask(event, mainId) {
   newTask.appendChild(addStatusColorDiv);
   addStatusColorDiv.appendChild(addStatusColor);
   addStatusColor.appendChild(addStatusColorSpan);
+  addStatusColorDiv.appendChild(addStatusSelect);
 
   // gantt-task 안에 네번째
   newTask.appendChild(addTaskStartDateDiv);
@@ -1675,8 +1685,8 @@ for (let index = 0; index < ganttChildTaskList.length; index++) {
     // console.log('add'+[element]);
   }
 }
-console.log(myChildren);
-console.log(myChildren.length !== 0);
+// console.log(myChildren);
+// console.log(myChildren.length !== 0);
 if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') !== null : true){
   if(myChildren.length !== 0){
     // console.log(myChildren);
@@ -1734,6 +1744,189 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
       });
   });
 
+  // ************* 담당자 드롭다운 선택
+
+  let responName = document.querySelectorAll('.responName');
+  let responNameSpan = document.querySelectorAll('.respon-name-span');
+  let add_responsible_gantt = document.querySelectorAll('.add_responsible_gantt');
+  let add_responsible_gantt_one = document.querySelector('.add_responsible_gantt_one');
+  let ganttCloneResponsibleModal = add_responsible_gantt_one ? add_responsible_gantt_one.cloneNode(true) : ''
+  let ganttThisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
+
+  responName.forEach((responNameOne,index) => {
+      responNameOne.addEventListener('click', () => {
+          // console.log(index);
+          // console.log('원래 자리:', originalText);
+
+          // 한 번 클릭 후 다시 클릭 시 창 닫기
+          if (add_responsible_gantt[index].classList.contains('d-none')) {
+              add_responsible_gantt[index].classList.remove('d-none');
+          } else {
+              add_responsible_gantt[index].classList.add('d-none');
+          }
+
+          // 다른 담당자 눌렀을 때 하나만 창 뜨게하기
+          add_responsible_gantt.forEach(function(resOther, i) {
+              if (i !== index) {
+                  resOther.classList.add('d-none');
+              }
+          });
+
+          // 담당자 칸 이외 영역 클릭 시 창 닫기
+          document.addEventListener('click', function(event) {
+              add_responsible_gantt.forEach(function() {
+                  if (!event.target.closest('.gantt-task')) {
+                      add_responsible_gantt[index].classList.add('d-none');
+                  }
+              });
+          });
+          
+      // 담당자 초기화
+      while (add_responsible_gantt[index].hasChildNodes()) {
+          add_responsible_gantt[index].removeChild(add_responsible_gantt[index].firstChild);
+      }
+      add_responsible_gantt[index].append(ganttCloneResponsibleModal)  
+
+      // 담당자 리스트 확인용 통신
+      fetch('/project/user/' + ganttThisProjectId, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken_gantt,
+          },
+      })
+      .then(response => response.json())
+      .then(data => {
+          // console.log(data.data);
+          let ganttTask = document.querySelectorAll('.gantt-task')
+          // console.log(ganttTask[index].id.match(/\d+/)[0]);
+      for (let index2 = 0; index2 < data.data.length; index2++) {
+          
+          // div 엘리먼트 생성
+          let newDiv = document.createElement('div');
+          newDiv.className = 'add_responsible_gantt_one';
+          let taskNum = ganttTask[index].id.match(/\d+/)[0];
+          newDiv.classList.add('responsible-one-'+taskNum);
+
+          // // 아이콘 엘리먼트 생성
+          // let iconDiv = document.createElement("div");
+          // iconDiv.className = "add_responsible_gantt_one_icon";
+
+          // 이름 엘리먼트 생성
+          let nameDiv = document.createElement('div');
+          nameDiv.className = 'add_responsible_gantt_one_name';
+          nameDiv.textContent = data.data[index2].member_name; // 데이터에서 가져온 이름 속성 사용
+
+          // 이름 엘리먼트를 div에 추가
+          // newDiv.appendChild(iconDiv);
+          newDiv.appendChild(nameDiv);
+
+          add_responsible_gantt[index].appendChild(newDiv);
+          // add_responsible_gantt[index].classList.remove('d-none');
+
+          newDiv.addEventListener('click', () => {
+            // console.log('원래자리', responNameSpan[index].textContent);
+            // console.log('바꿀값:', data.data[index2].member_name);
+            responNameSpan[index].textContent = data.data[index2].member_name;
+
+            // 드롭박스 안 담당자 클릭 시 창 닫기
+            add_responsible_gantt[index].classList.add('d-none');
+            })
+          }
+        })
+      .catch(err => {
+          console.log(err.stack);
+      })
+    })
+  })
+  // ************* 상태값 드롭다운 선택
+  let statusName = document.querySelectorAll('.statusName');
+  let statusNameSpan = document.querySelectorAll('.status-name-span');
+  let add_status_gantt = document.querySelectorAll('.add_status_gantt');
+  let add_status_gantt_one = document.querySelector('.add_status_gantt_one');
+  let ganttCloneStatusModal = add_status_gantt_one ? add_status_gantt_one.cloneNode(true) : ''
+  statusName.forEach((statusNameOne, index) => {
+    statusNameOne.addEventListener('click', () => {
+
+      // 한 번 클릭 후 다시 클릭 시 창 닫기
+        if (add_status_gantt[index].classList.contains('d-none')) {
+            add_status_gantt[index].classList.remove('d-none');
+        } else {
+            add_status_gantt[index].classList.add('d-none');
+        }
+
+        // 다른 상태값 눌렀을 때 하나만 창 뜨게하기
+        add_status_gantt.forEach(function(staOther, i) {
+            if (i !== index) {
+              staOther.classList.add('d-none');
+            }
+        });
+
+        // 상태값 칸 이외 영역 클릭 시 창 닫기
+        document.addEventListener('click', function(event) {
+          add_status_gantt.forEach(function() {
+                if (!event.target.closest('.gantt-task')) {
+                  add_status_gantt[index].classList.add('d-none');
+                }
+            });
+        });
+
+      // 상태값 초기화
+      while (add_status_gantt[index].hasChildNodes()) {
+        add_status_gantt[index].removeChild(add_status_gantt[index].firstChild);
+      }
+      add_status_gantt[index].append(ganttCloneStatusModal)  
+
+
+      fetch('/basedata/' + 0,  {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken_gantt,
+        },
+
+      })
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data.data);
+
+        let ganttTask = document.querySelectorAll('.gantt-task');
+        let statusBackColor = ['#B1B1B1', '#04A5FF', '#F34747', '#64C139'];
+          // console.log(ganttTask[index].id.match(/\d+/)[0]);
+        for (let index2 = 0; index2 < data.data.length; index2++) {
+          // div 엘리먼트 생성
+          let taskNum = ganttTask[index].id.match(/\d+/)[0];
+          
+          let newDiv = document.createElement('div');
+          newDiv.classList.add('add_status_gantt_one');
+          newDiv.classList.add('status-one-'+taskNum);
+      
+          // 배경색 적용
+          newDiv.style.backgroundColor = statusBackColor[index2];
+          newDiv.style.borderRadius = '15px';
+          // console.log(newDiv);
+          let nameDiv = document.createElement('div');
+          nameDiv.className = 'add_status_gantt_one_name';
+          nameDiv.textContent = data.data[index2].data_content_name;
+
+          newDiv.appendChild(nameDiv);
+
+          add_status_gantt[index].appendChild(newDiv);
+
+          newDiv.addEventListener('click', () => {
+            
+            // 상태값 클릭 시 배경 바꾸기
+            statusName[index].style.backgroundColor = statusBackColor[index2];
+            // 상태값 클릭 시 글자 바꾸기
+            statusNameSpan[index].textContent = data.data[index2].data_content_name;
+
+            // 드롭박스 안 상태값 클릭 시 창 닫기
+            add_status_gantt[index].classList.add('d-none');
+          })
+        }
+      })
+    })
+  })
 }
 
 
@@ -2205,7 +2398,7 @@ document.querySelectorAll('.date').forEach((date,index)=>{
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
 
     const rect = date.getBoundingClientRect();
-    console.log(rect);
+    // console.log(rect);
 
     verticalBar.style.position = 'absolute';
     // verticalBar.style.left = rect.left - 735 + 'px';
