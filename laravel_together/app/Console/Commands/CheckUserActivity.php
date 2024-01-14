@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\onlyOffline;
 use App\Events\OnOffline;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -31,13 +32,13 @@ class CheckUserActivity extends Command
      */
     public function handle()
     {
-        $threshold = now()->subMinutes(15); // 15분 동안 활동이 없으면 오프라인으로 표시
+        $threshold = now()->subMinutes(10); // 10분 동안 활동이 없으면 오프라인으로 표시
 
-        $offlineUser = User::where('last_activity', '<', $threshold)->get();
-        Log::debug($offlineUser);
+        $offlineUser = User::where('last_activity', '<', $threshold)->where('online_flg','1')->get();
+        Log::debug('$offlineUser ',[$offlineUser]);
         foreach ($offlineUser as $key => $value) {
-            Log::debug($value);
-            OnOffline::dispatch(Auth::user());
+            Log::debug('$value',[$value]);
+            onlyOffline::dispatch($value);
             $OnOffline = new OnOffline($value);
             $OnOffline->whoOffline();  
         }

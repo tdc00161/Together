@@ -705,6 +705,7 @@ function displayFriendlist(friendList, useUserId) {
 
             var userprofilediv = document.createElement('div');
             userprofilediv.classList.add('user-profile');
+            friendlistdata.online_flg === '1' ? userprofilediv.classList.add('online') : '';
             userDiv.appendChild(userprofilediv);
 
             var userprofileImg = document.createElement('img');

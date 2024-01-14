@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get'); //팀 프로젝트 출력
     Route::middleware('auth')->get('/task', [TaskController::class, 'index']); // 전체 업무 조회 / page
 });
-Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
+Route::middleware('auth.api')->group(function () {
     Route::middleware(UpdateUserActivity::class)->group(function () {
         Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
         Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
@@ -94,5 +94,5 @@ Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
     Route::post('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
     Route::get('/alarms',[AlarmController::class,'getAlarmList']); // 알람 불러오기
     Route::post('/alarms/{id}',[AlarmController::class,'readAlarm']); // 알람 읽기
-    Route::get('/online/{id}',[OnOfflineController::class,'areYouMyFriend']); // 알람 읽기
+    Route::get('/online/{id}',[OnOfflineController::class,'areYouMyFriend']); // 채널에 온 온라인표시가 내 친구인지 판별
 });
