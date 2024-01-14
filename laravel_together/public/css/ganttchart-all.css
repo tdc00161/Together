@@ -5,170 +5,6 @@
    }
 
 
-/* 피드 공통 헤더 */
-.first_menu {
-    display: grid;
-    grid-template-columns: 2.2fr 1.8fr;
-}
-
-.menu_title {
-    display: grid;
-    grid-template-rows: 1.5fr 1.5fr;
-}
-
-.title_bar {
-    display: flex;
-    align-items: center
-}
-
-.statuscolor {
-    border-radius: 10px;
-    width: 80%;
-    height: 60%;
-    margin: 0 auto;
-}
-
-.project_color {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    /* background-color: beige; */
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-.title:not(.detail_title) {
-    display: inline-block;
-    width: 70%;
-    height: 20px;
-    font-size: 1.3rem;
-    font-weight: 600;
-    border-radius: 5px;
-    border: none;
-    background-color: transparent;
-}
-
-.title_rightgrid {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-}
-
-.title_img {
-    display: flex;
-    justify-content: flex-end;
-    /* margin-bottom: 10px; */
-}
-
-.title_img2 {
-    width: 25px;
-    height: 25px;
-}
-
-.project_title {
-    width: 100%;
-    border: none;
-    resize: none;
-    background-color: transparent;
-}
-
-.project_title:hover {
-    border: 1px solid white;
-}
-
-.project_content {
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    font-size: 1rem;
-    border: none;
-    resize: none;
-    background-color: transparent;
-}
-
-.project_content:hover {
-    border: 1px solid white;
-}
-
-.dday {
-    font-size: 1.5rem;
-}
-
-.tabset {
-    width: 100%;
-    height: 50px;
-    display: grid;
-    grid-template-columns: 0.8fr 0.8fr 2.4fr;
-    align-items: center;
-    color: white;
-    font-weight: 800;
-}
-
-.tabmenu {
-    display: inline-block;
-    width: 100%;
-    height: 50%;
-    /* margin: 0 5px 0 0; */
-    padding: 0;
-    font-weight: 400;
-    border: none;
-    background-color: rgba(255, 255, 255,30%);
-    text-align: center;
-}
-
-.tabmenu.active {
-    width: 100%;
-    color: white;
-    font-weight: 500;
-    display: inline-block;
-    background-color: rgba(0, 0, 0,50%);
-    /* border-bottom: 2pax solid #6b6b6b; */
-}
-
-.date_set {
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr;
-    justify-items: center;
-    align-items: end;
-    color: black;
-    /* margin-bottom: 20px */
-}
-
-.project_date {
-    width: 70%;
-    text-align: center;
-    height: 30px;
-    padding-left: 10px;
-    border: none;
-    color: black;
-    background-color: transparent;
-}
-
-.project_label {
-    width: 97%;
-    height: 30px;
-    background-color: white;
-    border-radius: 3px;
-    color: black;
-    font-weight: 600;
-    padding-left: 10px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 1em;
-}
-
-.goGantt {
-	width: fit-content;
-    padding: 5px 15px;
-    border: none;
-    color: white;
-}
-
-.goFeed {
-	width: fit-content;
-    padding: 5px 15px;
-    border: none;
-    color:black;
-}
 
 .gantt-align-div {
 	position: relative;
@@ -187,61 +23,6 @@
 	height: auto;
 }
 
-/* 모달창 */
-
-#deleteModal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: none;
-}
-
-.deletemodal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    height: 20%;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    align-items: center;
-}
-
-.deletespan {
-    color: black;
-    font-size: 18px;
-    font-weight: 600;
-    display: block;
-}
-
-.deletebutton {
-    color: white;
-    width: 62px;
-    height: 27px;
-    margin-right: 10px;
-    background-color: #04A5FF;
-    float: right;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 3px;
-}
-
-.closebutton {
-    color: white;
-    width: 62px;
-    height: 27px;
-    margin-right: 10px;
-    background-color: #919191;
-    float: right;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 3px;
-}
 
 
 /* 간트차트 전체 */
@@ -706,9 +487,11 @@
 	width: 85px;
 }
 .bk-row {
-	background-color: #9656FF;
-	width: 100%;
-	height: 100%;
+	width: 77px;
+	height: 20px;
+	border-radius: 3px;
+	background-color: #21D9AD;
+	display: flex;
 }
 
 .gantt-header-scroll .date {

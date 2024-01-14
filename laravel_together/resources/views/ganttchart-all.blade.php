@@ -2,7 +2,7 @@
 @section('link')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/css/ganttchart-all.css">
-    <script src="/js/ganttchart.js" defer></script>
+    <script src="/js/ganttchart-all.js" defer></script>
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
