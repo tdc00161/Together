@@ -219,7 +219,8 @@ fetch('/alarms', {
         }
 
             // 알림내용 호버시 읽기기능
-            notification.addEventListener('mouseover', e => {
+            notification.addEventListener('mouseover', e => {                
+                notification.style.setProperty('--after-opacity', '0');
                 fetch('/alarms/' + d.id, {
                     method: 'POST',
                     headers: {
@@ -236,8 +237,6 @@ fetch('/alarms', {
                 })
                 .then(data => {
                     // console.log(data);
-                    notification.style.setProperty('--after-opacity', '0');
-
                     setTimeout(() => {                        
                         notification.classList.remove('not-read');
     

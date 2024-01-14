@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Events\OnOffline;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CheckUserActivity extends Command
@@ -36,6 +37,7 @@ class CheckUserActivity extends Command
         Log::debug($offlineUser);
         foreach ($offlineUser as $key => $value) {
             Log::debug($value);
+            OnOffline::dispatch(Auth::user());
             $OnOffline = new OnOffline($value);
             $OnOffline->whoOffline();  
         }

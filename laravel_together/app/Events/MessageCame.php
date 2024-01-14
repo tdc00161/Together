@@ -12,11 +12,9 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class MessageCame
+class MessageCame implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public $readCount = 0;
 
     /**
      * Create a new event instance.
@@ -28,12 +26,6 @@ class MessageCame
         // $this->senderName = User::find($message->sender_id)->name;
         $this->dontBroadcastToCurrentUser();
         Log::debug('메세지온다');
-    }
-
-    // 안읽은 횟수 카운트
-    public function readUp($a)
-    {
-        $this->readCount++;
     }
 
     /**

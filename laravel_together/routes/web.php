@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\TestEvent;
 use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\MessengerController;
 use App\Http\Middleware\UpdateUserActivity;
@@ -15,8 +14,8 @@ use App\Http\Controllers\FriendlistController;
 use App\Http\Controllers\BaseDataController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\OnOfflineController;
 use App\Models\User;
-use App\Events\TestEvent as TE;
 
 
 
@@ -39,23 +38,26 @@ Route::post('/user/login', [UserController::class, 'loginpost'])->name('user.log
 Route::get('/user/registration', [UserController::class, 'registrationget'])->name('user.registration.get'); // 회원가입 화면 이동
 Route::middleware('my.user.validation')->post('/user/registration', [UserController::class, 'registrationpost'])->name('user.registration.post'); // 회원가입 처리
 
-Route::middleware(['auth',UpdateUserActivity::class])->group(function () {
+Route::middleware('auth')->group(function () {
+    Route::middleware(UpdateUserActivity::class)->group(function () {
+        Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
+        Route::get('/ganttchart', [GanttChartController::class, 'ganttIndex'])->name('ganttall.index'); // 간트 전체 출력
+        Route::get('/ganttchart/{id}', [GanttChartController::class, 'ganttIndex_one'])->name('gantt.index'); // 간트 개인 출력
+        Route::post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest'); // 친구요청
+        Route::patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
+        Route::patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
+        Route::patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
+        Route::get('/myfriendlist', [FriendlistController::class, 'myfriendList']); // 친구 목록
+        Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
+        Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
+        Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성
+        Route::get('/invite/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
+        Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정    
+    });
     Route::get('/user/logout', [UserController::class, 'logoutget'])->name('user.logout.get'); // 로그아웃 처리
     Route::get('/sidebar', [TaskController::class,'showSidebar']);
-    Route::get('/dashboard', [TaskController::class,'showdashboard'])->name('dashboard.show');
-    Route::get('/ganttchart', [GanttChartController::class, 'ganttIndex'])->name('ganttall.index'); // 간트 전체 출력
-    Route::get('/ganttchart/{id}', [GanttChartController::class, 'ganttIndex_one'])->name('gantt.index'); // 간트 개인 출력
     Route::get('/friendRequests', [FriendRequestController::class, 'friendRequests']); // 친구요청 받은 목록
     Route::get('/friendSendlist', [FriendRequestController::class, 'friendSendlist']); // 친구요청 보낸 목록
-    Route::post('/friendsend', [FriendRequestController::class, 'sendFriendRequest'])->name('friend.sendFriendRequest'); // 친구요청
-    Route::patch('/rejectFriendRequest', [FriendRequestController::class, 'rejectFriendRequest']); // 친구요청 거절
-    Route::patch('/acceptFriendRequest', [FriendRequestController::class, 'acceptFriendRequest']); // 친구요청 수락
-    Route::patch('/cancleFriendRequest', [FriendRequestController::class, 'cancleFriendRequest']); // 친구요청 취소
-    Route::get('/myfriendlist', [FriendlistController::class, 'myfriendList']); // 친구 목록
-    Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
-    Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
-    Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성
-    Route::get('/invite/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
     Route::get('/membermodal/{token}',[ProjectController::class,'membermodal'])->name('mbmodal'); // 구성원 중복일 때 알림창
     Route::post('/friendinvite',[ProjectController::class,'friendmember'])->name('fdinvite'); //친구목록 구성원 초대
     Route::post('/create', [ProjectController::class,'maincreate'])->name('create.post'); //프로젝트 생성정보 처리
@@ -64,32 +66,33 @@ Route::middleware(['auth',UpdateUserActivity::class])->group(function () {
     Route::get('/team', [ProjectController::class,'mainindex']); //페이지 비활성화
     Route::get('/team/{id}', [ProjectController::class,'mainshow'])->name('team.get'); //팀 프로젝트 출력
     Route::middleware('auth')->get('/task', [TaskController::class, 'index']); // 전체 업무 조회 / page
-    Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정    
-    // Route::get('/test', [MessengerController::class,'getAlarm']); // 테스트
 });
 Route::middleware(['auth.api',UpdateUserActivity::class])->group(function () {
+    Route::middleware(UpdateUserActivity::class)->group(function () {
+        Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
+        Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
+        Route::get('/exit/{id}', [ProjectController::class,'exit_project']); // 방나가기
+        Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함) / api
+        Route::post('/task',[TaskController::class,'store']); // 업무 작성 / api
+        Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정 / api
+        Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제 / api
+        Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id / api
+        Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id / api
+        Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id / api
+        Route::get('/chatlist', [MessengerController::class,'chatlist']); // 채팅 리스트 출력
+        Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
+        Route::delete('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
+        Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']); // 채팅방 내역 불러오기
+        Route::delete('/signout',[ProjectController::class,'signoutm']); // 구성원 내보내기
+    });
     Route::get('/dashboard-chart', [TaskController::class, 'board_graph_data']); // 그래프 데이터 추출
     Route::get('/chart-data/{id}', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
-    Route::post('/update/{id}', [ProjectController::class, 'update_project']); // 프로젝트 수정
-    Route::delete('/delete/{id}', [ProjectController::class, 'delete_project']); // 프로젝트 삭제
-    Route::get('/exit/{id}', [ProjectController::class,'exit_project']); // 방나가기
-    Route::get('/task/{id}', [TaskController::class, 'view']); // 상세 업무 하나 조회 (연결된 상/하위, 댓글 포함) / api
-    Route::post('/task',[TaskController::class,'store']); // 업무 작성 / api
-    Route::put('/task/{id}',[TaskController::class,'update']); // 업무 수정 / api
-    Route::delete('/task/{id}',[TaskController::class,'delete']); // 업무 삭제 / api
     Route::get('/basedata/{id}', [BaseDataController::class, 'get_priority_list']); // 우선순위 리스트 조회 / api
     Route::get('/project/{id}', [ProjectController::class, 'project_select']); // 프로젝트 색상 가져오기 / api
     Route::get('/project/user/{id}', [ProjectController::class, 'project_user_select']); // 프로젝트 참여자 가져오기 / api
-    Route::post('/comment/{id}',[CommentController::class,'store']); // 댓글 작성 // id => 업무 id / api
-    Route::put('/comment/{id}',[CommentController::class,'update']); // 댓글 수정 // 댓글 id / api
-    Route::delete('/comment/{id}',[CommentController::class,'delete']); // 댓글 삭제 // 댓글 id / api
     Route::get('/chart-data', [ProjectController::class, 'project_graph_data']); // 프로젝트 그래프 데이터 추출
-    Route::get('/chatlist', [MessengerController::class,'chatlist']); // 채팅 리스트 출력
-    Route::post('/chat', [MessengerController::class,'store']); // 채팅 전송
     Route::post('/chat-alarm', [MessengerController::class,'alarm']); // 채팅 왔다는 알람 전송
-    Route::delete('/chat-alarm', [MessengerController::class,'removeAlarm']); // 채팅 읽어서 알람 없애기
-    Route::get('/chat/{chatRoomId}', [MessengerController::class,'chatRoomRecords']); // 채팅방 내역 불러오기
-    Route::delete('/signout',[ProjectController::class,'signoutm']); // 구성원 내보내기
     Route::get('/alarms',[AlarmController::class,'getAlarmList']); // 알람 불러오기
     Route::post('/alarms/{id}',[AlarmController::class,'readAlarm']); // 알람 읽기
+    Route::get('/online/{id}',[OnOfflineController::class,'areYouMyFriend']); // 알람 읽기
 });

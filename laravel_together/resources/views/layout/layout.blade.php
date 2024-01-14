@@ -9,6 +9,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/common.css">
   @yield('link','') {{-- 12/12 11:02 kkh: css 개별 링크용 --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script src="{{ asset('js/app.js') }}" defer></script>
+  <script src="/js/onoffline.js" defer></script>
   <title>@yield('title', 'Laravel Board')</title>
 
   <style>
@@ -36,7 +39,14 @@
     <div class="header">
       <a class="header-title" href="/dashboard">Together</a>
       <div class="alarm-modal d-none">
-        <div class="alarm-header">알림</div>
+        <div class="alarm-header">
+          <div class="alarm-header-title">
+            알림
+          </div>
+          <div class="alarm-header-announce">
+            알림은 한달전까지 출력됩니다
+          </div>
+        </div>
         <div class="alarm-body"></div>
       </div>
      <div class="header-profile">

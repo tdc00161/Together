@@ -542,11 +542,18 @@ button {
 .m-modal-content .chat-icon {
     width: 54px;
     height: 54px;
-    background-image: url('/img/profile-img.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     scale: 96%;
+}
+
+.m-modal-content .private-chat-icon {
+    background-image: url('/img/profile-img.png');
+}
+
+.m-modal-content .group-chat-icon {
+    background-image: url('/img/group-chat-icon.png');
 }
 
 .m-modal-content .chat-middle {
