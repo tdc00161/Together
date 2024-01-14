@@ -180,7 +180,7 @@
                                 @foreach ($friendinvite as $item)
                                     <div class="minvite_grid" id="drop-member">
                                         <img class="mbimg" src="/img/profile-img.png" alt="">
-                                        <button class="mbbtn" value="{{$item->friend_id}}">{{$item->name}}</button>
+                                        <button class="mbbtn" value="{{$item->user_id === $user ? $item->friend_id : $item->user_id}}">{{$item->name}}</button>
                                     </div>
                                 @endforeach
                             </div>

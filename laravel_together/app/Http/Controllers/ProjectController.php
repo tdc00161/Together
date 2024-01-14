@@ -130,7 +130,7 @@ class ProjectController extends Controller
                       ->join('projects as pj','pj.id','pu.project_id')
                       ->join('users as us','us.id','pu.member_id')
                       ->where('pu.project_id',$result->id)
-                      // ->where('pu.member_id',$user->id)
+                      ->where('pu.member_id',$user->id)
                       ->whereNull('pu.deleted_at')
                       ->get();
     // dd($authoritychk);
