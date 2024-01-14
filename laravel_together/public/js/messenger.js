@@ -1365,6 +1365,7 @@ fetch('/chatlist', {
         // chat-icon 요소 생성 및 chat-room에 추가
         let chatIcon = document.createElement('div');
         chatIcon.className = 'chat-icon';
+        Number(chatOne.flg) === 1 ? chatIcon.classList.add('group-chat-icon') : chatIcon.classList.add('private-chat-icon');
         chatRoom.appendChild(chatIcon);
         
         // chat-middle 요소 생성 및 chat-room에 추가

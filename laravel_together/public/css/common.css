@@ -1378,11 +1378,19 @@ box-sizing: border-box;
 }
 
 .header .alarm-header {
-    font-size: 18px;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
+    justify-content: space-between;
     margin: 18px 24px;
+}
+
+.alarm-header-title {
+    font-size: 18px;
+}
+
+.alarm-header-announce{
+    opacity: 0.5;
 }
 
 .header .alarm-body {
