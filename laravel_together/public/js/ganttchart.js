@@ -1409,7 +1409,7 @@ function addSubTask(event, mainId) {
         addChildTaskAfter(data);
       }
         )
-      .catch(err=>console.log(err.message))
+      .catch(err=>console.log(err.stack))
   
   }
 
@@ -1481,7 +1481,8 @@ function addSubTask(event, mainId) {
         // showPopupMessage('수정 완료!');
       });
       // 담당자 수정
-      add_responsible_gantt[index].addEventListener('click', function (e) {
+      let refresh_add_responsible_gantt = document.querySelectorAll('.add_responsible_gantt');
+      refresh_add_responsible_gantt[index].addEventListener('click', function (e) {
         let resOne = e.target.textContent;
         updatedValue = {
           'task_responsible_id': '',
