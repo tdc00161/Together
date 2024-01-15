@@ -23,10 +23,6 @@
     <li class="tab" onclick="openTab('tab4')">탭 4</li> --}}
 </ul>
 
-{{-- 이미지 먼저 가져오기 --}}
-<img src="/img/group-chat-icon.png" alt="" style="display: none">
-<img src="/img/icon-leftarrow.png" alt="" style="display: none">
-
 <!-- 탭 내용 -->
 <div id="tab1" class="tab-content">
     <div class="chat-layout">

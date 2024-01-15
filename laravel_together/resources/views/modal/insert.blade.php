@@ -59,7 +59,7 @@
       					onblur="(this.type='text')"
 	  				>
 				</div>
-				<div class="priority add_box">
+				{{-- <div class="priority add_box">
 					<div class="flag_icon"></div>
 					<div class="priority_one insert_priority_one d-none">
 						<div class="priority_icon insert_priority_icon"></div>
@@ -73,7 +73,7 @@
 							<div class="add_priority_modal_one_name"></div>
 						</div>
 					</div>
-				</div>
+				</div> --}}
 			</div>
 			{{-- <div class="content"> --}}
 				<textarea 

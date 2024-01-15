@@ -584,6 +584,7 @@ button {
     background-color: var(--dropdown-hover);
     border-radius: 9px;
     min-height: 36px;
+    max-width: 20rem;
     position: relative;
 }
 
@@ -683,7 +684,7 @@ button {
     border-radius: 7px;
     padding: 19px;
     margin-top: 40px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .m-modal-content .chat-msg-box {

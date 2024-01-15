@@ -909,7 +909,7 @@ function chatListCheck() {
                         })
                         .then(data => {                            
                             // 성공 응답 받았을 때 처리
-                            console.log(data);   
+                            // console.log(data);   
                             msg_now_user_id = data.userId;
 
                             // 채팅 필드
@@ -935,8 +935,8 @@ function chatListCheck() {
                                     let chatContent = document.createElement('div');
                                     chatContent.className = 'chat-content';
                                     chatContent.classList.add('my-chat-content');
-                                    // greatChatTime = formatDateTime(msg.created_at);
-                                    // chatContent.setAttribute('chat-time-stamp',greatChatTime);
+                                    greatChatTime = formatDateTime(msg.created_at);
+                                    chatContent.setAttribute('chat-time-stamp',greatChatTime);
                                     chatContent.textContent = msg.content;
                                     // 채팅내역만 담기
                                     chatMsgBox.append(chatContent);
@@ -955,8 +955,8 @@ function chatListCheck() {
                                     // 채팅 컨텐츠
                                     let chatContent = document.createElement('div');
                                     chatContent.className = 'chat-content';
-                                    // greatChatTime = formatDateTime(msg.created_at);
-                                    // chatContent.setAttribute('chat-time-stamp',greatChatTime);
+                                    greatChatTime = formatDateTime(msg.created_at);
+                                    chatContent.setAttribute('chat-time-stamp',greatChatTime);
                                     chatContent.textContent = msg.content;
                                     // 구조대로 담기
                                     chatUserIconAfter.append(chatUserName);
@@ -1043,7 +1043,7 @@ chatListCheck();
 // 채팅 받기
 window.Echo.private('chats')
     .listen('MessageSent', e => {
-        console.log(e);
+        // console.log(e);
 
         // 리슨한 메세지 출력
         // 채팅 박스
@@ -1085,8 +1085,8 @@ window.Echo.private('chats')
                 // 채팅 컨텐츠
                 let chatContent = document.createElement('div');
                 chatContent.className = 'chat-content';
-                // greatChatTime = formatDateTime(msg.created_at);
-                // chatContent.setAttribute('chat-time-stamp',greatChatTime);
+                greatChatTime = formatDateTime(e.message.created_at);
+                chatContent.setAttribute('chat-time-stamp',greatChatTime);
                 chatContent.textContent = e.message.content;
                 // 구조대로 담기
                 chatUserIconAfter.append(chatUserName);
@@ -1242,8 +1242,8 @@ function sendChat() {
             let chatContent = document.createElement('div');
             chatContent.className = 'chat-content';
             chatContent.classList.add('my-chat-content');
-            // greatChatTime = formatDateTime(msg.created_at);
-            // chatContent.setAttribute('chat-time-stamp',greatChatTime);
+            greatChatTime = formatDateTime(data.created_at);
+            chatContent.setAttribute('chat-time-stamp',greatChatTime);
             chatContent.textContent = data.content;
             // 채팅내역만 담기
             chatMsgBox.append(chatContent);

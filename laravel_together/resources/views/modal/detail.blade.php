@@ -65,14 +65,14 @@
 						readonly
 	  				>
 				</div>
-				<div class="priority add_box ">
+				{{-- <div class="priority add_box ">
 					<div class="flag_icon"></div>
 					<div class="priority_one">
 						<div class="priority_icon"></div>
 						<div class="priority_val"></div>
 					</div>
-					{{-- <div class="add_box_mgin">우선순위 추가/변경</div> --}}
-				</div>
+					<div class="add_box_mgin">우선순위 추가/변경</div>
+				</div> --}}
 			</div>
 			<div class="content detail_content ">
 				<p class="detail_content"></p>
