@@ -22,20 +22,21 @@ class MessengerController extends Controller
 	{
 		$data = [];
 		$userId = Auth::id();
+		
+		// 내 이름 넣기 (제목 판별용)
+		$data['myName'] = Auth::user()->name;
 
 		// 자신이 참여한 채팅방 
 		$data['myChatRooms'] = DB::table('chat_rooms as cr')
 			->join('chat_users as cu', 'cu.chat_room_id', 'cr.id')
 			->where('cu.user_id', $userId)
+			->whereNull('cr.deleted_at')
 			->orderBy('last_chat_created_at','desc')
 			->get()
 			->toArray();
 
 		// 알람 갯수 불러오기
 		$data['myChatCount'] = $this->getAlarm();
-
-		// 채팅방 인원구 불러오기
-		// $data['myChatMembers'] = 0;
 
 		return $data;
 	}
@@ -62,6 +63,10 @@ class MessengerController extends Controller
 		// Log::debug($chatRecords);
 
 		$response['userId'] = Auth::id();
+		
+		$response['myName'] = Auth::user()->name;
+
+		$response['chatRoomName'] = ChatRoom::find($chatRoomId)->chat_room_name;
 
 		return $response;
 	}

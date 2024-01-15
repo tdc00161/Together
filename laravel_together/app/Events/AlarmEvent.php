@@ -21,7 +21,7 @@ class AlarmEvent implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-     * ['PI' (같은 코드명), $user_id (받는유저id), $ChatRoom (무슨작업을 했는질 알 수 있는 데이터)]
+     * ['PI' (코드명), $user_id (받는유저id), $ChatRoom (무슨작업을 했는질 알 수 있는 데이터)]
      * @return void
      */
     public function __construct($content)

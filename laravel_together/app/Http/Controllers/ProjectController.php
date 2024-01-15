@@ -114,13 +114,21 @@ class ProjectController extends Controller
 
   public function mainshow(Request $request, $id) {
 
+    // dump($id);
     //로그인한 유저 정보 출력
     $user = Auth::user();
-    // dump($user);
-    //프로젝트 id 출력
-    $result = project::find($id);
-    // dump($result);
-    if(!$result){
+
+    $result = Project::find($id);
+
+    $authorityPj = DB::table('projects as pj')
+                      ->select('pu.authority_id','pj.id','pu.member_id')
+                      ->join('project_users as pu','pu.project_id','pj.id')
+                      ->where('pj.id',$id)
+                      ->where('member_id',$user->id)
+                      ->get();
+
+    // dd($authorityPj);
+    if(!$id){
       return redirect()->route('dashboard.show');
     }
 
@@ -129,7 +137,7 @@ class ProjectController extends Controller
                       ->select('pu.authority_id','pu.project_id','pu.member_id')
                       ->join('projects as pj','pj.id','pu.project_id')
                       ->join('users as us','us.id','pu.member_id')
-                      ->where('pu.project_id',$result->id)
+                      ->where('pu.project_id',$id)
                       ->where('pu.member_id',$user->id)
                       ->whereNull('pu.deleted_at')
                       ->get();
@@ -139,7 +147,7 @@ class ProjectController extends Controller
     $color_code = DB::table('projects as pj')
                     ->join('basedata as bd','bd.data_content_code','pj.color_code_pk')
                     ->select('pj.id', 'bd.data_content_name')
-                    ->where('pj.id',$result->id)
+                    ->where('pj.id',$id)
                     ->where('bd.data_title_code','3')
                     ->whereNull('pj.deleted_at')
                     ->get();
@@ -259,6 +267,7 @@ class ProjectController extends Controller
                         ->where('p.flg','=', 0)
                         ->where('b.data_title_code', '=', 3)
                         ->whereNull('p.deleted_at')
+                        ->whereNull('pu.deleted_at')
                         ->orderBy('p.created_at', 'asc')
                         ->get();
 
@@ -270,6 +279,7 @@ class ProjectController extends Controller
                         ->where('p.flg','=', 1)
                         ->where('b.data_title_code', '=', 3)
                         ->whereNull('p.deleted_at')
+                        ->whereNull('pu.deleted_at')
                         ->orderBy('p.created_at', 'asc')
                         ->get();
 
@@ -322,7 +332,8 @@ class ProjectController extends Controller
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
         ->with('authoritychk',$authoritychk)
-        ->with('friendinvite',$friendinvite);
+        ->with('friendinvite',$friendinvite)
+        ->with('authorityPj',$authorityPj);
     } else {
         return redirect('/user/login');
     }
@@ -353,11 +364,13 @@ class ProjectController extends Controller
 
     if(!$invite_member){
         //초대 구성원 추가
-        $invite_user = ProjectUser::create([
+        $invite_user['projectUser'] = ProjectUser::create([
           'project_id' => $project[0]->project_id,
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
+
+        $invite_user['project'] = Project::find($project[0]->project_id)->project_title;
 
         // 채팅방 초대
         $this->chatRoomInvite($invite_member[0]->id,$member_id);
@@ -407,12 +420,13 @@ class ProjectController extends Controller
     
 	if(!$invite_member){
       
-      $memberpj = ProjectUser::create([
+      $memberpj['projectUser'] = ProjectUser::create([
         'project_id' => $urlsb,
         'authority_id' => '1',
         'member_id' => $request->Value
       ]);
       
+      $memberpj['project'] = Project::find($urlsb)->project_title;
       // 초대 시 채팅방에 참여
       $this->chatRoomInvite($urlsb,$request->Value);
       // 초대 알람
@@ -623,11 +637,17 @@ class ProjectController extends Controller
     }
     Log::debug("user 에러");
     $user->delete();
+
+    //프로젝트에 포함된 구성원도 나가기
+    $member = ProjectUser::select('project_users.member_id','project_users.project_id')
+                          ->join('projects as pj', 'pj.id', 'project_users.project_id')
+                          ->where('project_users.project_id',$id)
+                          ->delete();
     Log::debug("user 삭제");
 
-    // // 채팅방도 나가기
+    // 채팅방 삭제
     $userId = Auth::id();
-    $this->chatRoomExit($id,$userId);
+    $this->chatRoomDelete($id);
 
     return response()->json();
     Log::debug("화면전달");
@@ -697,18 +717,30 @@ class ProjectController extends Controller
         ->where('user_id',$user_id);
       $ChatUser->delete();
 
-      // 유저가 다 나갔으면 채팅방 삭제
-      Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
-      if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
-        Log::debug('사람 없는 채팅방');
-        $chatRoomId->delete();
-      }
-      
-      // 아마 채팅창에 표시하거나 유저수 카운트 변화하려면 여기서 이벤트 발생해야 할 것
-
       // 채팅방 인원 감소
       $result = $chatRoomId->update([
         'user_count' => $chatRoomId->user_count-1,
+      ]);
+    }
+      return $ChatUser;
+  }
+
+  // 채팅방 삭제 모듈
+  public function chatRoomDelete($project_id)
+  {
+    $chatRoomId = ChatRoom::where('project_id',$project_id)->first(); //$ChatRoom->project_id
+		$ChatUser = null;
+    
+		if($chatRoomId){
+			$ChatUser = ChatUser::where('chat_room_id',$chatRoomId->id);
+      $ChatUser->delete();
+
+      // 채팅방 삭제
+      $chatRoomId->delete();    
+
+      // 채팅방 인원 0
+      $result = $chatRoomId->update([
+        'user_count' => 0,
       ]);
     }
       return $ChatUser;
