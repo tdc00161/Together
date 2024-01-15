@@ -5,7 +5,7 @@
     <script src="/js/ganttchart-all.js" defer></script>
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
-	<script src="/js/insert_detail.js" defer></script>
+	<script src="/js/insert_detail-all.js" defer></script>
 @endsection
 @section('title', '전체간트차트')
 @section('main')
