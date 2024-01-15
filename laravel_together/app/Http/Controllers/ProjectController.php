@@ -353,11 +353,13 @@ class ProjectController extends Controller
 
     if(!$invite_member){
         //초대 구성원 추가
-        $invite_user = ProjectUser::create([
+        $invite_user['projectUser'] = ProjectUser::create([
           'project_id' => $project[0]->project_id,
           'authority_id' => '1',
           'member_id' => $member_id
         ]);
+
+        $invite_user['project'] = Project::find($project[0]->project_id)->project_title;
 
         // 채팅방 초대
         $this->chatRoomInvite($invite_member[0]->id,$member_id);
@@ -407,12 +409,13 @@ class ProjectController extends Controller
     
 	if(!$invite_member){
       
-      $memberpj = ProjectUser::create([
+      $memberpj['projectUser'] = ProjectUser::create([
         'project_id' => $urlsb,
         'authority_id' => '1',
         'member_id' => $request->Value
       ]);
       
+      $memberpj['project'] = Project::find($urlsb)->project_title;
       // 초대 시 채팅방에 참여
       $this->chatRoomInvite($urlsb,$request->Value);
       // 초대 알람
@@ -697,13 +700,6 @@ class ProjectController extends Controller
         ->where('user_id',$user_id);
       $ChatUser->delete();
 
-      // 유저가 다 나갔으면 채팅방 삭제
-      // Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
-      // if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
-      //   Log::debug('사람 없는 채팅방');
-      //   $chatRoomId->delete();
-      // }
-
       // 채팅방 인원 감소
       $result = $chatRoomId->update([
         'user_count' => $chatRoomId->user_count-1,
@@ -723,7 +719,6 @@ class ProjectController extends Controller
       $ChatUser->delete();
 
       // 채팅방 삭제
-      // Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
       $chatRoomId->delete();    
 
       // 채팅방 인원 0

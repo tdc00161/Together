@@ -883,6 +883,7 @@ function chatListCheck() {
                         // 클릭하면 채팅창이 켜지고 해당 채팅방의 id로 fetch
                         document.querySelector('.chat-layout').style.display = 'none';
                         document.querySelector('.chat-window').style.display = 'block';
+                        document.querySelector('.chat-header').style.display = 'flex';
                         // console.log(addedNode);
                         document.querySelector('.chat-window').setAttribute('chat-room-id',now_chat_id);
 
@@ -908,11 +909,17 @@ function chatListCheck() {
                         })
                         .then(data => {                            
                             // 성공 응답 받았을 때 처리
-                            // console.log(data);   
+                            console.log(data);   
                             msg_now_user_id = data.userId;
 
                             // 채팅 필드
-                            let messageField = document.querySelector('.messages-field')
+                            let messageField = document.querySelector('.messages-field');
+                            
+                            // 채팅방 제목 삽입
+                            let chatTitle = document.querySelector('.chat-title');
+                            let chatName = document.querySelectorAll('.chat-name');
+                            let thisChatName = data['chatRoomName'] ? data['chatRoomName'].split(' ').map(word => word.replace(data['myName'], '')).join('') : '(알수없음)';
+                            chatTitle.textContent = thisChatName;
 
                             // 수신 받은 채팅내역을 필드에 출력
                             data['chatRecords'].forEach(msg => {
@@ -928,6 +935,8 @@ function chatListCheck() {
                                     let chatContent = document.createElement('div');
                                     chatContent.className = 'chat-content';
                                     chatContent.classList.add('my-chat-content');
+                                    // greatChatTime = formatDateTime(msg.created_at);
+                                    // chatContent.setAttribute('chat-time-stamp',greatChatTime);
                                     chatContent.textContent = msg.content;
                                     // 채팅내역만 담기
                                     chatMsgBox.append(chatContent);
@@ -946,6 +955,8 @@ function chatListCheck() {
                                     // 채팅 컨텐츠
                                     let chatContent = document.createElement('div');
                                     chatContent.className = 'chat-content';
+                                    // greatChatTime = formatDateTime(msg.created_at);
+                                    // chatContent.setAttribute('chat-time-stamp',greatChatTime);
                                     chatContent.textContent = msg.content;
                                     // 구조대로 담기
                                     chatUserIconAfter.append(chatUserName);
@@ -1032,7 +1043,7 @@ chatListCheck();
 // 채팅 받기
 window.Echo.private('chats')
     .listen('MessageSent', e => {
-        // console.log(e);
+        console.log(e);
 
         // 리슨한 메세지 출력
         // 채팅 박스
@@ -1045,6 +1056,7 @@ window.Echo.private('chats')
         
         // 같은 채팅방일 때 추가
         let chat_window = document.querySelector('.chat-window');
+        let now_chat_id = chat_window.getAttribute('chat-room-id');
         let m_myModal = document.querySelector('#m-myModal')
         let tab_content = document.querySelector('.tab-content')
         let thisChatId = chat_window.getAttribute('chat-room-id');
@@ -1073,16 +1085,15 @@ window.Echo.private('chats')
                 // 채팅 컨텐츠
                 let chatContent = document.createElement('div');
                 chatContent.className = 'chat-content';
+                // greatChatTime = formatDateTime(msg.created_at);
+                // chatContent.setAttribute('chat-time-stamp',greatChatTime);
                 chatContent.textContent = e.message.content;
                 // 구조대로 담기
                 chatUserIconAfter.append(chatUserName);
                 chatUserIconAfter.append(chatContent);
                 chatMsgBox.append(chatUserIcon);
                 chatMsgBox.append(chatUserIconAfter);
-                messageField.append(chatMsgBox);
-
-                // 연 상태로 받으면 바로 읽기 처리
-                let now_chat_id = document.querySelector('.chat-window').getAttribute('chat-room-id')
+                messageField.append(chatMsgBox);                
                 
                 let postData = {
                     "now_chat_id": now_chat_id,
@@ -1116,6 +1127,7 @@ window.Echo.private('chats')
             m_myModal.style.display !== 'block' 
         || chat_window.style.display !== 'block' 
         || tab_content.style.display !== 'block'
+        || Number(now_chat_id) !== e.message.receiver_id
         ){
             // console.log('채팅창이 안떠져 있다');
             // 어디채팅방에서 온 메세지인지 안에서 분기할까 결정
@@ -1230,6 +1242,8 @@ function sendChat() {
             let chatContent = document.createElement('div');
             chatContent.className = 'chat-content';
             chatContent.classList.add('my-chat-content');
+            // greatChatTime = formatDateTime(msg.created_at);
+            // chatContent.setAttribute('chat-time-stamp',greatChatTime);
             chatContent.textContent = data.content;
             // 채팅내역만 담기
             chatMsgBox.append(chatContent);
@@ -1318,16 +1332,49 @@ function lastChatRefresh(receiver, content, last_chat_time) {
 // // 옵저버 실행
 // msgFieldCheck();
 
-// 뒤로가기 버튼 적용
-document.querySelector('.chat-back').addEventListener('click',() => {
-    // 채팅 필드 초기화
+// 뒤로가기 함수
+function chatBack() {
     let messageField = document.querySelector('.messages-field')
     while (messageField.hasChildNodes()) {
         messageField.removeChild(messageField.firstChild);
     } 
     document.querySelector('.chat-window').style.display = 'none';
     document.querySelector('.chat-layout').style.display = 'block';
-})
+    document.querySelector('.chat-header').style.display = 'none';
+
+    // 제목 초기화
+    let chatTitle = document.querySelector('.chat-title');
+    chatTitle.textContent = '';
+}
+
+// 뒤로가기 버튼 적용
+document.querySelector('.chat-back').addEventListener('click',chatBack)
+
+// // 나가기 버튼 적용
+// document.querySelector('.chat-out').addEventListener('click',() => {
+//     // 채팅방 초기화
+//     chatBack;
+
+//     // 채팅방 참여해제 송신
+//     fetch('/chat/' + now_chat_id, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRF-TOKEN': csrfToken,
+//             // 'X-Socket-ID': socketId,
+//         },
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('error with get out chat room.');
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         console.log(data);
+//     })
+//     .catch(err=>console.log(err.stack))
+// })
 
 // 화면 열 때 채팅리스트 불러오기
 fetch('/chatlist', {
@@ -1346,7 +1393,6 @@ fetch('/chatlist', {
     return response.json();
 })
 .then(data => {
-    // 성공 응답 받았을 때 처리
     // console.log(data);
 
     // 새로운 chat-layout 요소 생성
@@ -1377,6 +1423,27 @@ fetch('/chatlist', {
         // chat-name 요소 생성, 속성 추가, chat-middle에 추가
         let chatName = document.createElement('div');
         chatName.className = 'chat-name';
+
+        // 그룹 / 개인 채팅방 이름 분기
+        let personal_chat = chatOne.chat_room_name ? chatOne.chat_room_name.split(' ').map(word => word.replace(data.myName, '')).join('') : '(알수없음)';
+        let group_chat = chatOne.chat_room_name ? chatOne.chat_room_name : '(알수없음)';
+        chatName.textContent = chatOne.flg === '0' ? personal_chat : group_chat;
+        chatMiddle.appendChild(chatName);
+        
+        // last-chat 요소 생성, chat-middle에 추가
+        let lastChat = document.createElement('div');
+        lastChat.className = 'last-chat';
+        lastChat.classList.add('last-chat');
+        lastChat.textContent = chatOne.last_chat; // 길이조절
+        chatMiddle.appendChild(lastChat);
+        
+        // chat-time 요소 생성 및 chat-room에 추가
+        let chatTime = document.createElement('div');
+        chatTime.className = 'chat-time';
+        let GoodDateTime = formatDate(chatOne.last_chat_created_at)
+        chatTime.textContent = GoodDateTime; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
+        chatRoom.appendChild(chatTime);        
+        
         // 카운트 가져온 걸 속성에 추가 및 알람메신저아이콘으로 교체
         data.myChatCount.forEach(myCount => {
             if(myCount.chat_room_id === chatOne.chat_room_id){
@@ -1387,22 +1454,8 @@ fetch('/chatlist', {
                 MsgIcons[1].classList.add('has-new-chat');
             }
         });
-        chatName.textContent = chatOne.chat_room_name ? chatOne.chat_room_name : '';
-        chatMiddle.appendChild(chatName);
-        
-        // last-chat 요소 생성, chat-middle에 추가
-        let lastChat = document.createElement('div');
-        lastChat.className = 'last-chat';
-        lastChat.classList.add('chat-content');
-        lastChat.textContent = chatOne.last_chat; // 길이조절
-        chatMiddle.appendChild(lastChat);
-        
-        // chat-time 요소 생성 및 chat-room에 추가
-        let chatTime = document.createElement('div');
-        chatTime.className = 'chat-time';
-        let GoodDateTime = formatDate(chatOne.last_chat_created_at)
-        chatTime.textContent = GoodDateTime; // 텍스트 콘텐츠 추가 , 오늘/오늘이 아닌 날짜/시간 표기
-        chatRoom.appendChild(chatTime);                
+        // 그룹채팅방 인원수 출력
+        chatOne.flg === '1' ? lastChat.setAttribute('user-count', '('+data.myChatRooms[index].user_count+')') : ''; // 속성 추가
     })
     // document.querySelector('.tab-content').appendChild(chatLayout); // blade->chatLayout 사용
 })
@@ -1442,4 +1495,38 @@ function formatTime(hours, minutes) {
     const formattedMinutes = minutes.toString().padStart(2, '0');
     return `${period} ${formattedHours}:${formattedMinutes}`;
 }
+
+// 채팅창 내 날짜 출력기
+function formatDateTime(dateString) {
+    const currentDate = new Date();
+    const inputDate = new Date(dateString);
+    const timeDifference = currentDate - inputDate;
   
+    // 하루 미만
+    if (timeDifference < 86400000) { // 24시간 (1일) = 86400000밀리초
+      const hours = inputDate.getHours();
+      const minutes = ('0' + inputDate.getMinutes()).slice(-2);
+  
+      if (hours >= 1 && hours <= 12) {
+        // 오전
+        return `오전 ${hours}:${minutes}`;
+      } else if (hours > 12) {
+        // 오후
+        return `오후 ${hours - 12}:${minutes}`;
+      } else {
+        // 자정 (12시)
+        return `오전 12:${minutes}`;
+      }
+    }
+    // 일년 미만
+    else if (timeDifference < 31536000000) { // 1년 = 31536000000밀리초
+      return `${inputDate.getMonth() + 1}월 ${inputDate.getDate()}일`;
+    }
+    // 일년 이상
+    else {
+      const year = inputDate.getFullYear();
+      const month = ('0' + (inputDate.getMonth() + 1)).slice(-2);
+      const day = ('0' + inputDate.getDate()).slice(-2);
+      return `${year}-${month}-${day}`;
+    }
+}

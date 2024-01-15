@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\AlarmEvent;
+use App\Models\ChatRoom;
+use App\Models\ChatUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -251,6 +253,27 @@ class FriendRequestController extends Controller
         $friendNameBoth[] = User::find($userId);
         $AlarmEvent = new AlarmEvent(['BF',$requestId,$friendNameBoth]);
         $AlarmEvent->newAlarm();
+
+        // 240115 김관호: 친구 채팅방 추가
+        $chatRoom = ChatRoom::create([
+            'chat_room_name' => $friendNameBoth[0]->name.' '.$friendNameBoth[1]->name,
+        ]);
+        
+        // 각자 채팅창에 참여
+        ChatUser::create([
+            'chat_room_id' => $chatRoom->id,
+            'user_id' => $friendNameBoth[0]->id,
+        ]);
+
+        ChatUser::create([
+            'chat_room_id' => $chatRoom->id,
+            'user_id' => $friendNameBoth[1]->id,
+        ]);
+
+        // 채팅방 인원 증가
+        $result = $chatRoom->update([
+            'user_count' => 2,
+        ]);
 
          // 친구 목록에 추가
          $friendRequest = DB::table('friend_requests')
