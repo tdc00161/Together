@@ -308,7 +308,7 @@ function alarmText(alarms) {
             let resProjectTitle = alarms[2].content ? alarms[2].content.project.project_title : '';
             let resTaskTitle = alarms[2].content ? alarms[2].content.where.title : '';
             let oldRes = alarms[2] ? alarms[2].content.oldRes ? alarms[2].content.oldRes.name : '없음' : '';
-            let nowRes = alarms[2] ? alarms[2].content.nowRes.name : '';
+            let nowRes = alarms[2] ? alarms[2].content.nowRes ? alarms[2].content.nowRes.name : '없음' : '';
             msg = `'${resProjectTitle}' - '${resTaskTitle}' 업무의 담당자가 '${oldRes}' 에서 '${nowRes}' 로/으로 변경되었습니다`;
             break;
         case 'CC': // 댓글 생성

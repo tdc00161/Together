@@ -122,7 +122,7 @@ let createUpdate = 0;
 // 업무/공지 플래그
 let TaskNoticeFlg = 0;
 // 현재 프로젝트 확인
-let thisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1;
+// let thisProjectId = window.location.pathname.match(/\d+/)[0] ? window.location.pathname.match(/\d+/)[0] : 1; // 240115 전체간트 오류
 // thisProjectId = window.location.pathname.match(/\d+/)[0]; // 임시
 // 현재 업무번호 확인
 let now_task_id = 0;
@@ -133,16 +133,16 @@ let thisCommentId = 0;
 const csrfToken_insert_detail = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 // 업무상태 기본값 설정
-STATUS_VALUE[0].style = 'background-color: #B1B1B1;'
+// STATUS_VALUE[0].style = 'background-color: #B1B1B1;' // 240115 전체간트 오류
 
 // 바깥영역 클릭시 인서트모달 닫기
-BEHIND_MODAL.addEventListener('click', function (event) {
-	if (BEHIND_MODAL.contains(event.target)) {
-		if (!TASK_MODAL[0].contains(event.target)) {
-			closeTaskModal(0);
-		}
-	}
-})
+// BEHIND_MODAL.addEventListener('click', function (event) { // 240115 전체간트 오류
+// 	if (BEHIND_MODAL.contains(event.target)) {
+// 		if (!TASK_MODAL[0].contains(event.target)) {
+// 			closeTaskModal(0);
+// 		}
+// 	}
+// })
 
 // 함수-------------------------------
 // 모달 여닫기 (중복 열기 불가)
@@ -154,7 +154,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 	if (createUpdate === 1) {
 		SUBMIT[0].setAttribute('onclick', 'updateTask()')
 	} else {
-		SUBMIT[0].setAttribute('onclick', 'createTask()')
+		// SUBMIT[0].setAttribute('onclick', 'createTask()') // 240115 전체간트 오류
 	}
 
 	// 더보기 모달 닫기
@@ -224,18 +224,18 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 	// 상세 모달 띄우기
 	if (a === 1) {
-		if (document.querySelector('.insert_modal').style.display != 'none') {
-			if (confirm("변경사항이 저장되지 않을 수 있습니다.") == true) {    //확인
-				// alert('확인')
-				closeTaskModal(0)
-			} else {   //취소
-				// alert('취소')
-				return false
-			}
-		}
+		// if (document.querySelector('.insert_modal').style.display != 'none') { // 240115 전체간트 오류
+		// 	if (confirm("변경사항이 저장되지 않을 수 있습니다.") == true) {    //확인
+		// 		// alert('확인')
+		// 		closeTaskModal(0)
+		// 	} else {   //취소
+		// 		// alert('취소')
+		// 		return false
+		// 	}
+		// }
 
 		// 작성모달 모서리 둥글게
-		TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;'
+		// TASK_MODAL[1].style = 'border-radius: 14px 0 0 14px;' // 240115 전체간트 오류
 
 		// 상세 정보 가져오기
 		fetch('/task/' + c, {
@@ -255,27 +255,27 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 				statusColor(data);
 
 				// 담당자 값체크, 삽입
-				responsibleName(data, a);
+				// responsibleName(data, a); // 240115 전체간트 오류
 
 				// 마감일자 값체크, 삽입
-				deadLineValue(data, a);
+				// deadLineValue(data, a); // 240115 전체간트 오류
 
 				// 우선순위 값체크, 삽입
-				priorityValue(data, a);
+				// priorityValue(data, a); // 240115 전체간트 오류
 
 				// 상세업무 내용 값체크, 삽입
-				modalContentValue(data, a);
+				// modalContentValue(data, a); // 240115 전체간트 오류
 
 				// 댓글 컨트롤
-				commentControl(data);
+				// commentControl(data); // 240115 전체간트 오류
 
 				// 상위업무 컨트롤
-				parentTaskControl(data, a);
+				// parentTaskControl(data, a); // 240115 전체간트 오류
 
 				// 현재 업무 id 저장
 				now_task_id = data.task[0].id
 
-				TASK_MODAL[a].classList.remove('d-none')
+				// TASK_MODAL[a].classList.remove('d-none') // 240115 전체간트 오류
 			})
 			.catch(error => {
 				console.error('Error:', error);
@@ -1001,11 +1001,11 @@ function addComment() {
 // 입력창
 let comment_input = document.querySelector('#comment_input');
 // 엔터로 채팅보내기
-comment_input.addEventListener('keypress', (event) => {
-    if (comment_input.value.trim() !== '' && event.key === 'Enter') {
-        addComment();
-    }
-});
+// comment_input.addEventListener('keypress', (event) => { // 240115 전체간트 오류
+//     if (comment_input.value.trim() !== '' && event.key === 'Enter') {
+//         addComment();
+//     }
+// });
 
 // 오픈모달 모듈------------------------------------------------------
 
@@ -1014,22 +1014,22 @@ function insertModalValue(data, a) {
 	// console.log(data);
 	if (a === 1) { // 상세
 		// 수리 // WRITER_NAME.textContent = data.task[0].wri_name;
-		TASK_CREATED_AT.textContent = data.task[0].created_at;
-		TASK_TITLE.textContent = data.task[0].title;
+		// TASK_CREATED_AT.textContent = data.task[0].created_at; // 240115 전체간트 오류
+		// TASK_TITLE.textContent = data.task[0].title; // 240115 전체간트 오류
 	} else { // 작성
 		INSERT_TASK_TITLE.value = data.task[0].title;
 	}
-	PROJECT_NAME[a].textContent = data.task[0].project_title;
+	// PROJECT_NAME[a].textContent = data.task[0].project_title; // 240115 전체간트 오류
 	// 프로젝트 색 띄우기
-	PROJECT_COLOR[a].style = 'background-color: ' + data.task[0].project_color + ';'
+	// PROJECT_COLOR[a].style = 'background-color: ' + data.task[0].project_color + ';' // 240115 전체간트 오류
 	// 더보기에 쓸 id값 숨겨두기
 	now_task_id = data.task[0].id
 }
 
 // 업무상태 값과 색상 주기
 function statusColor(data) {
-	DET_STATUS_VAL.textContent = data.task[0].status_name;
-	statusColorAutoPainting(DET_STATUS_VAL.textContent, DET_STATUS_VAL)
+	// DET_STATUS_VAL.textContent = data.task[0].status_name; // 240115 전체간트 오류
+	// statusColorAutoPainting(DET_STATUS_VAL.textContent, DET_STATUS_VAL) // 240115 전체간트 오류
 	// switch (DET_STATUS_VAL.textContent) {
 	// 	case '시작전':
 	// 		DET_STATUS_VAL.style = 'background-color: #B1B1B1;';
@@ -1052,11 +1052,11 @@ function statusColor(data) {
 // 담당자 값체크, 삽입
 function responsibleName(data, a) {
 	if (data.task[0].res_name !== null) {
-		RESPONSIBLE_USER[a].textContent = data.task[0].res_name;
-		RESPONSIBLE[a].style = 'display: flex;'
-		if (RESPONSIBLE_PERSON[a].classList.contains('d-none')) {
-			RESPONSIBLE_PERSON[a].classList.remove('d-none')
-		}
+		// RESPONSIBLE_USER[a].textContent = data.task[0].res_name; // 240115 전체간트 오류
+		// RESPONSIBLE[a].style = 'display: flex;' // 240115 전체간트 오류
+		// if (RESPONSIBLE_PERSON[a].classList.contains('d-none')) { // 240115 전체간트 오류
+		// 	RESPONSIBLE_PERSON[a].classList.remove('d-none')
+		// }
 	} else {
 		RESPONSIBLE[a].style = 'display: none;'
 	}
@@ -1066,33 +1066,33 @@ function responsibleName(data, a) {
 function deadLineValue(data, a) {
 	// console.log(data);
 	//초기화
-	START_DATE[a].placeholder = '시작일';
-	END_DATE[a].placeholder = '마감일';
-	START_DATE[a].value = null
-	END_DATE[a].value = null
+	// START_DATE[a].placeholder = '시작일'; // 240115 전체간트 오류
+	// END_DATE[a].placeholder = '마감일'; // 240115 전체간트 오류
+	// START_DATE[a].value = null // 240115 전체간트 오류
+	// END_DATE[a].value = null // 240115 전체간트 오류
 	//삽입
 	if (data.task[0].start_date === null || data.task[0].end_date === null) {
 		DEAD_LINE[a].classList.add('d-none')
 	} else {
-		START_DATE[a].placeholder = data.task[0].start_date;
-		END_DATE[a].placeholder = data.task[0].end_date;
-		START_DATE[a].value = data.task[0].start_date;
-		END_DATE[a].value = data.task[0].end_date;
-		DEAD_LINE[a].classList.add('d-none')
-		if (DEAD_LINE[a].classList.contains('d-none')) {
-			DEAD_LINE[a].classList.remove('d-none')
-		}
+		// START_DATE[a].placeholder = data.task[0].start_date; // 240115 전체간트 오류
+		// END_DATE[a].placeholder = data.task[0].end_date; // 240115 전체간트 오류
+		// START_DATE[a].value = data.task[0].start_date; // 240115 전체간트 오류
+		// END_DATE[a].value = data.task[0].end_date; // 240115 전체간트 오류
+		// DEAD_LINE[a].classList.add('d-none') // 240115 전체간트 오류
+		// if (DEAD_LINE[a].classList.contains('d-none')) { // 240115 전체간트 오류
+		// 	DEAD_LINE[a].classList.remove('d-none')
+		// }
 	}
 }
 
 // 우선순위 값체크, 삽입
 function priorityValue(data, a) {
 	if (data.task[0].priority_name !== null) {
-		PRIORITY_VAL[a].textContent = data.task[0].priority_name;
-		PRIORITY[a].style = 'display: flex;'
-		if (PRIORITY_ONE[a].classList.contains('d-none')) {
-			PRIORITY_ONE[a].classList.remove('d-none')
-		}
+		// PRIORITY_VAL[a].textContent = data.task[0].priority_name; // 240115 전체간트 오류
+		// PRIORITY[a].style = 'display: flex;' // 240115 전체간트 오류
+		// if (PRIORITY_ONE[a].classList.contains('d-none')) { // 240115 전체간트 오류
+		// 	PRIORITY_ONE[a].classList.remove('d-none')
+		// }
 		// 우선순위 값별로 이미지 삽입
 		switch (PRIORITY_VAL[a].textContent) {
 			case '긴급':
@@ -1212,15 +1212,15 @@ function openInsertDetailModal(a) {
 	if (createUpdate === 1) {
 		SUBMIT[0].setAttribute('onclick', 'updateTask()')
 	} else {
-		SUBMIT[0].setAttribute('onclick', 'createTask()')
+		// SUBMIT[0].setAttribute('onclick', 'createTask()') // 240115 전체간트 오류
 	}
 
-	TASK_MODAL[a].style = 'display: block;'
+	// TASK_MODAL[a].style = 'display: block;' // 240115 전체간트 오류
 	if (a === 0) {
 		BEHIND_MODAL.style = 'display: block;'
 		// TASK_MODAL[1].style = 'display: none;'
 	} else {
-		BEHIND_MODAL.style = 'display: none;'
+		// BEHIND_MODAL.style = 'display: none;' // 240115 전체간트 오류
 		// TASK_MODAL[0].style = 'display: none;'
 	}
 }
@@ -1230,8 +1230,8 @@ function TaskFlg(a, b) {
 		BOARD_TYPE[a * 2].classList.add('d-none');
 		BOARD_TYPE[(a * 2) + 1].classList.add('d-none');
 	} else {
-		BOARD_TYPE[a * 2].classList.remove('d-none');
-		BOARD_TYPE[(a * 2) + 1].classList.remove('d-none');
+		// BOARD_TYPE[a * 2].classList.remove('d-none'); // 240115 전체간트 오류
+		// BOARD_TYPE[(a * 2) + 1].classList.remove('d-none'); // 240115 전체간트 오류
 	}
 }
 // 수정 모달 값 넣기
