@@ -889,19 +889,56 @@ function removePriority(a) {
 
 // 댓글 수정
 function updateComment(event, a) {
-	document.querySelectorAll('.submit')[1].setAttribute('onclick', 'commitUpdateComment()')
-	let comment_input = document.querySelector('.comment_line')
+	
+	let comment_one = document.querySelectorAll('.comment_one');
+	let comment_input = document.querySelectorAll('.comment_line');
+	let updateComment = document.querySelectorAll('.update_comment');
+	let deleteComment = document.querySelectorAll('.delete_comment');
+	let saveComment = document.querySelectorAll('.save_comment');
+	let cancelComment = document.querySelectorAll('.cancel_comment');
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
 	// console.log(thisCommentId);
 	thisCommentContent = event.target.parentElement.nextElementSibling
-	// console.log(thisCommentContent);
-	comment_input.setAttribute('contenteditable', 'true');
-	// comment_input.textContent = thisCommentContent.textContent
-}
+	console.log(thisCommentContent);
+	// console.log(thisCommentBtn);
+
+	comment_one.forEach((comOne ,index) => {
+		document.querySelectorAll('.save_comment')[index].setAttribute('onclick', 'commitUpdateComment()');
+		// console.log(comOne);
+		// const element = comment_input[index];
+		// console.log(element);
+		
+
+		updateComment[index].classList.add('d-none');
+		deleteComment[index].classList.add('d-none');
+
+		saveComment[index].classList.remove('d-none');
+		cancelComment[index].classList.remove('d-none');
+
+		thisCommentContent.setAttribute('contenteditable', 'true');
+		thisCommentContent.style.backgroundColor = '#ffffff2f';
+
+		// 취소 눌렀을 때
+		cancelComment[index].addEventListener('click', () => {
+			updateComment[index].classList.remove('d-none');
+			deleteComment[index].classList.remove('d-none');
+			saveComment[index].classList.add('d-none');
+			cancelComment[index].classList.add('d-none');
+			comment_input[index].removeAttribute('contenteditable', 'true');
+			comment_input[index].style.backgroundColor = '';
+		})
+	})
+	}
+		
+	
+	
+
+
+
 
 // 댓글 수정 적용 버튼
 function commitUpdateComment() {
-	let comment_input = document.querySelector('.comment_line')
+	let comment_input = document.querySelector('.comment_line');
 	let putData = {
 		"content": comment_input.textContent,
 		"task_id": now_task_id
@@ -919,20 +956,15 @@ function commitUpdateComment() {
 			console.log(data);
 			openTaskModal(1, TaskNoticeFlg, now_task_id)
 
-			let updateComment = document.querySelectorAll('.update_comment');
-			let deleteComment = document.querySelectorAll('.delete_comment');
-
-			updateComment.forEach((updateOne, index) => {
-				updateOne[index].textContent = '저장';
-			})
-
 		})
 		.catch(err => {
 			console.log(err.message);
 		})
-	SUBMIT[1].setAttribute('onclick', 'addComment()')
-	INPUT_COMMENT_CONTENT.value = ''
+	// SUBMIT[1].setAttribute('onclick', 'addComment()')
+	// INPUT_COMMENT_CONTENT.value = ''
 }
+	
+
 
 // 댓글 삭제
 function removeComment(event, a) {

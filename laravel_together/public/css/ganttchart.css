@@ -725,7 +725,7 @@ display: none;
 	color: white;
 }
 .taskName:hover {
-	background-color: rgba(255, 255, 255, 0.185);
+	background-color: #ffffff2f;
     border-radius: 4px;
 }
 
@@ -963,7 +963,7 @@ display: none;
 }
 
 /* 업무명 div에 placeholder */
-[contenteditable="true"]:empty:before {
+.taskName[contenteditable="true"]:empty:before {
 	content: attr(placeholder);
 }
 

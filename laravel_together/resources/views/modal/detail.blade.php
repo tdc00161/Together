@@ -89,9 +89,9 @@
 							<div class="comment_date "></div>
 						</div>
 						<div class="update_comment" onclick="updateComment(event, 0)">편집</div>
-						<div class="update_comment save_comment d-none">저장</div>
+						<div class="save_comment d-none">저장</div>
 						<div class="delete_comment" onclick="removeComment(event, 0);">삭제</div>
-						<div class="delete_comment cancel_comment d-none">취소</div>
+						<div class="cancel_comment d-none">취소</div>
 					</div>
 					<div class="comment_line "></div>
 					<input type="hidden" name="id" value="">
