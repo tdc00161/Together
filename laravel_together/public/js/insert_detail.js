@@ -890,17 +890,20 @@ function removePriority(a) {
 // 댓글 수정
 function updateComment(event, a) {
 	document.querySelectorAll('.submit')[1].setAttribute('onclick', 'commitUpdateComment()')
-	let comment_input = document.querySelector('#comment_input')
+	let comment_input = document.querySelector('.comment_line')
 	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
+	// console.log(thisCommentId);
 	thisCommentContent = event.target.parentElement.nextElementSibling
-	comment_input.value = thisCommentContent.textContent
+	// console.log(thisCommentContent);
+	comment_input.setAttribute('contenteditable', 'true');
+	// comment_input.textContent = thisCommentContent.textContent
 }
 
 // 댓글 수정 적용 버튼
 function commitUpdateComment() {
-	let comment_input = document.querySelector('#comment_input')
+	let comment_input = document.querySelector('.comment_line')
 	let putData = {
-		"content": comment_input.value,
+		"content": comment_input.textContent,
 		"task_id": now_task_id
 	}
 	fetch('/comment/' + thisCommentId, {
@@ -915,6 +918,14 @@ function commitUpdateComment() {
 		.then(data => {
 			console.log(data);
 			openTaskModal(1, TaskNoticeFlg, now_task_id)
+
+			let updateComment = document.querySelectorAll('.update_comment');
+			let deleteComment = document.querySelectorAll('.delete_comment');
+
+			updateComment.forEach((updateOne, index) => {
+				updateOne[index].textContent = '저장';
+			})
+
 		})
 		.catch(err => {
 			console.log(err.message);
