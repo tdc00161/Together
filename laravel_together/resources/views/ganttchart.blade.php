@@ -5,7 +5,7 @@
     {{-- 헤더 js --}}
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
-	<script src="/js/insert_detail.js" defer></script>
+	{{-- <script src="/js/insert_detail.js" defer></script> --}}
     {{-- <script src="/js/project.js" defer></script> --}}
 @endsection
 @section('title', '간트차트')
@@ -390,25 +390,42 @@
                     @empty
                         <div class="gantt-task d-none" id="gantt-task-000">
                             <div class="gantt-editable-div editable">
-                                <button class="gantt-task-detail-click"><span class="gantt-task-detail-click-span">…</span></button>
-                                <div class="gantt-detail" style="display: none">
-                                    <button class="gantt-detail-btn" onclick="openTaskModal(1,0,000)">자세히보기</button>
-                                    <br>
-                                    <button class="gantt-detail-btn" onclick="addSubTask(event, 000)">하위업무 추가</button>
-                                </div>     
-                                <div class="taskKey" style="display: none">000</div>
+                                <div class="task-top-icon">
+                                {{-- <button onclick="toggleChildTask({{$item->id}})" id="toptaskbtn{{$item->id}}"><img id="iconimg{{$item->id}}" class="task-top-icon-img" src=""></button> --}}
+                                </div>
+                            
+                                <div class="taskKey">000</div>
                                 <div class="taskChildPosition" style="display: none"></div>
                                 <div class="taskName editable-title" spellcheck="false" contenteditable="true"></div>
                             </div>
-                            <div class="responName"><span id="responNameSpan"></span></div>
-                            <div class="gantt-status-name">
-                                <div class="statusName gantt-status-color" data-status="000"><span id="statusNameSpan"></span></div>
-                            </div>
-                            <div class="gantt-task-4">
-                                <input type="date" class="start-date" name="start" id="start-row000" onchange="test(000);" value="">
-                            </div>
-                            <div class="gantt-task-5">
-                                <input type="date" class="end-date" name="end" id="end-row000" onchange="test(000);" value="">
+                            <div class="task-flex">
+                                <div class="responName">
+                                    <span class="respon-name-span" id="responNameSpan"></span>
+                                    <div class="add_responsible_gantt d-none"></div>
+                                </div>
+                                
+                                <div class="gantt-status-name">
+                                    <div class="statusName gantt-status-color" data-status="">
+                                        <span class="status-name-span" id="statusNameSpan"></span>
+                                    </div>
+                                    <div class="add_status_gantt d-none"></div>
+                                </div>
+                                <div class="gantt-task-4">
+                                    <input type="date" class="start-date" name="start" id="start-row000" onchange="test(000);" value="">
+                                </div>
+                                <div class="gantt-task-5">
+                                    <input type="date" class="end-date" name="end" id="end-row000" onchange="test(000);" value="">
+                                </div>
+                                <div class="gantt-more-btn">
+                                    <button class="gantt-task-detail-click">
+                                        <span class="gantt-task-detail-click-span">…</span>
+                                    </button>
+                                    <div class="gantt-detail" style="display: none">
+                                        <button class="gantt-detail-btn" onclick="openTaskModal(1,0,000)">자세히보기</button>
+                                        <br>
+                                        <button class="gantt-detail-btn" onclick="addSubTask(event, 000)">하위업무 추가</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endforelse
@@ -450,13 +467,13 @@
                                 
                             @endforelse
                         @empty
-                        <div class="gantt-chart" id="gantt-chart-000">
+                        <div class="gantt-chart gantt-child-chart" id="gantt-chart-000" parent="000">
                             @php
                                 $startDate = new DateTime('2024-01-01');
                                 $endDate = new DateTime('2024-03-31');
 
                                 for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                    echo "<div id='row"."-" . $date->format('Ymd') . "' class='d-none'></div>";
+                                    echo "<div id='row" . (000) . "-" . $date->format('Ymd') . "'></div>";
                                 }
                             @endphp
                         </div>

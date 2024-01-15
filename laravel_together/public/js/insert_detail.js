@@ -417,6 +417,93 @@ function createTask() {
 				document.querySelector('.gantt-task-body').append(refreshCloneLeftGanttChart)
 				document.querySelector('.gantt-chart-body').append(refreshCloneRightGanttChart)
 				document.querySelector('#gantt-chart-000') ? document.querySelector('#gantt-chart-000').classList.add('d-none') : 0;
+
+				document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
+					// 업무명 수정
+					let taskNameElements = document.querySelectorAll('.taskName') 
+					let startDateElements = document.querySelectorAll('.start-date')
+					let endDateElements = document.querySelectorAll('.end-date')
+					taskNameElements[index].addEventListener('blur', function () {
+					  updatedValue = {
+						'title': '',
+					  }
+					  updatedValue.title = taskNameElements[index].textContent;
+					  numbersOnly = gantt.id.match(/\d+/)[0]
+					  // console.log(numbersOnly);
+					  // 수정 요청 보내기
+					  console.log('수정 신청');
+					  sendUpdateRequest(updatedValue, numbersOnly);
+			  
+					  // 수정 완료 팝업 메시지 표시
+					  // showPopupMessage('수정 완료!');
+					});
+					// 시작일 수정
+					startDateElements[index].addEventListener('blur', function () {
+					  updatedValue = {
+						'start_date': '',
+					  }
+					  updatedValue.start_date = startDateElements[index].value;
+					  // console.log(startDateElements[index].value);
+					  numbersOnly = gantt.id.match(/\d+/)[0]
+					  // console.log(numbersOnly);
+					  // 수정 요청 보내기
+					  console.log('수정 신청');
+					  sendUpdateRequest(updatedValue, numbersOnly);
+			  
+					  // 수정 완료 팝업 메시지 표시
+					  // showPopupMessage('수정 완료!');
+					});
+					// 마감일 수정
+					endDateElements[index].addEventListener('blur', function () {
+					  updatedValue = {
+						'end_date': '',
+					  }
+					  updatedValue.end_date = endDateElements[index].value;
+					  // console.log(endDateElements[index].value);
+					  numbersOnly = gantt.id.match(/\d+/)[0]
+					  // 수정 요청 보내기
+					  console.log('수정 신청');
+					  sendUpdateRequest(updatedValue, numbersOnly);
+			  
+					  // 수정 완료 팝업 메시지 표시
+					  // showPopupMessage('수정 완료!');
+					});
+					// 담당자 수정
+					let refresh_add_responsible_gantt = document.querySelectorAll('.add_responsible_gantt');
+					refresh_add_responsible_gantt[index].addEventListener('click', function (e) {
+					  let resOne = e.target.textContent;
+					  updatedValue = {
+						'task_responsible_id': '',
+					  }
+					  updatedValue.task_responsible_id = resOne;
+					  // console.log(resOne);
+					  numbersOnly = gantt.id.match(/\d+/)[0]
+					  // 수정 요청 보내기
+					  console.log('수정 신청');
+					  sendUpdateRequest(updatedValue, numbersOnly);
+			  
+					  // 수정 완료 팝업 메시지 표시
+					  // showPopupMessage('수정 완료!');
+					});
+					// 상태 수정
+					let refresh_add_status_gantt = document.querySelectorAll('.add_status_gantt');
+					refresh_add_status_gantt[index].addEventListener('click', function (e) {
+					  let staOne = e.target.textContent;
+					  updatedValue = {
+						'task_status_id': '',
+					  }
+					  updatedValue.task_status_id = staOne;
+					  // console.log(staOne);
+					  numbersOnly = gantt.id.match(/\d+/)[0]
+					  // 수정 요청 보내기
+					  console.log('수정 신청');
+					  sendUpdateRequest(updatedValue, numbersOnly);
+			  
+					  // 수정 완료 팝업 메시지 표시
+					  // showPopupMessage('수정 완료!');
+					});
+				  });
+
 				closeTaskModal(0)
 				document.querySelector('.gantt-all-task').scrollIntoView(false)
 			} else {
