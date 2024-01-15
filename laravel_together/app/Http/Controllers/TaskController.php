@@ -55,6 +55,7 @@ class TaskController extends Controller
         ->where('p.flg','=', 0)
         ->where('b.data_title_code', '=', 3)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -66,6 +67,7 @@ class TaskController extends Controller
         ->where('p.flg','=', 1)
         ->where('b.data_title_code', '=', 3)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -813,9 +815,17 @@ class TaskController extends Controller
         return $responseData;
     }
 
+
     // 업무 삭제
     public function delete(Request $request, $id)
     {
+        $taskauth = DB::table('tasks as tk')
+                    ->select('tk.task_writer_id','pu.authority_id')
+                    ->join('project_users as pu','pu.project_id','tk.project_id')
+                    ->where('tk.id',$id)
+                    ->where('pu.authority_id',"1")
+                    ->get();
+
         $responseData = [
             "code" => "0",
             "msg" => ""
