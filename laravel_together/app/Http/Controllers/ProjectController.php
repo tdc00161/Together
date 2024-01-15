@@ -625,9 +625,9 @@ class ProjectController extends Controller
     $user->delete();
     Log::debug("user 삭제");
 
-    // // 채팅방도 나가기
+    // // 채팅방 삭제
     $userId = Auth::id();
-    $this->chatRoomExit($id,$userId);
+    $this->chatRoomDelete($id);
 
     return response()->json();
     Log::debug("화면전달");
@@ -698,17 +698,37 @@ class ProjectController extends Controller
       $ChatUser->delete();
 
       // 유저가 다 나갔으면 채팅방 삭제
-      Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
-      if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
-        Log::debug('사람 없는 채팅방');
-        $chatRoomId->delete();
-      }
-      
-      // 아마 채팅창에 표시하거나 유저수 카운트 변화하려면 여기서 이벤트 발생해야 할 것
+      // Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
+      // if(ChatUser::where('chat_room_id',$chatRoomId->id)->count() === 0){
+      //   Log::debug('사람 없는 채팅방');
+      //   $chatRoomId->delete();
+      // }
 
       // 채팅방 인원 감소
       $result = $chatRoomId->update([
         'user_count' => $chatRoomId->user_count-1,
+      ]);
+    }
+      return $ChatUser;
+  }
+
+  // 채팅방 삭제 모듈
+  public function chatRoomDelete($project_id)
+  {
+    $chatRoomId = ChatRoom::where('project_id',$project_id)->first(); //$ChatRoom->project_id
+		$ChatUser = null;
+    
+		if($chatRoomId){
+			$ChatUser = ChatUser::where('chat_room_id',$chatRoomId->id);
+      $ChatUser->delete();
+
+      // 채팅방 삭제
+      // Log::debug(ChatUser::where('chat_room_id',$chatRoomId->id)->whereNull('deleted_at')->count());
+      $chatRoomId->delete();    
+
+      // 채팅방 인원 0
+      $result = $chatRoomId->update([
+        'user_count' => 0,
       ]);
     }
       return $ChatUser;
