@@ -2222,6 +2222,8 @@ document.querySelectorAll('.date').forEach((date,index)=>{
    
     var parentTask = document.getElementById(`gantt-task-${parentId}`);
     var childTasks = document.querySelectorAll(`.gantt-child-task[parent="${parentId}"]`);
+    var parentChart = document.getElementById( `gantt-chart-${parentId}`);
+    var childChart = document.querySelectorAll(`.gantt-child-chart[parent="${parentId}"]`);
     var iconImg = document.querySelector(`#iconimg${parentId}`);
     var button = document.querySelector(`#toptaskbtn${parentId}`);
 
@@ -2229,12 +2231,18 @@ document.querySelectorAll('.date').forEach((date,index)=>{
       childTasks.forEach(task => {
           task.style.display = 'none'
       });
+      childChart.forEach(chart => {
+          chart.style.display = 'none'
+      });
       iconImg.src = "/img/Group 201.png";
       childFlg = 1;
   } else if (childTasks.length > 0 && childFlg === 1) {
       childTasks.forEach(task => {
           task.style.display = 'flex';
       });
+      childChart.forEach(chart => {
+        chart.style.display = 'flex'
+    });
       iconImg.src = "/img/Group 202.png";
       childFlg = 0;
   } else if(childTasks.length == 0) {

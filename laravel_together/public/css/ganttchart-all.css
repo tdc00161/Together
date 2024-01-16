@@ -533,9 +533,19 @@
 	height: 40.5px;
 	align-items: center;
 	margin-bottom: 3px;
-	background-color: #ffffff0a;
+	/* background-color: #ffffff0a; */
 	gap: 13px;
 	padding-left: 3px;
+}
+
+.gantt-project-chart {
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	padding-top: 3px;
+}
+
+.gantt-child-chart {
+	background-color: #ffffff14;
 }
 
 .gantt-chart > div {

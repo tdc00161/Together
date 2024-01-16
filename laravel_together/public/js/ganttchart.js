@@ -1291,6 +1291,7 @@ function addSubTask(event, mainId) {
   // <div class="taskKey">{{$item->task_number}}</div>
   const addTaskKey = document.createElement('div');
   addTaskKey.classList.add('taskKey');
+  addTaskKey.style.width = '40px';
   // addTaskKey.style.display = 'none';
   // addTaskKey.textContent = '800'; // 밑에서 처리
 
