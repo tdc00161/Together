@@ -31,7 +31,9 @@ class MessengerController extends Controller
 			->join('chat_users as cu', 'cu.chat_room_id', 'cr.id')
 			->where('cu.user_id', $userId)
 			->whereNull('cr.deleted_at')
-			->orderBy('last_chat_created_at','desc')
+			->whereNull('cu.deleted_at')
+			->orderByDesc('cu.chat_checked')
+			->orderByDesc('cr.last_chat_created_at')
 			->get()
 			->toArray();
 

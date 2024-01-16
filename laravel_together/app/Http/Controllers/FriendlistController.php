@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatRoom;
 use App\Models\ChatUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,40 +70,63 @@ class FriendlistController extends Controller
             ->delete();
 
             // 친구채팅방 나가기 및 삭제
-            $chatRoom = DB::table('chat_rooms as cr')
-                ->join('chat_users as cu', function($j){
+            $chatRoom = ChatRoom::join('chat_users as cu', 'cu.chat_room_id', '=', 'chat_rooms.id')
+                ->where('chat_rooms.flg', '0')
+                ->whereNull('chat_rooms.deleted_at')
+                ->where(function($query) use ($userId, $deletefriendId) {
+                    $query->where('cu.user_id', $userId)
+                        ->orWhere('cu.user_id', $deletefriendId);
+                })
+                ->select(
+                    'chat_rooms.id',
+                    'chat_rooms.flg',
+                    'chat_rooms.project_id',
+                    'chat_rooms.user_count',
+                    'chat_rooms.last_chat',
+                    'chat_rooms.last_chat_created_at',
+                    'chat_rooms.chat_room_name',
+                    'chat_rooms.created_at',
+                    'chat_rooms.updated_at',
+                    'chat_rooms.deleted_at',
+                )
+                ->distinct();           
+
+            // 채팅방 참여 레코드
+            $chatUser = DB::table('chat_users as cu')
+                ->join('chat_rooms as cr', function($j){
                     $j->on('cu.chat_room_id','cr.id')
                         ->where('cr.flg','0')
-                        ->whereNull('cr.deleted_at');
+                        ->whereNull('cr.deleted_at')
+                        ->whereNull('cu.deleted_at');
                 })
                 ->where(function($query) use ($userId, $deletefriendId) {
                     $query->where('cu.user_id',$userId)
                     ->orWhere('cu.user_id',$deletefriendId);
                 })
                 ->select(
-                    'cr.id',
-                    'cr.flg',
-                    'cr.project_id',
-                    'cr.user_count',
-                    'cr.last_chat',
-                    'cr.last_chat_created_at',
-                    'cr.chat_room_name',
-                    'cr.created_at',
-                    'cr.updated_at',
-                    'cr.deleted_at',
-                )
-                ->distinct();            
-
-            // 채팅방 참여 레코드
-            $chatUser = ChatUser::where('chat_room_id',$chatRoom->get()->count() === 2 ? $chatRoom->get()[0]->id : 0);            
+                    'cu.id',
+                    'cu.chat_room_id',
+                    'cu.user_id',
+                    'cu.chat_checked',
+                    'cu.created_at',
+                    'cu.updated_at',
+                    'cu.deleted_at',
+                );
             
-            $chatRoom->delete();
-            $chatUser->delete();
-
-            if (!$deleted) {
+            if (!$deleted || $chatUser->count() !== 2) {
                 return response()->json(['status' => 'error', 'message' => '친구를 찾을 수 없습니다.'], 404);
             }
+            // 채팅방/채팅참여 삭제
+            $chatUsers = $chatUser->get();
+            Log::debug($chatUsers);
 
+            foreach ($chatUsers as $chatUserRecord) {
+                $model = ChatUser::find($chatUserRecord->id);
+                $model->delete();
+            }
+            
+            $chatRoom->delete();
+            
             return response()->json(['status' => 'success', 'message' => '친구가 성공적으로 삭제되었습니다.']);
         } catch (\Exception $e) {
             // 예외 발생 시 로깅

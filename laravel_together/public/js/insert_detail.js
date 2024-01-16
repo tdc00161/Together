@@ -1185,7 +1185,7 @@ function addComment() {
 	// 댓글 내용을 ajax로 송신
 	let postData = {
 		"task_id": now_task_id,
-		"content": INPUT_COMMENT_CONTENT.value
+		"content": INPUT_COMMENT_CONTENT.value.trim()
 	}
 	fetch('/comment/' + now_task_id, {
 		method: 'POST',
@@ -1531,3 +1531,62 @@ function updateResponsibleName(data, a) {
 		RESPONSIBLE_PERSON[0].remove()
 	}
 }
+
+
+//삭제 모달창 open
+function openDeleteModal() {
+	document.getElementById('deleteModal').style.display = 'block';
+ }
+ 
+ //삭제 모달창 close
+ function closeDeleteModal() {
+	document.getElementById('deleteModal').style.display = 'none';
+ }
+ 
+ //삭제버튼시 삭제
+//  const csrfToken_insert_detail = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+ function deleteProject(project_pk) {
+	
+	fetch('/projectDelete/' + project_pk, {
+	   method: 'DELETE',
+	   // body : JSON.stringify(Id),
+	   headers: {
+		  "Content-Type": "application/json",
+		  'X-CSRF-TOKEN': csrfToken_insert_detail
+	   },
+	}).then((response) => 
+	   console.log(response))
+	   // response.json()
+	  .then(() => {
+		  window.location.href = '/dashboard'; // 메인화면으로 이동
+	}).catch(error => console.log(error));
+ }
+ 
+ //나가기 모달창 open
+ function openExitModal() {
+	document.getElementById('exitModal').style.display = 'block';
+ }
+ 
+ //나가기 모달창 close
+ function closeExitModal() {
+	document.getElementById('exitModal').style.display = 'none';
+ }
+ 
+ //나가기 버튼시 삭제
+//  const csrfToken_insert_detail = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+ function exitProject(project_pk) {
+ 
+	fetch('/projectExit/' + project_pk, {
+	   method: 'DELETE',
+	   // body : JSON.stringify(Id),
+	   headers: {
+		  "Content-Type": "application/json",
+		  'X-CSRF-TOKEN': csrfToken_insert_detail
+	   },
+	}).then((response) => 
+	   console.log(response))
+	   // response.json()
+	  .then(() => {
+		  window.location.href = '/dashboard'; // 메인화면으로 이동
+	}).catch(error => console.log(error));
+ }
