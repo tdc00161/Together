@@ -327,11 +327,13 @@
                         @forelse ($item->depth_1 as $item2)
                             <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                 <div class="gantt-editable-div editable">
-                                    
-                                    
                                     <div class="taskChildPosition"></div>
-                                    <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
-                                    <div class="taskKey">{{$item->task_number}}</div> <span class="taskand">></span> <div class="taskKeyright">{{$item2->task_number}}</div>
+                                    <div class="task-top-icon">
+                                        <img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt="">
+                                    </div>
+                                    <div class="taskKey">{{$item->task_number}}</div>
+                                    <span class="taskand">></span> 
+                                    <div class="taskKeyright">{{$item2->task_number}}</div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="task-flex">
@@ -387,7 +389,7 @@
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}" style="background-color: #ffffff0a;">
                                 @php
-                                    $startDate = new DateTime('2024-01-01');
+                                    $startDate = new DateTime('2023-10-01');
                                     $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -398,7 +400,7 @@
                             @forelse ($item->depth_1 as $item2)
                                 <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                     @php
-                                        $startDate = new DateTime('2024-01-01');
+                                        $startDate = new DateTime('2023-10-01');
                                         $endDate = new DateTime('2024-03-31');
 
                                         for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
