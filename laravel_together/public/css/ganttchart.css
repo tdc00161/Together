@@ -1022,7 +1022,7 @@ display: none;
 .new-task-add-please {
 	position: absolute;
     top: 50%;
-    left: 42%;
+    /* left: 42%; */
     width: 100%;
     z-index: 1;
 }
