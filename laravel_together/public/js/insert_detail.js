@@ -266,31 +266,6 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 			console.log(err.message);
 		})
 
-		//댓글 권한에 따른 표시여부
-		// fetch('/comment-auth/'+c, {
-		// 	method: 'GET',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		'X-CSRF-TOKEN': csrfToken_insert_detail,
-		// 	},
-		// })
-		// .then(response => response.json())
-		// .then(data => {
-		// 	console.log(data);
-		// 	if(data.flg === "0" || data.flg === "1" && data.comment=== data.user){
-
-		// 	}else if(data.flg === "1" && data.authority_id === "0" || data.flg === "1" && data.comment != data.user){
-		// 		document.querySelector('.update_comment').style.display ='none';
-
-		// 	}else if(data.flg != "0" || data.flg === "1" && data.authority_id === "1" || data.flg === "1" && data.comment != data.user){
-		// 		document.querySelector('.update_comment').style.display ='none';
-		// 		document.querySelector('.delete_comment').style.display ='none';
-		// 	}
-		// })
-		// .catch(err => {
-		// 	console.log(err.message);
-		// })
-
 		// 모달 띄우기
 		openInsertDetailModal(a);
 
@@ -1098,37 +1073,39 @@ function removeResponsible(a) {
 // 댓글 수정
 function updateComment(event, a) {
 
-	let comment_one = document.querySelectorAll('.comment_one');
-	let comment_input = document.querySelectorAll('.comment_line');
 	let updateComment = document.querySelectorAll('.update_comment');
-	let deleteComment = document.querySelectorAll('.delete_comment');
-	let saveComment = document.querySelectorAll('.save_comment');
-	let cancelComment = document.querySelectorAll('.cancel_comment');
-	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
-	thisCommentContent = event.target.parentElement.nextElementSibling
-	console.log(thisCommentContent);
+	updateComment.forEach((UCone,UCi)=>{
+		if(event.currentTarget === UCone){
+			let comment_one = document.querySelectorAll('.comment_one');
+			let comment_input = document.querySelectorAll('.comment_line');
+			let deleteComment = document.querySelectorAll('.delete_comment');
+			let saveComment = document.querySelectorAll('.save_comment');
+			let cancelComment = document.querySelectorAll('.cancel_comment');
+			thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
+			thisCommentContent = event.target.parentElement.nextElementSibling
+			console.log(thisCommentContent);
 
-	comment_one.forEach((comOne, index) => {
-		document.querySelectorAll('.save_comment')[index].setAttribute('onclick', 'commitUpdateComment()');
+			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment()');
 
-		updateComment[index].classList.add('d-none');
-		deleteComment[index].classList.add('d-none');
+			updateComment[UCi].classList.add('d-none');
+			deleteComment[UCi].classList.add('d-none');
 
-		saveComment[index].classList.remove('d-none');
-		cancelComment[index].classList.remove('d-none');
+			saveComment[UCi].classList.remove('d-none');
+			cancelComment[UCi].classList.remove('d-none');
 
-		thisCommentContent.setAttribute('contenteditable', 'true');
-		thisCommentContent.style.backgroundColor = '#ffffff2f';
+			thisCommentContent.setAttribute('contenteditable', 'true');
+			thisCommentContent.style.backgroundColor = '#ffffff2f';
 
-		// 취소 눌렀을 때
-		cancelComment[index].addEventListener('click', () => {
-			updateComment[index].classList.remove('d-none');
-			deleteComment[index].classList.remove('d-none');
-			saveComment[index].classList.add('d-none');
-			cancelComment[index].classList.add('d-none');
-			comment_input[index].removeAttribute('contenteditable', 'true');
-			comment_input[index].style.backgroundColor = '';
-		})
+			// 취소 눌렀을 때
+			cancelComment[UCi].addEventListener('click', () => {
+				updateComment[UCi].classList.remove('d-none');
+				deleteComment[UCi].classList.remove('d-none');
+				saveComment[UCi].classList.add('d-none');
+				cancelComment[UCi].classList.add('d-none');
+				comment_input[UCi].removeAttribute('contenteditable', 'true');
+				comment_input[UCi].style.backgroundColor = '';
+			})
+		}
 	})
 }
 
