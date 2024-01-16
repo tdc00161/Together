@@ -626,6 +626,7 @@ class TaskController extends Controller
         $result = Task::create($request->toArray());
 
         $nowRes = $result->task_responsible_id;
+        $nowUser = User::find($nowRes);
         // Log::debug($result);
         if (!$result) {
             $responseData['msg'] = 'task not created.';
@@ -633,8 +634,9 @@ class TaskController extends Controller
         } else {
             $responseData['msg'] = 'task created.';
             $responseData['data'] = $result;
+            $responseData['resName'] = $nowUser;
             if($nowRes){
-                $content['nowRes'] = User::find($nowRes);
+                $content['nowRes'] = $nowUser;
                 $content['where'] = $result;
                 $content['project'] = DB::table('projects as p')
                 ->join('tasks as t',function ($join) use ($result) {
