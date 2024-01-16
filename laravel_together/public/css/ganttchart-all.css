@@ -56,6 +56,15 @@
 	height: 100%;
 	width: 3px;
 	box-shadow: 2px 0px 4px 1px #000000ab;
+	transition: background-color 0.3s ease;
+}
+.resizer:hover {
+	background-color: #21D9AD;
+	transition: background-color 0.3s ease;
+}
+.resizer:active {
+	background-color: #21D9AD;
+	transition: background-color 0.3s ease;
 }
 
 /* 검색, 드롭박스, 업무추가버튼 영역 */

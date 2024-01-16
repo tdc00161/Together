@@ -334,7 +334,7 @@
                                     <div class="taskKey">{{$item->task_number}}</div>
                                     <span class="taskand">></span> 
                                     <div class="taskKeyright">{{$item2->task_number}}</div>
-                                    <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
+                                    <div class="taskName editable-title" id = "taskNameright" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="task-flex">
                                     <div class="responName">

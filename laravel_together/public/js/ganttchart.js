@@ -1259,7 +1259,6 @@ function addSubTask(event, mainId) {
   // $item2->id :   
   const doMGanttTask = event.target.parentNode.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
-  console.log(event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling);
   let topTaskNumber = event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling.textContent;
   console.log(topTaskNumber);
   // let findParent = 
@@ -1378,7 +1377,7 @@ function addSubTask(event, mainId) {
 
         // const ganttChildId = data.data.id;
         // console.log(ganttChildId);
-        addDetailButton.setAttribute('onclick', 'openTaskModal(1,0, '+data.data.id+')');
+        // addDetailButton.setAttribute('onclick', 'openTaskModal(1,0, '+data.data.id+')');
 
         addTaskStartDate.id = 'start-row' + data.data.id;
         // addTaskStartDate.id = 'start-row000';
@@ -1543,9 +1542,10 @@ function addSubTask(event, mainId) {
         // 수정 완료 팝업 메시지 표시
         // showPopupMessage('수정 완료!');
       });
-      // // 더보기 모달
-      // // 여러 개 클릭했을 때 하나만 뜨게 하기
-      // ganttDetail[index].addEventListener('click', function(event) { // more detail
+      // 더보기 모달
+      // 여러 개 클릭했을 때 하나만 뜨게 하기
+      // console.log(ganttDetail[index]);
+      // ganttDetail[index].addEventListener('click', function(event) { 
       //   console.log(1);
       //   // 한 번 클릭 후 다시 클릭 시 창 닫기
       //   if (ganttDetail[index].style.display === 'none') {
@@ -1556,6 +1556,7 @@ function addSubTask(event, mainId) {
         
       //   // 내가 켜질 때 다른 애들 다 끄기
       //   ganttDetail.forEach((GDone,GDi)=>{
+      //     console.log(ganttMoreBtn[index] !== ganttMoreBtn[GDi]);
       //     ganttMoreBtn[index] !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
       //   });
         
@@ -1769,7 +1770,7 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
   
   
 
-  //
+  
   // 더보기 버튼 영역외 클릭
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
@@ -1778,23 +1779,29 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
     // console.log(ganttTaskDetailClickList);
       taskDetailClick.addEventListener('click', function(event) {
           ganttDetailList.forEach(function(detail, i) {
-            // console.log(i);
-            // console.log(index);
+            console.log(i);
+            console.log(index);
             // console.log(i !== index);
               if (i !== index) {
                   detail.style.display = 'none';
+
+                  console.log(event.target);
+                  console.log(detail);
+                  console.log(detail.contains(event.target));
+                  if (!detail.contains(event.target)) {
+                    detail.style.display = 'none';
+                  }
               }
           });
       });
-  });
-
-  document.addEventListener('click', function(event) {
-      ganttDetailList.forEach(function(detail) {
-          if (!event.target.closest('.gantt-editable-div')) {
+      document.addEventListener('click',(e)=>{
+        console.log(detail.contains(event.target));
+        ganttDetailList.forEach(function(detail, i) {
+            if (!detail.contains(event.target)) {
               detail.style.display = 'none';
-          }
-      });
-      // console.log(666);
+            }
+        });
+      })
   });
   
   let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
@@ -2445,12 +2452,12 @@ function formatDates(inputDate) {
   return { a, b };
 }
 
-// 현재 날짜를 기준으로 바 생성
-const verticalBar = document.createElement('div');
-const ganttBody = document.querySelector('.gantt-chart-wrap');
-verticalBar.className = 'vertical-bar';
-// document.body.appendChild(verticalBar);
-ganttBody.appendChild(verticalBar);
+// // 현재 날짜를 기준으로 바 생성
+// const verticalBar = document.createElement('div');
+// const ganttBody = document.querySelector('.gantt-chart-wrap');
+// verticalBar.className = 'vertical-bar';
+// // document.body.appendChild(verticalBar);
+// ganttBody.appendChild(verticalBar);
 
 document.querySelectorAll('.date').forEach((date,index)=>{
   let split = formatDates(date.textContent)
@@ -2459,17 +2466,17 @@ document.querySelectorAll('.date').forEach((date,index)=>{
 
   if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    date.style.color='black';
+    date.style.backgroundColor='white';
+    date.style.fontWeight = 'bold';
 
-    const rect = date.getBoundingClientRect();
-    // console.log(rect);
-
-    verticalBar.style.position = 'absolute';
-    // verticalBar.style.left = rect.left - 735 + 'px';
-    verticalBar.style.left = rect.left + 'px';
-    verticalBar.style.top = '44px';
-    verticalBar.style.width = '1px';
-    verticalBar.style.height = '100%';
-    verticalBar.style.backgroundColor = '#ffffffe6';
+    // verticalBar.style.position = 'absolute';
+    // // verticalBar.style.left = rect.left - 735 + 'px';
+    // verticalBar.style.left = rect.left + 'px';
+    // verticalBar.style.top = '44px';
+    // verticalBar.style.width = '1px';
+    // verticalBar.style.height = '100%';
+    // verticalBar.style.backgroundColor = '#ffffffe6';
   }
 })
 //-----------------------------------------------------------

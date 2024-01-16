@@ -540,7 +540,7 @@ a:hover {
 	display: flex;
 	flex-direction: column;
 	resize: horizontal;
-	min-width: 415px;
+	min-width: 490px;
 }
 
 .gantt-task-header {
@@ -647,7 +647,7 @@ a:hover {
 
 /*  업무 부분 너비 조절 */
 .gantt-task .gantt-editable-div {
-	width: 22%;
+	/* width: 100%; */
 	text-align: left;
 	flex: 1;
 }
@@ -771,6 +771,15 @@ a:hover {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding-left: 10px;
+}
+#taskNameright {
+	flex: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-left: 10px;
+	/* min-width: 20px; */
+	width: 40px;
 }
 
 .gantt-task:hover .gantt-task-detail-click-span {
@@ -997,6 +1006,9 @@ a:hover {
 	border-radius: 60px;
 	font-size: 12px;
 	text-align: center;
+	display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .gantt-chart-header .month {
 	padding: 4px 15px;
