@@ -323,22 +323,27 @@
                             <div class="gantt-task gantt-child-task" id="gantt-task-{{$item2->id}}" parent="{{$item2->task_parent}}">
                                 <div class="gantt-editable-div editable">
                                     
-                                    <div class="taskKey" style="display: none">{{$item2->task_number}}</div>
+                                    
                                     <div class="taskChildPosition"></div>
                                     <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
+                                    <div class="taskKey taskKey2">{{$item->task_number}} - {{$item2->task_number}}</div>
                                     <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="task-flex">
                                     <div class="responName">
-                                        <span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span>
-                                        <div class="add_responsible_gantt otherColor d-none"></div>
+                                        @if ($item2->res_name === null)
+                                            <span class="respon-name-span" id="responNameSpan">-</span>
+                                        @else
+                                            <span class="respon-name-span" id="responNameSpan">{{$item2->res_name}}</span>
+                                        @endif
+                                        <div class="add_responsible_gantt otherColorRespon d-none"></div>
                                     </div>
                                     
                                     <div class="gantt-status-name">
                                         <div class="statusName gantt-status-color" data-status="{{$item2->status_name}}">
                                             <span class="status-name-span" id="statusNameSpan">{{$item2->status_name}}</span>
                                         </div>
-                                        <div class="add_status_gantt d-none"></div>
+                                        <div class="add_status_gantt otherColorStatus d-none"></div>
                                     </div>
                                     <div class="gantt-task-4">
                                         <input type="date" class="start-date" name="start" id="start-row{{$item2->id}}" onchange="test({{$item2->id}});" value="{{$item2->start_date}}">
@@ -360,46 +365,6 @@
                             
                         @endforelse
                     @empty
-                        <div class="gantt-task d-none" id="gantt-task-000">
-                            <div class="gantt-editable-div editable">
-                                <div class="task-top-icon">
-                                {{-- <button onclick="toggleChildTask({{$item->id}})" id="toptaskbtn{{$item->id}}"><img id="iconimg{{$item->id}}" class="task-top-icon-img" src=""></button> --}}
-                                </div>
-                            
-                                <div class="taskKey">000</div>
-                                <div class="taskChildPosition" style="display: none"></div>
-                                <div class="taskName editable-title" spellcheck="false" contenteditable="true"></div>
-                            </div>
-                            <div class="task-flex">
-                                <div class="responName">
-                                    <span class="respon-name-span" id="responNameSpan"></span>
-                                    <div class="add_responsible_gantt d-none"></div>
-                                </div>
-                                
-                                <div class="gantt-status-name">
-                                    <div class="statusName gantt-status-color" data-status="">
-                                        <span class="status-name-span" id="statusNameSpan"></span>
-                                    </div>
-                                    <div class="add_status_gantt d-none"></div>
-                                </div>
-                                <div class="gantt-task-4">
-                                    <input type="date" class="start-date" name="start" id="start-row000" onchange="test(000);" value="">
-                                </div>
-                                <div class="gantt-task-5">
-                                    <input type="date" class="end-date" name="end" id="end-row000" onchange="test(000);" value="">
-                                </div>
-                                <div class="gantt-more-btn">
-                                    <button class="gantt-task-detail-click">
-                                        <span class="gantt-task-detail-click-span">…</span>
-                                    </button>
-                                    <div class="gantt-detail" style="display: none">
-                                        <button class="gantt-detail-btn" onclick="openTaskModal(1,0,000)">자세히보기</button>
-                                        <br>
-                                        <button class="gantt-detail-btn" onclick="addSubTask(event, 000)">하위업무 추가</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     @endforelse
                 </div>
             </div>
@@ -419,7 +384,7 @@
                             </div>
                         </div>
                         @forelse ($data['task'] as $key => $item)
-                            <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
+                            <div class="gantt-chart" id="gantt-chart-{{$item->id}}" style="background-color: #ffffff0a;">
                                 @php
                                     $startDate = new DateTime('2024-01-01');
                                     $endDate = new DateTime('2024-03-31');
@@ -444,16 +409,7 @@
                                 
                             @endforelse
                         @empty
-                        <div class="gantt-chart gantt-child-chart" id="gantt-chart-000" parent="000">
-                            @php
-                                $startDate = new DateTime('2024-01-01');
-                                $endDate = new DateTime('2024-03-31');
-
-                                for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                    echo "<div id='row" . (000) . "-" . $date->format('Ymd') . "'></div>";
-                                }
-                            @endphp
-                        </div>
+                       
                         @endforelse
                     </div>
                 </div>
