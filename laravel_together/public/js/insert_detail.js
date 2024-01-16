@@ -247,8 +247,29 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 				console.error('Error:', error);
 			});
 
+		//모달창 권한에 따른 삭제 표시여부
+		fetch('/modal-auth/'+c, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': csrfToken_insert_detail,
+			},
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			if(data.authority_id === "1" || data.task_writer_id != data.user){
+				document.querySelector('#modaldelete').style.display ='none';
+			}
+		})
+		.catch(err => {
+			console.log(err.message);
+		})
+
 		// 모달 띄우기
 		openInsertDetailModal(a);
+
+
 	}
 	// 글/업무 플래그
 	TaskFlg(a, b);
@@ -903,6 +924,25 @@ function openMoreModal() {
 				closeMoreModal();
 			}
 		}
+
+		// fetch('/modal-auth/'+now_task_id, {
+		// 	method: 'GET',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		'X-CSRF-TOKEN': csrfToken_insert_detail,
+		// 	},
+		// })
+		// .then(response => response.json())
+		// .then(data => {
+		// 	console.log(data);
+		// 	if(data.authority_id === "1"){
+		// 		document.querySelector('#modaldelete').style.display ='none';
+		// 	}
+		// })
+		// .catch(err => {
+		// 	console.log(err.message);
+		// })
+
 	});
 }
 // 더보기 닫기

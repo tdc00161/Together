@@ -482,6 +482,36 @@ class TaskController extends Controller
 
         return $result;
     }
+    
+    //상세모달 삭제권한 여부
+    public function auth($id){
+        $user = Auth::id();
+        Log::debug("아이디");
+        Log::debug([$user]);
+
+        $auth = DB::table('project_users as pu')
+                    ->join('tasks as tk','tk.project_id','pu.project_id')
+                    ->select('pu.authority_id','tk.id','tk.task_writer_id')
+                    ->where(function($query) {
+                        $query->orWhere('pu.authority_id',"0")
+                             ->orWhere('tk.task_writer_id',auth::id());
+                    })
+                    ->where('tk.id',$id)
+                    ->first();
+        Log::debug("권한");
+        Log::debug([$auth]);
+
+        $data = [
+            'user' => $user,
+            'authority_id' => $auth->authority_id,
+            'task_writer_id' => $auth->task_writer_id,
+            'id' => $auth->id,
+        ];
+        Log::debug("데이터");
+        Log::debug([$data]);
+
+        return response()->json($data);
+    }
 
     // 업무 작성
     public function store(Request $request)
