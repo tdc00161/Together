@@ -138,6 +138,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 
 	// 작성 모달 띄우기
 	if (a === 0) {
+		createUpdate = 0
 		// 작성 전 초기화
 		document.querySelector('.insert_title').value = ''
 		document.querySelector('.insert_content').value = ''

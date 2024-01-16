@@ -240,11 +240,6 @@
         </div>
     </div>
     {{-- 새 업무 추가 문구 --}}
-    <div class="new-task-add-please" style="display: none">
-        <div class="new-task-add">
-            <p class="new-task-add-p">새 업무를 추가해주세요.</p>
-        </div>
-    </div>
     <div class="gantt-content-wrap">
         <section class="gantt-all-task scroll-style-parent">
             <div class="gantt-task-wrap">
@@ -290,7 +285,12 @@
                             {{-- 담당자/상태/시작일/마감일/더보기버튼 --}}
                             <div class="task-flex">
                                 <div class="responName">
-                                    <span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span>
+                                    @if ($item->res_name === null)
+                                        <span class="respon-name-span" id="responNameSpan">-</span>
+                                    @else
+                                        <span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span>
+                                    @endif
+                                    
                                     <div class="add_responsible_gantt d-none"></div>
                                 </div>
                                 
@@ -413,6 +413,11 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body" id="ganttTaskWrap">
+                        <div class="new-task-add-please" style="display: none">
+                            <div class="new-task-add">
+                                <p class="new-task-add-p">새 업무를 추가해주세요.</p>
+                            </div>
+                        </div>
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
