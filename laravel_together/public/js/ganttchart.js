@@ -1260,7 +1260,7 @@ function addSubTask(event, mainId) {
   const doMGanttTask = event.target.parentNode.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
   let topTaskNumber = event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling.textContent;
-  // console.log(topTaskNumber);
+  console.log(topTaskNumber);
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   // console.log(gantt_modal_id[0]);
@@ -1287,31 +1287,42 @@ function addSubTask(event, mainId) {
   const addGanttEditableDiv = document.createElement('div');
   addGanttEditableDiv.classList.add('gantt-editable-div', 'editable');
 
-  // gantt-task 안 첫번째 div 안 첫번째 div 
-  // <div class="taskKey">{{$item->task_number}}</div>
-  const addTaskKey = document.createElement('div');
-  addTaskKey.classList.add('taskKey');
-  addTaskKey.style.width = '40px';
-  // addTaskKey.style.display = 'none';
-  // addTaskKey.textContent = '800'; // 밑에서 처리
-
-  // gantt-task 안 첫번째 div 안 두번째 div 
+   // gantt-task 안 첫번째 div 안 첫번째 div 
   // <div class="taskChildPosition"></div>
   const addTaskChildPosition = document.createElement('div');
   addTaskChildPosition.classList.add('taskChildPosition');
 
-  // gantt-task 안 첫번째 div 안 세번째 div 
+    // gantt-task 안 첫번째 div 안 두번째 div 
   // <div class="task-top-icon"></div>
   const addTaskTopDiv = document.createElement('div');
   addTaskTopDiv.classList.add('task-top-icon');
 
-  // gantt-task 안 첫번째 div 안 세번째 div 안 img
+  // gantt-task 안 첫번째 div 안 두번째 div 안 img
   // <img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt="">
   const addTaskTopIcon = document.createElement('img');
   addTaskTopIcon.classList.add('task-bottom-icon-img');
   addTaskTopIcon.setAttribute('src', '/img/Groupfdg.png');
 
-  // gantt-task 안 첫번째 div 안 네번째 div
+  // gantt-task 안 첫번째 div 안 세번째 div 
+  // <div class="taskKey">{{$item->task_number}}</div>
+  const addTaskKey = document.createElement('div');
+  addTaskKey.classList.add('taskKey');
+  // addTaskKey.style.display = 'none';
+  // addTaskKey.textContent = '800'; // 밑에서 처리
+
+  // gantt-task 안 첫번째 div 안 네번째 span
+  // <span class="taskand">></span>
+  const addTaskAnd = document.createElement('span');
+  addTaskAnd.classList.add('taskand');
+  addTaskAnd.textContent = '>';
+
+  // gantt-task 안 첫번째 div 안 다섯번째 div
+  // <div class="taskKeyright">{{$item2->task_number}}</div>
+  const addTaskKeyright = document.createElement('div');
+  addTaskKeyright.classList.add('taskKeyright');
+  // addTaskKeyright.textContent = ''; // 밑에서 처리
+
+  // gantt-task 안 첫번째 div 안 여섯번째 div
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
@@ -1360,7 +1371,8 @@ function addSubTask(event, mainId) {
       .then(response => response.json()) // response.json()
       .then(data => {
         addTaskName.removeEventListener('blur', addChildTask);
-        addTaskKey.textContent = topTaskNumber +' - '+ data.data.task_number;
+        addTaskKey.textContent = topTaskNumber;
+        addTaskKeyright.textContent = data.data.task_number;
         // console.log(data);
 
         // const ganttChildId = data.data.id;
@@ -1379,7 +1391,7 @@ function addSubTask(event, mainId) {
         // console.log(newChart);
         
         // 시작일 종료일 날짜 설정
-        const chartStartDate = new Date('2024-01-01');
+        const chartStartDate = new Date('2023-10-01');
         const chartEndDate = new Date('2024-03-31');
 
         // chartStartDate를 클론하여 chartNewStartDate에 할당
@@ -1573,7 +1585,7 @@ function addSubTask(event, mainId) {
   const addUserNamespan = document.createElement('span');
   addUserNamespan.classList.add('respon-name-span');
   addUserNamespan.id = 'responNameSpan';
-  addUserNamespan.textContent = '담당자';
+  addUserNamespan.textContent = '-';
 
   // gantt-task 안 두번째 div 안 div
   // <div class="add_responsible_gantt d-none"></div>
@@ -1683,6 +1695,8 @@ function addSubTask(event, mainId) {
   addGanttEditableDiv.appendChild(addTaskTopDiv);
   addTaskTopDiv.appendChild(addTaskTopIcon);
   addGanttEditableDiv.appendChild(addTaskKey);
+  addGanttEditableDiv.appendChild(addTaskAnd);
+  addGanttEditableDiv.appendChild(addTaskKeyright);
   addGanttEditableDiv.appendChild(addTaskName);
 
   // gantt-task 안에 두번째
@@ -2033,7 +2047,7 @@ document.addEventListener('DOMContentLoaded', function () {
 const headerScroll = document.querySelector('.gantt-header-scroll');
 
 // 예시 데이터 - 날짜
-const startDate = new Date('2024-01-01');
+const startDate = new Date('2023-10-01');
 const endDate = new Date('2024-03-31');
 
 // 날짜를 헤더에 추가하는 함수
@@ -2438,12 +2452,12 @@ function formatDates(inputDate) {
   return { a, b };
 }
 
-// 현재 날짜를 기준으로 바 생성
-const verticalBar = document.createElement('div');
-const ganttBody = document.querySelector('.gantt-chart-wrap');
-verticalBar.className = 'vertical-bar';
-// document.body.appendChild(verticalBar);
-ganttBody.appendChild(verticalBar);
+// // 현재 날짜를 기준으로 바 생성
+// const verticalBar = document.createElement('div');
+// const ganttBody = document.querySelector('.gantt-chart-wrap');
+// verticalBar.className = 'vertical-bar';
+// // document.body.appendChild(verticalBar);
+// ganttBody.appendChild(verticalBar);
 
 document.querySelectorAll('.date').forEach((date,index)=>{
   let split = formatDates(date.textContent)
@@ -2452,17 +2466,17 @@ document.querySelectorAll('.date').forEach((date,index)=>{
 
   if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    date.style.color='black';
+    date.style.backgroundColor='white';
+    date.style.fontWeight = 'bold';
 
-    const rect = date.getBoundingClientRect();
-    // console.log(rect);
-
-    verticalBar.style.position = 'absolute';
-    // verticalBar.style.left = rect.left - 735 + 'px';
-    verticalBar.style.left = rect.left + 'px';
-    verticalBar.style.top = '44px';
-    verticalBar.style.width = '1px';
-    verticalBar.style.height = '100%';
-    verticalBar.style.backgroundColor = '#ffffffe6';
+    // verticalBar.style.position = 'absolute';
+    // // verticalBar.style.left = rect.left - 735 + 'px';
+    // verticalBar.style.left = rect.left + 'px';
+    // verticalBar.style.top = '44px';
+    // verticalBar.style.width = '1px';
+    // verticalBar.style.height = '100%';
+    // verticalBar.style.backgroundColor = '#ffffffe6';
   }
 })
 //-----------------------------------------------------------
