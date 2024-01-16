@@ -1259,6 +1259,8 @@ function addSubTask(event, mainId) {
   // $item2->id :   
   const doMGanttTask = event.target.parentNode.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
+  let topTaskNumber = event.target.parentNode.parentNode.parentNode.previousSibling.previousSibling.firstChild.nextSibling.nextSibling.nextSibling.textContent;
+  // console.log(topTaskNumber);
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   // console.log(gantt_modal_id[0]);
@@ -1289,7 +1291,7 @@ function addSubTask(event, mainId) {
   // <div class="taskKey">{{$item->task_number}}</div>
   const addTaskKey = document.createElement('div');
   addTaskKey.classList.add('taskKey');
-  addTaskKey.style.display = 'none';
+  // addTaskKey.style.display = 'none';
   // addTaskKey.textContent = '800'; // 밑에서 처리
 
   // gantt-task 안 첫번째 div 안 두번째 div 
@@ -1297,13 +1299,24 @@ function addSubTask(event, mainId) {
   const addTaskChildPosition = document.createElement('div');
   addTaskChildPosition.classList.add('taskChildPosition');
 
-  // gantt-task 안 첫번째 div 안 세번째 div
+  // gantt-task 안 첫번째 div 안 세번째 div 
+  // <div class="task-top-icon"></div>
+  const addTaskTopDiv = document.createElement('div');
+  addTaskTopDiv.classList.add('task-top-icon');
+
+  // gantt-task 안 첫번째 div 안 세번째 div 안 img
+  // <img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt="">
+  const addTaskTopIcon = document.createElement('img');
+  addTaskTopIcon.classList.add('task-bottom-icon-img');
+  addTaskTopIcon.setAttribute('src', '/img/Groupfdg.png');
+
+  // gantt-task 안 첫번째 div 안 네번째 div
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
   addTaskName.setAttribute('spellcheck', 'false');
   addTaskName.setAttribute('contenteditable', 'true');
-  addTaskName.setAttribute('placeholder', '하위업무명을 입력하세요.');
+  addTaskName.setAttribute('placeholder', '하위업무명을 입력해주세요.');
   let thisProjectId = window.location.pathname.match(/\d+/)[0];
   // console.log();
   // console.log('addChildTask');
@@ -1346,7 +1359,7 @@ function addSubTask(event, mainId) {
       .then(response => response.json()) // response.json()
       .then(data => {
         addTaskName.removeEventListener('blur', addChildTask);
-        addTaskKey.textContent = data.data.task_number;
+        addTaskKey.textContent = topTaskNumber +' - '+ data.data.task_number;
         // console.log(data);
 
         // const ganttChildId = data.data.id;
@@ -1517,6 +1530,11 @@ function addSubTask(event, mainId) {
     });
   }
   
+  // task-flex 묶음
+  // <div class="task-flex"></div>
+  const taskFlexDiv = document.createElement('div');
+  taskFlexDiv.classList.add('task-flex');
+
   // gantt-task 안 두번째 div
   // <div class="responName"></div>
   const addUserName = document.createElement('div');
@@ -1532,7 +1550,7 @@ function addSubTask(event, mainId) {
   // gantt-task 안 두번째 div 안 div
   // <div class="add_responsible_gantt d-none"></div>
   const addUserNameSelect = document.createElement('div');
-  addUserNameSelect.classList.add('add_responsible_gantt', 'otherColor', 'd-none');
+  addUserNameSelect.classList.add('add_responsible_gantt', 'otherColorRespon', 'd-none');
   
   
 
@@ -1561,7 +1579,7 @@ function addSubTask(event, mainId) {
   // gantt-task 안 세번째 div 안 두번째 div
   // <div class="add_status_gantt d-none"></div>
   const addStatusSelect = document.createElement('div');
-  addStatusSelect.classList.add('add_status_gantt', 'd-none');
+  addStatusSelect.classList.add('add_status_gantt', 'otherColorStatus', 'd-none');
 
   // gantt-task 안 네번째 div
   // <div class="gantt-task-4"></div>
@@ -1632,31 +1650,35 @@ function addSubTask(event, mainId) {
 
   // gantt-task 안에 첫번째
   newTask.appendChild(addGanttEditableDiv);
-  addGanttEditableDiv.appendChild(addTaskKey);
+  
   addGanttEditableDiv.appendChild(addTaskChildPosition);
+  addGanttEditableDiv.appendChild(addTaskTopDiv);
+  addTaskTopDiv.appendChild(addTaskTopIcon);
+  addGanttEditableDiv.appendChild(addTaskKey);
   addGanttEditableDiv.appendChild(addTaskName);
 
   // gantt-task 안에 두번째
-  newTask.appendChild(addUserName);
+  newTask.appendChild(taskFlexDiv);
+  taskFlexDiv.appendChild(addUserName);
   addUserName.appendChild(addUserNamespan);
   addUserName.appendChild(addUserNameSelect);
 
   // gantt-task 안에 세번째
-  newTask.appendChild(addStatusColorDiv);
+  taskFlexDiv.appendChild(addStatusColorDiv);
   addStatusColorDiv.appendChild(addStatusColor);
   addStatusColor.appendChild(addStatusColorSpan);
   addStatusColorDiv.appendChild(addStatusSelect);
 
   // gantt-task 안에 네번째
-  newTask.appendChild(addTaskStartDateDiv);
+  taskFlexDiv.appendChild(addTaskStartDateDiv);
   addTaskStartDateDiv.appendChild(addTaskStartDate);
 
   // gantt-task 안에 다섯번째
-  newTask.appendChild(addTaskEndDateDiv);
+  taskFlexDiv.appendChild(addTaskEndDateDiv);
   addTaskEndDateDiv.appendChild(addTaskEndDate);
 
   // gantt-task 안에 여섯번째
-  newTask.appendChild(addGanttDetailDiv);
+  taskFlexDiv.appendChild(addGanttDetailDiv);
   addGanttDetailDiv.appendChild(addGanttDetailClick);
   addGanttDetailClick.appendChild(addGanttDetailClickSpan);
   addGanttDetailDiv.appendChild(addGanttDetail);
@@ -2200,90 +2222,90 @@ document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
 
 // ********** 프로젝트 수정/삭제/d-day : project.js 에서 따옴
 
-let OrginalendValue = document.getElementById('end_date').value;
-let Orginalend = document.getElementById('end_date');
+// let OrginalendValue = document.getElementById('end_date').value;
+// let Orginalend = document.getElementById('end_date');
 
 
-// 프로젝트 명, 컨텐츠 업데이트
-const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-function titleupdate(project_pk) {
+// // 프로젝트 명, 컨텐츠 업데이트
+// const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+// function titleupdate(project_pk) {
 
-   let Updatetitle = document.getElementById('project_title').value;
-   let Updatecontent = document.getElementById('project_content').value;
-   let Updatetitlemax = 17;
-   let Updatecontentmax = 45;
+//    let Updatetitle = document.getElementById('project_title').value;
+//    let Updatecontent = document.getElementById('project_content').value;
+//    let Updatetitlemax = 17;
+//    let Updatecontentmax = 45;
 
-   if(Updatetitle.length > Updatetitlemax){
-      alert('텍스트 길이를 초과하였습니다.')
-   }
-   if(Updatetitlemax.length > Updatecontentmax){
-      alert('텍스트 길이를 초과하였습니다.')
-   }
-   let Updatestart = document.getElementById('start_date').value;
-   let Updateend = document.getElementById('end_date').value;
+//    if(Updatetitle.length > Updatetitlemax){
+//       alert('텍스트 길이를 초과하였습니다.')
+//    }
+//    if(Updatetitlemax.length > Updatecontentmax){
+//       alert('텍스트 길이를 초과하였습니다.')
+//    }
+//    let Updatestart = document.getElementById('start_date').value;
+//    let Updateend = document.getElementById('end_date').value;
    
-   // console.log(Updatetitle)
+//    // console.log(Updatetitle)
 
-   let dday = document.getElementById("dday");
-      today = new Date();
-      start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
-      console.log(start_day);
-      end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
-      // 시작일보다 마감일이 이전일 경우 DB에 저장하지 않고 에러띄우기 및 d-day 설정 지우기
-      if(end_day < start_day) {
-         Dday.innerHTML = '';
-         alert('마감일자 입력을 다시 해주세요');
-         return false;
-      }
-      console.log(end_day);
-      gap = today - end_day;
-      if(gap > 0) {
-         dday.innerHTML = '';
-         return false;
-      }
-      else if(gap === 0) {
-         dday.innerHTML = D-day;
-      }
+//    let dday = document.getElementById("dday");
+//       today = new Date();
+//       start_day = new Date(document.getElementById("start_date").value); // 시작일자 가져오기
+//       console.log(start_day);
+//       end_day = new Date(document.getElementById("end_date").value); // 디데이(마감일자)
+//       // 시작일보다 마감일이 이전일 경우 DB에 저장하지 않고 에러띄우기 및 d-day 설정 지우기
+//       if(end_day < start_day) {
+//          Dday.innerHTML = '';
+//          alert('마감일자 입력을 다시 해주세요');
+//          return false;
+//       }
+//       console.log(end_day);
+//       gap = today - end_day;
+//       if(gap > 0) {
+//          dday.innerHTML = '';
+//          return false;
+//       }
+//       else if(gap === 0) {
+//          dday.innerHTML = D-day;
+//       }
       
-      console.log(gap);
-      result = Math.floor(gap / (1000 * 60 * 60 * 24));
+//       console.log(gap);
+//       result = Math.floor(gap / (1000 * 60 * 60 * 24));
 
-      dday.innerHTML = 'D' + result;
+//       dday.innerHTML = 'D' + result;
 
 
-    // Fetch를 사용하여 서버에 put 요청 보내기
-    fetch('/update/' +project_pk, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken_project,
-            // 필요에 따라 다른 헤더들 추가 가능
-         },
-         body: JSON.stringify({
-            "Updatetitle": Updatetitle,
-            "Updatecontent":Updatecontent,
-            "Updatestart": Updatestart,
-            "Updateend":Updateend,
-         })
-         // body: JSON.stringify({project_title: project_title})
-   })
-   .then((response) => {
-      console.log(response);
-      return response.json();
-   })
-   .then(data => {
-      console.log(data);
-         document.getElementsByClassId('project_title').value = data.project_title;
-         document.getElementsByClassId('project_content').value = data.project_content;
-         document.getElementsByClassId('start_date').value = data.start_date;
-         document.getElementsByClassId('end_date').value = data.end_date;
-   })
-   .catch(error => {
-         // 오류 처리
-         console.error('error', error);
-   });
+//     // Fetch를 사용하여 서버에 put 요청 보내기
+//     fetch('/update/' +project_pk, {
+//          method: 'POST',
+//          headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRF-TOKEN': csrfToken_project,
+//             // 필요에 따라 다른 헤더들 추가 가능
+//          },
+//          body: JSON.stringify({
+//             "Updatetitle": Updatetitle,
+//             "Updatecontent":Updatecontent,
+//             "Updatestart": Updatestart,
+//             "Updateend":Updateend,
+//          })
+//          // body: JSON.stringify({project_title: project_title})
+//    })
+//    .then((response) => {
+//       console.log(response);
+//       return response.json();
+//    })
+//    .then(data => {
+//       console.log(data);
+//          document.getElementsByClassId('project_title').value = data.project_title;
+//          document.getElementsByClassId('project_content').value = data.project_content;
+//          document.getElementsByClassId('start_date').value = data.start_date;
+//          document.getElementsByClassId('end_date').value = data.end_date;
+//    })
+//    .catch(error => {
+//          // 오류 처리
+//          console.error('error', error);
+//    });
 
-}
+// }
 
 
 // 프로젝트 설명 클릭시 초기값 삭제
@@ -2295,39 +2317,39 @@ function titleupdate(project_pk) {
 // }
 
 
-//삭제 모달창 open
-function openDeleteModal() {
-   document.getElementById('deleteModal').style.display = 'block';
-}
+// //삭제 모달창 open
+// function openDeleteModal() {
+//    document.getElementById('deleteModal').style.display = 'block';
+// }
 
-//삭제 모달창 close
-function closeDeleteModal() {
-   document.getElementById('deleteModal').style.display = 'none';
-}
+// //삭제 모달창 close
+// function closeDeleteModal() {
+//    document.getElementById('deleteModal').style.display = 'none';
+// }
 
-//삭제버튼시 삭제
-const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-function deleteProject(project_pk) {
-   // 전달할 데이터 정보(메모 정보)
-   //    let Id = {
-   //       user_pk : user_pk
-   //   }
-   // console.log(document.querySelector('.csrf_token'));
-   // 삭제 ajax
-   fetch('/delete/' + project_pk, {
-      method: 'DELETE',
-      // body : JSON.stringify(Id),
-      headers: {
-         "Content-Type": "application/json",
-         'X-CSRF-TOKEN': csrfToken_project
-      },
-   }).then((response) => 
-      console.log(response))
-      // response.json()
-     .then(() => {
-         window.location.href = '/dashboard'; // 메인화면으로 이동
-   }).catch(error => console.log(error));
-}
+// //삭제버튼시 삭제
+// const csrfToken_project = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+// function deleteProject(project_pk) {
+//    // 전달할 데이터 정보(메모 정보)
+//    //    let Id = {
+//    //       user_pk : user_pk
+//    //   }
+//    // console.log(document.querySelector('.csrf_token'));
+//    // 삭제 ajax
+//    fetch('/delete/' + project_pk, {
+//       method: 'DELETE',
+//       // body : JSON.stringify(Id),
+//       headers: {
+//          "Content-Type": "application/json",
+//          'X-CSRF-TOKEN': csrfToken_project
+//       },
+//    }).then((response) => 
+//       console.log(response))
+//       // response.json()
+//      .then(() => {
+//          window.location.href = '/dashboard'; // 메인화면으로 이동
+//    }).catch(error => console.log(error));
+// }
 
 function changeStyle(element) {
   // div에 clicked 클래스 추가
@@ -2416,6 +2438,8 @@ document.querySelectorAll('.date').forEach((date,index)=>{
    
     var parentTask = document.getElementById(`gantt-task-${parentId}`);
     var childTasks = document.querySelectorAll(`.gantt-child-task[parent="${parentId}"]`);
+    var parentChart = document.getElementById( `gantt-chart-${parentId}`);
+    var childChart = document.querySelectorAll(`.gantt-child-chart[parent="${parentId}"]`);
     var iconImg = document.querySelector(`#iconimg${parentId}`);
     var button = document.querySelector(`#toptaskbtn${parentId}`);
 
@@ -2423,12 +2447,18 @@ document.querySelectorAll('.date').forEach((date,index)=>{
       childTasks.forEach(task => {
           task.style.display = 'none'
       });
+      childChart.forEach(chart => {
+          chart.style.display = 'none'
+      });
       iconImg.src = "/img/Group 201.png";
       childFlg = 1;
   } else if (childTasks.length > 0 && childFlg === 1) {
       childTasks.forEach(task => {
           task.style.display = 'flex';
       });
+      childChart.forEach(chart => {
+        chart.style.display = 'flex'
+    });
       iconImg.src = "/img/Group 202.png";
       childFlg = 0;
   } else if(childTasks.length == 0) {
