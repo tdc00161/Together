@@ -1259,7 +1259,8 @@ function addSubTask(event, mainId) {
   // $item2->id :   
   const doMGanttTask = event.target.parentNode.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
-  let topTaskNumber = event.target.parentNode.parentNode.parentNode.previousSibling.previousSibling.firstChild.nextSibling.nextSibling.nextSibling.textContent;
+  console.log(event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling);
+  let topTaskNumber = event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling.textContent;
   // console.log(topTaskNumber);
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
@@ -1495,6 +1496,8 @@ function addSubTask(event, mainId) {
       });
       // 담당자 수정
       let refresh_add_responsible_gantt = document.querySelectorAll('.add_responsible_gantt');
+      let ganttDetail = document.querySelectorAll('.gantt-detail');
+      let ganttMoreBtn = document.querySelectorAll('.gantt-more-btn');
       refresh_add_responsible_gantt[index].addEventListener('click', function (e) {
         let resOne = e.target.textContent;
         updatedValue = {
@@ -1527,6 +1530,29 @@ function addSubTask(event, mainId) {
         // 수정 완료 팝업 메시지 표시
         // showPopupMessage('수정 완료!');
       });
+      // // 더보기 모달
+      // // 여러 개 클릭했을 때 하나만 뜨게 하기
+      // ganttDetail[index].addEventListener('click', function(event) { // more detail
+      //   console.log(1);
+      //   // 한 번 클릭 후 다시 클릭 시 창 닫기
+      //   if (ganttDetail[index].style.display === 'none') {
+      //     ganttDetail[index].style.display = 'block';
+      //   } else {
+      //     ganttDetail[index].style.display = 'none';
+      //   }
+        
+      //   // 내가 켜질 때 다른 애들 다 끄기
+      //   ganttDetail.forEach((GDone,GDi)=>{
+      //     ganttMoreBtn[index] !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
+      //   });
+        
+      //   // 바깥 영역 클릭했을 때 창 닫기
+      //   document.addEventListener('click', function(event) {
+      //     if (!ganttMoreBtn[index].contains(event.target)) {
+      //       ganttDetail[index].style.display = 'none';      
+      //     }
+      //   });
+      // });
     });
   }
   

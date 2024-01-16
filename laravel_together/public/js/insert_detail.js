@@ -766,7 +766,8 @@ function createTask() {
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
-			if (GANTT_LEFT[0]) {
+			let ganttSearch = document.querySelectorAll('.gantt-search')
+			if (ganttSearch.length !== 0) {
 				let ganttTaskBody = document.querySelector('.gantt-task-body');
 				let ganttChartBody = document.querySelector('.gantt-chart-body');
 				
