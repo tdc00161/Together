@@ -2438,12 +2438,12 @@ function formatDates(inputDate) {
   return { a, b };
 }
 
-// 현재 날짜를 기준으로 바 생성
-const verticalBar = document.createElement('div');
-const ganttBody = document.querySelector('.gantt-chart-wrap');
-verticalBar.className = 'vertical-bar';
-// document.body.appendChild(verticalBar);
-ganttBody.appendChild(verticalBar);
+// // 현재 날짜를 기준으로 바 생성
+// const verticalBar = document.createElement('div');
+// const ganttBody = document.querySelector('.gantt-chart-wrap');
+// verticalBar.className = 'vertical-bar';
+// // document.body.appendChild(verticalBar);
+// ganttBody.appendChild(verticalBar);
 
 document.querySelectorAll('.date').forEach((date,index)=>{
   let split = formatDates(date.textContent)
@@ -2452,17 +2452,17 @@ document.querySelectorAll('.date').forEach((date,index)=>{
 
   if(m === month && d === day){
     date.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    date.style.color='black';
+    date.style.backgroundColor='white';
+    date.style.fontWeight = 'bold';
 
-    const rect = date.getBoundingClientRect();
-    // console.log(rect);
-
-    verticalBar.style.position = 'absolute';
-    // verticalBar.style.left = rect.left - 735 + 'px';
-    verticalBar.style.left = rect.left + 'px';
-    verticalBar.style.top = '44px';
-    verticalBar.style.width = '1px';
-    verticalBar.style.height = '100%';
-    verticalBar.style.backgroundColor = '#ffffffe6';
+    // verticalBar.style.position = 'absolute';
+    // // verticalBar.style.left = rect.left - 735 + 'px';
+    // verticalBar.style.left = rect.left + 'px';
+    // verticalBar.style.top = '44px';
+    // verticalBar.style.width = '1px';
+    // verticalBar.style.height = '100%';
+    // verticalBar.style.backgroundColor = '#ffffffe6';
   }
 })
 //-----------------------------------------------------------
