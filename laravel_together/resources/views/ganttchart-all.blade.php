@@ -192,7 +192,11 @@
                                     </div>
                                     <div class="task-flex">
                                         <div class="responName">
-                                            <span class="respon-name-span" id="responNameSpan">{{$taskitem->res_name}}</span>
+                                            @if ($taskitem->res_name === null)
+                                                <span class="respon-name-span" id="responNameSpan">-</span>
+                                            @else
+                                                <span class="respon-name-span" id="responNameSpan">{{$taskitem->res_name}}</span>
+                                            @endif
                                         </div>
                                         {{-- 담당자 아이디/유저데이터에 이름--}}
                                         <div class="gantt-status-name">
@@ -223,13 +227,19 @@
                                 @forelse ($taskitem->depth_1 as $taskitem2)
                                     <div class="gantt-task gantt-child-task" id="gantt-task-{{$taskitem2->task_id}}" parent="{{$taskitem2->task_parent}}">
                                         <div class="gantt-editable-div editable">
-                                            <div class="taskKey" style="display: none">{{$taskitem2->task_number}}</div>
                                             <div class="taskChildPosition"></div>
                                             <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
+                                            <div class="taskKey" style="width: 40px">{{$taskitem2->task_number}}</div>
                                             <div class="taskName editable-title" spellcheck="false">{{$taskitem2->title}}</div>
                                         </div>
                                         <div class="task-flex">
-                                            <div class="responName"><span class="respon-name-span" id="responNameSpan">{{$taskitem2->res_name}}</span></div>
+                                            <div class="responName">
+                                                @if ($taskitem2->res_name === null)
+                                                    <span class="respon-name-span" id="responNameSpan">-</span>
+                                                @else
+                                                    <span class="respon-name-span" id="responNameSpan">{{$taskitem2->res_name}}</span>
+                                                @endif
+                                            </div>
                                             <div class="gantt-status-name">
                                                 <div class="statusName gantt-status-color" data-status="{{$taskitem2->sta_name}}">
                                                     <span class="status-name-span" id="statusNameSpan">{{$taskitem2->sta_name}}</span>
@@ -275,7 +285,7 @@
                     </div>
                     <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data as $key => $projectitem)
-                            <div class="gantt-chart" id="gantt-chart-{{$projectitem->project_id}}">
+                            <div class="gantt-chart gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
                                 @php
                                     $startDate = new DateTime('2024-01-01');
                                     $endDate = new DateTime('2024-03-31');
@@ -287,7 +297,7 @@
                             </div>
                             @if (isset($projectitem->depth_0))
                             @forelse ($projectitem->depth_0 as $taskitem)
-                                <div class="gantt-chart" id="gantt-chart-{{$taskitem->task_id}}">
+                                <div class="gantt-chart" id="gantt-chart-{{$taskitem->task_id}}" style="background-color: #ffffff0a;">
                                     @php
                                         $startDate = new DateTime('2024-01-01');
                                         $endDate = new DateTime('2024-03-31');
