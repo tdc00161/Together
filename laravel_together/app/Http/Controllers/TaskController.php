@@ -491,18 +491,21 @@ class TaskController extends Controller
 
         $auth = DB::table('project_users as pu')
                     ->join('tasks as tk','tk.project_id','pu.project_id')
-                    ->select('pu.authority_id','tk.id','tk.task_writer_id')
+                    ->join('projects as pj','pj.id','pu.project_id')
+                    ->select('pu.authority_id','tk.id','tk.task_writer_id','pj.flg')
                     ->where(function($query) {
                         $query->orWhere('pu.authority_id',"0")
                              ->orWhere('tk.task_writer_id',auth::id());
                     })
                     ->where('tk.id',$id)
                     ->first();
+                    
         Log::debug("권한");
         Log::debug([$auth]);
 
         $data = [
             'user' => $user,
+            'flg' => $auth->flg,
             'authority_id' => $auth->authority_id,
             'task_writer_id' => $auth->task_writer_id,
             'id' => $auth->id,
@@ -512,6 +515,36 @@ class TaskController extends Controller
 
         return response()->json($data);
     }
+
+        //댓글 삭제권한 여부
+        public function commentAuth($id){
+            $user = Auth::id();
+            Log::debug("댓글아이디");
+            Log::debug([$user]);
+    
+            $auth = DB::table('project_users as pu')
+                        ->join('tasks as tk','tk.project_id','pu.project_id')
+                        ->join('projects as pj','pj.id','pu.project_id')
+                        ->join('comments as cm','cm.task_id','tk.id')
+                        ->select('pu.authority_id','tk.id','pj.flg','cm.user_id')
+                        ->where('tk.id',$id)
+                        ->where('pu.member_id',Auth::id())
+                        ->first();
+            Log::debug("권한");
+            Log::debug([$auth]);
+    
+            $data = [
+                'comment' => $auth->user_id,
+                'user' => $user,
+                'flg' => $auth->flg,
+                'authority_id' => $auth->authority_id,
+                'id' => $auth->id,
+            ];
+            Log::debug("데이터");
+            Log::debug([$data]);
+    
+            return response()->json($data);
+        }
 
     // 업무 작성
     public function store(Request $request)

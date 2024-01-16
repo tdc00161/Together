@@ -266,6 +266,31 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 			console.log(err.message);
 		})
 
+		//댓글 권한에 따른 표시여부
+		// fetch('/comment-auth/'+c, {
+		// 	method: 'GET',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		'X-CSRF-TOKEN': csrfToken_insert_detail,
+		// 	},
+		// })
+		// .then(response => response.json())
+		// .then(data => {
+		// 	console.log(data);
+		// 	if(data.flg === "0" || data.flg === "1" && data.comment=== data.user){
+
+		// 	}else if(data.flg === "1" && data.authority_id === "0" || data.flg === "1" && data.comment != data.user){
+		// 		document.querySelector('.update_comment').style.display ='none';
+
+		// 	}else if(data.flg != "0" || data.flg === "1" && data.authority_id === "1" || data.flg === "1" && data.comment != data.user){
+		// 		document.querySelector('.update_comment').style.display ='none';
+		// 		document.querySelector('.delete_comment').style.display ='none';
+		// 	}
+		// })
+		// .catch(err => {
+		// 	console.log(err.message);
+		// })
+
 		// 모달 띄우기
 		openInsertDetailModal(a);
 
