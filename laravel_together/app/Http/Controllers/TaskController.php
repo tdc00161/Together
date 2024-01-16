@@ -55,6 +55,7 @@ class TaskController extends Controller
         ->where('p.flg','=', 0)
         ->where('b.data_title_code', '=', 3)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -66,6 +67,7 @@ class TaskController extends Controller
         ->where('p.flg','=', 1)
         ->where('b.data_title_code', '=', 3)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -624,6 +626,7 @@ class TaskController extends Controller
         $result = Task::create($request->toArray());
 
         $nowRes = $result->task_responsible_id;
+        $nowUser = User::find($nowRes);
         // Log::debug($result);
         if (!$result) {
             $responseData['msg'] = 'task not created.';
@@ -631,8 +634,9 @@ class TaskController extends Controller
         } else {
             $responseData['msg'] = 'task created.';
             $responseData['data'] = $result;
+            $responseData['resName'] = $nowUser;
             if($nowRes){
-                $content['nowRes'] = User::find($nowRes);
+                $content['nowRes'] = $nowUser;
                 $content['where'] = $result;
                 $content['project'] = DB::table('projects as p')
                 ->join('tasks as t',function ($join) use ($result) {
@@ -813,9 +817,17 @@ class TaskController extends Controller
         return $responseData;
     }
 
+
     // 업무 삭제
     public function delete(Request $request, $id)
     {
+        $taskauth = DB::table('tasks as tk')
+                    ->select('tk.task_writer_id','pu.authority_id')
+                    ->join('project_users as pu','pu.project_id','tk.project_id')
+                    ->where('tk.id',$id)
+                    ->where('pu.authority_id',"1")
+                    ->get();
+
         $responseData = [
             "code" => "0",
             "msg" => ""

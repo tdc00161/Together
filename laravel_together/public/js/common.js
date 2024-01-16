@@ -199,7 +199,7 @@ fetch('/alarms', {
     return response.json();
 })
 .then(data => {
-    // console.log(data.data);
+    // console.log(data);
     data.data.forEach(d => {
         // console.log(d.id);
         
@@ -288,7 +288,8 @@ function alarmText(alarms) {
             msg = number ? `'${projectTitle}' 프로젝트 마감까지 '${code[2]}' 일 남았습니다` : `'${projectTitle}' 프로젝트가 마감되었습니다`;
             break;
         case 'PI': // 프로젝트 초대
-            msg = `'${projectTitle}' 프로젝트에서 초대되었습니다`;
+            let inviteProject = alarms[2].project;
+            msg = `'${inviteProject}' 프로젝트에서 초대되었습니다`;
             break;
         case 'TS': // 업무 시작
             msg = number ? `'${taskProjectTitle}' - '${taskTitle}' 업무 시작까지 '${code[2]}' 일 남았습니다` : `'${taskTitle}' 업무가 시작되었습니다`;

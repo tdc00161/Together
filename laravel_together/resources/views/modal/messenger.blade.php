@@ -27,8 +27,12 @@
 <div id="tab1" class="tab-content">
     <div class="chat-layout">
     </div>
-    <div class="chat-window" style="display: none">
+    <div class="chat-header" style="display: none">
       <div class="chat-back"></div>
+      <div class="chat-title"></div>
+      <div class="chat-out">나가기</div>
+    </div>
+    <div class="chat-window" style="display: none">
       <div class="messages-field"></div>
       <div class="chat-footer">
         <textarea 

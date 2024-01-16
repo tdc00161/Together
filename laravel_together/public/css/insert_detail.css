@@ -697,6 +697,15 @@
 	margin-right: 11px;
 	/* 내부 */
 	/* 크기 */
+	padding: 3px 5px;
+}
+
+.task_modal .comment>div>.comment_content .cancel_comment {
+	/* 배치 */
+	margin-right: 11px;
+	/* 내부 */
+	/* 크기 */
+	padding: 3px 5px;
 }
 
 .task_modal .update_comment {
@@ -705,6 +714,30 @@
 	right: 43px;
 	/* 내부 */
 	/* 크기 */
+	padding: 3px 5px;
+	margin-right: 5px;
+}
+
+.task_modal .save_comment {
+	/* 배치 */
+	position: absolute;
+	right: 43px;
+	/* 내부 */
+	/* 크기 */
+	padding: 3px 5px;
+	margin-right: 7px;
+	border-radius: 5px;
+	background-color: #ffffff2f;
+}
+
+.update_comment:hover, .delete_comment:hover,
+.cancel_comment:hover {
+	background-color: #ffffff2f;
+	border-radius: 5px;
+}
+
+.save_comment:hover {
+	background-color: #ffffff16;
 }
 
 .task_modal .comment>div>.comment_content>div:nth-child(1) {
@@ -771,11 +804,13 @@
 
 .task_modal .comment .comment_content .comment_line {
 	/* 배치 */
-	margin: 0 11px 0 0;
+	margin: 5px 11px 0 0;
+	padding: 4px 8px;
 	/* 내부 */
 	font-size: 12.5px;
 	font-weight: lighter;
 	color: white;
+	border-radius: 5px;
 	/* 크기 */
 }
 
@@ -992,6 +1027,8 @@
 .task_modal .add_box_mgin,
 .task_modal .update_comment,
 .task_modal .delete_comment,
+.task_modal .save_comment,
+.task_modal .cancel_comment,
 .task_modal .more_modal>div>div,
 .task_modal .start_date,
 .task_modal .end_date,

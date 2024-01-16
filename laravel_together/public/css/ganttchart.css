@@ -641,6 +641,7 @@ background-color: #000;
 	justify-content: space-between;
 	width: 330px;
 	align-items: center;
+	position: relative;
 }
 .gantt-status-name {
 	width: 22%;
@@ -652,6 +653,10 @@ background-color: #000;
 }
 .gantt-task-5 {
 	width: 27%;
+}
+
+.gantt-more-btn {
+	position: relative;
 }
 /* 업무명 수정 가능 */
 .editable {
@@ -729,7 +734,7 @@ display: none;
 	color: white;
 }
 .taskName:hover {
-	background-color: rgba(255, 255, 255, 0.185);
+	background-color: #ffffff2f;
     border-radius: 4px;
 }
 
@@ -737,8 +742,10 @@ display: none;
 /* 업무명 자세히 보기 */
 .gantt-detail {
 	display: none;
-	position: fixed;
-    background-color: rgba(151, 86, 255, 0.9);
+	position: absolute;
+	top: 20px;
+	right: 0px;
+    background-color: rgba(0 0 0 /90%);
     width: auto;
     padding: 5px;
     z-index: 1;
@@ -749,6 +756,12 @@ display: none;
 .gantt-detail-btn {
 	border: none;
 	padding: 3px;
+	width: 100%;
+}
+
+.gantt-detail-btn:hover {
+	background-color: #ffffff2f;
+    border-radius: 4px;
 }
 
 /* 드롭박스 담당자 선택 수정 */
@@ -967,7 +980,7 @@ display: none;
 }
 
 /* 업무명 div에 placeholder */
-[contenteditable="true"]:empty:before {
+.taskName[contenteditable="true"]:empty:before {
 	content: attr(placeholder);
 }
 

@@ -514,7 +514,7 @@ button {
 }
 
 .m-modal-content .tab-content {
-    /* padding: 20px; */
+    position: relative;
 }
 
 .m-modal-content .chat-layout {
@@ -578,12 +578,52 @@ button {
     top: 5px;
 }
 
-.m-modal-content .chat-content {
+.m-modal-content .chat-content,
+.m-modal-content .last-chat {
     padding: 7px 13px;
     background-color: var(--dropdown-hover);
     border-radius: 9px;
     min-height: 36px;
+    max-width: 20rem;
+    position: relative;
 }
+
+.m-modal-content .last-chat::after{
+    content: attr(user-count);
+    color: rgb(170, 170, 170);
+    padding: 0px 5px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-left: 5px;
+    position: absolute;
+    top: -20px;
+    right: 0px;
+}
+
+.m-modal-content .chat-content.my-chat-content::before{
+    content: attr(chat-time-stamp);
+    color: rgb(170, 170, 170);
+    padding: 0px 5px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-left: 5px;
+    position: absolute;
+    top: 10px;
+    left: -70px;
+}
+
+.m-modal-content .chat-content:not(.my-chat-content)::after{
+    content: attr(chat-time-stamp);
+    color: rgb(170, 170, 170);
+    padding: 0px 5px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-left: 5px;
+    position: absolute;
+    top: 10px;
+    right: -65px;
+}
+
 .m-modal-content .my-chat-content {
     margin-left: auto;
 }
@@ -596,6 +636,36 @@ button {
 .m-modal-content .chat-window {
     height: 597px;
     padding: 2px 21px;
+}
+
+.m-modal-content .chat-header {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    background-color: #181818;
+    width: 100%;
+    height: 7%;
+    z-index: 1;
+    padding: 2px 21px;
+    align-items: center;
+}
+
+.m-modal-content .chat-title {
+    font-size: 17px;
+    position: relative;
+    width: 80%;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.m-modal-content .chat-out {
+    /* background: #db2424;
+    padding: 5px;
+    border-radius: 7px;
+    cursor: pointer; */
+    color: transparent;
 }
 
 .m-modal-content .chat-back {
@@ -613,7 +683,8 @@ button {
     height: 95%;
     border-radius: 7px;
     padding: 19px;
-    overflow: scroll;
+    margin-top: 40px;
+    overflow: auto;
 }
 
 .m-modal-content .chat-msg-box {

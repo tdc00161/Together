@@ -29,6 +29,17 @@
   </style>
 </head>
 <body>
+
+{{-- 이미지 먼저 불러오기 --}}
+{{-- <img src="/img/oneplus-8-pro-stock-1920x1080-436.jpg" alt="" style="display: none"> --}}
+<img src="/img/group-chat-icon.png" alt="" style="display: none">
+<img src="/img/icon-leftarrow.png" alt="" style="display: none">
+{{-- <img src="/img/free-icon-x-mark-12139978.png" alt="" style="display: none"> --}}
+{{-- <img src="/img/free-icon-x-mark-12139978-1.png" alt="" style="display: none"> --}}
+<img src="/img/free-icon-more-information-7151956-1.png" alt="" style="display: none">
+<img src="/img/free-icon-calendar-days-10178999-1.png" alt="" style="display: none">
+{{-- <img src="/img/free-icon-person-2815428-1.png" alt="" style="display: none"> --}}
+<img src="/img/free-icon-history-8138197-1.png" alt="" style="display: none">
  
   {{-- 다크모드 --}}
   {{-- <div class="dark-light">
