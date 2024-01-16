@@ -595,6 +595,9 @@ a:hover {
 	flex-direction: row;
 	justify-content: space-between;
 }
+.gantt-task:last-child {
+	margin-bottom: 60px;
+}
 .gantt-child-task {
 	background-color: #ffffff14;
 }
@@ -902,6 +905,11 @@ display: none;
 	gap: 13px;
 	padding-left: 3px;
 }
+
+.gantt-chart:last-child {
+	margin-bottom: 60px;
+}
+
 .bk-row {
 	width: 77px;
 	height: 20px;

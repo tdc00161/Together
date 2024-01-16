@@ -648,7 +648,6 @@ function addGanttLeft(data) {
 
 	// 여러 개 클릭했을 때 하나만 뜨게 하기
 	ganttMoreBtnDiv.addEventListener('click', function(event) {
-		console.log(1);
 		// 한 번 클릭 후 다시 클릭 시 창 닫기
 		if (ganttDetailDiv.style.display === 'none') {
 			ganttDetailDiv.style.display = 'block';
@@ -660,9 +659,6 @@ function addGanttLeft(data) {
 		let ganttDetail = document.querySelectorAll('.gantt-detail');
 		let ganttMoreBtn = document.querySelectorAll('.gantt-more-btn');
 		ganttDetail.forEach((GDone,GDi)=>{
-			console.log(GDone);
-			console.log(ganttMoreBtnDiv);
-			console.log(GDone !== ganttMoreBtnDiv);
 			ganttMoreBtnDiv !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
 		});
 		

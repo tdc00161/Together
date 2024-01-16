@@ -1263,8 +1263,8 @@ function addSubTask(event, mainId) {
   // const ganttModalId = gantt_modal_id[0];
   // console.log(gantt_modal_id[0]);
 
-  var iconImg = document.querySelector(`#iconimg${gantt_modal_id}`);
-  iconImg.src = "/img/Group 202.png";
+  // var iconImg = document.querySelector(`#iconimg${gantt_modal_id}`);
+  // iconImg.src = "/img/Group 202.png";
 
 
 

@@ -324,8 +324,8 @@
         </section>
     </div>
 </div>
-    {{-- @include('modal.insert') include 순서 중요: 작성/상세
-    @include('modal.detail') --}}
+    {{-- @include('modal.insert') include 순서 중요: 작성/상세 --}}
+    @include('modal.detail')
 
    
 @endsection
