@@ -345,12 +345,11 @@ function addGanttLeft(data) {
             addResponsibleGanttDiv.classList.add('d-none');
         }
 
-        // 다른 담당자 눌렀을 때 하나만 창 뜨게하기
-        addResponsibleGanttDiv.forEach(function(resOther, i) {
-            if (i !== index) {
-                addResponsibleGanttDiv.classList.add('d-none');
-            }
-        });
+        // // 다른 담당자 눌렀을 때 하나만 창 뜨게하기
+        // addResponsibleGanttDiv.forEach(function(resOther, i) {
+        //     if (i !== index) {
+        //         addResponsibleGanttDiv.classList.add('d-none');
+        // });
 
         // 담당자 칸 이외 영역 클릭 시 창 닫기
         document.addEventListener('click', function(event) {
