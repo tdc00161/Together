@@ -120,34 +120,6 @@
                     </li>
                 </ul>
             </div>
-
-            <div id="list2" class="gantt-dropdown-check-list" tabindex="100">
-                <div id="gantt-filter-dropdown-btn" class="gantt-span">
-                    <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
-                    <span style="font-size: 12px;">중요도</span>
-                </div>
-                <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="priorityAll" class="priority-radio radio-checked" type="radio" name="priority" value="priorityAll">
-                        <label for="priorityAll" class="gantt-item priority-value">전체</label>
-                    </li>
-                    <li><input id="priority1" class="priority-radio" type="radio" name="priority" value="priority1"><img class="gantt-rank" src="/img/gantt-bisang.png" alt="">
-                        <label for="priority1" class="gantt-item priority-value">긴급</label>
-                    </li>
-                    <li><input id="priority2" class="priority-radio" type="radio" name="priority" value="priority2"><img class="gantt-rank" src="/img/gantt-up.png" alt="">
-                        <label for="priority2" class="gantt-item priority-value">높음</label>
-                    </li>
-                    <li><input id="priority3" class="priority-radio" type="radio" name="priority" value="priority3"><img class="gantt-rank" src="/img/gantt-line.png" alt="">
-                        <label for="priority3" class="gantt-item priority-value">보통</label>
-                    </li>
-                    <li><input id="priority4" class="priority-radio" type="radio" name="priority" value="priority4"><img class="gantt-rank" src="/img/gantt-down.png" alt="">
-                        <label for="priority4" class="gantt-item priority-value">낮음</label>
-                    </li>
-                    <li><input id="priorityNot" class="priority-radio" type="radio" name="priority" value="priorityNot">
-                        <label for="priorityNot" class="gantt-item priority-value">없음</label>
-                    </li>
-                </ul>
-            </div>
-
             <div id="list3" class="gantt-dropdown-check-list" tabindex="100">
                 <div id="gantt-filter-dropdown-btn" class="gantt-span">
                     <img class="gantt-filter" src="/img/Group_136.png" alt="filter">
