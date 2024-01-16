@@ -171,7 +171,7 @@
             <div id="projectMemberaddModal" class="projectMemberaddModalcss">
                 <div class="projectMemberaddModalContent">
                     <span class="memberaddclosebtn" onclick="projectMemberAddCloseModal()">&times;</span>
-                    <div>이메일 초대</div>
+                    {{-- <div>이메일 초대</div> --}}
                     <div class="m-gird">
                         <div onclick="toggleDrop()">친구 초대</div>
                         <div id="friend-drop">

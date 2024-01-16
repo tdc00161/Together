@@ -602,6 +602,11 @@ a:hover {
 	background-color: #ffffff14;
 }
 
+.gantt-child-chart {
+	background-color: #ffffff14;
+}
+
+
 .gantt-task input {
 	border: none;
 	width: 100%;
@@ -612,7 +617,13 @@ a:hover {
 }
 
 .respon-name-span {
-background-color: #000;
+    /* background-color: #4f4f4f; */
+    /* display: flex; */
+    /* width: 100%; */
+    height: 24px;
+    border-radius: 10px;
+    /* justify-content: center;
+    align-items: center; */
 }
 
 .gantt-task-detail-click, .taskKey, .taskName {
@@ -638,6 +649,13 @@ background-color: #000;
 	overflow: visible;
 	position: relative;
 	cursor: pointer;
+	display: flex;
+	margin-right: 7px;
+	justify-content: center;
+}
+.responName:hover {
+	background-color: #000;
+	border-radius: 10px;
 }
 .task-flex {
 	display: flex;
@@ -650,6 +668,8 @@ background-color: #000;
 	width: 22%;
 	position: relative;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
 }
 .gantt-task-4 {
 	width: 27%;
@@ -712,8 +732,8 @@ display: none;
     justify-content: center;
 }
 .task-top-icon-img {
-	width: 13px;
-	height: 13px;
+	width: 15px;
+	height: 15px;
 }
 .task-bottom-icon-img {
 	width: 10px;
@@ -768,10 +788,10 @@ display: none;
 }
 
 /* 드롭박스 담당자 선택 수정 */
-.add_responsible_gantt:not(.otherColor) {
+.add_responsible_gantt:not(.otherColorRespon) {
 	position: absolute;
-    top: 33px;
-    left: -7px;
+	top: 25px;
+    left: -15px;
     z-index: 5;
     background-color: rgb(44 30 29);
     overflow: auto;
@@ -781,10 +801,10 @@ display: none;
     max-height: 70px;
     border: 1px solid;
 }
-.otherColor {
+.otherColorRespon {
 	position: absolute;
-    top: 33px;
-    left: -7px;
+	top: 25px;
+    left: -15px;
     z-index: 5;
     background-color: rgb(62 49 48);
     overflow: auto;
@@ -810,38 +830,40 @@ display: none;
 }
 
 /* 드롭박스 상태 선택 수정 */
-.add_status_gantt {
+.add_status_gantt:not(.otherColorStatus) {
 	position: absolute;
-    top: 33px;
-    left: -7px;
+    top: 28px;
+    left: -5px;
     z-index: 5;
     background-color: rgb(44 30 29);
     overflow: auto;
     border-radius: 5px;
     width: 80px;
-    min-height: 28px;
-    max-height: 70px;
+    /* min-height: 28px;
+    max-height: 70px; */
     border: 1px solid;
 }
-/* .otherColor {
+.otherColorStatus {
 	position: absolute;
-    top: 33px;
-    left: -7px;
+    top: 28px;
+    left: -5px;
     z-index: 5;
     background-color: rgb(62 49 48);
     overflow: auto;
     border-radius: 5px;
     width: 80px;
-    min-height: 28px;
-    max-height: 70px;
+    /* min-height: 28px;
+    max-height: 70px; */
     border: 1px solid;
-} */
+}
 
 .add_status_gantt_one {
     display: flex;
 	cursor: pointer;
 	padding: 2px 0px;
-	margin-top: 5px;
+	margin: 4px;
+	width: 68px;
+    height: 25px;
 }
 
 .add_status_gantt_one:hover{
@@ -901,7 +923,7 @@ display: none;
 	height: 40.5px;
 	align-items: center;
 	margin-bottom: 3px;
-	background-color: #ffffff0a;
+	/* background-color: #ffffff0a; */
 	gap: 13px;
 	padding-left: 3px;
 }
@@ -1023,7 +1045,7 @@ display: none;
 .new-task-add-please {
 	position: absolute;
     top: 50%;
-    left: 42%;
+    /* left: 42%; */
     width: 100%;
     z-index: 1;
 }
