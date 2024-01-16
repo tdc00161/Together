@@ -1013,26 +1013,15 @@ display: none;
 
 /* 새 업무 추가 문구 */
 .new-task-add-please {
-	/* display: none; */
-	position: fixed;
-    top: 39%;
-    left: 50%;
-    width: 20%;
-    /* height: 0%; */
-    /* background-color: rgba(0, 0, 0, 0.5); */
+	position: absolute;
+    top: 50%;
+    left: 42%;
+    width: 100%;
     z-index: 1;
 }
-.new-task-add {
-	position: absolute;
-    background-color: #2c1717;
-    padding: 3px;
-    border-radius: 15px;
-    /* border: 1px solid #fff; */
-}
+
 .new-task-add-p {
-	color: #fff;
-	margin: 0px;
-	font-size: large;
+	font-size: 13px;
 }
 
 .show {

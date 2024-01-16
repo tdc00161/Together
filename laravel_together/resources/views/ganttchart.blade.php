@@ -240,11 +240,6 @@
         </div>
     </div>
     {{-- 새 업무 추가 문구 --}}
-    <div class="new-task-add-please" style="display: none">
-        <div class="new-task-add">
-            <p class="new-task-add-p">새 업무를 추가해주세요.</p>
-        </div>
-    </div>
     <div class="gantt-content-wrap">
         <section class="gantt-all-task scroll-style-parent">
             <div class="gantt-task-wrap">
@@ -418,6 +413,11 @@
                         </div>
                     </div>
                     <div class="gantt-chart-body" id="ganttTaskWrap">
+                        <div class="new-task-add-please" style="display: none">
+                            <div class="new-task-add">
+                                <p class="new-task-add-p">새 업무를 추가해주세요.</p>
+                            </div>
+                        </div>
                         @forelse ($data['task'] as $key => $item)
                             <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
