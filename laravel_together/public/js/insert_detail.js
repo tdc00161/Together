@@ -1072,27 +1072,34 @@ function removeResponsible(a) {
 
 // 댓글 수정
 function updateComment(event, a) {
-
+	// 기준 바뀌어도 index는 같음
 	let updateComment = document.querySelectorAll('.update_comment');
 	updateComment.forEach((UCone,UCi)=>{
+		// 엘리먼트 비교 .isSameElement / .isEqualElemet 같은 메소드도 있음
+		// 내가 누른 애랑 반복도는 애 번째가 같으면 실행
 		if(event.currentTarget === UCone){
 			let comment_one = document.querySelectorAll('.comment_one');
 			let comment_input = document.querySelectorAll('.comment_line');
 			let deleteComment = document.querySelectorAll('.delete_comment');
 			let saveComment = document.querySelectorAll('.save_comment');
 			let cancelComment = document.querySelectorAll('.cancel_comment');
+
+			// 내용과 id 값 배치
 			thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
 			thisCommentContent = event.target.parentElement.nextElementSibling
 			console.log(thisCommentContent);
 
+			// 저장버튼에 저장기능 적용
 			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment()');
 
+			// 버튼 보이고 안보이기
 			updateComment[UCi].classList.add('d-none');
 			deleteComment[UCi].classList.add('d-none');
 
 			saveComment[UCi].classList.remove('d-none');
 			cancelComment[UCi].classList.remove('d-none');
 
+			// 수정가능하게 속성추가 및 판별용 css
 			thisCommentContent.setAttribute('contenteditable', 'true');
 			thisCommentContent.style.backgroundColor = '#ffffff2f';
 
