@@ -602,6 +602,9 @@ a:hover {
 	transition: display 0.5s ease;
 
 }
+.gantt-task:last-child {
+	margin-bottom: 60px;
+}
 .gantt-child-task {
 	background-color: #ffffff14;
 }
@@ -941,10 +944,15 @@ a:hover {
 	height: 40.5px;
 	align-items: center;
 	margin-bottom: 3px;
-	/* background-color: #ffffff0a; */
+	background-color: #ffffff0a;
 	gap: 13px;
 	padding-left: 3px;
 }
+
+.gantt-chart:last-child {
+	margin-bottom: 60px;
+}
+
 .bk-row {
 	width: 77px;
 	height: 20px;
