@@ -334,7 +334,7 @@
                                     <div class="taskKey">{{$item->task_number}}</div>
                                     <span class="taskand">></span> 
                                     <div class="taskKeyright">{{$item2->task_number}}</div>
-                                    <div class="taskName editable-title" id = "taskNameright" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
+                                    <div class="taskName editable-title" id= "taskNameright" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="task-flex">
                                     <div class="responName">
@@ -387,7 +387,7 @@
                     <div class="gantt-chart-body" id="ganttTaskWrap">
                        
                         @forelse ($data['task'] as $key => $item)
-                            <div class="gantt-chart" id="gantt-chart-{{$item->id}}" style="background-color: #ffffff0a;">
+                            <div class="gantt-chart" id="gantt-chart-{{$item->id}}">
                                 @php
                                     $startDate = new DateTime('2023-10-01');
                                     $endDate = new DateTime('2024-03-31');
@@ -398,7 +398,7 @@
                                 @endphp
                             </div>
                             @forelse ($item->depth_1 as $item2)
-                                <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$item2->id}}" parent="{{$item2->task_parent}}">
+                                <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$item2->id}}" parent="{{$item2->task_parent}}" style="background-color: #ffffff14;">
                                     @php
                                         $startDate = new DateTime('2023-10-01');
                                         $endDate = new DateTime('2024-03-31');

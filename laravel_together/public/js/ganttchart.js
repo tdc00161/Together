@@ -1736,6 +1736,7 @@ let myChildren = []
 let ganttChildTaskList = document.querySelectorAll('.gantt-child-task')
 const newChart = document.createElement('div');
 newChart.classList.add('gantt-chart', 'gantt-child-chart');
+newChart.style.backgroundColor = '#ffffff14';
 newChart.id = 'gantt-chart-000'; 
 newChart.setAttribute('parent', gantt_modal_id[0])
 for (let index = 0; index < ganttChildTaskList.length; index++) {

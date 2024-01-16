@@ -1048,21 +1048,18 @@ a:hover {
 }
 
 
-/* 수정 완료 시 팝업 창 */
+/* 수정 완료 시 팝업 창
 .gantt-update-modal {
 	display: none;
 	position: fixed;
 	top: 10%;
 	left: 50%;
 	width: 8%;
-	/* height: 0%; */
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 9999;
 }
 .gantt-modal-content {
 	position: absolute;
-    /* top: 50%; */
-    /* left: 44%; */
     transform: translate(-50%, -50%);
     background-color: #9656FF;
     padding: 10px 30px;
@@ -1072,7 +1069,7 @@ a:hover {
 .gantt-modal-content-p {
 	color: #fff;
 	margin: 0px;
-}
+} */
 
 /* 새 업무 추가 문구 */
 .new-task-add-please {
