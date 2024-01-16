@@ -1297,7 +1297,18 @@ function addSubTask(event, mainId) {
   const addTaskChildPosition = document.createElement('div');
   addTaskChildPosition.classList.add('taskChildPosition');
 
-  // gantt-task 안 첫번째 div 안 세번째 div
+  // gantt-task 안 첫번째 div 안 세번째 div 
+  // <div class="task-top-icon"></div>
+  const addTaskTopDiv = document.createElement('div');
+  addTaskTopDiv.classList.add('task-top-icon');
+
+  // gantt-task 안 첫번째 div 안 세번째 div 안 img
+  // <img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt="">
+  const addTaskTopIcon = document.createElement('img');
+  addTaskTopIcon.classList.add('task-bottom-icon-img');
+  addTaskTopIcon.setAttribute('src', '/img/Groupfdg.png');
+
+  // gantt-task 안 첫번째 div 안 네번째 div
   // <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
   const addTaskName = document.createElement('div');
   addTaskName.classList.add('taskName', 'editable-title');
@@ -1517,6 +1528,10 @@ function addSubTask(event, mainId) {
     });
   }
   
+  // task-flex 묶음
+  // <div class="task-flex"></div>
+  // const taskFlexDiv = doc
+
   // gantt-task 안 두번째 div
   // <div class="responName"></div>
   const addUserName = document.createElement('div');
@@ -1634,6 +1649,8 @@ function addSubTask(event, mainId) {
   newTask.appendChild(addGanttEditableDiv);
   addGanttEditableDiv.appendChild(addTaskKey);
   addGanttEditableDiv.appendChild(addTaskChildPosition);
+  addGanttEditableDiv.appendChild(addTaskTopDiv);
+  addTaskTopDiv.appendChild(addTaskTopIcon);
   addGanttEditableDiv.appendChild(addTaskName);
 
   // gantt-task 안에 두번째

@@ -290,7 +290,12 @@
                             {{-- 담당자/상태/시작일/마감일/더보기버튼 --}}
                             <div class="task-flex">
                                 <div class="responName">
-                                    <span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span>
+                                    @if ($item->res_name === null)
+                                        <span class="respon-name-span" id="responNameSpan">-</span>
+                                    @else
+                                        <span class="respon-name-span" id="responNameSpan">{{$item->res_name}}</span>
+                                    @endif
+                                    
                                     <div class="add_responsible_gantt d-none"></div>
                                 </div>
                                 
