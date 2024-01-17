@@ -204,16 +204,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: 5px;
 }
 
-.project_label1 {
-    width: 120px;
-    background-color: rgb(14, 14, 14,0.73);
-    text-align: center;
-    font-size: 13px;
-    border-radius: 5px;
-    height: 25px;
-    line-height: 25px;
-}
-
 .div_text1 {
     text-align: center;
 }
