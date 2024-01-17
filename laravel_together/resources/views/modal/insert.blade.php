@@ -16,7 +16,7 @@
 					<div class="task_name parent"></div>
 				</div>
 			</div>
-			<input type="text" class="insert_title" placeholder="제목을 입력하세요.">
+			<input type="text" class="insert_title" placeholder="제목을 입력하세요 (최대 100자)">
 			<div class="property type_task">
 				<div class="status">
 					<div></div>
@@ -82,12 +82,13 @@
 					id="" 
 					cols="30" 
 					rows="10"
-					placeholder="내용을 입력하세요."
+					placeholder="내용을 입력하세요 (최대 500자)"
 				></textarea>
 			{{-- </div> --}}
 		</div>
 	</div>
 	<div class="insert_footer">
+		<p class="insert_error_msg d-none"></p>
 		<div class="submit" onclick="">등록</div>
 	</div>
 </div>
