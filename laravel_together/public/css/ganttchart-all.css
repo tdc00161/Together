@@ -308,8 +308,8 @@
 } */
 
 .gantt-project-title {
-	height: 43.5px;
-	line-height: 43.5px;
+	height: 40.5px;
+	line-height: 40.5px;
 	/* border-right: 1px solid #fff; */
 	font-size: larger;
     font-weight: 600;
@@ -601,7 +601,12 @@
 .gantt-project-chart {
 	border-top: 1px solid;
 	border-bottom: 1px solid;
-	padding-top: 3px;
+	display: flex;
+    flex-direction: row;
+	height: 40.5px;
+	align-items: center;
+	gap: 13px;
+	padding-left: 3px;
 }
 
 .gantt-child-chart {

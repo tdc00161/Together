@@ -289,7 +289,7 @@
                     </div>
                     <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data as $key => $projectitem)
-                            <div class="gantt-chart gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
+                            <div class="gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
                                 {{-- @php
                                     $startDate = new DateTime('2023-10-01');
                                     $endDate = new DateTime('2024-03-31');

@@ -22,6 +22,7 @@ return new class extends Migration
             // $table->dropColumn('your_column_name');
             $table->date('start_date')->nullable()->change(); // ->default('CURRENT_TIMESTAMP');
             $table->date('end_date')->nullable()->change(); // ->default('CURRENT_TIMESTAMP');
+            $table->string('title',100)->change(); // ->default('CURRENT_TIMESTAMP');
         });
     }
 

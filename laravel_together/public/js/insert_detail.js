@@ -878,28 +878,33 @@ function updateTask() {
 				let refreshEnd = refreshTarget.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				refreshEnd.value = data.data.task.end_date
 
+				// 작성에서 우간트 작업 복사
+
 				let refreshRightGanttChart = document.querySelector('#gantt-chart-' + now_task_id)
 				let chartDateList = refreshRightGanttChart.children
 
 				if (data.data.task.start_date !== null && data.data.task.end_date !== null) {
-					for (let index = 0; index < chartDateList.length; index++) {
-						const element = chartDateList[index];
-						element.firstChild ? element.removeChild(element.firstChild) : ''
-						let date = element.id.match(/-(\d+)/)[1]
-						let gantt_start = data.data.task.start_date ? data.data.task.start_date.replace(/-/g, '') : ''
-						let gantt_end = data.data.task.end_date ? data.data.task.end_date.replace(/-/g, '') : ''
-						if (gantt_start <= date && gantt_end >= date) {
-							let create_1 = document.createElement('div')
-							create_1.classList.add('bk-row')
-							create_1.setAttribute('data-row-num', data.data.id)
-							if (gantt_start == date) {
-								create_1.textContent = '시작일: ' + gantt_start
-							} else if (gantt_end == date) {
-								create_1.textContent = '마감일: ' + gantt_end
-							}
-
-							element.append(create_1)
-						}
+					for (var i = 20240101; i <= 20240331; i++) {
+						// var rowId = 'row'+now_task_id+'-' + i;
+						
+						// // Create a div element
+						// var divElement = document.createElement('div');
+						// divElement.id = rowId;
+				
+						// let currentDate = new Date(i);
+						// let start = new Date(data.data.start_date);
+						// let end = new Date(data.data.end_date);
+						// // If it's the start or end date, add the corresponding class
+						// if (currentDate == data.data.start_date) {
+						// 	divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates start">' + i + '</span></div>';
+						// } else if (i == data.data.end_date) {
+						// 	divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates end">' + i + '</span></div>';
+						// } else {
+						// 	// divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"></div>';
+						// }
+				
+						// // Append the created div element to the container
+						// container.appendChild(divElement);
 					}
 				}
 			}
@@ -1078,7 +1083,6 @@ function updateComment(event, a) {
 		// 엘리먼트 비교 .isSameElement / .isEqualElemet 같은 메소드도 있음
 		// 내가 누른 애랑 반복도는 애 번째가 같으면 실행
 		if(event.currentTarget === UCone){
-			let comment_one = document.querySelectorAll('.comment_one');
 			let comment_input = document.querySelectorAll('.comment_line');
 			let deleteComment = document.querySelectorAll('.delete_comment');
 			let saveComment = document.querySelectorAll('.save_comment');
@@ -1090,7 +1094,7 @@ function updateComment(event, a) {
 			console.log(thisCommentContent);
 
 			// 저장버튼에 저장기능 적용
-			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment()');
+			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment(event)');
 
 			// 버튼 보이고 안보이기
 			updateComment[UCi].classList.add('d-none');
@@ -1123,10 +1127,14 @@ function updateComment(event, a) {
 
 
 // 댓글 수정 적용 버튼
-function commitUpdateComment() {
+function commitUpdateComment(event) {
 	let comment_input = document.querySelector('.comment_line');
+	// console.log(event.target.parentElement.nextElementSibling.textContent);
+
+	// 댓글 여러개 있을 때 각각 수정 가능하게
+	let saveNewComment = event.target.parentElement.nextElementSibling.textContent;
 	let putData = {
-		"content": comment_input.textContent,
+		"content": saveNewComment,
 		"task_id": now_task_id
 	}
 	fetch('/comment/' + thisCommentId, {
