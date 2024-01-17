@@ -1776,34 +1776,21 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
   let ganttDetailList = document.querySelectorAll('.gantt-detail');
   let ganttTaskDetailClickList = document.querySelectorAll('.gantt-task-detail-click');
 
-  ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
-    // console.log(ganttTaskDetailClickList);
-      taskDetailClick.addEventListener('click', function(event) {
-          ganttDetailList.forEach(function(detail, i) {
-            console.log(i);
-            console.log(index);
-            // console.log(i !== index);
-              if (i !== index) {
-                  detail.style.display = 'none';
-
-                  console.log(event.target);
-                  console.log(detail);
-                  console.log(detail.contains(event.target));
-                  if (!detail.contains(event.target)) {
-                    detail.style.display = 'none';
-                  }
-              }
-          });
-      });
-      document.addEventListener('click',(e)=>{
-        console.log(detail.contains(event.target));
-        ganttDetailList.forEach(function(detail, i) {
-            if (!detail.contains(event.target)) {
-              detail.style.display = 'none';
-            }
-        });
-      })
-  });
+  // ganttTaskDetailClickList.forEach(function(taskDetailClick, index) {
+  //   // console.log(ganttTaskDetailClickList);
+  //     taskDetailClick.addEventListener('click', function(e) {
+  //       ganttDetailList[index].style.display = 'block';
+  //         if (ganttDetailList[index].style.display === 'block') {
+  //           ganttDetailList[index].style.display = 'none';
+  //         }
+  //     });
+  //     document.addEventListener('click',(e)=>{
+  //       console.log(taskDetailClick.contains(e.target));
+  //         if (!taskDetailClick.contains(e.target)) {
+  //           ganttDetailList[index].style.display = 'none';
+  //         }
+  //     })
+  // });
   
   let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
   // console.log(ganttDetailButtons);
