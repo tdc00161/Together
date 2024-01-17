@@ -1078,7 +1078,6 @@ function updateComment(event, a) {
 		// 엘리먼트 비교 .isSameElement / .isEqualElemet 같은 메소드도 있음
 		// 내가 누른 애랑 반복도는 애 번째가 같으면 실행
 		if(event.currentTarget === UCone){
-			let comment_one = document.querySelectorAll('.comment_one');
 			let comment_input = document.querySelectorAll('.comment_line');
 			let deleteComment = document.querySelectorAll('.delete_comment');
 			let saveComment = document.querySelectorAll('.save_comment');
@@ -1090,7 +1089,7 @@ function updateComment(event, a) {
 			console.log(thisCommentContent);
 
 			// 저장버튼에 저장기능 적용
-			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment()');
+			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment(event)');
 
 			// 버튼 보이고 안보이기
 			updateComment[UCi].classList.add('d-none');
@@ -1123,10 +1122,14 @@ function updateComment(event, a) {
 
 
 // 댓글 수정 적용 버튼
-function commitUpdateComment() {
+function commitUpdateComment(event) {
 	let comment_input = document.querySelector('.comment_line');
+	// console.log(event.target.parentElement.nextElementSibling.textContent);
+
+	// 댓글 여러개 있을 때 각각 수정 가능하게
+	let saveNewComment = event.target.parentElement.nextElementSibling.textContent;
 	let putData = {
-		"content": comment_input.textContent,
+		"content": saveNewComment,
 		"task_id": now_task_id
 	}
 	fetch('/comment/' + thisCommentId, {
