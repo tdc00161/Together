@@ -6,7 +6,7 @@
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
-    {{-- <script src="/js/project.js" defer></script> --}}
+    <script src="/js/project.js" defer></script>
 @endsection
 @section('title', '간트차트')
 @section('main')
@@ -17,7 +17,11 @@
         {{-- 프로젝트컬러, 명 --}}
         <div class="title_bar">
             <div class="project_color" style="background-color:{{$color_code[0]->data_content_name}}"></div>   
-            <input autocomplete="off" class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
+            @if($authoritychk[0]->authority_id === "0")
+                <input autocomplete="off" class="project_title" type="text" name="project_title" id="project_title" placeholder="프로젝트명" value="{{$result->project_title}}" onchange="titleupdate({{$result->id}})">
+            @else
+                <div class="project_title1">{{$result->project_title}}</div>
+            @endif
         </div>
 
         {{-- 프로젝트 날짜 --}}
@@ -35,14 +39,20 @@
                     @endif
                 </div>
             </label>
-            <label class="project_label" for="start_date"> 
-                <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
-            </label>
-            <span class="project_date_ing">~</span>
-            <label class="project_label" for="end_date">
-                {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
-                <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
-            </label>
+            @if($authoritychk[0]->authority_id === "0")
+                <label class="project_label" for="start_date"> 
+                    <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
+                </label>
+                <span class="project_date_ing">~</span>
+                <label class="project_label" for="end_date">
+                    {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
+                    <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
+                </label>
+            @else
+                <div class="project_label1">{{$result->start_date}}</div>
+                <span class="project_date_ing">~</span>
+                <div class="project_label1">{{$result->end_date}}</div>
+            @endif
         </div>
 
         {{-- 버튼 공간 --}}
@@ -50,36 +60,40 @@
             {{-- 버튼 --}}
             @forelse ($authoritychk as $item)
             {{-- <div class="title_img"><button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button></div> --}}
-            @if ($item->authority_id == '0')
-                <div><button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button></div>
+                @if ($item->authority_id === "1")
+                    <button onclick="openExitModal()"><img class="title_img2"src="/img/exit.png" alt=""></button>
                     {{-- 나가기 모달창 --}}
                     <div id="exitModal">
                         <div class="deletemodal-content">
                             <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
                             <div class="gridbutton">
                                 <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
-                                <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                                <button class="deletebutton" type="button" id=exit onclick="exitProject({{$result->id}})">나가기</button>
                             </div>
                         </div>
                     </div>
-            @elseif ($item->authority_id == '1')
-                <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button>
-                {{-- 삭제 모달창 --}}
-                <div id="deleteModal">
-                    <div class="deletemodal-content">
-                        <p class="deletespan">정말로 삭제하시겠습니까?</p>
-                        <div class="gridbutton">
-                            <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
-                            <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                @elseif ($item->authority_id === "0")
+                    <button onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt=""></button>
+                    {{-- 삭제 모달창 --}}
+                    <div id="deleteModal">
+                        <div class="deletemodal-content">
+                            <p class="deletespan">정말로 삭제하시겠습니까?</p>
+                            <div class="gridbutton">
+                                <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                                <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endif
-        @empty
-        @endforelse 
+                @endif
+            @empty
+            @endforelse 
         </div>
     </div>
-    <textarea class="project_content" name="project_content" id="project_content" placeholder="설명을 입력하세요." onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
+    @if($authoritychk[0]->authority_id === "0")
+        <textarea class="project_content" name="project_content" id="project_content" placeholder="설명을 입력하세요." onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea>
+    @else
+        <div class="project_content1">{{$result->project_content}}</div>
+    @endif
 </div>
 
 <div class="tabset">

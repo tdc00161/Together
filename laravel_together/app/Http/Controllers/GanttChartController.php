@@ -233,59 +233,74 @@ class GanttChartController extends Controller
     // 간트 프로젝트별 조회
     public function ganttIndex_one($id)
     {
+        
         $result = project::find($id);
+      
+
         $user = Auth::user();
+        // dd($user);
 
         // $project_id = $id; 
 
         $user_data = project::where('user_pk',$user->id)
-        ->select('id'
-                ,'user_pk'
-                ,'color_code_pk'
-                ,'project_title'
-                ,'project_content'
-                ,'start_date'
-                ,'end_date'
-                ,'created_at'
-                ,'flg'
-                )
-        ->get();
+                            ->select('id'
+                                    ,'user_pk'
+                                    ,'color_code_pk'
+                                    ,'project_title'
+                                    ,'project_content'
+                                    ,'start_date'
+                                    ,'end_date'
+                                    ,'created_at'
+                                    ,'flg'
+                                    )
+                            ->get();
+
+        //권한여부 체크(240117 추가)
+        $authoritychk = DB::table('project_users as pu')
+                            ->select('pu.authority_id','pu.project_id','pu.member_id')
+                            ->join('projects as pj','pj.id','pu.project_id')
+                            ->join('users as us','us.id','pu.member_id')
+                            ->where('pu.project_id',$id)
+                            ->where('pu.member_id',$user->id)
+                            ->whereNull('pu.deleted_at')
+                            ->get();
+        // dd($authoritychk);
 
         // --- 대시보드 공지 출력
         $dashboardNotice = DB::table('tasks as t')
-        ->join('projects as p','p.id','=','t.project_id')
-        ->join('project_users as pu','pu.project_id','=','p.id')
-        ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
-        ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
-        ->where('b.data_title_code', '=', 3)
-        ->where('pu.member_id', '=', $user->id)
-        ->get();
+                            ->join('projects as p','p.id','=','t.project_id')
+                            ->join('project_users as pu','pu.project_id','=','p.id')
+                            ->join('basedata as b','p.color_code_pk','=','b.data_content_code')
+                            ->select ('t.title', 't.content', 'p.color_code_pk', 'p.project_title', 'b.data_content_name')
+                            ->where('b.data_title_code', '=', 3)
+                            ->where('pu.member_id', '=', $user->id)
+                            ->get();
 
         $userId = Auth::id();
         
         $project0title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 0)
-        ->where('b.data_title_code', '=', 3)
-        ->whereNull('p.deleted_at')
-        ->whereNull('pu.deleted_at')
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+                            ->join('project_users as pu', 'p.id','=','pu.project_id')
+                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+                            ->select('p.project_title', 'b.data_content_name', 'p.id')
+                            ->where('pu.member_id', '=', $userId)
+                            ->where('p.flg','=', 0)
+                            ->where('b.data_title_code', '=', 3)
+                            ->whereNull('p.deleted_at')
+                            ->whereNull('pu.deleted_at')
+                            ->orderBy('p.created_at', 'asc')
+                            ->get();
 
         $project1title = DB::table('projects as p')
-        ->join('project_users as pu', 'p.id','=','pu.project_id')
-        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-        ->select('p.project_title', 'b.data_content_name', 'p.id')
-        ->where('pu.member_id', '=', $userId)
-        ->where('p.flg','=', 1)
-        ->where('b.data_title_code', '=', 3)
-        ->whereNull('p.deleted_at')
-        ->whereNull('pu.deleted_at')
-        ->orderBy('p.created_at', 'asc')
-        ->get();
+                            ->join('project_users as pu', 'p.id','=','pu.project_id')
+                            ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+                            ->select('p.project_title', 'b.data_content_name', 'p.id')
+                            ->where('pu.member_id', '=', $userId)
+                            ->where('p.flg','=', 1)
+                            ->where('b.data_title_code', '=', 3)
+                            ->whereNull('p.deleted_at')
+                            ->whereNull('pu.deleted_at')
+                            ->orderBy('p.created_at', 'asc')
+                            ->get();
 
         $color_code = DB::table('projects as pj')
                         ->join('basedata as bd','bd.data_content_code','pj.color_code_pk')
@@ -299,12 +314,6 @@ class GanttChartController extends Controller
         //프로젝트 dday 출력 240101 수정
         $projectDday = Carbon::now()->addDays(-1)->diffInDays($result->end_date);
 
-        $authoritychk = DB::table('project_users as pu')
-                      ->join('projects as pj','pj.id','pu.project_id')
-                      ->select('pu.authority_id','pu.project_id','pu.member_id','pj.user_pk')
-                      ->where('pu.project_id',$result->id)
-                      ->where('pu.member_id',$result->user_pk)
-                      ->get();
 
         $data = [];
         // 프로젝트와 업무들을 모두 호출 (나중에 조건 추가가능, 허나 정렬은 여기서 못함, TODO: project_id와 task_parent의 관계성 정해야 함)
@@ -322,7 +331,7 @@ class GanttChartController extends Controller
         ->with('project0title',$project0title)
         ->with('project1title',$project1title)
         ->with('authoritychk',$authoritychk)
-        // ->with('project_id', $project_id)
+        ->with('authoritychk', $authoritychk)
         ->with('color_code',$color_code)
         ->with('result',$result)
         ->with('projectDday',$projectDday);
