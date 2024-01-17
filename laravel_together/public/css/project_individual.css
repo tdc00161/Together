@@ -423,7 +423,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .plusbtn {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
 }
 
 .m_signout {

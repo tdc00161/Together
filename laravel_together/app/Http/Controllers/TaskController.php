@@ -469,11 +469,36 @@ class TaskController extends Controller
     // 상세 업무/공지 조회
     public function view($id)
     {
-        $result['task'] = Task::task_detail($id);
-        // Log::debug($result);
-        $result['children'] = Task::task_detail_children($id);
-        $result['comment'] = Task::task_detail_comment($id);
+        // $userId = Auth::id();
 
+        $result = [];
+        $result['task'] = Task::task_detail($id);
+        Log::debug($id);
+        $result['children'] = Task::task_detail_children($id);
+        Log::debug($id);
+        $result['comment'] = Task::task_detail_comment($id);
+        Log::debug($id);
+        $result['nowAuthority'] = DB::table('project_users as pu')
+            ->join('projects as p', function($j){
+                $j->on('p.id','pu.project_id');
+            })
+            ->join('users as u', function($j){
+                $j->on('u.id','pu.member_id')
+                ->where('u.id',Auth::id());
+            })
+            ->join('tasks as t', function($j) use ($id) {
+                $j->on('t.project_id','p.id')
+                ->where('t.id', $id);
+            })
+            ->select(
+                'p.id',
+                'pu.authority_id',
+                'p.flg',
+                'u.id',
+                )
+            ->first();
+        Log::debug([$result['nowAuthority']]);
+            
         // task->depth 값을 보고 부모를 데려올지 결정
         return $result;
         if ($result['task'][0]->task_depth !== '0') {
@@ -515,36 +540,6 @@ class TaskController extends Controller
 
         return response()->json($data);
     }
-
-        //댓글 삭제권한 여부
-        public function commentAuth($id){
-            $user = Auth::id();
-            Log::debug("댓글아이디");
-            Log::debug([$user]);
-    
-            $auth = DB::table('project_users as pu')
-                        ->join('tasks as tk','tk.project_id','pu.project_id')
-                        ->join('projects as pj','pj.id','pu.project_id')
-                        ->join('comments as cm','cm.task_id','tk.id')
-                        ->select('pu.authority_id','tk.id','pj.flg','cm.user_id')
-                        ->where('tk.id',$id)
-                        ->where('pu.member_id',Auth::id())
-                        ->first();
-            Log::debug("권한");
-            Log::debug([$auth]);
-    
-            $data = [
-                'comment' => $auth->user_id,
-                'user' => $user,
-                'flg' => $auth->flg,
-                'authority_id' => $auth->authority_id,
-                'id' => $auth->id,
-            ];
-            Log::debug("데이터");
-            Log::debug([$data]);
-    
-            return response()->json($data);
-        }
 
     // 업무 작성
     public function store(Request $request)

@@ -213,7 +213,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
-				// console.log(data);
+				console.log(data);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
 
@@ -1309,6 +1309,7 @@ function commentControl(data) {
 
 	// 댓글 달아주기
 	if (data.comment.length) {
+		console.log(data);
 		for (let i = 0; i < data.comment.length; i++) {
 			// 댓글 추가용 클론 (갱신)
 			let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
@@ -1326,9 +1327,22 @@ function commentControl(data) {
 			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
 			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
 			DEFAULT_COMMENT_ID.value = data.comment[i].id
+			
+			let updateComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+			let deleteComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+			// 댓글 편집/삭제 권한
+			if(data.comment[i].user_id === data.nowAuthority.id || data.comment[i].user_id === data.nowAuthority.id && data.nowAuthority.flg === "0"){
+				//
+			}else if(data.nowAuthority.flg === "1" && data.nowAuthority.authority_id === "0" ){
+					updateComment.style.display ='none';
+			}else if(data.nowAuthority.authority_id !== "0" && data.comment[i].user_id != data.nowAuthority.id){
+				updateComment.style.display ='none';
+				deleteComment.style.display ='none';
+			}
 
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
+
 		}
 	}
 
