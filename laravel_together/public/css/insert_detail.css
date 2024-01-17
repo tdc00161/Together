@@ -582,14 +582,20 @@
 
 .task_modal .content>.insert_title {
 	/* 배치 */
-	margin-left: 20px;
+	/* margin-left: 20px; */
+	margin: 15px 20px;
 	/* 내부 */
-	padding: 15px 10px;
+	padding: 5px 10px;
 	font-size: 17px;
 	font-weight: 600;
 	color: white;
+	border-radius: 5px;
 	/* 크기 */
-	width: 90%;
+	width: 87%;
+}
+
+.insert_title:hover {
+	background-color: #ffffff2f;
 }
 
 .task_modal .content>.insert_content {
@@ -909,6 +915,12 @@
 	width: 25%;
 	height: 80%;
 	border-radius: 14px;
+}
+
+.insert_error_msg {
+	margin-right: 15px;
+	color: red;
+	font-weight: bold;
 }
 
 /* 오류 처리 */

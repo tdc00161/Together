@@ -1,56 +1,58 @@
 // const { document } = require("postcss");
 
-//프로젝트 원형차트 생성
-window.onload = function() {
-   //출력할 방법 설정(화면 출력시 데이터 띄움)
-   var pathname = window.location.pathname;
-   // console.log(pathname);
-   // debug("***** project_graph_data End *****");
-   $.ajax({
-      url: '/chart-data/'+parseInt(pathname.match(/\d+/)[0]),
-      type: 'GET',
-      success: function (response) {
-         // console.log('***** Ajax Success *****');
-         // console.log(response);
+if(document.querySelectorAll('.status_title').length === "1"){
+   //프로젝트 원형차트 생성
+   window.onload = function() {
+      //출력할 방법 설정(화면 출력시 데이터 띄움)
+      var pathname = window.location.pathname;
+      // console.log(pathname);
+      // debug("***** project_graph_data End *****");
+      $.ajax({
+         url: '/chart-data/'+parseInt(pathname.match(/\d+/)[0]),
+         type: 'GET',
+         success: function (response) {
+            // console.log('***** Ajax Success *****');
+            // console.log(response);
 
-         // 차트 생성
-         var canvas = document.getElementById("chartcanvas");
-         var context = canvas.getContext("2d");
-         var sw = canvas.width;
-         var sh = canvas.height;
-         var PADDING = 100;
+            // 차트 생성
+            var canvas = document.getElementById("chartcanvas");
+            var context = canvas.getContext("2d");
+            var sw = canvas.width;
+            var sh = canvas.height;
+            var PADDING = 100;
 
-         // 프로젝트 상태별 데이터
-         var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
+            // 프로젝트 상태별 데이터
+            var data = [response.before[0],response.ing[0],response.feedback[0],response.complete[0]];
 
-         // 프로젝트 상태별 적용 색상
-         var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
+            // 프로젝트 상태별 적용 색상
+            var colors = ["#B1B1B1", "#04A5FF", "#F34747", "#64C139"];
 
-         var center_X = sw / 2;  //원의 중심 x 좌표
-         var center_Y = sh / 2;  //원의 중심 y 좌표
-         // 두 계산값 중 작은 값은 값을 원의 반지름으로 설정
-         var radius = Math.min(sw - (PADDING * 2), sh - (PADDING * 2)) / 2;
-         var angle = 0;
-         var total = 0;
-         for (var i in data) { total += data[i].cnt; } //데이터(data)의 총합
+            var center_X = sw / 2;  //원의 중심 x 좌표
+            var center_Y = sh / 2;  //원의 중심 y 좌표
+            // 두 계산값 중 작은 값은 값을 원의 반지름으로 설정
+            var radius = Math.min(sw - (PADDING * 2), sh - (PADDING * 2)) / 2;
+            var angle = 0;
+            var total = 0;
+            for (var i in data) { total += data[i].cnt; } //데이터(data)의 총합
 
-         for (var i = 0; i < data.length; i++) {
-            context.fillStyle = colors[i];  //생성되는 부분의 채울 색 설정
-            context.beginPath();
-            context.moveTo(center_X, center_Y); //원의 중심으로 이동
-            context.arc(center_X, center_Y, radius, angle, angle + (Math.PI * 2 * (data[i].cnt / total)));
-            context.lineTo(center_X, center_Y);
-            context.fill();
-            angle += Math.PI * 2 * (data[i].cnt / total);
+            for (var i = 0; i < data.length; i++) {
+               context.fillStyle = colors[i];  //생성되는 부분의 채울 색 설정
+               context.beginPath();
+               context.moveTo(center_X, center_Y); //원의 중심으로 이동
+               context.arc(center_X, center_Y, radius, angle, angle + (Math.PI * 2 * (data[i].cnt / total)));
+               context.lineTo(center_X, center_Y);
+               context.fill();
+               angle += Math.PI * 2 * (data[i].cnt / total);
+            }
+         },
+         error: function (request, status, error) {
+            console.log('***** Ajax Error *****');
+            // 결과 에러 콜백함수
+            console.log(error)
          }
-      },
-      error: function (request, status, error) {
-         console.log('***** Ajax Error *****');
-         // 결과 에러 콜백함수
-         console.log(error)
-      }
-   })
-}
+      })
+   }
+};
 
 // 카테고리 색상
 var categoryColor = document.getElementById('color');
@@ -121,8 +123,8 @@ function updateDateFormat(selectedDate) {
  }
 
 
-let OrginalendValue = document.getElementById('end_date').value;
-let Orginalend = document.getElementById('end_date');
+// let OrginalendValue = document.getElementById('end_date').value;
+// let Orginalend = document.getElementById('end_date');
 
 
 // 프로젝트 명, 컨텐츠 업데이트 // 240101 전체 수정(catch 까지)
@@ -138,7 +140,7 @@ const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]'
       if(Updatetitle.length > Updatetitlemax){
          alert('텍스트 길이를 초과하였습니다.')
       }
-      if(Updatetitlemax.length > Updatecontentmax){
+      if(Updatecontent.length > Updatecontentmax){
          alert('텍스트 길이를 초과하였습니다.')
       }
       let Updatestart = document.getElementById('start_date').value;
@@ -322,17 +324,19 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
 
 });
 
-// 초대링크 클릭시 링크 복사하기
-document.querySelector(".invite_link").addEventListener('click',function(e){
-   let copyLink = document.querySelector(".invite_link").innerText;
+if(document.querySelectorAll('.status_title').length === "1"){
+   // 초대링크 클릭시 링크 복사하기
+   document.querySelector(".invite_link").addEventListener('click',function(e){
+      let copyLink = document.querySelector(".invite_link").innerText;
 
-   navigator.clipboard.writeText(copyLink)
-   .then(function(){
-      alert('링크가 복사되었습니다.');
-   }).catch(function(err){
-      console.error('실패',err);
+      navigator.clipboard.writeText(copyLink)
+      .then(function(){
+         alert('링크가 복사되었습니다.');
+      }).catch(function(err){
+         console.error('실패',err);
+      })
    })
-})
+};
 
 // 내보내기 기능
 document.querySelectorAll(".plusbtn").forEach((btnOne,index)=>{

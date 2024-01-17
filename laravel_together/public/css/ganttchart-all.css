@@ -489,6 +489,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding-left: 10px;
+	max-width: 345px;
 }
 
 #taskNameright {

@@ -6,7 +6,7 @@
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
-    {{-- <script src="/js/project.js" defer></script> --}}
+    <script src="/js/project.js" defer></script>
 @endsection
 @section('title', '간트차트')
 @section('main')
@@ -41,14 +41,20 @@
                     @endif
                 </div>
             </label>
-            <label class="project_label" for="start_date"> 
-                <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
-            </label>
-            <span class="project_date_ing">~</span>
-            <label class="project_label" for="end_date">
-                {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
-                <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
-            </label>
+            @if($authoritychk[0]->authority_id === "0")
+                <label class="project_label" for="start_date"> 
+                    <input class="project_date" type="date" name="start_date" id="start_date" onchange="titleupdate({{$result->id}})" value="{{$result->start_date}}">
+                </label>
+                <span class="project_date_ing">~</span>
+                <label class="project_label" for="end_date">
+                    {{-- <input class="date" type="date" name="end_date" id="end_date" onchange="total()" value="{{$result->end_date}}" min="{{$result->start_date}}"> --}}
+                    <input class="project_date" type="date" name="end_date" id="end_date" onchange="titleupdate({{$result->id}})" value="{{$result->end_date}}">
+                </label>
+            @else
+                <div class="project_label1">{{$result->start_date}}</div>
+                <span class="project_date_ing">~</span>
+                <div class="project_label1">{{$result->end_date}}</div>
+            @endif
         </div>
 
         {{-- 버튼 공간 --}}

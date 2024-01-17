@@ -115,6 +115,18 @@
     border: #ffffff 1px solid;
 }
 
+.project_title1 {
+    border: none;
+    resize: none;
+    background-color: transparent;
+    width: 185px;
+    overflow: auto;
+    font-size: 14px;
+    padding-left: 5px;
+    height: 30px;
+    line-height: 30px;
+}
+
 .project_content {
 	display: inline-block;
     border: none;
@@ -135,6 +147,18 @@
     background-color: rgba(255, 255, 255, 0.185);
     border-radius: 6px;
     border: #ffffff 1px solid;
+}
+
+.project_content1 {
+    display: inline-block;
+    border: none;
+    resize: none;
+    background-color: transparent;
+    color: rgb(219, 219, 219);
+    width: 360px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    height: 30px;
 }
 
 .dday {
@@ -206,6 +230,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     text-align: center;
     font-size: 13px;
     border-radius: 5px;
+}
+
+.project_label1 {
+    width: 120px;
+    background-color: rgb(14, 14, 14,0.73);
+    text-align: center;
+    font-size: 13px;
+    border-radius: 5px;
+    height: 25px;
+    line-height: 25px;
 }
 
 .feeddiv {
@@ -506,6 +540,7 @@ a:hover {
 	/* padding: 0px 15px; */
     border-radius: 15px;
     height: 25px;
+	line-height: 25px;
 	width: 68px;
 }
 
@@ -624,6 +659,7 @@ a:hover {
     /* display: flex; */
     /* width: 100%; */
     height: 24px;
+	line-height: 24px;
     border-radius: 10px;
     /* justify-content: center;
     align-items: center; */
@@ -817,14 +853,15 @@ a:hover {
 .add_responsible_gantt:not(.otherColorRespon) {
 	position: absolute;
 	top: 25px;
-    left: -15px;
+    left: -17px;
     z-index: 5;
     background-color: rgb(44 30 29);
     overflow: auto;
     border-radius: 5px;
     width: 80px;
-    min-height: 28px;
-    max-height: 70px;
+	height: auto;
+    /* min-height: 28px;
+    max-height: 70px; */
     border: 1px solid;
 }
 .otherColorRespon {
@@ -836,8 +873,9 @@ a:hover {
     overflow: auto;
     border-radius: 5px;
     width: 80px;
-    min-height: 28px;
-    max-height: 70px;
+	height: auto;
+    /* min-height: 28px;
+    max-height: 70px; */
     border: 1px solid;
 }
 
@@ -859,7 +897,7 @@ a:hover {
 .add_status_gantt:not(.otherColorStatus) {
 	position: absolute;
     top: 28px;
-    left: -5px;
+    left: -4px;
     z-index: 5;
     background-color: rgb(44 30 29);
     overflow: auto;
