@@ -322,6 +322,7 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
 
 });
 
+
 // 초대링크 클릭시 링크 복사하기
 document.querySelector(".invite_link").addEventListener('click',function(e){
    let copyLink = document.querySelector(".invite_link").innerText;

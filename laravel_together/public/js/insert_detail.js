@@ -611,6 +611,22 @@ function addGanttLeft(data) {
 		test(data.data.id); // 함수 호출을 적절한 형태로 수정
 	};
 	startDateInput.value = data.data.start_date;
+	// 시작일 수정
+	startDateInput.addEventListener('blur', function () {
+		updatedValue = {
+		  'start_date': '',
+		}
+		updatedValue.start_date = startDateInput.value;
+		console.log(startDateInput.value);
+		numbersOnly = data.data.id;
+		// console.log(numbersOnly);
+		// 수정 요청 보내기
+		console.log('수정 신청');
+		sendUpdateRequest(updatedValue, numbersOnly);
+	
+		// 수정 완료 팝업 메시지 표시
+		// showPopupMessage('수정 완료!');
+	  });
 
 	ganttTask4Div.appendChild(startDateInput);
 
@@ -626,6 +642,21 @@ function addGanttLeft(data) {
 		test(data.data.id); // 함수 호출을 적절한 형태로 수정
 	};
 	endDateInput.value = data.data.end_date;
+	// 마감일 수정 // 15:14 시작일도 수정 
+	endDateInput.addEventListener('blur', function () {
+		updatedValue = {
+		  'end_date': '',
+		}
+		updatedValue.end_date = endDateInput.value;
+		// console.log(endDateInput.value);
+		numbersOnly = data.data.id;
+		// 수정 요청 보내기
+		console.log('수정 신청');
+		sendUpdateRequest(updatedValue, numbersOnly);
+	
+		// 수정 완료 팝업 메시지 표시
+		// showPopupMessage('수정 완료!');
+	});
 
 	ganttTask5Div.appendChild(endDateInput);
 
@@ -1579,7 +1610,7 @@ function deleteTask() {
 			// console.log(data);
 			console.log(document.querySelectorAll('.gantt-child-task'));
 
-			if (GANTT_LEFT[0]) {
+			if (document.querySelectorAll('.gantt-search').length === 1) {
 				document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
 				document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
 

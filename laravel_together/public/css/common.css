@@ -21,6 +21,16 @@ a:hover {
     text-decoration: none;
 }
 
+.project_label1 {
+    width: 120px;
+    background-color: rgb(14, 14, 14,0.73);
+    text-align: center;
+    font-size: 13px;
+    border-radius: 5px;
+    height: 25px;
+    line-height: 25px;
+}
+
  /* 헤더 - 활성화된 버튼에 대한 스타일 */
  .activee {
     filter: invert(100%);
@@ -1463,6 +1473,19 @@ box-sizing: border-box;
     font-size: 12px;
     line-height: 12px;
     text-align: center;
-    margin-left: 10px;
-    
+    margin-left: 10px;   
+}
+
+.sebghover:hover {
+    background-color: #0000004f;
+    border-radius: 5px;
+}
+
+.title_img2 {
+    width: 18px;
+    height: auto;
+    margin-right: 8px;
+}
+.title_bar {
+    margin-bottom: 15px;
 }

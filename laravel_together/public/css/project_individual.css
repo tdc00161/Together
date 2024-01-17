@@ -57,11 +57,6 @@
     /* margin-bottom: 10px; */
 }
 
-.title_img2 {
-    width: 25px;
-    height: 25px;
-}
-
 .tabcontent {
     background-color: rgba(0, 0, 0, 0.514);
     border-radius: 0 10px 10px 10px;
@@ -209,16 +204,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: 5px;
 }
 
-.project_label1 {
-    width: 120px;
-    background-color: rgb(14, 14, 14,0.73);
-    text-align: center;
-    font-size: 13px;
-    border-radius: 5px;
-    height: 25px;
-    line-height: 25px;
-}
-
 .div_text1 {
     text-align: center;
 }
@@ -281,7 +266,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .grid_div {
     width: 100%;
-    height: 620px;
+    height: 666px;
     padding: 10px;
     display: grid;
     grid-template-columns: 0.5fr 2.5fr;
@@ -301,6 +286,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     grid-template-rows: 0.5fr 3fr 0.5fr 0.5fr;
     align-items: center;
     justify-content: space-evenly;
+    margin-bottom: 10px;
 }
 
 .status_title {
@@ -369,7 +355,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .invite_box {
     width: 98%;
-    height: 270px;
+    height: 358px;
     border: 1px solid var(--theme-bg-color);
     background-color: var(--content-bg);
     border-radius: 8px;
@@ -409,7 +395,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .invite_scroll {
     overflow-y: scroll;
     width: 100%;
-    height: 211px;
+    height: 305px;
 }
 
 .invite_grid {
@@ -652,7 +638,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .right_box2 {
     padding: 10px;
     width: 100%;
-    height: 270px;
+    height: 358px;
     border: 1px solid var(--theme-bg-color);
     border-radius: 8px;
     background-color: var(--content-bg);
