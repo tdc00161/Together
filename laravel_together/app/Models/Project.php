@@ -20,6 +20,7 @@ class Project extends Model // 프로젝트
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'user_pk',
         'color_code_pk',
         'project_title',

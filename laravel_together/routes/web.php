@@ -50,7 +50,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/myfriendlist', [FriendlistController::class, 'myfriendList']); // 친구 목록
         Route::delete('/friendDelete', [FriendlistController::class, 'deleteFriend']); // 친구 삭제
         Route::get('/viewfriendDelete', [FriendlistController::class, 'frienddelete']); // 친구 삭제
-        Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성
+        Route::get('/create', [ProjectController::class,'tableget'])->name('create.get'); //프로젝트 생성 페이지
+        Route::get('/projectupdate/{id}', [ProjectController::class,'projectUpdateget'])->name('project.updateget'); //프로젝트 수정 페이지
+        Route::put('/projectupdateput/{id}', [ProjectController::class,'projectUpdateput'])->name('project.updateput'); //프로젝트 수정 post
         Route::get('/invite/{token}',  [ProjectController::class,'acceptInvite'])->name('invite'); //  초대수락
         Route::put('/ganttchartRequest/{id}', [TaskController::class, 'ganttUpdate']); // 간트차트 수정    
     });

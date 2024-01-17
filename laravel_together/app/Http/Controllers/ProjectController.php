@@ -748,5 +748,34 @@ class ProjectController extends Controller
       return $ChatUser;
   }
 
+  //  ------------------------프로젝트 수정--------------------
+  public function projectUpdateget($id)
+  {
+    $projectid = project::find($id);
+    $project_info = project::where('id',$projectid->id)
+    ->select('project_title','project_content','start_date','end_date')
+    ->get();
+
+    // dd($project_info);
+
+   return view('project_update')
+   ->with('project_info',$project_info)
+   ->with('projectid',$projectid);
+  }
+
+  public function projectUpdateput(Request $request, $id)
+  {
+    $project = Project::find($id);
+
+    $project->update([
+        'project_title' => $request->input('project_title'),
+        'project_content' => $request->input('project_content'),
+        'start_date' => $request->input('start_date'),
+        'end_date' => $request->input('end_date'),
+    ]);
+
+    return redirect()->route('gantt.index', ['id' => $id]);
+  }
+  // -----------------------------------------------------------
 }
 
