@@ -6,7 +6,7 @@
     {{-- 모달 js, css --}}
     <link rel="stylesheet" href="/css/insert_detail.css">
 	<script src="/js/insert_detail.js" defer></script>
-    <script src="/js/project.js" defer></script>
+    <script src="/js/gannttcharttitle.js" defer></script>
 @endsection
 @section('title', '간트차트')
 @section('main')
@@ -81,30 +81,28 @@
                 </div>
             </div>
 
-        {{-- 버튼 --}}
-        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img class="sebghover" src="/img/se.png" alt="" style="width: 25px; height:auto;"></button>
-        <ul class="dropdown-menu">
-            <li>
-                <a class="dropdown-item" href="#" style="background-color: #252125; color: white; border-radius: 6px 6px 0 0;">
+            {{-- 버튼 --}}
+            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img class="sebghover" src="/img/se.png" alt="" style="width: 25px; height:auto;"></button>
+            <ul class="dropdown-menu">
+                <li>
                     @forelse ($authoritychk as $item)
-                    @if ($item->authority_id == '0')
-                        <button onclick="openExitModal()"><img class="title_img2"src="/img/Group 222.png" alt="">프로젝트 나가기</button>
-                    @elseif ($item->authority_id == '1')
-                        <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt="">프로젝트 삭제</button>
-                    @endif
-                @empty
-                @endforelse
-                </a>
-            </li>
-
-            <li>
-                <a class="dropdown-item" href="{{ route('project.updateget', ['id' => $result->id]) }}" style="background-color: #252125; color: white; border-radius: 0 0 6px 6px;">
-                    <button><img class="title_img2" src="/img/Group 223.png">프로젝트 수정</button>
-                </a>
-            </li>
-            {{-- <li><a class="dropdown-item" href="#" style="background-color: white;">Something else here</a></li> --}}
-          </ul>    
-    </div>
+                        @if ($item->authority_id == '1')
+                            <a class="dropdown-item" href="#" style="background-color: #252125; color: white; border-radius: 6px 6px 0 0;">
+                                <button onclick="openExitModal()"><img class="title_img2"src="/img/Group 222.png" alt="">프로젝트 나가기</button>
+                            </a>
+                        @elseif ($item->authority_id == '0')
+                            <a class="dropdown-item" href="#" style="background-color: #252125; color: white; border-radius: 6px 6px 0 0;">
+                                <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt="">프로젝트 삭제</button>
+                            </a>
+                            <a class="dropdown-item" href="{{ route('project.updateget', ['id' => $result->id]) }}" style="background-color: #252125; color: white; border-radius: 0 0 6px 6px;">
+                                <button><img class="title_img2" src="/img/Group 223.png">프로젝트 수정</button>
+                            </a>
+                        @endif
+                    @empty
+                    @endforelse
+                </li>
+            </ul>  
+        </div>
     </div>
     {{-- <textarea class="project_content" name="project_content" id="project_content" placeholder="설명을 입력하세요." onchange="titleupdate({{$result->id}})">{{$result->project_content}}</textarea> --}}
 </div>

@@ -63,50 +63,48 @@
             {{-- 버튼 공간 --}}
             <div class="project-header-btn-section">
 
-            {{-- 나가기 모달 --}}
-            <div id="exitModal">
-                <div class="deletemodal-content">
-                    <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
-                    <div class="gridbutton">
-                        <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
-                        <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                {{-- 나가기 모달 --}}
+                <div id="exitModal">
+                    <div class="deletemodal-content">
+                        <p class="deletespan">정말로 나가기를 하시겠습니까?</p>
+                        <div class="gridbutton">
+                            <button class="closebutton" type="button" onclick="closeExitModal()">취소</button>
+                            <button class="deletebutton" type="button" id=exit onclick="deleteProject({{$result->id}})">나가기</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {{-- 삭제 모달 --}}
-            <div id="deleteModal">
-                <div class="deletemodal-content">
-                    <p class="deletespan">정말로 삭제하시겠습니까?</p>
-                    <div class="gridbutton">
-                        <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
-                        <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                {{-- 삭제 모달 --}}
+                <div id="deleteModal">
+                    <div class="deletemodal-content">
+                        <p class="deletespan">정말로 삭제하시겠습니까?</p>
+                        <div class="gridbutton">
+                            <button class="closebutton" type="button" onclick="closeDeleteModal()">취소</button>
+                            <button class="deletebutton" type="button" id=delete onclick="deleteProject({{$result->id}})">삭제</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 {{-- 버튼 --}}
                 <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img class="sebghover" src="/img/se.png" alt="" style="width: 25px; height:auto;"></button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="dropdown-item" href="#" style="background-color: #252125; color: white; border-radius: 6px 6px 0 0;">
-                            @forelse ($authoritychk as $item)
-                            @if ($item->authority_id == '0')
-                                <button onclick="openExitModal()"><img class="title_img2"src="/img/Group 222.png" alt="">프로젝트 나가기</button>
-                            @elseif ($item->authority_id == '1')
-                                <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt="">프로젝트 삭제</button>
+                        @forelse ($authoritychk as $item)
+                            @if ($item->authority_id == '1')
+                                <a class="dropdown-item" href="#" style="background-color: #252125; color: white; border-radius: 6px 6px 0 0;">
+                                    <button onclick="openExitModal()"><img class="title_img2"src="/img/Group 222.png" alt="">프로젝트 나가기</button>
+                                </a>
+                            @elseif ($item->authority_id == '0')
+                                <a class="dropdown-item" href="#" style="background-color: #252125; color: white; border-radius: 6px 6px 0 0;">
+                                    <button class="project-delete-btn" onclick="openDeleteModal()"><img class="title_img2"src="/img/garbage(white).png" alt="">프로젝트 삭제</button>
+                                </a>
+                                <a class="dropdown-item" href="{{ route('project.updateget', ['id' => $result->id]) }}" style="background-color: #252125; color: white; border-radius: 0 0 6px 6px;">
+                                    <button><img class="title_img2" src="/img/Group 223.png">프로젝트 수정</button>
+                                </a>
                             @endif
                         @empty
                         @endforelse
-                        </a>
                     </li>
-        
-                    <li>
-                        <a class="dropdown-item" href="{{ route('project.updateget', ['id' => $result->id]) }}" style="background-color: #252125; color: white; border-radius: 0 0 6px 6px;">
-                            <button><img class="title_img2" src="/img/Group 223.png">프로젝트 수정</button>
-                        </a>
-                    </li>
-                    {{-- <li><a class="dropdown-item" href="#" style="background-color: white;">Something else here</a></li> --}}
-                  </ul>
+                </ul>
             </div>
         </div>
         {{-- @if($authoritychk[0]->authority_id === "0")
