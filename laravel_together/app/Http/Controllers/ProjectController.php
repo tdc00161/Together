@@ -774,7 +774,7 @@ class ProjectController extends Controller
         'end_date' => $request->input('end_date'),
     ]);
 
-    return redirect()->route('gantt.index', ['id' => $id]);
+    return redirect()->route('individual.get', ['id' => $id]);
   }
   // -----------------------------------------------------------
 }
