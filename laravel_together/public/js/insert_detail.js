@@ -758,6 +758,21 @@ function sendUpdateRequest(updatedValue, numbersOnly) {
 	  });
 }
 
+// 모달 작성/수정 제목 칸 클릭 시 스타일 주기
+document.addEventListener('click', (event) => {
+	let insertTitle = document.querySelector('.insert_title')
+	let clickInsertTitle = event.target;
+
+	if (clickInsertTitle.classList.contains('insert_title')) {
+		insertTitle.style.border = '2px solid #ffffff2f';
+		insertTitle.style.borderRadius = '5px';
+	} else {
+		insertTitle.style.border = '';
+		insertTitle.style.borderRadius = '';
+	}
+})
+
+
 // 모달 작성
 function createTask() {
 
@@ -780,6 +795,7 @@ function createTask() {
 		hideError();
 	}
 	
+	// 닫기 버튼 누르면 에러메세지 제거
 	modalCloseBtn.addEventListener('click', () => {
 		hideError();
 	});
@@ -888,6 +904,7 @@ function updateTask() {
 		hideError();
 	}
 	
+	// 닫기 버튼 누르면 에러메세지 제거
 	modalCloseBtn.addEventListener('click', () => {
 		hideError();
 	});

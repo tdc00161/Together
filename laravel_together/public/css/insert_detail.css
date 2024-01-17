@@ -583,12 +583,13 @@
 .task_modal .content>.insert_title {
 	/* 배치 */
 	/* margin-left: 20px; */
-	margin: 15px 10px 15px 30px;
+	margin: 15px 20px;
 	/* 내부 */
-	/* padding: 15px 10px; */
+	padding: 5px 10px;
 	font-size: 17px;
 	font-weight: 600;
 	color: white;
+	border-radius: 5px;
 	/* 크기 */
 	width: 87%;
 }
