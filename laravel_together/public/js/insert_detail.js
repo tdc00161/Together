@@ -713,28 +713,36 @@ function createGanttChart(data) {
     container.id = 'gantt-chart-'+data.data.id;
 
     // Loop through the date rows and create elements
-    for (var i = 20240101; i <= 20240331; i++) {
-        var rowId = 'row'+data.data.id+'-' + i;
-        
+	let ganttHeaderScroll = document.querySelector('.gantt-header-scroll');
+	let dates = Array.from(ganttHeaderScroll.children)
+    dates.forEach((GHSone, GHSi)=>{
+        var rowId = 'row'+data.data.id+'-' + GHSone.textContent;
+
         // Create a div element
         var divElement = document.createElement('div');
         divElement.id = rowId;
 
-		let currentDate = new Date(i);
+		let currentDate = new Date('2024/'+GHSone.textContent);
 		let start = new Date(data.data.start_date);
 		let end = new Date(data.data.end_date);
-        // If it's the start or end date, add the corresponding class
-        if (currentDate == data.data.start_date) {
-            divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates start">' + i + '</span></div>';
-        } else if (i == data.data.end_date) {
-            divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates end">' + i + '</span></div>';
-        } else {
-            // divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"></div>';
-        }
+		
+        var rowId = 'row'+data.data.id+'-' + currentDate;
+		var divElement = document.createElement('div');
+		divElement.id = rowId;
 
+		if(currentDate >= start && currentDate <= end) {
+			divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"></div>';
+			if(currentDate === start){
+				divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates start">' + currentDate + '</span></div>';
+			}
+			if(currentDate === end){
+				divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates end">' + currentDate + '</span></div>';
+			}
+		}
+		
         // Append the created div element to the container
         container.appendChild(divElement);
-    }
+    })
 
 	return container;
 }
@@ -854,7 +862,8 @@ function updateTask() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
+			console.log(data.data.task.start_date);
+			console.log(data.data.task.end_date);
 			closeTaskModal(0)
 			if (GANTT_LEFT[0]) {
 				// 해당 간트 row
@@ -881,31 +890,41 @@ function updateTask() {
 				// 작성에서 우간트 작업 복사
 
 				let refreshRightGanttChart = document.querySelector('#gantt-chart-' + now_task_id)
-				let chartDateList = refreshRightGanttChart.children
+				let chartDateList = Array.from(refreshRightGanttChart.children)
+				refreshRightGanttChart.innerHTML = '';
+				console.log(chartDateList);
 
 				if (data.data.task.start_date !== null && data.data.task.end_date !== null) {
-					for (var i = 20240101; i <= 20240331; i++) {
-						// var rowId = 'row'+now_task_id+'-' + i;
+					chartDateList.forEach((CDone,CDi) => {
+						// 현재 날짜[CDi번째]와 시작일/마감일을 비교하고 출력
+						let regex8 = CDone.id.match(/(\d{8})/)[0];
+						const year = regex8.substring(0, 4);
+						const month = regex8.substring(4, 6);
+						const day = regex8.substring(6, 8);
+						const formattedDate = `${year}-${month}-${day}`;
+
+						let currentDate = new Date(formattedDate);
+						let start = new Date(data.data.task.start_date);
+						let end = new Date(data.data.task.end_date);
+
+						// rowID-date 하나 생성
+						var rowId = 'row'+data.data.id+'-' + currentDate;
+						var divElement = document.createElement('div');
+						divElement.id = rowId;
 						
-						// // Create a div element
-						// var divElement = document.createElement('div');
-						// divElement.id = rowId;
-				
-						// let currentDate = new Date(i);
-						// let start = new Date(data.data.start_date);
-						// let end = new Date(data.data.end_date);
-						// // If it's the start or end date, add the corresponding class
-						// if (currentDate == data.data.start_date) {
-						// 	divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates start">' + i + '</span></div>';
-						// } else if (i == data.data.end_date) {
-						// 	divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates end">' + i + '</span></div>';
-						// } else {
-						// 	// divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"></div>';
-						// }
-				
-						// // Append the created div element to the container
-						// container.appendChild(divElement);
-					}
+						if(currentDate >= start && currentDate <= end) {
+							divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"></div>';
+							if(currentDate === start){
+								divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates start">' + currentDate + '</span></div>';
+							}
+							if(currentDate === end){
+								divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates end">' + currentDate + '</span></div>';
+							}
+						}
+
+						// 만든 애 하나 달기
+						refreshRightGanttChart.appendChild(divElement);
+					})
 				}
 			}
 			openTaskModal(1, TaskNoticeFlg, now_task_id)
