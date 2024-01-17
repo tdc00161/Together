@@ -1610,7 +1610,7 @@ function deleteTask() {
 			// console.log(data);
 			console.log(document.querySelectorAll('.gantt-child-task'));
 
-			if (GANTT_LEFT[0]) {
+			if (document.querySelectorAll('.gantt-search').length === 1) {
 				document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
 				document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
 

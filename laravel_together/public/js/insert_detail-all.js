@@ -787,7 +787,7 @@ function createTask() {
 		.then(response => response.json())
 		.then(data => {
 			console.log(data);
-			if (GANTT_LEFT[0]) {
+			if (document.querySelectorAll('.gantt-search').length === 1) {
 				let ganttTaskBody = document.querySelector('.gantt-task-body');
 				let ganttChartBody = document.querySelector('.gantt-chart-body');
 				
@@ -855,7 +855,7 @@ function updateTask() {
 		.then(data => {
 			console.log(data);
 			closeTaskModal(0)
-			if (GANTT_LEFT[0]) {
+			if (document.querySelectorAll('.gantt-search').length === 1) {
 				// 해당 간트 row
 				let refreshTarget = document.querySelector('#gantt-task-' + now_task_id)
 				// console.log(refreshTarget);
@@ -1436,7 +1436,7 @@ function deleteTask() {
 			console.log(data);
 			console.log(document.querySelectorAll('.gantt-child-task'));
 
-			if (GANTT_LEFT[0]) {
+			if (document.querySelectorAll('.gantt-search').length === 1) {
 				document.querySelector('#gantt-task-' + data.data) ? document.querySelector('#gantt-task-' + data.data).remove() : ''
 				document.querySelector('#gantt-chart-' + data.data) ? document.querySelector('#gantt-chart-' + data.data).remove() : ''
 
