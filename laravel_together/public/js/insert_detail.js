@@ -760,6 +760,39 @@ function sendUpdateRequest(updatedValue, numbersOnly) {
 
 // 모달 작성
 function createTask() {
+
+	let modalCloseBtn = document.querySelector('.cross_icon_w');
+	let insertErrorMsg = document.querySelector('.insert_error_msg');
+	let insertTitle = document.querySelector('.insert_title').value;
+	let insertContent = document.querySelector('.insert_content').value;
+	let insertTitleMax = 100;
+	let insertContentMax = 500;
+
+	if (insertTitle === '') {
+		showError('제목을 입력해 주세요.');
+	} else if (insertTitle.length > insertTitleMax && insertContent.length > insertContentMax) {
+		showError('제목과 내용 글자 수를 모두 초과했습니다.');
+	} else if (insertTitle.length > insertTitleMax) {
+		showError('제목 글자 수를 초과했습니다.');
+	} else if (insertContent.length > insertContentMax) {
+		showError('내용 글자 수를 초과했습니다.');
+	} else {
+		hideError();
+	}
+	
+	modalCloseBtn.addEventListener('click', () => {
+		hideError();
+	});
+
+	function showError(message) {
+		insertErrorMsg.classList.remove('d-none');
+		insertErrorMsg.textContent = message;
+	}
+	
+	function hideError() {
+		insertErrorMsg.classList.add('d-none');
+	}
+
 	let postData = {
 		"title": INSERT_TITLE.value,
 		"content": INSERT_CONTENT.value,
@@ -835,6 +868,40 @@ function createTask() {
 
 // 등록 버튼으로 작성/수정
 function updateTask() {
+
+	let modalCloseBtn = document.querySelector('.cross_icon_w');
+	let insertErrorMsg = document.querySelector('.insert_error_msg');
+	let insertTitle = document.querySelector('.insert_title').value;
+	let insertContent = document.querySelector('.insert_content').value;
+	let insertTitleMax = 100;
+	let insertContentMax = 500;
+
+	if (insertTitle === '') {
+		showError('제목을 입력해 주세요.');
+	} else if (insertTitle.length > insertTitleMax && insertContent.length > insertContentMax) {
+		showError('제목과 내용 글자 수를 모두 초과했습니다.');
+	} else if (insertTitle.length > insertTitleMax) {
+		showError('제목 글자 수를 초과했습니다.');
+	} else if (insertContent.length > insertContentMax) {
+		showError('내용 글자 수를 초과했습니다.');
+	} else {
+		hideError();
+	}
+	
+	modalCloseBtn.addEventListener('click', () => {
+		hideError();
+	});
+
+	function showError(message) {
+		insertErrorMsg.classList.remove('d-none');
+		insertErrorMsg.textContent = message;
+	}
+	
+	function hideError() {
+		insertErrorMsg.classList.add('d-none');
+	}
+	
+
 	let updateData = {
 		'title': document.querySelector('.insert_title') ? document.querySelector('.insert_title').value : null,
 		'content': document.querySelector('.insert_content') ? document.querySelector('.insert_content').value : null,
