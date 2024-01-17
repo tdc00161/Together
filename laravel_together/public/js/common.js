@@ -355,5 +355,8 @@ function formatRelativeDate(dateString) {
     }
   }
 //  ---------------------------------------------------------------- 알림창 js
+
+// 프로젝트 설명 js 팝오버
  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+// 

@@ -1463,6 +1463,19 @@ box-sizing: border-box;
     font-size: 12px;
     line-height: 12px;
     text-align: center;
-    margin-left: 10px;
-    
+    margin-left: 10px;   
+}
+
+.sebghover:hover {
+    background-color: #0000004f;
+    border-radius: 5px;
+}
+
+.title_img2 {
+    width: 18px;
+    height: auto;
+    margin-right: 8px;
+}
+.title_bar {
+    margin-bottom: 15px;
 }
