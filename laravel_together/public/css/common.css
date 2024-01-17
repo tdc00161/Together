@@ -1453,3 +1453,16 @@ box-sizing: border-box;
 .m-modal-content .send-chat {
     cursor: pointer;
 }
+
+.explanation-icon {
+    width: 12px;
+    height: 12px;
+    background-color: #afafaf;
+    border-radius: 50%;
+    /* font-weight: bold; */
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    margin-left: 10px;
+    
+}

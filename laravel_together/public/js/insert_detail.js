@@ -213,7 +213,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
-				// console.log(data);
+				console.log(data);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
 
@@ -945,28 +945,33 @@ function updateTask() {
 				let refreshEnd = refreshTarget.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild
 				refreshEnd.value = data.data.task.end_date
 
+				// 작성에서 우간트 작업 복사
+
 				let refreshRightGanttChart = document.querySelector('#gantt-chart-' + now_task_id)
 				let chartDateList = refreshRightGanttChart.children
 
 				if (data.data.task.start_date !== null && data.data.task.end_date !== null) {
-					for (let index = 0; index < chartDateList.length; index++) {
-						const element = chartDateList[index];
-						element.firstChild ? element.removeChild(element.firstChild) : ''
-						let date = element.id.match(/-(\d+)/)[1]
-						let gantt_start = data.data.task.start_date ? data.data.task.start_date.replace(/-/g, '') : ''
-						let gantt_end = data.data.task.end_date ? data.data.task.end_date.replace(/-/g, '') : ''
-						if (gantt_start <= date && gantt_end >= date) {
-							let create_1 = document.createElement('div')
-							create_1.classList.add('bk-row')
-							create_1.setAttribute('data-row-num', data.data.id)
-							if (gantt_start == date) {
-								create_1.textContent = '시작일: ' + gantt_start
-							} else if (gantt_end == date) {
-								create_1.textContent = '마감일: ' + gantt_end
-							}
-
-							element.append(create_1)
-						}
+					for (var i = 20240101; i <= 20240331; i++) {
+						// var rowId = 'row'+now_task_id+'-' + i;
+						
+						// // Create a div element
+						// var divElement = document.createElement('div');
+						// divElement.id = rowId;
+				
+						// let currentDate = new Date(i);
+						// let start = new Date(data.data.start_date);
+						// let end = new Date(data.data.end_date);
+						// // If it's the start or end date, add the corresponding class
+						// if (currentDate == data.data.start_date) {
+						// 	divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates start">' + i + '</span></div>';
+						// } else if (i == data.data.end_date) {
+						// 	divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"><span class="dates end">' + i + '</span></div>';
+						// } else {
+						// 	// divElement.innerHTML = '<div class="bk-row" data-row-num="'+data.data.id+'"></div>';
+						// }
+				
+						// // Append the created div element to the container
+						// container.appendChild(divElement);
 					}
 				}
 			}
@@ -1379,6 +1384,7 @@ function commentControl(data) {
 
 	// 댓글 달아주기
 	if (data.comment.length) {
+		console.log(data);
 		for (let i = 0; i < data.comment.length; i++) {
 			// 댓글 추가용 클론 (갱신)
 			let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
@@ -1396,9 +1402,22 @@ function commentControl(data) {
 			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
 			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
 			DEFAULT_COMMENT_ID.value = data.comment[i].id
+			
+			let updateComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+			let deleteComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+			// 댓글 편집/삭제 권한
+			if(data.comment[i].user_id === data.nowAuthority.id || data.comment[i].user_id === data.nowAuthority.id && data.nowAuthority.flg === "0"){
+				//
+			}else if(data.nowAuthority.flg === "1" && data.nowAuthority.authority_id === "0" ){
+					updateComment.style.display ='none';
+			}else if(data.nowAuthority.authority_id !== "0" && data.comment[i].user_id != data.nowAuthority.id){
+				updateComment.style.display ='none';
+				deleteComment.style.display ='none';
+			}
 
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
+
 		}
 	}
 

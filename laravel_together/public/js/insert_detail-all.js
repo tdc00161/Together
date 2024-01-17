@@ -268,31 +268,6 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 			console.log(err.message);
 		})
 
-		//댓글 권한에 따른 표시여부
-		// fetch('/comment-auth/'+c, {
-		// 	method: 'GET',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		'X-CSRF-TOKEN': csrfToken_insert_detail,
-		// 	},
-		// })
-		// .then(response => response.json())
-		// .then(data => {
-		// 	console.log(data);
-		// 	if(data.flg === "0" || data.flg === "1" && data.comment=== data.user){
-				
-		// 	}else if(data.flg === "1" && data.authority_id === "0"|| data.flg === "1" && data.comment != data.user){
-		// 		document.querySelector('.update_comment').style.display ='none';
-
-		// 	}else if(data.flg === "1" && data.authority_id === "1" && data.comment != data.user){
-		// 		document.querySelector('.update_comment').style.display ='none';
-		// 		document.querySelector('.delete_comment').style.display ='none';
-		// 	}
-		// })
-		// .catch(err => {
-		// 	console.log(err.message);
-		// })
-
 		// 모달 띄우기
 		openInsertDetailModal(a);
 	}
@@ -1114,10 +1089,6 @@ function updateComment(event, a) {
 
 
 
-
-
-
-
 // 댓글 수정 적용 버튼
 function commitUpdateComment() {
 	let comment_input = document.querySelector('.comment_line');
@@ -1305,10 +1276,13 @@ function commentControl(data) {
 
 	// 댓글 달아주기
 	if (data.comment.length) {
+		console.log(data.comment);
 		for (let i = 0; i < data.comment.length; i++) {
 			// 댓글 추가용 클론 (갱신)
 			let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
+			console.log(refresh_clone_comment);
 			// 댓글 부모 (갱신)
+
 			let refresh_comment_parent = document.querySelector('.comment')
 			// 클론한 댓글 내용 선택
 			const DEFAULT_COMMENT_CONTENT = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling
@@ -1322,9 +1296,22 @@ function commentControl(data) {
 			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
 			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
 			DEFAULT_COMMENT_ID.value = data.comment[i].id
+			
+			// 댓글 편집/삭제 권한
+			let updateComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+			let deleteComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+			if(data.comment[i].user_id === data.nowAuthority.id || data.comment[i].user_id === data.nowAuthority.id && data.nowAuthority.flg === "0"){
+				//
+			}else if(data.nowAuthority.flg === "1" && data.nowAuthority.authority_id === "0" ){
+					updateComment.style.display ='none';
+			}else if(data.nowAuthority.authority_id !== "0" && data.comment[i].user_id != data.nowAuthority.id){
+				updateComment.style.display ='none';
+				deleteComment.style.display ='none';
+			}
 
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
+
 		}
 	}
 

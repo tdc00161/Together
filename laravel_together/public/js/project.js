@@ -121,8 +121,8 @@ function updateDateFormat(selectedDate) {
  }
 
 
-let OrginalendValue = document.getElementById('end_date').value;
-let Orginalend = document.getElementById('end_date');
+// let OrginalendValue = document.getElementById('end_date').value;
+// let Orginalend = document.getElementById('end_date');
 
 
 // 프로젝트 명, 컨텐츠 업데이트 // 240101 전체 수정(catch 까지)
