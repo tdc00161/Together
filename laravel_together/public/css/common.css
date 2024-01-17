@@ -1476,3 +1476,6 @@ box-sizing: border-box;
     height: auto;
     margin-right: 8px;
 }
+.title_bar {
+    margin-bottom: 15px;
+}
