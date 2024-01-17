@@ -120,7 +120,12 @@ class TaskController extends Controller
             $TeamcompletionPercentage = DB::table('tasks as t')
                 ->join('projects as p', 't.project_id', '=', 'p.id')
                 ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
-                ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
+                ->selectRaw(
+                    ' ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, '.
+                    ' b.data_content_name, '.
+                    ' p.project_title, '.
+                    ' 1 '
+                    )
                 ->where('t.project_id', '=', $projectId)
                 ->where('b.data_title_code', '=', 3)
                 ->where('t.category_id',0)
@@ -130,6 +135,7 @@ class TaskController extends Controller
 
             $TeamcompletionPercentages[$projectId] = $TeamcompletionPercentage;
         }
+        dd($TeamcompletionPercentages);
         // --------- 프로젝트 진척률 출력 끝 ------------
 
         // 대시보드 전체 업무 상태별 개수 출력
