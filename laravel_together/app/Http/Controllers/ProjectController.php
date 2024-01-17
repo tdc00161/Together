@@ -464,6 +464,8 @@ class ProjectController extends Controller
                           ->delete();
     Log::debug('삭제'.$deletem);
 
+    $this->chatRoomExit($murlid,$uid[0]->id);
+
     return response()->json('성공');
   }
 

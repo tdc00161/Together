@@ -1072,38 +1072,46 @@ function removeResponsible(a) {
 
 // 댓글 수정
 function updateComment(event, a) {
-
-	let comment_one = document.querySelectorAll('.comment_one');
-	let comment_input = document.querySelectorAll('.comment_line');
+	// 기준 바뀌어도 index는 같음
 	let updateComment = document.querySelectorAll('.update_comment');
-	let deleteComment = document.querySelectorAll('.delete_comment');
-	let saveComment = document.querySelectorAll('.save_comment');
-	let cancelComment = document.querySelectorAll('.cancel_comment');
-	thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
-	thisCommentContent = event.target.parentElement.nextElementSibling
-	console.log(thisCommentContent);
+	updateComment.forEach((UCone,UCi)=>{
+		// 엘리먼트 비교 .isSameElement / .isEqualElemet 같은 메소드도 있음
+		// 내가 누른 애랑 반복도는 애 번째가 같으면 실행
+		if(event.currentTarget === UCone){
+			let comment_input = document.querySelectorAll('.comment_line');
+			let deleteComment = document.querySelectorAll('.delete_comment');
+			let saveComment = document.querySelectorAll('.save_comment');
+			let cancelComment = document.querySelectorAll('.cancel_comment');
 
-	comment_one.forEach((comOne, index) => {
-		document.querySelectorAll('.save_comment')[index].setAttribute('onclick', 'commitUpdateComment()');
+			// 내용과 id 값 배치
+			thisCommentId = event.target.parentElement.nextElementSibling.nextElementSibling.value
+			thisCommentContent = event.target.parentElement.nextElementSibling
+			console.log(thisCommentContent);
 
-		updateComment[index].classList.add('d-none');
-		deleteComment[index].classList.add('d-none');
+			// 저장버튼에 저장기능 적용
+			document.querySelectorAll('.save_comment')[UCi].setAttribute('onclick', 'commitUpdateComment(event)');
 
-		saveComment[index].classList.remove('d-none');
-		cancelComment[index].classList.remove('d-none');
+			// 버튼 보이고 안보이기
+			updateComment[UCi].classList.add('d-none');
+			deleteComment[UCi].classList.add('d-none');
 
-		thisCommentContent.setAttribute('contenteditable', 'true');
-		thisCommentContent.style.backgroundColor = '#ffffff2f';
+			saveComment[UCi].classList.remove('d-none');
+			cancelComment[UCi].classList.remove('d-none');
 
-		// 취소 눌렀을 때
-		cancelComment[index].addEventListener('click', () => {
-			updateComment[index].classList.remove('d-none');
-			deleteComment[index].classList.remove('d-none');
-			saveComment[index].classList.add('d-none');
-			cancelComment[index].classList.add('d-none');
-			comment_input[index].removeAttribute('contenteditable', 'true');
-			comment_input[index].style.backgroundColor = '';
-		})
+			// 수정가능하게 속성추가 및 판별용 css
+			thisCommentContent.setAttribute('contenteditable', 'true');
+			thisCommentContent.style.backgroundColor = '#ffffff2f';
+
+			// 취소 눌렀을 때
+			cancelComment[UCi].addEventListener('click', () => {
+				updateComment[UCi].classList.remove('d-none');
+				deleteComment[UCi].classList.remove('d-none');
+				saveComment[UCi].classList.add('d-none');
+				cancelComment[UCi].classList.add('d-none');
+				comment_input[UCi].removeAttribute('contenteditable', 'true');
+				comment_input[UCi].style.backgroundColor = '';
+			})
+		}
 	})
 }
 
@@ -1114,10 +1122,14 @@ function updateComment(event, a) {
 
 
 // 댓글 수정 적용 버튼
-function commitUpdateComment() {
+function commitUpdateComment(event) {
 	let comment_input = document.querySelector('.comment_line');
+	// console.log(event.target.parentElement.nextElementSibling.textContent);
+
+	// 댓글 여러개 있을 때 각각 수정 가능하게
+	let saveNewComment = event.target.parentElement.nextElementSibling.textContent;
 	let putData = {
-		"content": comment_input.textContent,
+		"content": saveNewComment,
 		"task_id": now_task_id
 	}
 	fetch('/comment/' + thisCommentId, {
@@ -1176,7 +1188,7 @@ function addComment() {
 	// 댓글 내용을 ajax로 송신
 	let postData = {
 		"task_id": now_task_id,
-		"content": INPUT_COMMENT_CONTENT.value
+		"content": INPUT_COMMENT_CONTENT.value.trim()
 	}
 	fetch('/comment/' + now_task_id, {
 		method: 'POST',
@@ -1522,3 +1534,62 @@ function updateResponsibleName(data, a) {
 		RESPONSIBLE_PERSON[0].remove()
 	}
 }
+
+
+//삭제 모달창 open
+function openDeleteModal() {
+	document.getElementById('deleteModal').style.display = 'block';
+ }
+ 
+ //삭제 모달창 close
+ function closeDeleteModal() {
+	document.getElementById('deleteModal').style.display = 'none';
+ }
+ 
+ //삭제버튼시 삭제
+//  const csrfToken_insert_detail = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+ function deleteProject(project_pk) {
+	
+	fetch('/projectDelete/' + project_pk, {
+	   method: 'DELETE',
+	   // body : JSON.stringify(Id),
+	   headers: {
+		  "Content-Type": "application/json",
+		  'X-CSRF-TOKEN': csrfToken_insert_detail
+	   },
+	}).then((response) => 
+	   console.log(response))
+	   // response.json()
+	  .then(() => {
+		  window.location.href = '/dashboard'; // 메인화면으로 이동
+	}).catch(error => console.log(error));
+ }
+ 
+ //나가기 모달창 open
+ function openExitModal() {
+	document.getElementById('exitModal').style.display = 'block';
+ }
+ 
+ //나가기 모달창 close
+ function closeExitModal() {
+	document.getElementById('exitModal').style.display = 'none';
+ }
+ 
+ //나가기 버튼시 삭제
+//  const csrfToken_insert_detail = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+ function exitProject(project_pk) {
+ 
+	fetch('/projectExit/' + project_pk, {
+	   method: 'DELETE',
+	   // body : JSON.stringify(Id),
+	   headers: {
+		  "Content-Type": "application/json",
+		  'X-CSRF-TOKEN': csrfToken_insert_detail
+	   },
+	}).then((response) => 
+	   console.log(response))
+	   // response.json()
+	  .then(() => {
+		  window.location.href = '/dashboard'; // 메인화면으로 이동
+	}).catch(error => console.log(error));
+ }

@@ -228,9 +228,13 @@
                                     <div class="gantt-task gantt-child-task" id="gantt-task-{{$taskitem2->task_id}}" parent="{{$taskitem2->task_parent}}">
                                         <div class="gantt-editable-div editable">
                                             <div class="taskChildPosition"></div>
-                                            <div class="task-top-icon"><img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt=""></div>
-                                            <div class="taskKey" style="width: 40px">{{$taskitem2->task_number}}</div>
-                                            <div class="taskName editable-title" spellcheck="false">{{$taskitem2->title}}</div>
+                                            <div class="task-top-icon">
+                                                <img class="task-bottom-icon-img" src="/img/Groupfdg.png" alt="">
+                                            </div>
+                                            <div class="taskKey">{{$taskitem->task_number}}</div>
+                                            <span class="taskand">></span> 
+                                            <div class="taskKeyright">{{$taskitem2->task_number}}</div>
+                                            <div class="taskName editable-title" id= "taskNameright" spellcheck="false">{{$taskitem2->title}}</div>
                                         </div>
                                         <div class="task-flex">
                                             <div class="responName">
@@ -285,21 +289,21 @@
                     </div>
                     <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data as $key => $projectitem)
-                            <div class="gantt-chart gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
-                                @php
-                                    $startDate = new DateTime('2024-01-01');
+                            <div class="gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
+                                {{-- @php
+                                    $startDate = new DateTime('2023-10-01');
                                     $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
                                         echo "<div id='row" . ($projectitem->project_id) . "-" . $date->format('Ymd') . "'></div>";
                                     }
-                                @endphp
+                                @endphp --}}
                             </div>
                             @if (isset($projectitem->depth_0))
                             @forelse ($projectitem->depth_0 as $taskitem)
                                 <div class="gantt-chart" id="gantt-chart-{{$taskitem->task_id}}" style="background-color: #ffffff0a;">
                                     @php
-                                        $startDate = new DateTime('2024-01-01');
+                                        $startDate = new DateTime('2023-10-01');
                                         $endDate = new DateTime('2024-03-31');
 
                                         for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -311,7 +315,7 @@
                                 @forelse ($taskitem->depth_1 as $taskitem2)
                                     <div class="gantt-chart gantt-child-chart" id="gantt-chart-{{$taskitem2->task_id}}" parent="{{$taskitem2->task_parent}}">
                                         @php
-                                            $startDate = new DateTime('2024-01-01');
+                                            $startDate = new DateTime('2023-10-01');
                                             $endDate = new DateTime('2024-03-31');
 
                                             for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {

@@ -96,5 +96,6 @@ Route::middleware('auth.api')->group(function () {
     Route::get('/alarms',[AlarmController::class,'getAlarmList']); // 알람 불러오기
     Route::post('/alarms/{id}',[AlarmController::class,'readAlarm']); // 알람 읽기
     Route::get('/online/{id}',[OnOfflineController::class,'areYouMyFriend']); // 채널에 온 온라인표시가 내 친구인지 판별
-    Route::get('/modal-auth/{id}', [TaskController::class,'auth']);
+    Route::get('/modal-auth/{id}', [TaskController::class,'auth']); //업무 삭제권한 부여
+    Route::get('/comment-auth/{id}', [TaskController::class,'commentAuth']); //댓글 편집권한 부여
 });
