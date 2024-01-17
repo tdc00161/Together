@@ -121,8 +121,8 @@ function updateDateFormat(selectedDate) {
  }
 
 
-let OrginalendValue = document.getElementById('end_date').value;
-let Orginalend = document.getElementById('end_date');
+// let OrginalendValue = document.getElementById('end_date').value;
+// let Orginalend = document.getElementById('end_date');
 
 
 // 프로젝트 명, 컨텐츠 업데이트 // 240101 전체 수정(catch 까지)
@@ -138,7 +138,7 @@ const csrfToken_updateproject = document.querySelector('meta[name="csrf-token"]'
       if(Updatetitle.length > Updatetitlemax){
          alert('텍스트 길이를 초과하였습니다.')
       }
-      if(Updatetitlemax.length > Updatecontentmax){
+      if(Updatecontent.length > Updatecontentmax){
          alert('텍스트 길이를 초과하였습니다.')
       }
       let Updatestart = document.getElementById('start_date').value;

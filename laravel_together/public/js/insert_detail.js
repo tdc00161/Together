@@ -213,7 +213,7 @@ function openTaskModal(a, b = 0, c = null) { // (작성/상세, 업무/공지, t
 		})
 			.then(response => response.json())
 			.then(data => {
-				// console.log(data);
+				console.log(data);
 				// 값을 모달에 삽입
 				insertModalValue(data, a);
 
@@ -768,6 +768,39 @@ function sendUpdateRequest(updatedValue, numbersOnly) {
 
 // 모달 작성
 function createTask() {
+
+	let modalCloseBtn = document.querySelector('.cross_icon_w');
+	let insertErrorMsg = document.querySelector('.insert_error_msg');
+	let insertTitle = document.querySelector('.insert_title').value;
+	let insertContent = document.querySelector('.insert_content').value;
+	let insertTitleMax = 100;
+	let insertContentMax = 500;
+
+	if (insertTitle === '') {
+		showError('제목을 입력해 주세요.');
+	} else if (insertTitle.length > insertTitleMax && insertContent.length > insertContentMax) {
+		showError('제목과 내용 글자 수를 모두 초과했습니다.');
+	} else if (insertTitle.length > insertTitleMax) {
+		showError('제목 글자 수를 초과했습니다.');
+	} else if (insertContent.length > insertContentMax) {
+		showError('내용 글자 수를 초과했습니다.');
+	} else {
+		hideError();
+	}
+	
+	modalCloseBtn.addEventListener('click', () => {
+		hideError();
+	});
+
+	function showError(message) {
+		insertErrorMsg.classList.remove('d-none');
+		insertErrorMsg.textContent = message;
+	}
+	
+	function hideError() {
+		insertErrorMsg.classList.add('d-none');
+	}
+
 	let postData = {
 		"title": INSERT_TITLE.value,
 		"content": INSERT_CONTENT.value,
@@ -843,6 +876,40 @@ function createTask() {
 
 // 등록 버튼으로 작성/수정
 function updateTask() {
+
+	let modalCloseBtn = document.querySelector('.cross_icon_w');
+	let insertErrorMsg = document.querySelector('.insert_error_msg');
+	let insertTitle = document.querySelector('.insert_title').value;
+	let insertContent = document.querySelector('.insert_content').value;
+	let insertTitleMax = 100;
+	let insertContentMax = 500;
+
+	if (insertTitle === '') {
+		showError('제목을 입력해 주세요.');
+	} else if (insertTitle.length > insertTitleMax && insertContent.length > insertContentMax) {
+		showError('제목과 내용 글자 수를 모두 초과했습니다.');
+	} else if (insertTitle.length > insertTitleMax) {
+		showError('제목 글자 수를 초과했습니다.');
+	} else if (insertContent.length > insertContentMax) {
+		showError('내용 글자 수를 초과했습니다.');
+	} else {
+		hideError();
+	}
+	
+	modalCloseBtn.addEventListener('click', () => {
+		hideError();
+	});
+
+	function showError(message) {
+		insertErrorMsg.classList.remove('d-none');
+		insertErrorMsg.textContent = message;
+	}
+	
+	function hideError() {
+		insertErrorMsg.classList.add('d-none');
+	}
+	
+
 	let updateData = {
 		'title': document.querySelector('.insert_title') ? document.querySelector('.insert_title').value : null,
 		'content': document.querySelector('.insert_content') ? document.querySelector('.insert_content').value : null,
@@ -1336,6 +1403,7 @@ function commentControl(data) {
 
 	// 댓글 달아주기
 	if (data.comment.length) {
+		console.log(data);
 		for (let i = 0; i < data.comment.length; i++) {
 			// 댓글 추가용 클론 (갱신)
 			let refresh_clone_comment = COMMENT_ONE[0].cloneNode(true)
@@ -1353,9 +1421,22 @@ function commentControl(data) {
 			DEFAULT_COMMENT_CONTENT.textContent = data.comment[i].content
 			DEFAULT_COMMENT_NAME.textContent = data.comment[i].user_name
 			DEFAULT_COMMENT_ID.value = data.comment[i].id
+			
+			let updateComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling
+			let deleteComment = refresh_clone_comment.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+			// 댓글 편집/삭제 권한
+			if(data.comment[i].user_id === data.nowAuthority.id || data.comment[i].user_id === data.nowAuthority.id && data.nowAuthority.flg === "0"){
+				//
+			}else if(data.nowAuthority.flg === "1" && data.nowAuthority.authority_id === "0" ){
+					updateComment.style.display ='none';
+			}else if(data.nowAuthority.authority_id !== "0" && data.comment[i].user_id != data.nowAuthority.id){
+				updateComment.style.display ='none';
+				deleteComment.style.display ='none';
+			}
 
 			// 댓글 달기
 			refresh_comment_parent.append(refresh_clone_comment)
+
 		}
 	}
 
