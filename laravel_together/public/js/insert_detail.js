@@ -1747,3 +1747,4 @@ function exitProject(project_pk) {
 			window.location.href = '/dashboard'; // 메인화면으로 이동
 		}).catch(error => console.log(error));
 }
+
