@@ -1260,7 +1260,7 @@ function addSubTask(event, mainId) {
   const doMGanttTask = event.target.parentNode.parentNode.parentNode.parentNode; // 원래 자리접근
   let gantt_modal_id = doMGanttTask.id.match(/\d+/);
   let topTaskNumber = event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling.textContent;
-  console.log(topTaskNumber);
+  // console.log(topTaskNumber);
   // let findParent = 
   // const ganttModalId = gantt_modal_id[0];
   // console.log(gantt_modal_id[0]);
@@ -1360,89 +1360,91 @@ function addSubTask(event, mainId) {
     }
     console.log('blur 중');
     
-    fetch('/task', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken_gantt,
-      },
-      body: JSON.stringify(postData),
-    })
-      .then(response => response.json()) // response.json()
-      .then(data => {
-        addTaskName.removeEventListener('blur', addChildTask);
-        addTaskKey.textContent = topTaskNumber;
-        addTaskKeyright.textContent = data.data.task_number;
-        // console.log(data);
-
-        // const ganttChildId = data.data.id;
-        // console.log(ganttChildId);
-        // addDetailButton.setAttribute('onclick', 'openTaskModal(1,0, '+data.data.id+')');
-
-        addTaskStartDate.id = 'start-row' + data.data.id;
-        // addTaskStartDate.id = 'start-row000';
-
-        // console.log(addTaskStartDate);
-        addTaskEndDate.id = 'end-row' + data.data.id;
-        // addTaskEndDate.id = 'end-row000';
-
-        // console.log(addTaskEndDate);
-        newChart.id = 'gantt-chart-' + data.data.id;
-        // console.log(newChart);
-        
-        // 시작일 종료일 날짜 설정
-        const chartStartDate = new Date('2023-10-01');
-        const chartEndDate = new Date('2024-03-31');
-
-        // chartStartDate를 클론하여 chartNewStartDate에 할당
-        const chartNewStartDate = new Date(chartStartDate);
-
-        // 요소 생성 배치
-        // end가 start보다 이전인지 확인
-        while (chartNewStartDate <= chartEndDate) {
-          // 날짜 yyyymmdd 변경
-          const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
-
-          // gantt-chart안에 들어갈 새로운 div
-          const ganttChartRow = document.createElement('div');
-          ganttChartRow.id = 'row' + data.data.id + '-' + chartFormatDate;
-
-          // 다음 날짜 이동
-          chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
-
-          // <div class="gantt-chart" id="ganbtt-chart-800">
-          //    <div id="row800-(231201~231231)"></div>
-          // </div> 생성
-          newChart.appendChild(ganttChartRow);
+    if(addTaskName.textContent.trim() !== ''){
+      fetch('/task', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken_gantt,
+        },
+        body: JSON.stringify(postData),
+      })
+        .then(response => response.json()) // response.json()
+        .then(data => {
+          addTaskName.removeEventListener('blur', addChildTask);
+          addTaskKey.textContent = topTaskNumber;
+          addTaskKeyright.textContent = data.data.task_number;
+          // console.log(data);
+  
+          // const ganttChildId = data.data.id;
+          // console.log(ganttChildId);
+          // addDetailButton.setAttribute('onclick', 'openTaskModal(1,0, '+data.data.id+')');
+  
+          addTaskStartDate.id = 'start-row' + data.data.id;
+          // addTaskStartDate.id = 'start-row000';
+  
+          // console.log(addTaskStartDate);
+          addTaskEndDate.id = 'end-row' + data.data.id;
+          // addTaskEndDate.id = 'end-row000';
+  
+          // console.log(addTaskEndDate);
+          newChart.id = 'gantt-chart-' + data.data.id;
+          // console.log(newChart);
+          
+          // 시작일 종료일 날짜 설정
+          const chartStartDate = new Date('2023-10-01');
+          const chartEndDate = new Date('2024-03-31');
+  
+          // chartStartDate를 클론하여 chartNewStartDate에 할당
+          const chartNewStartDate = new Date(chartStartDate);
+  
+          // 요소 생성 배치
+          // end가 start보다 이전인지 확인
+          while (chartNewStartDate <= chartEndDate) {
+            // 날짜 yyyymmdd 변경
+            const chartFormatDate = chartNewStartDate.toISOString().slice(0, 10).replace(/-/g, "");
+  
+            // gantt-chart안에 들어갈 새로운 div
+            const ganttChartRow = document.createElement('div');
+            ganttChartRow.id = 'row' + data.data.id + '-' + chartFormatDate;
+  
+            // 다음 날짜 이동
+            chartNewStartDate.setDate(chartNewStartDate.getDate() + 1);
+  
+            // <div class="gantt-chart" id="ganbtt-chart-800">
+            //    <div id="row800-(231201~231231)"></div>
+            // </div> 생성
+            newChart.appendChild(ganttChartRow);
+          }
+  
+          // test
+          addTaskStartDate.setAttribute('onchange', 'test('+data.data.id+')');
+          addTaskEndDate.setAttribute('onchange', 'test('+data.data.id+')');
+  
+          // addEventListener 로 하는 방법
+          //
+          // const eventSubStartDate = document.getElementById(addTaskStartDate.id);
+          // const eventSubEndDate = document.getElementById(addTaskEndDate.id);
+          // console.log('start test에 id');
+          // eventSubStartDate.addEventListener('change', e => test(`${ganttChildId}`));
+          // console.log(eventSubStartDate.getAttribute('change'));
+          // console.log('end test에 id');
+          // eventSubEndDate.addEventListener('change', e => test(`${ganttChildId}`));
+          // console.log(eventSubEndDate.getAttribute('change'));
+          
+  
+          addChildTaskAfter(data);
         }
-
-        // test
-        addTaskStartDate.setAttribute('onchange', 'test('+data.data.id+')');
-        addTaskEndDate.setAttribute('onchange', 'test('+data.data.id+')');
-
-        // addEventListener 로 하는 방법
-        //
-        // const eventSubStartDate = document.getElementById(addTaskStartDate.id);
-        // const eventSubEndDate = document.getElementById(addTaskEndDate.id);
-        // console.log('start test에 id');
-        // eventSubStartDate.addEventListener('change', e => test(`${ganttChildId}`));
-        // console.log(eventSubStartDate.getAttribute('change'));
-        // console.log('end test에 id');
-        // eventSubEndDate.addEventListener('change', e => test(`${ganttChildId}`));
-        // console.log(eventSubEndDate.getAttribute('change'));
-        
-
-        addChildTaskAfter(data);
-      }
-        )
-      .catch(err=>console.log(err.stack))
+          )
+        .catch(err=>console.log(err.stack))
+    }
   
   }
 
   function addChildTaskAfter (data) {
     // console.log('addChildTaskAfter');
     creating_delete = 1;
-    console.log(data);
+    // console.log(data);
     // 이 곳에 after 간트차트(+날짜 계산해서 바로 출력)
     newTask.id = 'gantt-task-' + data.data.id;
     // 작성 기능 -> 수정 기능으로 바꾸기
@@ -1459,7 +1461,8 @@ function addSubTask(event, mainId) {
             // 'title': ''
           };
           
-    document.querySelectorAll('.gantt-task').forEach((gantt,index) => {
+    let ganttTask = document.querySelectorAll('.gantt-task');
+    ganttTask.forEach((gantt,index) => {
       // 업무명 수정
       taskNameElements[index].addEventListener('blur', function () {
         updatedValue = {
@@ -1545,28 +1548,29 @@ function addSubTask(event, mainId) {
       // 더보기 모달
       // 여러 개 클릭했을 때 하나만 뜨게 하기
       // console.log(ganttDetail[index]);
-      // ganttDetail[index].addEventListener('click', function(event) { 
-      //   console.log(1);
-      //   // 한 번 클릭 후 다시 클릭 시 창 닫기
-      //   if (ganttDetail[index].style.display === 'none') {
-      //     ganttDetail[index].style.display = 'block';
-      //   } else {
-      //     ganttDetail[index].style.display = 'none';
-      //   }
-        
-      //   // 내가 켜질 때 다른 애들 다 끄기
-      //   ganttDetail.forEach((GDone,GDi)=>{
-      //     console.log(ganttMoreBtn[index] !== ganttMoreBtn[GDi]);
-      //     ganttMoreBtn[index] !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
-      //   });
-        
-      //   // 바깥 영역 클릭했을 때 창 닫기
-      //   document.addEventListener('click', function(event) {
-      //     if (!ganttMoreBtn[index].contains(event.target)) {
-      //       ganttDetail[index].style.display = 'none';      
-      //     }
-      //   });
-      // });
+      ganttMoreBtn[ganttTask.length -1].addEventListener('click', function (event) {
+
+        // gantt-detail 이 none 이면 block
+        // console.log(this);
+        // console.log(event.target);
+        ganttDetail[ganttTask.length -1].style.display = ganttDetail[ganttTask.length -1].style.display === 'none' ? 'block' : 'none'
+        // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
+
+        if(ganttDetail[index].contains(event.target)){
+          openTaskModal(1,0,data.data.id)
+        }
+      });
+      // 내가 켜질 때 다른 애들 다 끄기
+      ganttDetail.forEach((GDone,GDi)=>{
+        // console.log(ganttMoreBtn[index] !== ganttMoreBtn[GDi]);
+        ganttMoreBtn[index] !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
+      });
+      // 바깥 영역 클릭했을 때 창 닫기
+      document.addEventListener('click', function(event) {
+        if (!ganttMoreBtn[index].contains(event.target)) {
+          ganttDetail[index].style.display = 'none';      
+        }
+      });
     });
   }
   
@@ -1660,14 +1664,14 @@ function addSubTask(event, mainId) {
   // <button class="gantt-task-detail-click"></button>
   const addGanttDetailClick = document.createElement('button');
   addGanttDetailClick.classList.add('gantt-task-detail-click');
-  addGanttDetailClick.addEventListener('click', function (event) {
+  // addGanttDetailClick.addEventListener('click', function (event) {
 
-    // gantt-detail 이 none 이면 block
-    if(this.contains(event.target)){
-      event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
-    }
-      // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
-  });
+  //   // gantt-detail 이 none 이면 block
+  //   if(this.contains(event.target)){
+  //     event.target.parentNode.nextElementSibling.style.display = event.target.parentNode.nextElementSibling.style.display === 'none' ? 'block' : 'none'
+  //   }
+  //     // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
+  // });
 
   // gantt-task 안 여섯번째 div 안 첫번째 btn 안 span
   const addGanttDetailClickSpan = document.createElement('span');
@@ -1792,15 +1796,15 @@ if(myChildren.length !== 0 ? myChildren[myChildren.length-1].getAttribute('id') 
   //     })
   // });
   
-  let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
-  // console.log(ganttDetailButtons);
-  ganttDetailButtons.forEach(function(button) {
-      button.addEventListener('click', function(event) {
-          ganttDetailList.forEach(function(detail) {
-              detail.style.display = 'none';
-          });
-      });
-  });
+  // let ganttDetailButtons = document.querySelectorAll('.gantt-detail-btn');
+  // // console.log(ganttDetailButtons);
+  // ganttDetailButtons.forEach(function(button) {
+  //     button.addEventListener('click', function(event) {
+  //         ganttDetailList.forEach(function(detail) {
+  //             detail.style.display = 'none';
+  //         });
+  //     });
+  // });
 
   // ************* 담당자 드롭다운 선택
 
