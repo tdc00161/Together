@@ -42,22 +42,25 @@
                     <span style="font-size: 12px;">담당자</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    {{-- <li><input id="resAll" type="radio" name="respon" checked onclick="is_checked_respon(event)">
+                    <li><input id="resAll" type="radio" name="respon" checked>
                         <label class="gantt-item" for="resAll">전체</label>
+                    </li><input id="res" type="radio" name="respon">
+                    <li>
+
                     </li>
-                    @php
-                        $resNames = array_unique(array_column($data['task'], 'res_name'));
+                    {{-- @php
+                        $resNames = array_unique(array_column($data, 'res_name'));
                         $resNames = array_filter($resNames, function($name) {
                             return $name !== null;
                         });
                         $resNames[] = null; // null 값을 배열에 추가하여 '없음'을 마지막에 표시
-                    @endphp
+                    @endphp --}}
 
-                    @foreach($resNames as $index => $resName)
+                    {{-- @foreach($data as $index => $resName)
                         <li>
                             @if ($resName !== null)
                                 <input id="res{{ $index + 1 }}" type="radio" name="respon" onclick="is_checked_respon(event)">
-                                <label for="res{{ $index + 1 }}" class="gantt-item">{{ $resName }}</label>
+                                <label for="res{{ $index + 1 }}" class="gantt-item">{{ $resName-> }}</label>
                             @else
                                 <input id="res-none" type="radio" name="respon" onclick="is_checked_respon(event)">
                                 <label for="res-none" class="gantt-item">없음</label>
@@ -290,14 +293,14 @@
                     <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data as $key => $projectitem)
                             <div class="gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
-                                {{-- @php
+                                @php
                                     $startDate = new DateTime('2023-10-01');
                                     $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
                                         echo "<div id='row" . ($projectitem->project_id) . "-" . $date->format('Ymd') . "'></div>";
                                     }
-                                @endphp --}}
+                                @endphp
                             </div>
                             @if (isset($projectitem->depth_0))
                             @forelse ($projectitem->depth_0 as $taskitem)

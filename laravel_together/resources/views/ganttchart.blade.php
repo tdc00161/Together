@@ -307,7 +307,7 @@
                             
                                 <div class="taskKey">{{$item->task_number}}</div>
                                 <div class="taskChildPosition" style="display: none"></div>
-                                <div class="taskName editable-title" spellcheck="false" contenteditable="true">{{$item->title}}</div>
+                                <div class="taskName editable-title" data-bs-toggle="popover" data-bs-delay="300" data-bs-trigger="hover focus" data-bs-content="{{$item->title}}" data-bs-placement="bottom" spellcheck="false" contenteditable="true">{{$item->title}}</div>
                             </div>
                             {{-- 담당자/상태/시작일/마감일/더보기버튼 --}}
                             <div class="task-flex">
@@ -356,7 +356,7 @@
                                     <div class="taskKey">{{$item->task_number}}</div>
                                     <span class="taskand">></span> 
                                     <div class="taskKeyright">{{$item2->task_number}}</div>
-                                    <div class="taskName editable-title" id= "taskNameright" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
+                                    <div class="taskName editable-title" id= "taskNameright" data-bs-delay="300" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{{$item2->title}}" data-bs-placement="bottom" spellcheck="false" contenteditable="true">{{$item2->title}}</div>
                                 </div>
                                 <div class="task-flex">
                                     <div class="responName">
