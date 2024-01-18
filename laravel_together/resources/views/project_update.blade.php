@@ -4,24 +4,25 @@
     <script src="/js/projectupdate.js" defer></script>
 @endsection
 @section('main')
-    <header>
-        <button class="project-update" type="button" onclick="goBack()"><</button>
-        <span class="project-update" style="margin-left: 24px">프로젝트 수정</span>
-    </header>
-
     @forelse ($project_info as $item)
     <form action="{{ route('project.updateput', ['id' => $projectid]) }}" method="post">
     @csrf
     @method('PUT')
+
+    <header class="update-header">
+        <button class="project-update" type="button" onclick="goBack()"><</button>
+        <span class="project-update" style="margin-left: 24px">프로젝트 수정</span>
+        <input class="project-start-date" name="start_date" type="date" value="{{$item->start_date}}">
+        <span class="project_date_ing">~</span>
+        <input class="project-end-date" name="end_date" type="date" value="{{$item->end_date}}">
+    </header>
+
     <div class="section-content">
         <div class="section-0">
             <p style="font-size: 15px;">프로젝트 제목</p>
             <span class="d-inline-block" name="project_content" id="project_content" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="프로젝트 제목은 최대 16자 까지 작성 가능 합니다.">
                 <div class="explanation-icon-update">?</div>
             </span>
-            <input class="project-start-date" name="start_date" type="date" value="{{$item->start_date}}">
-            <span class="project_date_ing">~</span>
-            <input class="project-end-date" name="end_date" type="date" value="{{$item->end_date}}">
         </div>
         
         <div class="section-1">
