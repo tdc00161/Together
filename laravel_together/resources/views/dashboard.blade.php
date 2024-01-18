@@ -166,21 +166,6 @@
                                             {{ $result->completion_percentage }}%</div>
                                     </div>
                                 </div>
-                                    {{-- <div class="project-progress-project-title-div">
-                                        <div style="background-color: {{ $result->data_content_name }};" class="project-box">
-                                        </div>
-                                        <p class="dashboard-progress-project-title">{{ $result->project_title }}</p>
-                                        <p class="dashboard-progress-project-dday"></p>
-                                    </div>
-                                    <div class="progress">
-                                        표기 되는 전체 진척률 (전체 진척률 - 나의 진척률)
-                                        <div class="progress-bar" role="progressbar" aria-label="Animated striped example"
-                                            aria-valuenow="{{ $result->completion_percentage }}" aria-valuemin="0"
-                                            aria-valuemax="100" style="width: {{ $result->completion_percentage }}%">
-                                            {{ $result->completion_percentage }}%</div>
-                                        나의 진척률
-                                        <div class="progress-bar bg-success" role="progressbar" aria-label="Segment two" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div> --}}
                                 @empty
                                 @endforelse
                             </div>

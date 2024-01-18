@@ -93,6 +93,8 @@ class GanttChartController extends Controller
                 'pj_clr.data_content_name as color_code',
                 'p.project_title',
                 'p.flg',
+                'p.start_date',
+                'p.end_date',
                 'p.created_at as project_created_at',
                 'pu.id as project_users_id',
                 'pu.project_id',

@@ -921,6 +921,33 @@ function createTask() {
 		});
 }
 
+let refreshTitle = '';
+// 테스크 제목 찾는 함수
+function findTaskName(p) {		
+	// if(){
+		function findModuleOne(Pone) {
+			let a = Array.from(Pone.children);
+			a.forEach((RTCone,RTCi)=>{
+				if(RTCone.classList.contains('taskName')){
+					return refreshTitle = RTCone;
+				} else {
+					if(RTCi === p.children.length - 1 && p.child ){
+						return findTaskName(RTCone);
+					}
+				}
+			})
+		}		
+		if(p.length !== 0){
+			let b = Array.from(p.children)
+			b.forEach((Pone,Pi)=>{
+				findModuleOne(Pone);
+			})
+		} else {
+			findModuleOne(p);
+		}
+	// }
+}
+
 // 등록 버튼으로 작성/수정
 function updateTask() {
 
@@ -992,7 +1019,8 @@ function updateTask() {
 				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild.firstElementChild
 				refreshResponsible.textContent = data.data.names.task_responsible_name
 				// 해당 간트 제목
-				let refreshTitle = refreshTarget.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling
+				findTaskName(refreshTarget);
+
 				refreshTitle.textContent = data.data.task.title
 				// 해당 간트 시작일				
 				let refreshStart = refreshTarget.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild

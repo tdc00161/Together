@@ -280,7 +280,7 @@
 }
 .gantt-task-body {
 	overflow-y:auto;
-	height: 646px;
+	height: 636px;
 	display: flex;
 	flex-direction: column;
 	position: relative;
