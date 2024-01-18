@@ -316,13 +316,13 @@ function is_checked_respon() {
           responFilter.push(task);
         }
       } else if (responValues === '없음') {
-        if (taskRespon === '') {
+        if (taskRespon === '-') {
           // task.style.display = 'flex';
           responFilter.push(task);
         } else {
           // task.style.display = 'none';
         }
-      } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+      } else if (taskRespon !== '-' && responValues.includes(taskRespon)) {
         // task.style.display = 'flex';
         responFilter.push(task);
       } else {
@@ -345,13 +345,13 @@ function is_checked_respon() {
             responFilter.push(ganttChart);
           }
         } else if (responValues === '없음') {
-          if (taskRespon === '') {
+          if (taskRespon === '-') {
             // ganttChart.style.display = 'flex';
             responFilter.push(ganttChart);
           } else {
             // ganttChart.style.display = 'none';
           }
-        } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+        } else if (taskRespon !== '-' && responValues.includes(taskRespon)) {
           // ganttChart.style.display = 'flex';
           responFilter.push(ganttChart);
         } else {
@@ -1444,7 +1444,7 @@ function addSubTask(event, mainId) {
   function addChildTaskAfter (data) {
     // console.log('addChildTaskAfter');
     creating_delete = 1;
-    // console.log(data);
+    console.log(data);
     // 이 곳에 after 간트차트(+날짜 계산해서 바로 출력)
     newTask.id = 'gantt-task-' + data.data.id;
     // 작성 기능 -> 수정 기능으로 바꾸기
@@ -1547,30 +1547,28 @@ function addSubTask(event, mainId) {
       });
       // 더보기 모달
       // 여러 개 클릭했을 때 하나만 뜨게 하기
-      // console.log(ganttDetail[index]);
-      ganttMoreBtn[ganttTask.length -1].addEventListener('click', function (event) {
-
-        // gantt-detail 이 none 이면 block
-        // console.log(this);
-        // console.log(event.target);
-        ganttDetail[ganttTask.length -1].style.display = ganttDetail[ganttTask.length -1].style.display === 'none' ? 'block' : 'none'
-        // addGanttDetailClick.style.display = addGanttDetailClick.style.display = 'none' ? 'block' : 'none'
-
-        if(ganttDetail[index].contains(event.target)){
-          openTaskModal(1,0,data.data.id)
-        }
-      });
-      // 내가 켜질 때 다른 애들 다 끄기
-      ganttDetail.forEach((GDone,GDi)=>{
-        // console.log(ganttMoreBtn[index] !== ganttMoreBtn[GDi]);
-        ganttMoreBtn[index] !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
-      });
-      // 바깥 영역 클릭했을 때 창 닫기
-      document.addEventListener('click', function(event) {
-        if (!ganttMoreBtn[index].contains(event.target)) {
-          ganttDetail[index].style.display = 'none';      
-        }
-      });
+      let addedChildMoreBtn = document.querySelector('#gantt-task-'+data.data.id);
+      if(gantt === addedChildMoreBtn){
+        ganttMoreBtn[index].addEventListener('click', function (event) {
+    
+          // gantt-detail 이 none 이면 block
+          ganttDetail[index].style.display = ganttDetail[index].style.display === 'none' ? 'block' : 'none'
+    
+          if(ganttDetail[index].contains(event.target)){
+            openTaskModal(1,0,data.data.id)
+          }
+          // 내가 켜질 때 다른 애들 다 끄기
+          ganttDetail.forEach((GDone,GDi)=>{
+            ganttMoreBtn[index] !== ganttMoreBtn[GDi] ? GDone.style.display = 'none' : '';
+          });
+        });
+        // 바깥 영역 클릭했을 때 창 닫기
+        document.addEventListener('click', function(event) {
+          if (!ganttMoreBtn[index].contains(event.target)) {
+            ganttDetail[index].style.display = 'none';      
+          }
+        });
+      }
     });
   }
   

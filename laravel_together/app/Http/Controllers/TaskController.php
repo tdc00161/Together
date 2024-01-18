@@ -91,6 +91,7 @@ class TaskController extends Controller
         ->where('member_id', '=', $userId)
         ->where('p.flg', 1)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->get();
 
         $projectIndividualIds = $projectIndividualIdData->pluck('project_id')->toArray(); // 개인 프로젝트 아이디 배열로 변환
@@ -112,6 +113,20 @@ class TaskController extends Controller
             ->groupBy('b.data_content_name','p.project_title')
             ->get();
 
+            if(count($IndividualcompletionPercentage) === 0){
+                $IndividualcompletionPercentage = DB::table('projects as p')
+                // ->join('projects as p', 't.project_id', '=', 'p.id')
+                ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+                ->selectRaw('0 AS completion_percentage, b.data_content_name, p.project_title')
+                ->where('p.id', '=', $projectId)
+                // ->where('t.project_id', '=', $projectId)
+                ->where('b.data_title_code', '=', 3)
+                // ->where('t.category_id',0)
+                // ->whereNull('t.deleted_at')
+                // ->groupBy('b.data_content_name','p.project_title')
+                ->get();
+            }
+
             $IndividualcompletionPercentages[$projectId] = $IndividualcompletionPercentage;
         }
 
@@ -120,19 +135,27 @@ class TaskController extends Controller
             $TeamcompletionPercentage = DB::table('tasks as t')
                 ->join('projects as p', 't.project_id', '=', 'p.id')
                 ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
-                ->selectRaw(
-                    ' ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, '.
-                    ' b.data_content_name, '.
-                    ' p.project_title, '.
-                    ' 1 '
-                    )
+                ->selectRaw('ROUND((SUM(CASE WHEN t.task_status_id = 3 THEN 1 ELSE 0 END) / COUNT(t.project_id)) * 100) AS completion_percentage, b.data_content_name, p.project_title')
                 ->where('t.project_id', '=', $projectId)
                 ->where('b.data_title_code', '=', 3)
                 ->where('t.category_id',0)
                 ->whereNull('t.deleted_at')
                 ->groupBy('b.data_content_name','p.project_title')
                 ->get();
-
+                
+            if(count($TeamcompletionPercentage) === 0){
+                $TeamcompletionPercentage = DB::table('projects as p')
+                // ->join('projects as p', 't.project_id', '=', 'p.id')
+                ->join('basedata as b', 'p.color_code_pk', '=', 'b.data_content_code')
+                ->selectRaw('0 AS completion_percentage, b.data_content_name, p.project_title')
+                ->where('p.id', '=', $projectId)
+                // ->where('t.project_id', '=', $projectId)
+                ->where('b.data_title_code', '=', 3)
+                // ->where('t.category_id',0)
+                // ->whereNull('t.deleted_at')
+                // ->groupBy('b.data_content_name','p.project_title')
+                ->get();
+            }
             $TeamcompletionPercentages[$projectId] = $TeamcompletionPercentage;
         }
         // dd($TeamcompletionPercentages);
