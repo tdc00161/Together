@@ -176,6 +176,7 @@ class TaskController extends Controller
                     ->where('task_depth','0')
                     ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                     ->whereNull('tasks.deleted_at')
+                    ->whereNull('project_users.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -193,6 +194,7 @@ class TaskController extends Controller
                 ->where('task_depth','0')
                 ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                 ->whereNull('tasks.deleted_at')
+                ->whereNull('project_users.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
         // dd($ing);
@@ -211,6 +213,7 @@ class TaskController extends Controller
                     ->where('task_depth','0')
                     ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                     ->whereNull('tasks.deleted_at')
+                    ->whereNull('project_users.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -228,6 +231,7 @@ class TaskController extends Controller
                     ->where('task_depth','0')
                     ->whereNull('projects.deleted_at') // 240101 업무상태현황 카운트 확인: 김관호
                     ->whereNull('tasks.deleted_at')
+                    ->whereNull('project_users.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -334,6 +338,7 @@ class TaskController extends Controller
                     ->where('task_depth','0')
                     ->whereNull('projects.deleted_at')
                     ->whereNull('tasks.deleted_at')
+                    ->whereNull('project_users.deleted_at')
                     ->groupBy('tasks.task_status_id')
                     ->get();
 
@@ -351,6 +356,7 @@ class TaskController extends Controller
                 ->where('task_depth','0')
                 ->whereNull('projects.deleted_at')
                 ->whereNull('tasks.deleted_at')
+                ->whereNull('project_users.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
         // dd($ing);
@@ -369,6 +375,7 @@ class TaskController extends Controller
                 ->where('task_depth','0')
                 ->whereNull('projects.deleted_at')
                 ->whereNull('tasks.deleted_at')
+                ->whereNull('project_users.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
@@ -386,6 +393,7 @@ class TaskController extends Controller
                 ->where('task_depth','0')
                 ->whereNull('projects.deleted_at')
                 ->whereNull('tasks.deleted_at')
+                ->whereNull('project_users.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
 
