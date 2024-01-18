@@ -722,9 +722,9 @@ box-sizing: border-box;
 }
 
 .content-section {
-    width: 100%;
+    width: 99%;
     flex-wrap: wrap;
-    height: 100%;
+    height: 96%;
  margin-top: 16px;
  display: flex;
  flex-direction: column;
