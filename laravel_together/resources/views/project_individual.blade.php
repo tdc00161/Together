@@ -1,14 +1,14 @@
 @extends('layout.layout')
 
-
 @section('link')
-{{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="/js/project.js" defer></script>
 <script src="/js/project_member.js" defer></script>
 <link rel="stylesheet" href="/css/insert_detail.css">
 <script defer src="/js/insert_detail.js"></script>
 <link rel="stylesheet" href="/css/project_individual.css">
-<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script> --}}
 @endsection
 
 @section('title', '프로젝트')
@@ -130,7 +130,8 @@
             {{-- 업무상태 현황 --}}
             <div class="status_box"> 
                 <div class="status_title">업무상태 현황</div>
-                <canvas id="chartcanvas" width="900" height="900"></canvas>
+                {{-- <canvas id="chartcanvas2" width="900" height="900"></canvas> --}}
+                <div class="Doughnut"><canvas id="Doughnut" width="150" height="150"></canvas></div>
                 <div class="color_div">
                         <div class="color_set">
                             <div class="color_box1"></div>
@@ -264,16 +265,20 @@
                             @forelse ($update_data as $item)
 
                                 <tr class="box_ul project_task_update_list update-layout-{{$item->id}}">
-                                    <td class="td_pd update-{{$item->id}}" onclick="openTaskModal(1,0,{{$item->id}})">
-                                        @if ($item->data_content_name == "공지")
+                                    @if ($item->data_content_name == "공지")
+                                        <td class="td_pd update-{{$item->id}}" onclick="openTaskModal(1,1,{{$item->id}})">
                                             <div style="color:rgb(255, 196, 0); font-weight:bold;">{{$item->data_content_name}}</div>
-                                        @elseif ($item->data_content_name == "업무")
+                                            <td class="td_pd" onclick="openTaskModal(1,1,{{$item->id}})">{{Str::limit($item->title,35,'...')}}</td>
+                                        </td> 
+                                    @elseif ($item->data_content_name == "업무")
+                                        <td class="td_pd update-{{$item->id}}" onclick="openTaskModal(1,0,{{$item->id}})">
                                             <div style="color:rgb(0, 174, 255); font-weight:bold;">{{$item->data_content_name}}</div>
-                                        @endif
-                                    </td> 
+                                            <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,35,'...')}}</td>
+                                        </td> 
+                                    @endif
                                     {{-- 나중에 글/업무 플래그 변수로 삽입 --}}
 
-                                    <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,35,'...')}}</td>
+                                    {{-- <td class="td_pd" onclick="openTaskModal(1,0,{{$item->id}})">{{Str::limit($item->title,35,'...')}}</td> --}}
                                 </tr>
                                 @empty
                                 <tr class="box_ul project_task_update_list">

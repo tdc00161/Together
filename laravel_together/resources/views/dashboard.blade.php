@@ -2,6 +2,8 @@
 @section('link')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="/css/project_individual.css">
+<script defer src="/js/dashboard.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></>
 @endsection
 @section('title', '대시보드')
 @section('main')
@@ -18,26 +20,29 @@
 
         {{-- 1 업무상태 --}}
         <div class="app-card1">
-            <div class="app-card-title2">업무상태 현황</div>
-            <canvas id="chartcanvas2" width="800" height="800"></canvas>
-            <div class="color_div1">
-                <div class="color_set1">
-                    <div class="color_box1"></div>
-                    <div class="color_name">시작전:{{ $statuslist['before'][0]->cnt }}</div>
-                </div>
-                <div class="color_set1">
-                    <div class="color_box2"></div>
-                    <div class="color_name">진행중:{{ $statuslist['ing'][0]->cnt }}</div>
-                </div>
-            </div>
-            <div class="color_div1">
-                <div class="color_set1">
-                    <div class="color_box3"></div>
-                    <div class="color_name">피드백:{{ $statuslist['feedback'][0]->cnt }}</div>
-                </div>
-                <div class="color_set1">
-                    <div class="color_box4"></div>
-                    <div class="color_name">완료:{{ $statuslist['complete'][0]->cnt }}</div>
+            <div class="dash_status">
+                <div class="app-card-title2">업무상태 현황</div>
+                {{-- <canvas id="chartcanvas2" width="800" height="800"></canvas> --}}
+                <div class="status_graph">
+                    <div class="Doughnut1"><canvas id="Doughnut1" width="800" height="800"></canvas></div>
+                    <div class="color_div1">
+                        <div class="color_set1">
+                            <div class="color_box1"></div>
+                            <div class="color_name">시작전:{{ $statuslist['before'][0]->cnt }}</div>
+                        </div>
+                        <div class="color_set1">
+                            <div class="color_box2"></div>
+                            <div class="color_name">진행중:{{ $statuslist['ing'][0]->cnt }}</div>
+                        </div>
+                        <div class="color_set1">
+                            <div class="color_box3"></div>
+                            <div class="color_name">피드백:{{ $statuslist['feedback'][0]->cnt }}</div>
+                        </div>
+                        <div class="color_set1">
+                            <div class="color_box4"></div>
+                            <div class="color_name">완료:{{ $statuslist['complete'][0]->cnt }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

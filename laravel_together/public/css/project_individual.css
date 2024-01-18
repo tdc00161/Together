@@ -271,7 +271,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: grid;
     grid-template-columns: 0.5fr 2.5fr;
     justify-items: center;
-    /* align-items: center; */
 }
 
 .status_box {
@@ -283,7 +282,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-weight: 800;
     padding: 10px;
     display: grid;
-    grid-template-rows: 0.5fr 3fr 0.5fr 0.5fr;
+    grid-template-rows: 0.5fr 3fr 0.3fr 0.3fr;
     align-items: center;
     justify-content: space-evenly;
     margin-bottom: 10px;
@@ -294,7 +293,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     text-align: center;
 }
 
-#chartcanvas {
+.Doughnut {
     box-sizing: border-box;
     width: 160px;
     height: 160px;
@@ -348,7 +347,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .color_name {
-    font-size: 13px;
+    font-size: 1rem;
     font-weight: 200;
     display: inline-block;
 }

@@ -469,6 +469,7 @@ class ProjectController extends Controller
     return response()->json('성공');
   }
 
+  //그래프
   public function project_graph_data(Request $request, $id) {
 
     //로그인한 유저 정보 출력
@@ -522,14 +523,17 @@ class ProjectController extends Controller
     $baseObj->cnt=0;
 
     //데이터 삼항연산자로 비교해서 개수 출력
-    $statuslist=[
+    $data=[
       'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
       'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
       'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
       'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
     ];
+
+    Log::debug("상태현황");
+    Log::debug([$data]);
     //project.js 로 데이터 변환해서 전송
-    return response()->json($statuslist);
+    return response()->json($data);
   }
 
   // 프로젝트 데이터 + 컬러

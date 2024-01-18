@@ -172,6 +172,7 @@ class TaskController extends Controller
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
+        // dd($ing);
 
         $feedback =DB::table('tasks')
                     ->join('project_users', function($join){
@@ -329,6 +330,7 @@ class TaskController extends Controller
                 ->whereNull('tasks.deleted_at')
                 ->groupBy('tasks.task_status_id')
                 ->get();
+        // dd($ing);
 
         $feedback =DB::table('tasks')
                 ->join('project_users', function($join){
@@ -371,15 +373,18 @@ class TaskController extends Controller
         $baseObj->cnt = 0;
 
         //데이터 삼항연산자로 비교 후 출력
-        $statuslist = [
+        $dashData = [
           'before'=> count($before) === 0 ? collect([$baseObj]) : $before,
           'ing'=> count($ing) === 0 ? collect([$baseObj]) : $ing,
           'feedback'=> count($feedback) === 0 ? collect([$baseObj]) : $feedback,
           'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
         ];
 
+
+        Log::debug("대시보드 데이터");
+        Log::debug([$dashData]);
         //데이터 common.js로 json으로 변환하여 전송
-        return response()->json($statuslist);
+        return response()->json($dashData);
 
       }
 
