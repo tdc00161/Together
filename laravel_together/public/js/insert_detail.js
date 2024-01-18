@@ -921,32 +921,31 @@ function createTask() {
 		});
 }
 
+let refreshTitle = '';
 // 테스크 제목 찾는 함수
 function findTaskName(p) {		
-	function findModuleOne(Pone) {
-		let a = Array.from(Pone.children);
-		a.forEach((RTCone,RTCi)=>{
-			console.log('RTCone');
-			console.log(RTCone);
-			if(RTCone.classList.contains('taskName')){
-				return refreshTitle = RTCone;
-			} else {
-				if(RTCi === p.children.length - 1 && p.child ){
-					return findTaskName(RTCone);
+	// if(){
+		function findModuleOne(Pone) {
+			let a = Array.from(Pone.children);
+			a.forEach((RTCone,RTCi)=>{
+				if(RTCone.classList.contains('taskName')){
+					return refreshTitle = RTCone;
+				} else {
+					if(RTCi === p.children.length - 1 && p.child ){
+						return findTaskName(RTCone);
+					}
 				}
-			}
-		})
-	}		
-	if(p.length !== 0){
-		let b = Array.from(p.children)
-		b.forEach((Pone,Pi)=>{
-			console.log('Pone');
-			console.log(Pone);
-			findModuleOne(Pone);
-		})
-	} else {
-		findModuleOne(p);
-	}
+			})
+		}		
+		if(p.length !== 0){
+			let b = Array.from(p.children)
+			b.forEach((Pone,Pi)=>{
+				findModuleOne(Pone);
+			})
+		} else {
+			findModuleOne(p);
+		}
+	// }
 }
 
 // 등록 버튼으로 작성/수정
@@ -1020,8 +1019,6 @@ function updateTask() {
 				let refreshResponsible = refreshTarget.firstElementChild.nextElementSibling.firstElementChild.firstElementChild
 				refreshResponsible.textContent = data.data.names.task_responsible_name
 				// 해당 간트 제목
-				let refreshTitle = '';
-				console.log(findTaskName(refreshTarget));
 				findTaskName(refreshTarget);
 
 				refreshTitle.textContent = data.data.task.title
