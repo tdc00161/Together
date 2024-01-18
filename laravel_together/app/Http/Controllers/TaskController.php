@@ -135,7 +135,7 @@ class TaskController extends Controller
 
             $TeamcompletionPercentages[$projectId] = $TeamcompletionPercentage;
         }
-        dd($TeamcompletionPercentages);
+        // dd($TeamcompletionPercentages);
         // --------- 프로젝트 진척률 출력 끝 ------------
 
         // 대시보드 전체 업무 상태별 개수 출력
