@@ -797,10 +797,12 @@ function sendUpdateRequest(updatedValue, numbersOnly) {
 		});
 }
 
-// 모달 작성/수정 제목 칸 클릭 시 스타일 주기
+// 모달 작성/수정 제목, 내용 칸 클릭 시 스타일 주기
 document.addEventListener('click', (event) => {
-	let insertTitle = document.querySelector('.insert_title')
+	let insertTitle = document.querySelector('.insert_title');
+	let insertContent = document.querySelector('.insert_content');
 	let clickInsertTitle = event.target;
+	let clickInsertContent = event.target;
 
 	if (clickInsertTitle.classList.contains('insert_title')) {
 		insertTitle.style.border = '2px solid #ffffff2f';
@@ -809,6 +811,16 @@ document.addEventListener('click', (event) => {
 		insertTitle.style.border = '';
 		insertTitle.style.borderRadius = '';
 	}
+
+	if (clickInsertContent.classList.contains('insert_content')) {
+		insertContent.style.border = '2px solid #ffffff2f';
+		insertContent.style.borderRadius = '5px';
+	} else {
+		insertContent.style.border = '';
+		insertContent.style.borderRadius = '';
+	}
+
+	
 })
 
 
