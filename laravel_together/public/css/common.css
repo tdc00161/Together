@@ -21,6 +21,10 @@ a:hover {
     text-decoration: none;
 }
 
+.sidebar-project-name {
+
+}
+
 .project_label1 {
     width: 120px;
     background-color: rgb(14, 14, 14,0.73);
@@ -507,7 +511,7 @@ vertical-align: middle;
 }
 
 .left-side {
- flex-basis: 240px;
+ flex-basis: 245px;
  border-right: 1px solid var(--border-color);
  padding: 17px;
  overflow: auto;
@@ -533,6 +537,7 @@ vertical-align: middle;
  display: flex;
  flex-direction: column;
  white-space: nowrap;
+ align-items: flex-start;
  a {
   text-decoration: none;
   color: var(--theme-color);

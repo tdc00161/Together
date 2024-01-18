@@ -751,16 +751,42 @@ class ProjectController extends Controller
   //  ------------------------프로젝트 수정--------------------
   public function projectUpdateget($id)
   {
+    $userId = Auth::id();
+    
     $projectid = project::find($id);
     $project_info = project::where('id',$projectid->id)
     ->select('project_title','project_content','start_date','end_date')
     ->get();
 
-    // dd($project_info);
+    $project0title = DB::table('projects as p')
+    ->join('project_users as pu', 'p.id','=','pu.project_id')
+    ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+    ->select('p.project_title', 'b.data_content_name', 'p.id')
+    ->where('pu.member_id', '=', $userId)
+    ->where('p.flg','=', 0)
+    ->where('b.data_title_code', '=', 3)
+    ->whereNull('p.deleted_at')
+    ->orderBy('p.created_at', 'asc')
+    ->get();
 
-   return view('project_update')
-   ->with('project_info',$project_info)
-   ->with('projectid',$projectid);
+    $project1title = DB::table('projects as p')
+    ->join('project_users as pu', 'p.id','=','pu.project_id')
+    ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+    ->select('p.project_title', 'b.data_content_name', 'p.id')
+    ->where('pu.member_id', '=', $userId)
+    ->where('p.flg','=', 1)
+    ->where('b.data_title_code', '=', 3)
+    ->whereNull('p.deleted_at')
+    ->orderBy('p.created_at', 'asc')
+    ->get();
+
+
+  return view('project_update')
+  ->with('project_info',$project_info)
+  ->with('projectid',$projectid)
+  ->with('project0title', $project0title)
+  ->with('project1title', $project1title)
+  ;
   }
 
   public function projectUpdateput(Request $request, $id)
