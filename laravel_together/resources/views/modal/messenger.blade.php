@@ -35,11 +35,11 @@
     <div class="chat-window" style="display: none">
       <div class="messages-field"></div>
       <div class="chat-footer">
-        <textarea 
+        <input
           id="chatting-input" 
           type="text" 
           placeholder="채팅 입력창"
-        ></textarea>
+        >
         <div class="send-chat">전송</div>
       </div>
     </div>

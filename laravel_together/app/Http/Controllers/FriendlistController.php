@@ -90,40 +90,43 @@ class FriendlistController extends Controller
                     'chat_rooms.deleted_at',
                 )
                 ->distinct();           
-
-            // 채팅방 참여 레코드
-            $chatUser = DB::table('chat_users as cu')
-                ->join('chat_rooms as cr', function($j){
-                    $j->on('cu.chat_room_id','cr.id')
-                        ->where('cr.flg','0')
-                        ->whereNull('cr.deleted_at')
-                        ->whereNull('cu.deleted_at');
-                })
-                ->where(function($query) use ($userId, $deletefriendId) {
-                    $query->where('cu.user_id',$userId)
-                    ->orWhere('cu.user_id',$deletefriendId);
-                })
-                ->select(
-                    'cu.id',
-                    'cu.chat_room_id',
-                    'cu.user_id',
-                    'cu.chat_checked',
-                    'cu.created_at',
-                    'cu.updated_at',
-                    'cu.deleted_at',
-                );
+            Log::debug('$chatUser');
+            // // 채팅방 참여 레코드
+            // $chatUser = DB::table('chat_users as cu')
+            //     ->join('chat_rooms as cr', function($j){
+            //         $j->on('cu.chat_room_id','cr.id')
+            //             ->where('cr.flg','0')
+            //             ->whereNull('cr.deleted_at')
+            //             ->whereNull('cu.deleted_at');
+            //     })
+            //     ->where(function($query) use ($userId, $deletefriendId) {
+            //         $query->where('cu.user_id',$userId)
+            //         ->orWhere('cu.user_id',$deletefriendId);
+            //     })
+            //     ->select(
+            //         'cu.id',
+            //         'cu.chat_room_id',
+            //         'cu.user_id',
+            //         'cu.chat_checked',
+            //         'cu.created_at',
+            //         'cu.updated_at',
+            //         'cu.deleted_at',
+            //     );
+            // Log::debug('$chatUser');
+            // Log::debug([$chatUser->get()]);
             
-            if (!$deleted || $chatUser->count() !== 2) {
-                return response()->json(['status' => 'error', 'message' => '친구를 찾을 수 없습니다.'], 404);
-            }
-            // 채팅방/채팅참여 삭제
-            $chatUsers = $chatUser->get();
-            Log::debug($chatUsers);
+            // if (!$deleted || $chatUser->count() !== 2) {
+            //     return response()->json(['status' => 'error', 'message' => '친구를 찾을 수 없습니다.'], 404);
+            // }
+            // // 채팅방/채팅참여 삭제
+            // $chatUsers = $chatUser->get();
+            // Log::debug('$chatUsers');
+            // Log::debug($chatUsers);
 
-            foreach ($chatUsers as $chatUserRecord) {
-                $model = ChatUser::find($chatUserRecord->id);
-                $model->delete();
-            }
+            // foreach ($chatUsers as $chatUserRecord) {
+            //     $model = ChatUser::find($chatUserRecord->id);
+            //     $model->delete();
+            // }
             
             $chatRoom->delete();
             

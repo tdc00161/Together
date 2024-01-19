@@ -530,8 +530,8 @@ class ProjectController extends Controller
       'complete'=> count($complete) === 0 ? collect([$baseObj]) : $complete
     ];
 
-    Log::debug("상태현황");
-    Log::debug([$data]);
+    // Log::debug("상태현황");
+    // Log::debug([$data]);
     //project.js 로 데이터 변환해서 전송
     return response()->json($data);
   }
@@ -644,12 +644,12 @@ class ProjectController extends Controller
     Log::debug("user 에러");
     $user->delete();
 
-    //프로젝트에 포함된 구성원도 나가기
-    $member = ProjectUser::select('project_users.member_id','project_users.project_id')
-                          ->join('projects as pj', 'pj.id', 'project_users.project_id')
-                          ->where('project_users.project_id',$id)
-                          ->delete();
-    Log::debug("user 삭제");
+    // //프로젝트에 포함된 구성원도 나가기
+    // $member = ProjectUser::select('project_users.member_id','project_users.project_id')
+    //                       ->join('projects as pj', 'pj.id', 'project_users.project_id')
+    //                       ->where('project_users.project_id',$id)
+    //                       ->delete();
+    // Log::debug("user 삭제");
 
     // 채팅방 삭제
     $userId = Auth::id();

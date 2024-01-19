@@ -732,6 +732,8 @@ button {
 .m-modal-content #chatting-input {
     width: 80%;
     resize: none;
+    padding: 11px 10px;
+    border: none;
     border-radius: 7px;
     background-color: var(--m-btn);
 }

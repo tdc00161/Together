@@ -837,7 +837,7 @@
 	/* 크기 */
 }
 
-.task_modal .footer>textarea {
+.task_modal .footer>input {
 	/* 배치 */
 	/* 내부 */
 	padding: 8px 12px;

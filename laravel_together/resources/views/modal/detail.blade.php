@@ -99,11 +99,11 @@
 		</div>
 		<div class="footer">
 			<div class="user_profile"></div>
-			<textarea 
+			<input 
 				id="comment_input" 
 				type="text" 
 				placeholder="댓글 작성란"
-			></textarea>
+			>
 			{{-- onchange="testareaHeight()" --}}
 			<div class="submit " onclick="addComment()">등록</div>
 		</div>
