@@ -799,6 +799,15 @@ class ProjectController extends Controller
   {
     $project = Project::find($id);
 
+    // 채팅방에 프로젝트명 수정 반영
+    $oldTitle = Project::find($id)->project_title;
+    if($request->project_title !== $oldTitle){
+      $chatRoom = ChatRoom::where('project_id',$id)->first();
+      $chatRoom->update([
+        'chat_room_name' => $request->project_title,
+      ]);
+    };
+
     $project->update([
         'project_title' => $request->input('project_title'),
         'project_content' => $request->input('project_content'),
