@@ -22,6 +22,9 @@ function dashGraph(dashData) {
         }
     });
 }
+let a = document.querySelector('#Doughnut1');
+
+a.style.display = 'none';
 
 fetch('/dashboard-chart', {
     method: 'GET',
@@ -31,9 +34,11 @@ fetch('/dashboard-chart', {
 }).then(response => {
         // console.log(response)
         return response.json()
+
 }).then(dashData => {
         // console.log(dashData)
         dashGraph(dashData);
+        a.style.display = 'block';
 }).catch(error => console.log(error));
 
 
