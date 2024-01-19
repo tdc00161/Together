@@ -763,26 +763,28 @@ class ProjectController extends Controller
     ->get();
 
     $project0title = DB::table('projects as p')
-    ->join('project_users as pu', 'p.id','=','pu.project_id')
-    ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-    ->select('p.project_title', 'b.data_content_name', 'p.id')
-    ->where('pu.member_id', '=', $userId)
-    ->where('p.flg','=', 0)
-    ->where('b.data_title_code', '=', 3)
-    ->whereNull('p.deleted_at')
-    ->orderBy('p.created_at', 'asc')
-    ->get();
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 0)
+        ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
-    $project1title = DB::table('projects as p')
-    ->join('project_users as pu', 'p.id','=','pu.project_id')
-    ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
-    ->select('p.project_title', 'b.data_content_name', 'p.id')
-    ->where('pu.member_id', '=', $userId)
-    ->where('p.flg','=', 1)
-    ->where('b.data_title_code', '=', 3)
-    ->whereNull('p.deleted_at')
-    ->orderBy('p.created_at', 'asc')
-    ->get();
+        $project1title = DB::table('projects as p')
+        ->join('project_users as pu', 'p.id','=','pu.project_id')
+        ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
+        ->select('p.project_title', 'b.data_content_name', 'p.id')
+        ->where('pu.member_id', '=', $userId)
+        ->where('p.flg','=', 1)
+        ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
+        ->orderBy('p.created_at', 'asc')
+        ->get();
 
 
   return view('project_update')

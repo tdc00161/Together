@@ -465,6 +465,7 @@ class TaskController extends Controller
         // --- 사이드바 출력
         $userId = Auth::id();
 
+
         $project0title = DB::table('projects as p')
         ->join('project_users as pu', 'p.id','=','pu.project_id')
         ->join('basedata as b', 'b.data_content_code', '=', 'p.color_code_pk')
@@ -472,6 +473,8 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $userId)
         ->where('p.flg','=', 0)
         ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -482,6 +485,8 @@ class TaskController extends Controller
         ->where('pu.member_id', '=', $userId)
         ->where('p.flg','=', 1)
         ->where('b.data_title_code', '=', 3)
+        ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
