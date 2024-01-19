@@ -174,8 +174,10 @@
                 {{-- 데이터 시작 --}}
                 <div class="gantt-task-body" id="otherDiv">
                     @forelse($data as $key => $projectitem)
-                        <div class="gantt-project" id="gantt-task-{{$projectitem->project_id}}">
+                        <div class="gantt-project" id="gantt-project-task-{{$projectitem->project_id}}">
                             <div class="gantt-project-title">{{$projectitem->project_title}}</div>
+                                <input type="date" style="display: none" class="start-date" name="start" id="start-row{{$projectitem->project_id}}" onchange="test({{$projectitem->project_id}});" value="{{$projectitem->start_date}}">
+                                <input type="date" style="display: none" class="end-date" name="end" id="end-row{{$projectitem->project_id}}" onchange="test({{$projectitem->project_id}});" value="{{$projectitem->end_date}}">
                             @if (isset($projectitem->depth_0))
                             @forelse ($projectitem->depth_0 as $taskitem)
                                 <div class="gantt-task" id="gantt-task-{{$taskitem->task_id}}">
@@ -292,13 +294,13 @@
                     </div>
                     <div class="gantt-chart-body" id="ganttTaskWrap">
                         @forelse ($data as $key => $projectitem)
-                            <div class="gantt-project-chart" id="gantt-chart-{{$projectitem->project_id}}">
+                        <div class="gantt-project-chart" id="gantt-project-chart-{{$projectitem->project_id}}">
                                 @php
                                     $startDate = new DateTime('2023-10-01');
                                     $endDate = new DateTime('2024-03-31');
 
                                     for ($date = clone $startDate; $date <= $endDate; $date->modify('+1 day')) {
-                                        echo "<div id='row" . ($projectitem->project_id) . "-" . $date->format('Ymd') . "'></div>";
+                                        echo "<div id='projectrow" . ($projectitem->project_id) . "-" . $date->format('Ymd') . "'></div>";
                                     }
                                 @endphp
                             </div>

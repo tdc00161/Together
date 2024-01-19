@@ -614,7 +614,9 @@
 	background-color: #ffffff14;
 }
 
-.gantt-chart > div {
+.gantt-chart > div,
+.gantt-project-chart > div
+{
 	flex-basis: 60px;
 	width: 60px;
 }
