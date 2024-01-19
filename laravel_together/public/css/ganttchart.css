@@ -768,7 +768,8 @@ a:hover {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding-left: 10px;
-	max-width: 345px;
+	/* max-width: 345px; */
+	width: 90px;
 }
 #taskNameright {
 	flex: 1;
