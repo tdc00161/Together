@@ -73,23 +73,23 @@ class ProjectController extends Controller
     $data2result = ProjectUser::create($data2);
 
     // --------------------------------------------- 240110 김관호: 프로젝트 제작 후 채팅방 생성 및 참가
-	if((int)$result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
-		$ChatRoomData = [
-			'flg' => $result->flg,
-			'project_id' => $result->id,
-			'chat_room_name' => $result->project_title,
-		];
-			
-		$ChatRoom = ChatRoom::create($ChatRoomData);
-		// Log::debug($ChatRoom);
+    if((int)$result->flg === 1){ // 팀프로젝트일 경우만 생성 후 참가
+      $ChatRoomData = [
+        'flg' => $result->flg,
+        'project_id' => $result->id,
+        'chat_room_name' => $result->project_title,
+      ];
+        
+      $ChatRoom = ChatRoom::create($ChatRoomData);
+      // Log::debug($ChatRoom);
 
-	
-		// 채팅방 초대 모듈 호출
-    $this->chatRoomInvite( $ChatRoom->project_id,$user_id);
-    // 초대 알람 -> 자기가 만들었으니 초대 안해도 됨
-    // $AlarmEvent = new AlarmEvent(['PI',$user_id,$ChatRoom]);
-    // $AlarmEvent->newAlarm();
-	}
+    
+      // 채팅방 초대 모듈 호출
+      $this->chatRoomInvite( $ChatRoom->project_id,$user_id);
+      // 초대 알람 -> 자기가 만들었으니 초대 안해도 됨
+      // $AlarmEvent = new AlarmEvent(['PI',$user_id,$ChatRoom]);
+      // $AlarmEvent->newAlarm();
+    }
     // --------------------------------------------- 240110 김관호 
 
     //flg 기준 개인/팀 화면으로 전달, 로그인 안한 유저일 경우 log 화면으로 이동
@@ -108,11 +108,15 @@ class ProjectController extends Controller
     if (Auth::check()) {
       return redirect('/dashboard');
     } else {
-        return redirect('/user/login');
+      return redirect('/user/login');
     }
   }
 
   public function mainshow(Request $request, $id) {
+
+    if(!$id){
+      return redirect()->route('dashboard.show');
+    }
 
     // dump($id);
     //로그인한 유저 정보 출력
@@ -120,17 +124,15 @@ class ProjectController extends Controller
 
     $result = Project::find($id);
 
-    $authorityPj = DB::table('projects as pj')
-                      ->select('pu.authority_id','pj.id','pu.member_id')
-                      ->join('project_users as pu','pu.project_id','pj.id')
-                      ->where('pj.id',$id)
-                      ->where('member_id',$user->id)
-                      ->get();
+    // $authorityPj = DB::table('projects as pj')
+    //                   ->select('pu.authority_id','pj.id','pu.member_id')
+    //                   ->join('project_users as pu','pu.project_id','pj.id')
+    //                   ->where('pj.id',$id)
+    //                   ->where('member_id',$user->id)
+    //                   ->get();
 
     // dd($authorityPj);
-    if(!$id){
-      return redirect()->route('dashboard.show');
-    }
+
 
     //권한여부 체크
     $authoritychk = DB::table('project_users as pu')
@@ -332,8 +334,8 @@ class ProjectController extends Controller
         ->with('project1title', $project1title)
         ->with('projectmemberdata',$projectmemberdata) // (jueunyang08) 프로젝트 구성원 출력
         ->with('authoritychk',$authoritychk)
-        ->with('friendinvite',$friendinvite)
-        ->with('authorityPj',$authorityPj);
+        ->with('friendinvite',$friendinvite);
+        // ->with('authorityPj',$authorityPj);
     } else {
         return redirect('/user/login');
     }
