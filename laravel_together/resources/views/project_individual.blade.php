@@ -214,7 +214,7 @@
                     </div>
                     <div id=invitemsg class="invite_friend_msg"></div>
                     <div class="m-gird">
-                        <div>초대 링크</div>
+                        <div class="div_invite">초대 링크</div>
                         <div class="invite_link">{{Str::limit($result->invite,43,'...')}}</div>
                     </div>
                 </div>

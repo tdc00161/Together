@@ -438,6 +438,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex-direction: column;
 }
 
+.div_invite {
+    width: 74px;
+}
+
 .m-gird {
     display: grid;
     grid-template-columns: 0.4fr 1.6fr;
