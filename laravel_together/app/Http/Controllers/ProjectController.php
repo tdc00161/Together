@@ -49,7 +49,7 @@ class ProjectController extends Controller
     $data['color_code_pk'] = (string)rand(0,4);
 
     //프로젝트별 랜덤 고유 토큰 추가
-    $data['invite'] = url()->to('/')."/invite/".Str::random(10);
+    $data['invite'] = url()->to('/')."/invite/".Str::random(6);
     
     //DB 저장
     $result = Project::create($data);
