@@ -8,7 +8,7 @@
 	background-color: rgba(0, 0, 0, 0.514);
     border-radius: 0 10px 10px 10px;
     width: 100%;
-    height: 761px;
+    height: 741px;
 }
 
 .task-add-btn {
@@ -43,7 +43,7 @@
 /* 간트차트 전체 */
 .gantt-content-wrap {
 	background-color: var(--theme-bg-color);
-	height: 690px;
+	height: 670px;
 	overflow: hidden;
 	border-radius: 0 0 10px 10px;
 	display: flex;
@@ -280,7 +280,7 @@
 }
 .gantt-task-body {
 	overflow-y:auto;
-	height: 636px;
+	height: 616px;
 	display: flex;
 	flex-direction: column;
 	position: relative;
@@ -595,9 +595,12 @@
 	padding-left: 3px;
 }
 
-.gantt-chart:last-child {
+/* .gantt-chart:last-child {
 	margin-bottom: 60px;
 }
+.gantt-task:last-child {
+	margin-bottom: 60px;
+} */
 
 .gantt-project-chart {
 	border-top: 1px solid;

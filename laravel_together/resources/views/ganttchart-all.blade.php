@@ -176,8 +176,8 @@
                     @forelse($data as $key => $projectitem)
                         <div class="gantt-project" id="gantt-project-task-{{$projectitem->project_id}}">
                             <div class="gantt-project-title">{{$projectitem->project_title}}</div>
-                                <input type="date" style="display: none" class="start-date" name="start" id="start-row{{$projectitem->project_id}}" onchange="test({{$projectitem->project_id}});" value="{{$projectitem->start_date}}">
-                                <input type="date" style="display: none" class="end-date" name="end" id="end-row{{$projectitem->project_id}}" onchange="test({{$projectitem->project_id}});" value="{{$projectitem->end_date}}">
+                                {{-- <input type="date" style="display: none" class="start-date" name="start" id="start-row{{$projectitem->project_id}}" onchange="test({{$projectitem->project_id}});" value="{{$projectitem->start_date}}">
+                                <input type="date" style="display: none" class="end-date" name="end" id="end-row{{$projectitem->project_id}}" onchange="test({{$projectitem->project_id}});" value="{{$projectitem->end_date}}"> --}}
                             @if (isset($projectitem->depth_0))
                             @forelse ($projectitem->depth_0 as $taskitem)
                                 <div class="gantt-task" id="gantt-task-{{$taskitem->task_id}}">

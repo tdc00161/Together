@@ -1853,6 +1853,7 @@ function test(rowNum) {
 
     while (startDate <= endDate) {
       const formattedDate = startDate.toISOString().slice(0, 10).replace(/-/g, '');
+      // console.log(formattedDate);
 
       const target = document.getElementById('row' + rowNum + '-' + formattedDate);
 
