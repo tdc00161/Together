@@ -55,6 +55,7 @@ class GanttChartController extends Controller
         ->where('p.flg','=', 0)
         ->where('b.data_title_code', '=', 3)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
@@ -66,6 +67,7 @@ class GanttChartController extends Controller
         ->where('p.flg','=', 1)
         ->where('b.data_title_code', '=', 3)
         ->whereNull('p.deleted_at')
+        ->whereNull('pu.deleted_at')
         ->orderBy('p.created_at', 'asc')
         ->get();
 
