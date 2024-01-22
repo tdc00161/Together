@@ -42,31 +42,43 @@
                     <span style="font-size: 12px;">담당자</span>
                 </div>
                 <ul id="myganttDropdown" class="gantt-items">
-                    <li><input id="resAll" type="radio" name="respon" checked>
-                        <label class="gantt-item" for="resAll">전체</label>
-                    </li><input id="res" type="radio" name="respon">
-                    <li>
-
+                    <li><input id="resAll" class="respon-radio radio-checked" type="radio" name="respon" checked>
+                        <label class="gantt-item respon-value" for="resAll">전체</label>
                     </li>
                     {{-- @php
-                        $resNames = array_unique(array_column($data, 'res_name'));
-                        $resNames = array_filter($resNames, function($name) {
-                            return $name !== null;
-                        });
+                        // $resNames = array_unique(array_column($data, 'res_name'));
+                        // $resNames = array_filter($resNames, function($name) {
+                        //     return $name !== null;
+                        // });
                         $resNames[] = null; // null 값을 배열에 추가하여 '없음'을 마지막에 표시
                     @endphp --}}
 
-                    {{-- @foreach($data as $index => $resName)
-                        <li>
-                            @if ($resName !== null)
-                                <input id="res{{ $index + 1 }}" type="radio" name="respon" onclick="is_checked_respon(event)">
-                                <label for="res{{ $index + 1 }}" class="gantt-item">{{ $resName-> }}</label>
-                            @else
-                                <input id="res-none" type="radio" name="respon" onclick="is_checked_respon(event)">
-                                <label for="res-none" class="gantt-item">없음</label>
-                            @endif
-                        </li>
-                    @endforeach --}}
+                    @foreach($data as $index => $resName)
+                        @if (isset($resName->depth_0))
+                            @php
+                                $encounteredValues = [];
+                            @endphp
+                            @foreach ($resName->depth_0 as $taskitem)
+                                @if ($taskitem->res_name !== null && !in_array($taskitem->res_name, $encounteredValues))
+                                    <li>
+                                        <input class="respon-radio" id="res{{ $index + 1 }}" type="radio" name="respon">
+                                        <label for="res{{ $index + 1 }}" class="gantt-item respon-value">{{ $taskitem->res_name }}</label>
+                                    </li>
+                                    @php
+                                        $encounteredValues[] = $taskitem->res_name;
+                                    @endphp
+                                @elseif ($taskitem->res_name === null && !in_array('없음', $encounteredValues))
+                                    <li>
+                                        <input class="respon-radio" id="res-none" type="radio" name="respon">
+                                        <label for="res-none" class="gantt-item respon-value">없음</label>
+                                    </li>
+                                    @php
+                                        $encounteredValues[] = '없음';
+                                    @endphp
+                                @endif
+                            @endforeach
+                        @endif
+                    @endforeach
                 </ul>
             </div>
             <div id="list4" class="gantt-dropdown-check-list" tabindex="100">

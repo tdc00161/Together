@@ -316,13 +316,13 @@ function is_checked_respon() {
           responFilter.push(task);
         }
       } else if (responValues === '없음') {
-        if (taskRespon === '') {
+        if (taskRespon === '-') {
           // task.style.display = 'flex';
           responFilter.push(task);
         } else {
           // task.style.display = 'none';
         }
-      } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+      } else if (taskRespon !== '-' && responValues.includes(taskRespon)) {
         // task.style.display = 'flex';
         responFilter.push(task);
       } else {
@@ -345,13 +345,13 @@ function is_checked_respon() {
             responFilter.push(ganttChart);
           }
         } else if (responValues === '없음') {
-          if (taskRespon === '') {
+          if (taskRespon === '-') {
             // ganttChart.style.display = 'flex';
             responFilter.push(ganttChart);
           } else {
             // ganttChart.style.display = 'none';
           }
-        } else if (taskRespon !== '' && responValues.includes(taskRespon)) {
+        } else if (taskRespon !== '-' && responValues.includes(taskRespon)) {
           // ganttChart.style.display = 'flex';
           responFilter.push(ganttChart);
         } else {
