@@ -360,11 +360,13 @@ document.querySelectorAll('.mbbtn').forEach(mbbtnOne => {
 });
 
 
+
 // 초대링크 클릭시 링크 복사하기
 document.querySelector(".invite_link").addEventListener('click',function(e){
    let copyLink = document.querySelector(".invite_link").innerText;
 
-   navigator.clipboard.writeText(copyLink)
+   // navigator.clipboard.writeText(copyLink)
+   copyLink.execCommand('copy')
    .then(function(){
       alert('링크가 복사되었습니다.');
    }).catch(function(err){
