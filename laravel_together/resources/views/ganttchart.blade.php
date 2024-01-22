@@ -156,20 +156,22 @@
                         $resNames = array_filter($resNames, function($name) {
                             return $name !== null;
                         });
-                        $resNames[] = null; // null 값을 배열에 추가하여 '없음'을 마지막에 표시
+                        sort($resNames);
+                        $resNames[] = null;
                     @endphp
 
                     @foreach($resNames as $index => $resName)
                         <li>
                             @if ($resName !== null)
-                                <input class="respon-radio" id="res{{ $index + 1 }}" type="radio" name="respon"> {{-- onclick="filtering()" --}}
+                                <input class="respon-radio" id="res{{ $index + 1 }}" type="radio" name="respon">
                                 <label for="res{{ $index + 1 }}" class="gantt-item respon-value">{{ $resName }}</label>
                             @else
-                                <input class="respon-radio" id="res-none" type="radio" name="respon"> {{-- onclick="filtering()" --}}
+                                <input class="respon-radio" id="res-none" type="radio" name="respon">
                                 <label for="res-none" class="gantt-item respon-value">없음</label>
                             @endif
                         </li>
                     @endforeach
+
                 </ul>
             </div>
 
