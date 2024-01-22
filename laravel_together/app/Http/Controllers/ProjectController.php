@@ -595,6 +595,7 @@ class ProjectController extends Controller
               AND bd.data_title_code = 4
           WHERE
               pj_usr.project_id = ".$id
+          ." AND pj_usr.deleted_at IS NULL "
       );
       Log::debug($dataContent);
       Log::debug(!$dataContent);
